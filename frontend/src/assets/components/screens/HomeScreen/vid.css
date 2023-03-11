@@ -1,0 +1,42 @@
+
+   
+.sectext {
+    position:absolute;
+     text-align: center;
+     top:48%;
+     left:37%;
+     z-index:2;
+     font-size: large;
+   }
+.topText {
+     color: white;
+     font-size: 90px;
+     position:absolute;
+     text-align: center;
+     top:30%;
+     left:27%;
+     z-index:2;
+   }
+
+.Video {
+    Position: relative;
+    z-index: -1;
+    filter: brightness(80%);
+    Top: 0;
+    Left: 0;
+    Width: 100%;
+    Height: 660px;
+    Object-Fit: Cover;
+       Object-Fit: Cover;
+    Object-Position: Center;
+       Object-Position: Center;
+  }
+
+.button {
+   position:absolute;
+   align-items: center;
+   top:75%;
+   left:50%;
+   z-index:2;
+   font-size: large;
+ }

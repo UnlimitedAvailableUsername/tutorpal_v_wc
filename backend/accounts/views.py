@@ -59,6 +59,10 @@ def getUsers(request):
 @api_view(['GET'])
 def getUser(request, pk):
     user = User.objects.get(id=pk)
+    def get_queryset(self):
+        return super().get_queryset()
+    
+    product = models.Product.objects.all(filter=id)
     serializer = serializers.UserSerializer(user, many=False)
     return Response(serializer.data)
 

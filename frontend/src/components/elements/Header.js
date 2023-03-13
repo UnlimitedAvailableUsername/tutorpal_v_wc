@@ -35,7 +35,7 @@ function Header() {
                     <NavLink as={ Link } to="/tutor-list">Tutors</NavLink>
                     <NavLink as={ Link } to="/addLesson">Add Lesson</NavLink>
                     <NavLink as={ Link } to="/about">About Us</NavLink>
-                    <NavLink as={ Link } to="/contact">Contact Us</NavLink>
+                    <NavLink as={ Link } to="/contact-us">Contact Us</NavLink>
                 </Nav>
                 <Nav className="md-auto">
                     <NavDropdown variant="dark" title="Apply" id="basic-nav-dropdown">

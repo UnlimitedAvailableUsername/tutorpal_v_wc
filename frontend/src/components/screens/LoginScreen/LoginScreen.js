@@ -1,8 +1,25 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
+
 function LoginScreen() {
+    
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    const handleEmail = e => {
+        setEmail(e.target.value);
+    }
+    const handlePassword = e => {
+        setPassword(e.target.value);
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        console.log(email,password)
+    }
+    
     return (
         <div className="mt-100">
             <Row className="d-flex justify-content-center align-items-center">
@@ -15,14 +32,14 @@ function LoginScreen() {
                                     <Form>
                                         <Form.Group className="mb-3" controlId="formBasicEmail">
                                             <Form.Label className="text-center">Email address</Form.Label>
-                                            <Form.Control type="email" placeholder="Enter email" />
+                                            <Form.Control value={ email } onChange={ handleEmail } type="email" placeholder="Enter email" />
                                         </Form.Group>
                                         <Form.Group className="mb-3" controlId="formBasicPassword">
                                             <Form.Label>Password</Form.Label>
-                                            <Form.Control type="password" placeholder="Enter Password" />
+                                            <Form.Control value={ password } onChange={ handlePassword } type="password" placeholder="Enter Password" />
                                         </Form.Group>
                                         <div className="d-grid my-5">
-                                            <Button variant="warning" type="submit">Continue</Button>
+                                            <Button variant="warning" disabled={ !email || !password } onChange={ handleSubmit } type="submit">Continue</Button>
                                         </div>
                                     </Form>
                                     <div className="mt-3">

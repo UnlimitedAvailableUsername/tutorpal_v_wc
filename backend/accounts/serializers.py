@@ -21,6 +21,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     subject = serializers.StringRelatedField()
+    product = serializers.StringRelatedField()
     class Meta:
         model = User
         fields = '__all__'

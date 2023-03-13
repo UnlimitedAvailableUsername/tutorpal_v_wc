@@ -1,13 +1,13 @@
 import React from 'react';
 import Video from './Video';
-import Homeabout from './Homeabout';
+import HomeAbout from './HomeAbout';
 import Section from './Section';
 
 function HomeScreen() {
   return (
     <div >
       <Video />
-      <Homeabout />
+      <HomeAbout />
       <Section />
     </div>
   );

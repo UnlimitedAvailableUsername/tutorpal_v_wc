@@ -1,8 +1,8 @@
-import react from "react";
+import React from "react";
 import { Row, Col } from 'react-bootstrap'
-import "../assets/components/Footer/footer.css";
+import "../../assets/components/elements/Footer/footer.css";
 
-const Footer = () => {
+function Footer() {
   return (
     <div className="main-footer bg-dark">
       <div className="container">

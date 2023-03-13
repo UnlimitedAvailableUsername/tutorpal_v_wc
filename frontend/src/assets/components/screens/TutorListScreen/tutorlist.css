@@ -1,0 +1,33 @@
+.tutor-bg {
+  background-image: url("bgtutorlist.jpg");
+  background-color: #cccccc;
+  height: 500px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  filter: brightness(60%);
+}
+
+.tutor-text-bg {
+  position: absolute;
+  top: 33%;
+  width: 100%;
+}
+
+.tutor-text {
+  text-align: center;
+  font-size: 150px !important;
+  font-weight: 100 !important;
+}
+
+.tutor-text h4 {
+  text-align: center;
+  top: 10%;
+}
+
+.tutor-form {
+  position: relative;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -30%);
+}

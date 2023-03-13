@@ -1,9 +1,8 @@
-import { Container, Row, Col } from 'react-bootstrap';
-import '../../../assets/components/screens/HomeScreen/Homeabout.css'
+import '../../../assets/components/screens/HomeScreen/HomeAbout.css'
 
 
 
-function Homeabout() {
+function HomeAbout() {
   return (
     <div className="hero-image">
       <div className="hero-text">
@@ -14,4 +13,4 @@ function Homeabout() {
   );
 }
 
-export default Homeabout;
+export default HomeAbout;

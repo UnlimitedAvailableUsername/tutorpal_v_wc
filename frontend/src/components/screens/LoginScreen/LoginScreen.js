@@ -39,7 +39,11 @@ function LoginScreen() {
                                             <Form.Control value={ password } onChange={ handlePassword } type="password" placeholder="Enter Password" />
                                         </Form.Group>
                                         <div className="d-grid my-5">
+<<<<<<< HEAD
                                             <Button variant="warning" disabled={ !email || !password } onChange={ handleSubmit } type="submit">Continue</Button>
+=======
+                                            <Button variant="primary" disabled={ !email || !password } onChange={ handleSubmit } type="submit">Continue</Button>
+>>>>>>> cb898d90c948a886e9f838199993c6911f0f8d18
                                         </div>
                                     </Form>
                                     <div className="mt-3">

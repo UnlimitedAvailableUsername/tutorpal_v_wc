@@ -8,6 +8,9 @@ from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+
+from django_filters import rest_framework as filters
+
 #### knox ####
 from knox.models import AuthToken
 #### simple_jwt ####
@@ -20,14 +23,10 @@ def getRoutes(request):
     routes = [
         '/products/',
         '/products/create/',
-
         '/products/upload/',
-
         '/products/<id>/reviews/',
-
         '/products/top/',
         '/products/<id>/',
-
         '/products/delete/<id>/',
         '/products/<update>/<id>',
     ]
@@ -54,6 +53,12 @@ def getUsers(request):
     user = User.objects.all()
     serializer = serializers.UserSerializer(user, many=True)
     return Response(serializer.data)
+
+class GetUsers(generics.ListAPIView):
+    queryset = User
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_fields = ()
+
 
 # For fetching specific user
 @api_view(['GET'])

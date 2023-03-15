@@ -3,10 +3,7 @@
 # dependencies
 /.pnp
 .pnp.js
-<<<<<<< HEAD
-=======
 node_modules
->>>>>>> cb898d90c948a886e9f838199993c6911f0f8d18
 
 # testing
 /coverage

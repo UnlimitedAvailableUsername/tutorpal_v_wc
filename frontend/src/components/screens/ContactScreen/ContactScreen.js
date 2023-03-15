@@ -8,11 +8,7 @@ function ContactScreen() {
   return (
     <div>
         <section className="contact">
-<<<<<<< HEAD
-            <div className="contact-heading my-5">
-=======
             <div className="contact-heading">
->>>>>>> cb898d90c948a886e9f838199993c6911f0f8d18
                 <h2>Contact Us</h2>
             </div>
 

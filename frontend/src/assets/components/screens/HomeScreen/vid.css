@@ -11,26 +11,30 @@
 .topText {
      color: white;
      font-size: 90px;
-     position:absolute;
+     position: absolute;
      text-align: center;
      top:30%;
      left:27%;
      z-index:2;
    }
 
-.Video {
-    Position: relative;
-    z-index: -1;
-    filter: brightness(80%);
-    Top: 0;
-    Left: 0;
-    Width: 100%;
-    Height: 660px;
-    Object-Fit: Cover;
-       Object-Fit: Cover;
-    Object-Position: Center;
-       Object-Position: Center;
+.video-bg {
+   position: relative;
+   filter: brightness(80%);
+   top: 0;
+   width: 100%;
+   height: 740px;
+   object-fit: cover;
+   object-position: center;
   }
+
+.video-text-overlay {
+   top: 0;
+   transform: translateY(100%);
+   width: 100%;
+   position: absolute;
+   z-index: 1000;
+}
 
 .button {
    position:absolute;

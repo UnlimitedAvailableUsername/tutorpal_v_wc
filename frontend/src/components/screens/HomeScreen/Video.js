@@ -7,7 +7,7 @@ import { Container, Button } from 'react-bootstrap';
 
 function Video() {
 
-    const scrollToTop = () => {
+    const scrollToBottom = () => {
         window.scrollTo({
             top: 745,
             behavior: "smooth",
@@ -15,24 +15,17 @@ function Video() {
     };
 
     return (
-        <div className='text-light'>
-            <video playsInline autoPlay="autoplay" muted="muted" loop="loop" className="Video" preload="auto">
+        <div>
+            <video className='video-bg' playsInline autoPlay="autoplay" muted="muted" loop="loop" preload="auto">
                 <source src={vid} type="video/mp4" />
             </video>
-<<<<<<< HEAD
-            <Container>
-                <p className="topText justify-center">Find an expert tutor</p>
-                <p className="sectext">1–on–1 lessons with the expert instructor of your choice. <br></br>Meet online. Decide how much you pay and who you <br></br>want to work with. The choice is yours.</p>
-                <Button>
-=======
-            <Container className='text-center'>
+            <div className='video-text-overlay text-center'>
                 <h1 className="text-center mb-4">Find an expert tutor</h1>
                 <p className="text-center">1–on–1 lessons with the expert instructor of your choice. <br></br>Meet online. Decide how much you pay and who you <br></br>want to work with. The choice is yours.</p>
-                <Button className='btn-primary-outline'>
->>>>>>> cb898d90c948a886e9f838199993c6911f0f8d18
-                    <FontAwesomeIcon icon={ faChevronDown } onClick={scrollToTop} />
+                <Button className='bg-transparent border-0'>
+                    <FontAwesomeIcon icon={ faChevronDown } onClick={scrollToBottom} />
                 </Button>
-            </Container>
+            </div>
         </div>
     )
 }

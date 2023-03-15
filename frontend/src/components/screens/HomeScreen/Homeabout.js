@@ -1,4 +1,4 @@
-import '../../../assets/components/screens/HomeScreen/Homeabout.css'
+import '../../../assets/components/screens/HomeScreen/HomeAbout.css'
 
 
 

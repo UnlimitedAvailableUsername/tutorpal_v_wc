@@ -1,5 +1,5 @@
 
-# TutorPal (Version: WHite Comet)
+# TutorPal (Version: White Comet)
 
 A sophisticated bootleg mixup of wayzant.org and tutorly.com websites.
 

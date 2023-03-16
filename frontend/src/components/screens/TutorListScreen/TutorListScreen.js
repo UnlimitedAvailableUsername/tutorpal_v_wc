@@ -6,11 +6,9 @@ function TutorListScreen() {
   return (
     <div>
       <div className='tutor-bg'></div>
-      <div className='tutor-text-bg' >
-        <Container>
-            <h1 className='text-uppercase tutor-text text-light'>our tutors</h1>
-            <h4 className='.tutor-text text-light'>Click on each tutor's profile to learn more about the tutor's education background and experience.</h4>
-        </Container>
+      <div className='tutor-bg-text-overlay text-center' >
+          <h1 className='text-uppercase tutor-text-h1'>our tutors</h1>
+          <h4 >Click on each tutor's profile to learn more about the tutor's education background and experience.</h4>
       </div>
       <Container>
 

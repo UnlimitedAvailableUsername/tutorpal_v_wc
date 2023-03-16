@@ -8,7 +8,11 @@ A sophisticated bootleg mixup of wayzant.org and tutorly.com websites.
 
 1. Open two terminals
 2. On the first terminal, go to the backend directory by typing ```cd .\backend``` and execute the command ```python manage.py runserver```
-3. On the second terminal, go to the frontend directory by typing ```cd .\frontend``` and run the build ```npm start``` or ```yarn start```.
+3. On the second terminal, go to the frontend directory by typing ```cd .\frontend``` and run the following commands one-by-one:
+```
+npm install
+npm start
+```
 
 
     

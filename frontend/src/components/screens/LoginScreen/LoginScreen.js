@@ -21,10 +21,10 @@ function LoginScreen() {
     }
     
     return (
-        <div className="mt-100">
-            <Row className="d-flex justify-content-center align-items-center">
-                <Col md={4} lg={10} xs={8}>
-                    <Card className="bg-dark text-light px-4 my-5">
+        <div>
+            <Row className="justify-content-center align-items-center">
+                <Col xl={8} xs={10}>
+                    <Card className="px-4 my-5">
                         <Card.Body>
                             <div className="mb-3 mt-md-4">
                                 <h2 className="fw-bold mb-5 text-uppercase ">Log In</h2>
@@ -39,7 +39,7 @@ function LoginScreen() {
                                             <Form.Control value={ password } onChange={ handlePassword } type="password" placeholder="Enter Password" />
                                         </Form.Group>
                                         <div className="d-grid my-5">
-                                            <Button variant="primary" disabled={ !email || !password } onChange={ handleSubmit } type="submit">Continue</Button>
+                                            <Button variant="warning" disabled={ !email || !password } onChange={ handleSubmit } type="submit">Continue</Button>
                                         </div>
                                     </Form>
                                     <div className="mt-3">

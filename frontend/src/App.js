@@ -12,7 +12,7 @@ function App() {
 
       <Header />
 
-      <div className="screen">
+      <div className="screen" style={{overflowX: "hidden"}} >
         <Routes>
           <Route path="/" element={ <HomeScreen /> } exact />
           <Route path="/tutor-list" element={ <TutorListScreen /> } exact />

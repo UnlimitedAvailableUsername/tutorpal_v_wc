@@ -20,8 +20,8 @@ function Video() {
                 <source src={vid} type="video/mp4" />
             </video>
             <div className='video-text-overlay text-center'>
-                <h1 className="text-center mb-4">Find an expert tutor</h1>
-                <p className="text-center">1–on–1 lessons with the expert instructor of your choice. <br></br>Meet online. Decide how much you pay and who you <br></br>want to work with. The choice is yours.</p>
+                <p className="display-1 text-center mb-4">Find an expert tutor</p>
+                <h4 className="text-center">1–on–1 lessons with the expert instructor of your choice. <br></br>Meet online. Decide how much you pay and who you <br></br>want to work with. The choice is yours.</h4>
                 <Button className='bg-transparent border-0'>
                     <FontAwesomeIcon icon={ faChevronDown } onClick={scrollToBottom} />
                 </Button>

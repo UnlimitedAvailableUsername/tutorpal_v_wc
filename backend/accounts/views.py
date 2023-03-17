@@ -8,9 +8,6 @@ from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-
-from django_filters import rest_framework as filters
-
 #### knox ####
 from knox.models import AuthToken
 #### simple_jwt ####
@@ -54,10 +51,8 @@ def getUsers(request):
     serializer = serializers.UserSerializer(user, many=True)
     return Response(serializer.data)
 
-class GetUsers(generics.ListAPIView):
-    queryset = User
-    filter_backends = (filters.DjangoFilterBackend,)
-    filterset_fields = ()
+# class GetUsers(generics.ListAPIView):
+#     queryset = User
 
 
 # For fetching specific user

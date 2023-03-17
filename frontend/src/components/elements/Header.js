@@ -1,15 +1,12 @@
-import React from "react";
-import { Container, Nav, Row, NavLink, NavItem, Image, NavbarBrand, Navbar, NavDropdown, } from "react-bootstrap";
-// import Login from "./Signup/TutorSignup";
+import { Container, Nav, NavLink, Navbar, NavDropdown, } from "react-bootstrap";
 import logo from "../../assets/components/elements/Header/logo.png";
-// import Signup from "../components/Signup";
-// import { logout } from "../action/tutorActions";
 import { useDispatch, useSelector } from "react-redux";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import "font-awesome/css/font-awesome.min.css";
+import { loginUser } from "../../features/redux/actions/authUserActions";
+import { userState } from "../../features/redux/store";
 
 import { useLocation, useNavigate, Link } from "react-router-dom";
-import { LinkContainer } from "react-router-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 function Header() {
   //   const tutorLogin = useSelector((state) => state.tutorLogin);
@@ -19,6 +16,9 @@ function Header() {
   //     dispatch(logout());
   //   };
   
+  const loginUser = useSelector( (state) => state.userState);
+  const { userInfo } = loginUser
+
   const navAccountTitle = <><FontAwesomeIcon title="Account" fixedWidth inverse icon={faUser} /> Account</>;
 
   return (

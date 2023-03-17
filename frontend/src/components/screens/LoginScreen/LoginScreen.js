@@ -28,7 +28,6 @@ function LoginScreen() {
     const handlePassword = e => {
         setPassword(e.target.value);
     }
-
     const handleSubmit = (e) => {
         e.preventDefault()
         dispatch( loginUser( email, password) )
@@ -45,9 +44,11 @@ function LoginScreen() {
                     <Card className="px-4 my-5">
                         <Card.Body>
                             <div className="mb-3 mt-md-4">
-                                <h2 className="fw-bold mb-5 text-uppercase ">Log In</h2>
-                                { error && <MessageAlert variant='danger'>{ error }</MessageAlert> }
-                                { loading && <LoadingIconBig/> }
+                                <div className='mb-5' >
+                                    <h2 className="fw-bold text-uppercase ">Log In</h2>
+                                    { error && <MessageAlert variant='danger'>{ error }</MessageAlert> }
+                                    { loading && <LoadingIconBig/> }
+                                </div>
                                 <div className="mb-3">
                                     <Form onSubmit={ handleSubmit }>
                                         <Form.Group className="mb-3" controlId="formBasicEmail">

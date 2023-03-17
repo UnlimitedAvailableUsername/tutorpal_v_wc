@@ -2,7 +2,7 @@ import vid from '../../../assets/components/screens/HomeScreen/hero-video.mp4';
 import '../../../assets/components/screens/HomeScreen/vid.css'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
-import { Container, Button } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
 
 function Video() {

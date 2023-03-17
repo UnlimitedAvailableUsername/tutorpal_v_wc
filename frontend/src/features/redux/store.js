@@ -3,7 +3,7 @@ import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { userLoginReducer } from "./reducers/authUserReducer";
 
-const initialState = {};
+// const initialState = {};
 
 const reducers = combineReducers({
     userState: userLoginReducer,

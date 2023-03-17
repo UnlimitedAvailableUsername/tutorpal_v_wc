@@ -1,12 +1,26 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+
+import { loginUser } from '../../../features/redux/actions/authUserActions';
+import { useSelector, useDispatch } from 'react-redux'; 
+import MessageAlert from '../../elements/MessageAlert';
+import LoadingIconBig from '../../elements/LoadingIcon';
 
 
 function LoginScreen() {
     
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+
+    const userLogin = useSelector( state => state.userState )
+    const { error, loading, userInfo } = userLogin
+
+    const dispatch = useDispatch();
+    const location = useLocation();
+    const navigate = useNavigate();
+    const redirect = location.search ? location.search.split('=')[1] : '/'
+
 
     const handleEmail = e => {
         setEmail(e.target.value);
@@ -17,8 +31,12 @@ function LoginScreen() {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log(email,password)
+        dispatch( loginUser( email, password) )
     }
+
+
+    useEffect( () => { if(userInfo){ navigate(redirect) } }, [ navigate, userInfo, redirect ] )
+ 
     
     return (
         <div>
@@ -28,8 +46,10 @@ function LoginScreen() {
                         <Card.Body>
                             <div className="mb-3 mt-md-4">
                                 <h2 className="fw-bold mb-5 text-uppercase ">Log In</h2>
+                                { error && <MessageAlert variant='danger'>{ error }</MessageAlert> }
+                                { loading && <LoadingIconBig/> }
                                 <div className="mb-3">
-                                    <Form>
+                                    <Form onSubmit={ handleSubmit }>
                                         <Form.Group className="mb-3" controlId="formBasicEmail">
                                             <Form.Label className="text-center">Email address</Form.Label>
                                             <Form.Control value={ email } onChange={ handleEmail } type="email" placeholder="Enter email" />

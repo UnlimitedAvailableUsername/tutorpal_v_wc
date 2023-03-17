@@ -2,7 +2,6 @@ import React from "react";
 import { Container, Nav, Row, NavLink, NavItem, Image, NavbarBrand, Navbar, NavDropdown, } from "react-bootstrap";
 // import Login from "./Signup/TutorSignup";
 import logo from "../../assets/components/elements/Header/logo.png";
-import { Dropdown } from "react-bootstrap";
 // import Signup from "../components/Signup";
 // import { logout } from "../action/tutorActions";
 import { useDispatch, useSelector } from "react-redux";

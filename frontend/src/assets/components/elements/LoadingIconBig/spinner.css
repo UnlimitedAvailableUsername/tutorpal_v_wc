@@ -1,6 +1,6 @@
 .spinner-big {
-    height: 5em;
-    width: 5em;
+    width: 5em !important;
+    height: 5em !important;
     margin: auto;
-    display: block; 
+    display: block !important; 
 }

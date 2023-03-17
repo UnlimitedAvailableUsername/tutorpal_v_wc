@@ -1,4 +1,4 @@
-import * as constant from '../constants';
+import * as actionType from '../constants';
 
 
 // this is just our initial state. This is almost the same as
@@ -14,15 +14,29 @@ const initialState = {
 export const userLoginReducer = (state = initialState, action) => {
 
     switch(action.type) {
-        case constant.USER_LOGIN_REQUEST:
-            return { ...state, loading: true };
+        case actionType.USER_LOGIN_REQUEST:
+            return { 
+                ...state, 
+                loading: true,
+                error: null
+            };
 
-        case constant.USER_LOGIN_SUCCESS:
-            return { ...state, isAuthenticated: true, userInfo: action.payload };
+        case actionType.USER_LOGIN_SUCCESS:
+            return { 
+                ...state, 
+                loading: false,
+                isAuthenticated: true, 
+                userInfo: action.payload 
+            };
 
-        case constant.USER_LOGIN_FAIL:
+        case actionType.USER_LOGIN_FAIL:
             localStorage.removeItem('token')
-            return { ...state, token: null, error: action.payload };
+            return { 
+                ...state, 
+                loading: false, 
+                token: null, 
+                error: action.payload 
+            };
 
         default:
             return state;

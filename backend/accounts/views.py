@@ -32,6 +32,7 @@ def getRoutes(request):
 ## For fetching all the products
 @api_view(['GET'])
 def getProducts(request):
+    permissions = IsAuthenticated
     products = models.Product.objects.all()
     serializer = serializers.ProductSerializer(products, many=True)
     return Response(serializer.data)
@@ -59,11 +60,10 @@ def getUsers(request):
 @api_view(['GET'])
 def getUser(request, pk):
     user = User.objects.get(id=pk)
+    serializer = serializers.UserSerializer(user, many=False)
     def get_queryset(self):
         return super().get_queryset()
     
-    product = models.Product.objects.all(filter=id)
-    serializer = serializers.UserSerializer(user, many=False)
     return Response(serializer.data)
 
 

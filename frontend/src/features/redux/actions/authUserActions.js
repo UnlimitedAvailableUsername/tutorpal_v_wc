@@ -1,11 +1,11 @@
 import axios from 'axios';
-import * as constant from '../constants';
+import * as actionType from '../constants';
 
 export const loginUser = ( email, password ) => async(dispatch) => {
 
     try {
         
-        dispatch( { type: constant.USER_LOGIN_REQUEST } );
+        dispatch( { type: actionType.USER_LOGIN_REQUEST } );
 
         // this is where we'll put our data, and 
         // we will just convert it to JSON
@@ -22,7 +22,7 @@ export const loginUser = ( email, password ) => async(dispatch) => {
         // after we post our input, we'll get the 
         // 'data' from what we have post and then
         // use it as our payload for our LOGIN_SUCCESS
-        dispatch( { type: constant.USER_LOGIN_SUCCESS, payload: data } );
+        dispatch( { type: actionType.USER_LOGIN_SUCCESS, payload: data } );
 
         // we're going to store it on our redux store
         localStorage.setItem('userInfo', data)
@@ -30,8 +30,12 @@ export const loginUser = ( email, password ) => async(dispatch) => {
     } catch (error) {
         
         dispatch( { 
-            type: constant.USER_LOGIN_FAIL, 
+            type: actionType.USER_LOGIN_FAIL, 
             payload: error.response && error.response.data.detail ? error.response.data.detail : error.message 
         } );
     };
-}
+};
+
+export const logoutUser = () => (dispatch) => {
+    dispatch({ type: actionType.USER_LOGOUT })
+};

@@ -1,41 +1,53 @@
 from django.shortcuts import render
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
 from django.contrib.auth import get_user_model
 from . import models
 from . import serializers
+
+# for function-based views:
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.response import Response
+
+## for class-based views:
 from rest_framework import generics
-from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+
 #### knox ####
 from knox.models import AuthToken
+
 #### simple_jwt ####
 from rest_framework_simplejwt import views as jwt_views 
 
+
 User = get_user_model()
+
 
 @api_view(['GET'])
 def getRoutes(request):
     routes = [
-        '/products/',
-        '/products/create/',
-        '/products/upload/',
-        '/products/<id>/reviews/',
-        '/products/top/',
-        '/products/<id>/',
-        '/products/delete/<id>/',
-        '/products/<update>/<id>',
+        '../products/',
+        '../products/create/',
+        '../products/upload/',
+        '../products/<id>/reviews/',
+        '../products/top/',
+        '../products/<id>/',
+        '../products/delete/<id>/',
+        '../products/<update>/<id>',
     ]
     return Response(routes)
 
 ## For fetching all the products
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def getProducts(request):
     permissions = IsAuthenticated
     products = models.Product.objects.all()
     serializer = serializers.ProductSerializer(products, many=True)
     return Response(serializer.data)
+
+class GetProducts(generics.GenericAPIView):
+    pass
+
 
 ## For fetching specific product with id, pk
 @api_view(['GET'])

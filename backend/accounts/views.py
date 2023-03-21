@@ -91,6 +91,33 @@ class RegisterAPI(generics.GenericAPIView):
         "token": AuthToken.objects.create(user)[1]
         })
 
+@api_view(["POST"])
+def addProduct(request):
+    data = request.data
+    print (data['subject'])
+   
+    try:
+
+        subjecttest = Subject.objects.get(_id=data['subject'])
+        product = Product.objects.create(
+        lesson_name = data['lesson'],
+        schedule = data['schedule'],
+        rate_hour = data['rate'],
+        subject = subjecttest,
+        )
+        serializer = ProductSerializer(product, many=False)
+        return Response(serializer.data)
+    except:
+        message = {'detail': 'Test'}
+        return Response(message)
+
+
+@api_view(["GET"])
+def getSubjects(request):
+    subject = models.Subject.objects.all()
+    serializer = serializers.SubjectSerializer(subject, many=True)
+    return Response(serializer.data)
+
 
 class MyTokenObtainPairView(jwt_views.TokenObtainPairView):
     serializer_class = serializers.MyTokenObtainPairSerializer

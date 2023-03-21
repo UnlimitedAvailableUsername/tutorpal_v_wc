@@ -8,7 +8,10 @@ urlpatterns = [
     path('user/<str:pk>/', views.getUser, name='user'),
 
     path('product/', views.getProducts, name='products'),
+    path('product/add', views.addProduct, name='add_product'),
     path('product/<str:pk>', views.getProduct, name='product'),
+
+    path('subject/', views.getSubjects, name='subjects'),
 
     path('auth/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('auth/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),

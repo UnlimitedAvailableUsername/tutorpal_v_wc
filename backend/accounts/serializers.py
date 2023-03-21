@@ -11,19 +11,19 @@ class SubjectSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class ProductSerializer(serializers.ModelSerializer):
-    subject_name = serializers.StringRelatedField()
-    user = serializers.StringRelatedField()
-    class Meta:
-        model = models.Product
-        fields = '__all__'
-
-
 class UserSerializer(serializers.ModelSerializer):
     subject = serializers.StringRelatedField()
     product = serializers.StringRelatedField()
     class Meta:
         model = User
+        fields = '__all__'
+
+
+class ProductSerializer(serializers.ModelSerializer):
+    subject_name = serializers.CharField(source='subject.name')
+    user = serializers.StringRelatedField()
+    class Meta:
+        model = models.Product
         fields = '__all__'
 
 

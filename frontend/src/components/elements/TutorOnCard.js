@@ -3,31 +3,31 @@ import { Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 
-function Tutor() {
+function Tutor({user}) {
   return (
-    <Card>
-      <Card.Body>
-        <Link to={`/tutor/<id>`}>
-            <Card.Img src={} className="card-img-top img-fluid rounded" style={{ width: "auto", height: "24em", objectFit: "cover" }} />
-        </Link>
-        <Card.Title as="div">
-          <strong>
-            {/* {tutor.user.username} */}
-          </strong>
+    <Card className="my-3 p-3 rounded">
+    <Link to={`tutor/${user.id}`}>
+      <Card.Img style={{height:256}} src={user.profile_picture} />
+    </Link>
+    <Card.Body>
+      <Link to={`tutor/${user.id}`}>
+
+        
+        <Card.Title>
+          <strong>{user.first_name} {user.last_name}</strong>
         </Card.Title>
-        <Card.Text>
-            bio goes here
-        </Card.Text>
-        <Card.Text as="div">
-          <div className="my-3">
-            Rated <b>... / 5</b>
-          </div>
-          <div className="my-3">
-            by ... users
-          </div>
-        </Card.Text>
-      </Card.Body>
-    </Card>
+      </Link>
+      <Card.Text as="div">
+        <div> 
+
+        </div>
+        <div> Main Subject: {user.subject} <br></br> </div>
+      </Card.Text>
+      <Card.Text >
+     {user.bio}
+              </Card.Text>
+    </Card.Body>
+  </Card>
   )
 }
 

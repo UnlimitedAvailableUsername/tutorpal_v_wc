@@ -5,7 +5,6 @@ import { userLoginReducer } from "./reducers/authUserReducer";
 import {tutorListReducer, tutorDetailsReducer } from "./reducers/tutorReducer";
 import {productListReducer, productDetailsReducer } from './reducers/productReducer';
 import { subjectDetailReducer, subjectsListReducer } from "./reducers/subjectReducer";
-// const initialState = {};
 
 const reducers = combineReducers({
     userState: userLoginReducer,
@@ -29,13 +28,7 @@ const initialState = {
         loading: false,
         userInfo: userInfoFromStorage,
         error: null,
-      },
-      tutorList: [],
-      tutorDetails: { tutor: {} },
-      productList: [],
-      productDetails: { product: {} },
-      subjectList: [],
-      subjectDetails: { subject: {} },
+      }
 }
 
 

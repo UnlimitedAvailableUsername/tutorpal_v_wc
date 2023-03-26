@@ -4,14 +4,15 @@ from rest_framework_simplejwt import views as jwt_views
 
 urlpatterns = [
     path('', views.getRoutes, name='routes'),
-    path('user/', views.getUsers, name='users'),
-    path('user/<str:pk>/', views.getUser, name='user'),
+    path('users', views.getUsers, name='users'),
+    path('user/<str:pk>', views.getUser, name='user'),
 
-    path('product/', views.getProducts, name='products'),
-    path('product/add', views.addProduct, name='add_product'),
+    path('products/', views.getProducts, name='products'),
+    path('product/create', views.addProduct, name='add_product'),
     path('product/<str:pk>', views.getProduct, name='product'),
 
-    path('subject/', views.getSubjects, name='subjects'),
+    path('subjects/', views.getSubjects, name='subjects'),
+    path('subject/<str:pk>', views.getSubject, name='subject'),
 
     path('auth/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('auth/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),

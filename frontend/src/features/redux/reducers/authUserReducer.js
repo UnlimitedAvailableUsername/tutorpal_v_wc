@@ -1,8 +1,7 @@
-import * as actionType from '../constants';
+import * as actionType from '../constants/constants';
 
 
-// this is just our initial state. This is almost the same as
-// typing (state = {}, action)
+
 const initialState = {
     token: localStorage.getItem('token'),
     isAuthenticated: null,

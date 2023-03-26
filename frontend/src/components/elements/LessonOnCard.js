@@ -3,32 +3,29 @@ import { Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 
-function Tutor({user}) {
+function Product( {product }) {
   return (
     <Card className="my-3 p-3 rounded">
-    <Link to={`tutor/${user.id}`}>
-      <Card.Img style={{height:256}} src={user.profile_picture} />
+    <Link to={`products/${product._id}`}>
     </Link>
     <Card.Body>
-      <Link to={`tutor/${user.id}`}>
-
-        
+      <Link to={`products/${product._id}`}>
         <Card.Title>
-          <strong>{user.first_name} {user.last_name}</strong>
+          <strong>{product.lesson_name}</strong>
         </Card.Title>
       </Link>
       <Card.Text as="div">
-        <div> 
-
+        <div> Subject: {product.subject_name} <br></br>
+       Tutor:   {product.user}
         </div>
-        <div> Main Subject: {user.subject} <br></br> </div>
       </Card.Text>
       <Card.Text >
-     {user.bio}
+        Schedule: {product.schedule} <br></br>
+        Php: {product.rate_hour}
               </Card.Text>
     </Card.Body>
   </Card>
   )
 }
 
-export default Tutor;
+export default Product;

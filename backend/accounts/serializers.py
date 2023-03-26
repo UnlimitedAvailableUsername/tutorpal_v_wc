@@ -65,6 +65,7 @@ class MyTokenObtainPairSerializer(jwt_serializers.TokenObtainPairSerializer):
         data = super().validate(attrs)
         data['username'] = self.user.username
         data['email'] = self.user.email
+        data['staff'] = self.user.staff
 
         return data
 

@@ -144,10 +144,20 @@ class User(AbstractBaseUser):
         return self.student
 
 class Product(models.Model):
+    # this will serve as the title of the Product
+    title = models.CharField(max_length=255)
+
+    # these bastards are the problematic kids
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+
     subject_name = models.CharField(max_length=255, blank=True, null=True)
     schedule = models.TextField(max_length=300, null=True)
     lesson_name = models.CharField(max_length=300, null=True, blank=True)
     rate_hour = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     _id = models.AutoField(primary_key=True)
+
+    # we'll make use of the title field so we can see it on
+    # Django Admin list with its title.
+    def __str__(self):
+        return self.title

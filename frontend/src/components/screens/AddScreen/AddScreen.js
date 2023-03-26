@@ -4,8 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Container, Form, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { addProduct } from "../../../features/redux/actions/productAction";
-import {listsubjects} from "../../../features/redux/actions/subjectActions";
-
+import { listsubjects } from "../../../features/redux/actions/subjectActions";
 
 function AddScreen() {
   const [subject, setSubject] = useState("");
@@ -13,17 +12,15 @@ function AddScreen() {
   const [schedule, setSchedule] = useState("");
   const [rate, setRate] = useState("");
 
-const subjectList = useSelector(state => state.subjectList)
-const subjects = subjectList?.subjects || [];
+  const subjectList = useSelector((state) => state.subjectList);
+  const subjects = subjectList?.subjects || [];
 
-useEffect(() => {
+  useEffect(() => {
     dispatch(listsubjects());
   }, []);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-
 
   const Post = async () => {
     let formField = new FormData();
@@ -37,7 +34,6 @@ useEffect(() => {
       navigate("/add-lesson");
     });
   };
-
 
   return (
     <div>
@@ -53,27 +49,24 @@ useEffect(() => {
         </Link>
 
         <Form.Group className="mb-3">
-            <Form.Label></Form.Label>
-            <Form.Control
-              as="select"
-              id="subject"
-              name="subject"
-              className="form-control"
-              placeholder="Please Select"
-              value={subject}
-              onChange={(e) => setSubject(e.target.value)}
-            >
-              <option value="">--Pick subject--</option>
-              {subjects.map((item) => (
-                <option key={item._id} value={item._id}>
-                  {item.subject_title}
-                </option>
-              ))}
-            </Form.Control>
-          </Form.Group>
-
-         
-
+          <Form.Label></Form.Label>
+          <Form.Control
+            as="select"
+            id="subject"
+            name="subject"
+            className="form-control"
+            placeholder="Please Select"
+            value={subject}
+            onChange={(e) => setSubject(e.target.value)}
+          >
+            <option value="">--Pick subject--</option>
+            {subjects.map((item) => (
+              <option key={item._id} value={item._id}>
+                {item.subject_title}
+              </option>
+            ))}
+          </Form.Control>
+        </Form.Group>
 
         <Form>
           <Form.Group className="mb-3">

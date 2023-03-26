@@ -41,7 +41,7 @@ def getRoutes(request):
 # @permission_classes([IsAuthenticated])
 # def getProducts(request):
 #     permissions = IsAuthenticated
-#     products = models.Product.objects.all()
+#     products = models.Schedule.objects.all()
 #     serializer = serializers.ProductSerializer(products, many=True)
 #     return Response(serializer.data)
 
@@ -50,14 +50,14 @@ def getRoutes(request):
 
 @api_view(['GET'])
 def getProducts(request):
-    products = models.Product.objects.all()
+    products = models.Schedule.objects.all()
     serializer = serializers.ProductSerializer(products, many=True)
     return Response(serializer.data)
 
 ## For fetching specific product with id, pk
 @api_view(['GET'])
 def getProduct(request, pk):
-    product = models.Product.objects.get(_id=pk)
+    product = models.Schedule.objects.get(_id=pk)
     serializer = serializers.ProductSerializer(product, many=False)
     return Response(serializer.data)
 
@@ -117,17 +117,21 @@ class RegisterAPI(generics.GenericAPIView):
         "token": AuthToken.objects.create(user)[1]
         })
 
-@api_view(["POST"])
+
+@api_view(["POST", "GET"])
 def addProduct(request):
     data = request.data
     print (data)
     try:
-
+        # user1 = request.data.user
+        price_to_be_set = request.data.user.price
         subject2 = models.Subject.objects.get(_id=data['subject'])
-        product = models.Product.objects.create(
+        product = models.Schedule.objects.create(
+        # user = user1,
         lesson_name = data['lesson'],
         schedule = data['schedule'],
         rate_hour = data['rate'],
+        price = data['price_to_be_set'],
         subject = subject2,
         )
         serializer = serializers.ProductSerializer(product, many=False)

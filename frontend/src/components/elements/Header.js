@@ -46,8 +46,17 @@ function Header() {
                                 <NavDropdown.Item href="/" onClick={ handleLogout }>Sign Out</NavDropdown.Item>
                             </NavDropdown>
                         ) : (
-                            <NavDropdown variant="dark" title={`${navAccountTitle} Account`} id="basic-nav-dropdown">                            <NavDropdown.Item as={ Link } to="/login">Sign In</NavDropdown.Item>
+                            <NavDropdown variant="dark" title={"Sign"} id="basic-nav-dropdown">
+                                <NavDropdown.Item as={ Link } to="/login">Sign In</NavDropdown.Item>
                             </NavDropdown>
+                        )}
+                        { userInfo && userInfo.tutor && (
+                            <NavDropdown variant="dark" title={userInfo.username} id="basic-nav-dropdown">
+                                <NavDropdown.Item as={ Link } to="/profile">Users</NavDropdown.Item>
+                                <NavDropdown.Item as={ Link } to="/profile">Tutors</NavDropdown.Item>
+                                <NavDropdown.Item href="/" onClick={ handleLogout }>Sign Out</NavDropdown.Item>
+                            </NavDropdown>
+
                         )}
                     </Nav>
                 </Navbar.Collapse>

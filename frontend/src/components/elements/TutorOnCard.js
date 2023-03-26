@@ -6,7 +6,7 @@ function Tutor({ user }) {
   return (
     <Card className="my-3 p-3 rounded">
       <Link to={`tutor/${user.id}`}>
-        <Card.Img style={{ height: 256 }} src={`http://127.0.0.1:8000${user.profile_picture}`} />
+        <Card.Img style={{ height: 256 }} src={`${user.profile_picture}`} />
       </Link>
       <Card.Body>
         <Link to={`tutor/${user.id}`}>

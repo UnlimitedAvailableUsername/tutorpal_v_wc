@@ -28,15 +28,16 @@ class ProductSerializer(serializers.ModelSerializer):
     # subject_name = serializers.StringRelatedField()
     # Eto yung dati natin nakalagay dito ^^^
     
-    subject_name = serializers.CharField(source='subject.subject_title', read_only=True)
+    # subject_name = serializers.CharField(source='subject.subject_title', read_only=True)
     # palitan natin nito
 
-    subject_title = serializers.CharField(write_only=True, allow_blank=False)
+    # subject_title = serializers.CharField(write_only=True, allow_blank=False)
     # pero add natin ito
 
-    user = serializers.StringRelatedField()
+    # user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    # user = serializers.StringRelatedField()
     class Meta:
-        model = models.Product
+        model = models.Schedule
         fields = '__all__'
 
     """
@@ -66,6 +67,8 @@ class MyTokenObtainPairSerializer(jwt_serializers.TokenObtainPairSerializer):
         data['username'] = self.user.username
         data['email'] = self.user.email
         data['staff'] = self.user.staff
+        data['tutor'] = self.user.tutor
+        data['student'] = self.user.student
 
         return data
 

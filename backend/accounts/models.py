@@ -98,7 +98,7 @@ class User(AbstractBaseUser):
     contact = models.CharField(("contact number"), max_length=50, blank=True)
     
     # have other plan for these:
-    bio = models.TextField(("bio"), max_length=50, blank=True)
+    bio = models.TextField(("bio which also houses the lessons"), max_length=999999, blank=True)
     subject = models.ForeignKey(Subject, on_delete=models.SET_NULL, null=True, blank=True)
     # to be deprecated
     numReviews = models.IntegerField(("reviews"), null=True, blank=True)
@@ -109,6 +109,11 @@ class User(AbstractBaseUser):
     tutor = models.BooleanField(("Tutor"), default=False, help_text=("Categorizes the user as tutor"),)
     date_joined = models.DateTimeField(("date joined"), default=timezone.now)
     last_login = models.DateTimeField(("last login"), blank=True, null=True)
+    
+    is_paid = models.BooleanField(("Has been paid"), default=False)
+    meeting_link = models.TextField(("Zoom Link"), blank=True, null=True)
+    rate_per_hour = models.DecimalField(("Hourly Price Rate"), max_digits=3, decimal_places=0, null=True)
+    price = models.CharField(max_length=255)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
@@ -144,16 +149,12 @@ class User(AbstractBaseUser):
     def is_student(self):
         return self.student
 
-class Product(models.Model):
-    # this will serve as the title of the Product
-    title = models.CharField(max_length=255)
 
-    # these bastards are the problematic kids
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
-    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
 
-    subject_name = models.CharField(max_length=255, blank=True, null=True)
-    schedule = models.TextField(max_length=300, null=True)
-    lesson_name = models.CharField(max_length=300, null=True, blank=True)
-    rate_hour = models.DecimalField(max_digits=5, decimal_places=0, null=True, blank=True)
-    _id = models.AutoField(primary_key=True)
+class Schedule(models.Model):
+     date = models.CharField(("Day to be scheduled"), max_length=50)
+     user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
+     count_in_stock_hour = models.PositiveIntegerField(("How many slots of hours available?"), )
+     price = models.CharField(max_length=255, blank=True, null=True)
+
+#     _id = models.AutoField(primary_key=True)

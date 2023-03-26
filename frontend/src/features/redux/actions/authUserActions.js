@@ -25,7 +25,7 @@ export const loginUser = ( email, password ) => async(dispatch) => {
         dispatch( { type: actionType.USER_LOGIN_SUCCESS, payload: data } );
 
         // we're going to store it on our redux store
-        localStorage.setItem('userInfo', data)
+        localStorage.setItem('userInfo', JSON.stringify(data))
 
     } catch (error) {
         

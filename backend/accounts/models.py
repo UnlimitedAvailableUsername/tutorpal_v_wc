@@ -149,7 +149,7 @@ class Product(models.Model):
     title = models.CharField(max_length=255)
 
     # these bastards are the problematic kids
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
 
     subject_name = models.CharField(max_length=255, blank=True, null=True)

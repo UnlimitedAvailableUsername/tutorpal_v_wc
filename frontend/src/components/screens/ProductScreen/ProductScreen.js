@@ -17,7 +17,7 @@ function ProductScreen() {
 
 
   return (
-    <div class="affix ">
+    <div className="affix ">
   
         <Link to="/lesson-list" className="btn btn-warning btn-outline-dark my-3  ">
             Fuck, Go Back

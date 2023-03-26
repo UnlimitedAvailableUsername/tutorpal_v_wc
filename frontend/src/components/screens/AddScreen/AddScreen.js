@@ -41,7 +41,7 @@ useEffect(() => {
 
   return (
     <div>
-      <div class="text-center" variant="light">
+      <div className="text-center" variant="light">
         <h1>Add Lesson</h1>
       </div>
       <Container>

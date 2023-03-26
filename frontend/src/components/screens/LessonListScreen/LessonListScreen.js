@@ -29,11 +29,11 @@ function LessonListScreen() {
   <div>
 <Container>
     
-      <p style={{ fontSize: 30 }} class="py-5 text-center">
+      <p style={{ fontSize: 30 }} className="py-5 text-center">
         Click on each tutor's profile to learn more about the tutor's
         educational background
       </p>
-      <p style={{ fontSize: 30 }} class="text-center">
+      <p style={{ fontSize: 30 }} className="text-center">
         and experiences.
       </p>
       <br></br>

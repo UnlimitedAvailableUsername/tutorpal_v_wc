@@ -19,7 +19,7 @@ function TutorDetailScreen() {
 
 
   return (
-    <div class="affix ">
+    <div className="affix ">
 
         <Link to="/tutor-list" className="btn btn-warning btn-outline-dark my-3  ">
             Fuck, Go Back

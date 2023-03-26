@@ -32,10 +32,9 @@ function TutorListScreen() {
       <Form><Row>
         <Col>
         <Container>
-            <Form.Control class="shadow" style={{   width:1000, marginLeft:140}}onChange={(e) => setSearch(e.target.value)}
+            <Form.Control className="shadow" style={{   width:1000, marginLeft:140}}onChange={(e) => setSearch(e.target.value)}
               type="search"
               placeholder="Search for Tutors"
-              className="me-1"
               aria-label="Search"
             /> 
             </Container>

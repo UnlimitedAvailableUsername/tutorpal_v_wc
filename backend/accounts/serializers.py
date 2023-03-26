@@ -20,8 +20,8 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    subject_name = serializers.CharField(source='subject.name')
-    user = serializers.StringRelatedField()
+    # subject_name = serializers.CharField(source='subject.name')
+    # user = serializers.StringRelatedField()
     class Meta:
         model = models.Product
         fields = '__all__'

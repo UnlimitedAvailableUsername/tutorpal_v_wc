@@ -37,17 +37,22 @@ def getRoutes(request):
     return Response(routes)
 
 ## For fetching all the products
+# @api_view(['GET'])
+# @permission_classes([IsAuthenticated])
+# def getProducts(request):
+#     permissions = IsAuthenticated
+#     products = models.Product.objects.all()
+#     serializer = serializers.ProductSerializer(products, many=True)
+#     return Response(serializer.data)
+
+# class GetProducts(generics.GenericAPIView):
+#     pass
+
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
 def getProducts(request):
-    permissions = IsAuthenticated
     products = models.Product.objects.all()
     serializer = serializers.ProductSerializer(products, many=True)
     return Response(serializer.data)
-
-class GetProducts(generics.GenericAPIView):
-    pass
-
 
 ## For fetching specific product with id, pk
 @api_view(['GET'])
@@ -69,13 +74,34 @@ def getUsers(request):
 
 
 # For fetching specific user
+# @api_view(['GET'])
+# def getUser(request, pk):
+#     user = User.objects.get(id=pk)
+#     serializer = serializers.UserSerializer(user, many=False)
+#     def get_queryset(self):
+#         return super().get_queryset()
+    
+#     return Response(serializer.data)
+
+
+@api_view(['GET'])
+def getSubjects(request):
+    subjects = models.Subject.objects.all()
+    serializer = serializers.SubjectSerializer(subjects, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def getSubject(request, pk):
+    subject = models.Subject.objects.get(id=pk)
+    serializer = serializers.SubjectSerializer(subject, many=False)
+    return Response(serializer.data)
+
+
+
 @api_view(['GET'])
 def getUser(request, pk):
     user = User.objects.get(id=pk)
     serializer = serializers.UserSerializer(user, many=False)
-    def get_queryset(self):
-        return super().get_queryset()
-    
     return Response(serializer.data)
 
 
@@ -94,29 +120,21 @@ class RegisterAPI(generics.GenericAPIView):
 @api_view(["POST"])
 def addProduct(request):
     data = request.data
-    print (data['subject'])
-   
+    print (data)
     try:
 
-        subjecttest = Subject.objects.get(_id=data['subject'])
-        product = Product.objects.create(
+        subject2 = models.Subject.objects.get(_id=data['subject'])
+        product = models.Product.objects.create(
         lesson_name = data['lesson'],
         schedule = data['schedule'],
         rate_hour = data['rate'],
-        subject = subjecttest,
+        subject = subject2,
         )
-        serializer = ProductSerializer(product, many=False)
+        serializer = serializers.ProductSerializer(product, many=False)
         return Response(serializer.data)
     except:
         message = {'detail': 'Test'}
         return Response(message)
-
-
-@api_view(["GET"])
-def getSubjects(request):
-    subject = models.Subject.objects.all()
-    serializer = serializers.SubjectSerializer(subject, many=True)
-    return Response(serializer.data)
 
 
 class MyTokenObtainPairView(jwt_views.TokenObtainPairView):

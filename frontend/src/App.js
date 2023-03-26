@@ -5,6 +5,10 @@ import HomeScreen from "./components/screens/HomeScreen/HomeScreen";
 import TutorListScreen from "./components/screens/TutorListScreen/TutorListScreen";
 import LoginScreen from "./components/screens/LoginScreen/LoginScreen";
 import ContactScreen from "./components/screens/ContactScreen/ContactScreen";
+import TutorDetailScreen from "./components/screens/TutorDetailScreen/TutorDetailScreen";
+import LessonListScreen from "./components/screens/LessonListScreen/LessonListScreen";
+import ProductScreen from "./components/screens/ProductScreen/ProductScreen";
+import AddScreen from "./components/screens/AddScreen/AddScreen";
 
 function App() {
   return (
@@ -15,7 +19,14 @@ function App() {
       <div className="screen" style={{overflowX: "hidden"}} >
         <Routes>
           <Route path="/" element={ <HomeScreen /> } exact />
+
           <Route path="/tutor-list" element={ <TutorListScreen /> } exact />
+          <Route path="/tutor-list/tutor/:id" element={ <TutorDetailScreen /> } exact />
+
+          <Route path="/lesson-list" element={ <LessonListScreen /> } exact />
+          <Route path="/lesson-list/products/:id" element={ <ProductScreen /> } exact />
+          <Route path="/add-lesson" element={ <AddScreen/> } exact />
+
           <Route path="/login" element={ <LoginScreen /> } exact />
           <Route path="/contact-us" element={ <ContactScreen /> } exact />
         </Routes>

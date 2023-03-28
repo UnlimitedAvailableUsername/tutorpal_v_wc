@@ -10,6 +10,7 @@ urlpatterns = [
     path('users/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
     path('users/register/', views.register, name='register'),
     path('users/login/', views.MyTokenObtainPairView.as_view(), name='my_token_obtain_pair'),
+    path('users/upload/', views.uploadImage, name="upload_image"),
 
     path('products/', views.getProducts, name='products'),
     path('products/create', views.addProduct, name='add_product'),

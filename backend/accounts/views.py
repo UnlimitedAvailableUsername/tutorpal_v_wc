@@ -92,6 +92,15 @@ def register(request):
     })
 
 
+@api_view(['POST'])
+def upload_profile_picture(request):
+    file = request.data.get('profile_picture')
+    if not file:
+        return Response({'error': 'No file uploaded'}, status=status.HTTP_400_BAD_REQUEST)
+    # TODO: Save the file to the user's profile_picture field
+    return Response({'success': 'File uploaded'}, status=status.HTTP_201_CREATED)
+
+
 @api_view(["POST", "GET"])
 def addProduct(request):
     data = request.data

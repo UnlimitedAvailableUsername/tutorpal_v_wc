@@ -96,12 +96,8 @@ class User(AbstractBaseUser):
     last_name = models.CharField(("last name"), max_length=150, blank=True)
     profile_picture = models.ImageField(("User Picture"), null=True, default='profile_pictures/default/tutor.jpg', upload_to=upload_image_path)
     contact = models.CharField(("contact number"), max_length=50, blank=True)
-    
-    # have other plan for these:
     bio = models.TextField(("bio which also houses the lessons"), max_length=999999, blank=True)
     subject = models.ForeignKey(Subject, on_delete=models.SET_NULL, null=True, blank=True)
-    # to be deprecated
-
     active = models.BooleanField(("active"), default=True, help_text=("Designates whether this user should be treated as active. Unselect this instead of deleting accounts."),)
     staff = models.BooleanField(("staff status"), default=False, help_text=("Designates whether the user can log into this admin site."),)
     student = models.BooleanField(("Student"), default=False, help_text=("Categorizes the user as student"),)
@@ -172,11 +168,9 @@ class Review(models.Model):
 class CartSchedule(models.Model):
     user = models.ForeignKey(User,on_delete=models.SET_NULL,null=True)
     paymentMethod = models.CharField(max_length=200,null=True,blank=True)
-    shippingPrice = models.DecimalField(max_digits=12,decimal_places=2,null=True,blank=True)
     totalPrice = models.DecimalField(max_digits=12,decimal_places=2,null=True,blank=True)
     isPaid = models.BooleanField(default=False)
     paidAt = models.DateTimeField(auto_now_add=False,null=True, blank=True)
-    isDeliver = models.BooleanField(default=False)
     createdAt = models.DateTimeField(auto_now_add=True,null=True, blank=True)
     _id =  models.AutoField(primary_key=True,editable=False)
 

@@ -101,7 +101,6 @@ class User(AbstractBaseUser):
     bio = models.TextField(("bio which also houses the lessons"), max_length=999999, blank=True)
     subject = models.ForeignKey(Subject, on_delete=models.SET_NULL, null=True, blank=True)
     # to be deprecated
-    numReviews = models.IntegerField(("reviews"), null=True, blank=True)
 
     active = models.BooleanField(("active"), default=True, help_text=("Designates whether this user should be treated as active. Unselect this instead of deleting accounts."),)
     staff = models.BooleanField(("staff status"), default=False, help_text=("Designates whether the user can log into this admin site."),)
@@ -109,11 +108,9 @@ class User(AbstractBaseUser):
     tutor = models.BooleanField(("Tutor"), default=False, help_text=("Categorizes the user as tutor"),)
     date_joined = models.DateTimeField(("date joined"), default=timezone.now)
     last_login = models.DateTimeField(("last login"), blank=True, null=True)
-    
-    is_paid = models.BooleanField(("Has been paid"), default=False)
+    numReviews = models.IntegerField(("reviews"), null=True, blank=True)
     meeting_link = models.TextField(("Zoom Link"), blank=True, null=True)
-    rate_per_hour = models.DecimalField(("Hourly Price Rate"), max_digits=3, decimal_places=0, null=True)
-    price = models.CharField(max_length=255)
+    price_rate_hour = models.DecimalField(("Hourly Price Rate"), max_digits=3, decimal_places=0, null=True)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
@@ -150,11 +147,51 @@ class User(AbstractBaseUser):
         return self.student
 
 
-
 class Schedule(models.Model):
-     date = models.CharField(("Day to be scheduled"), max_length=50)
-     user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
-     count_in_stock_hour = models.PositiveIntegerField(("How many slots of hours available?"), )
-     price = models.CharField(max_length=255, blank=True, null=True)
+    date = models.CharField(("Day to be scheduled"), max_length=50)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
+    count_in_stock_hour = models.PositiveIntegerField(("How many slots of hours available?"), )
+    price = models.CharField(max_length=255, blank=True, null=True)
+    _id = models.AutoField(primary_key=True)
 
-#     _id = models.AutoField(primary_key=True)
+
+
+class Review(models.Model):
+    product = models.ForeignKey(User,on_delete=models.SET_NULL,null=True)
+    user = models.ForeignKey(User,on_delete=models.SET_NULL,null=True)
+    name = models.CharField(max_length=200,null=True,blank=True)
+    rating =  models.IntegerField(null=True,blank=True,default=0)
+    comment = models.TextField(null=True,blank=True)
+    createdAt = models.DateTimeField(auto_now_add=True)
+    _id =  models.AutoField(primary_key=True,editable=False)
+
+    def __str__(self):
+        return str(self.rating)
+
+
+class CartSchedule(models.Model):
+    user = models.ForeignKey(User,on_delete=models.SET_NULL,null=True)
+    paymentMethod = models.CharField(max_length=200,null=True,blank=True)
+    shippingPrice = models.DecimalField(max_digits=12,decimal_places=2,null=True,blank=True)
+    totalPrice = models.DecimalField(max_digits=12,decimal_places=2,null=True,blank=True)
+    isPaid = models.BooleanField(default=False)
+    paidAt = models.DateTimeField(auto_now_add=False,null=True, blank=True)
+    isDeliver = models.BooleanField(default=False)
+    createdAt = models.DateTimeField(auto_now_add=True,null=True, blank=True)
+    _id =  models.AutoField(primary_key=True,editable=False)
+
+    def __str__(self):
+        return str(self.createdAt)
+
+
+class CartScheduleItem(models.Model):
+    product = models.ForeignKey(Schedule,on_delete=models.SET_NULL,null=True, help_text=("Schedule Date"))
+    order  = models.ForeignKey(CartSchedule,on_delete=models.SET_NULL,null=True, help_text=("From the cart"))
+    name = models.CharField(max_length=200,null=True,blank=True, help_text=("Cart Item Name"))
+    qty = models.IntegerField(null=True,blank=True,default=0, help_text=("Quantity of Hour"))
+    price = models.DecimalField(max_digits=12,decimal_places=2,null=True,blank=True, help_text=("Price from the Product"))
+    image = models.CharField(max_length=200,null=True,blank=True, help_text=("Image URL"))
+    _id =  models.AutoField(primary_key=True,editable=False)
+
+    def __str__(self):
+        return str(self.name)

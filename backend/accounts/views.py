@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth import get_user_model
 from . import models
 from . import serializers
+from rest_framework.response import Response
 
 # for function-based views:
 from rest_framework.decorators import api_view, permission_classes
@@ -9,7 +10,6 @@ from rest_framework.response import Response
 
 ## for class-based views:
 from rest_framework import generics
-from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
 #### knox ####
@@ -36,23 +36,13 @@ def getRoutes(request):
     ]
     return Response(routes)
 
-## For fetching all the products
-# @api_view(['GET'])
-# @permission_classes([IsAuthenticated])
-# def getProducts(request):
-#     permissions = IsAuthenticated
-#     products = models.Schedule.objects.all()
-#     serializer = serializers.ProductSerializer(products, many=True)
-#     return Response(serializer.data)
-
-# class GetProducts(generics.GenericAPIView):
-#     pass
 
 @api_view(['GET'])
 def getProducts(request):
     products = models.Schedule.objects.all()
     serializer = serializers.ProductSerializer(products, many=True)
     return Response(serializer.data)
+
 
 ## For fetching specific product with id, pk
 @api_view(['GET'])
@@ -69,20 +59,6 @@ def getUsers(request):
     serializer = serializers.UserSerializer(user, many=True)
     return Response(serializer.data)
 
-# class GetUsers(generics.ListAPIView):
-#     queryset = User
-
-
-# For fetching specific user
-# @api_view(['GET'])
-# def getUser(request, pk):
-#     user = User.objects.get(id=pk)
-#     serializer = serializers.UserSerializer(user, many=False)
-#     def get_queryset(self):
-#         return super().get_queryset()
-    
-#     return Response(serializer.data)
-
 
 @api_view(['GET'])
 def getSubjects(request):
@@ -90,12 +66,12 @@ def getSubjects(request):
     serializer = serializers.SubjectSerializer(subjects, many=True)
     return Response(serializer.data)
 
+
 @api_view(['GET'])
 def getSubject(request, pk):
     subject = models.Subject.objects.get(id=pk)
     serializer = serializers.SubjectSerializer(subject, many=False)
     return Response(serializer.data)
-
 
 
 @api_view(['GET'])
@@ -105,17 +81,15 @@ def getUser(request, pk):
     return Response(serializer.data)
 
 
-class RegisterAPI(generics.GenericAPIView):
-    serializer_class = serializers.UserSerializer
-
-    def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.save()
-        return Response({
-        "user": serializers.UserSerializer(user, context=self.get_serializer_context()).data,
+@api_view(['POST'])
+def register(request):
+    serializer = serializers.UserSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    user = serializer.save()
+    return Response({
+        "user": serializers.UserSerializer(user, context=serializer.context).data,
         "token": AuthToken.objects.create(user)[1]
-        })
+    })
 
 
 @api_view(["POST", "GET"])

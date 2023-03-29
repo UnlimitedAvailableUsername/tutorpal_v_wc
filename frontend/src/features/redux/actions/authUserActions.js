@@ -17,7 +17,7 @@ export const loginUser = ( email, password ) => async(dispatch) => {
 
         // we're gonna post the data we input to this url,
         // with our configuration
-        const { data } = await axios.post('http://127.0.0.1:8000/api/accounts/auth/login/', body, config);
+        const { data } = await axios.post('http://127.0.0.1:8000/api/accounts/users/login/', body, config);
 
         // after we post our input, we'll get the 
         // 'data' from what we have post and then

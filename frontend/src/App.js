@@ -9,6 +9,7 @@ import TutorDetailScreen from "./components/screens/TutorDetailScreen/TutorDetai
 import LessonListScreen from "./components/screens/LessonListScreen/LessonListScreen";
 import ProductScreen from "./components/screens/ProductScreen/ProductScreen";
 import AddScreen from "./components/screens/AddScreen/AddScreen";
+import OrderScreen from "./components/screens/OrderScreen/OrderScreen";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
 
           <Route path="/login" element={ <LoginScreen /> } exact />
           <Route path="/contact-us" element={ <ContactScreen /> } exact />
+          <Route path='/order/:id' element={<OrderScreen/>} />
         </Routes>
       </div>
 

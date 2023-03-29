@@ -18,11 +18,11 @@ urlpatterns = [
     path('subjects/', views.getSubjects, name='subjects'),
     path('subjects/<str:pk>', views.getSubject, name='subject'),
 
-    path('api/orders/', views.getOrders, name="allorders"),
-    path('api/orders/add/', views.addOrderItems, name="orders-add"),
-    path('api/orders/myorders/', views.getMyOrders, name="myorders"),
+    path('orders/', views.getOrders, name="allorders"),
+    path('orders/add/', views.addOrderItems, name="orders-add"),
+    path('orders/myorders/', views.getMyOrders, name="myorders"),
 
-    path('api/orders/<str:pk>/', views.getOrderById, name="user-order"),
-    path('api/orders/<str:pk>/pay/', views.updateOrderToPaid, name="pay"),
+    path('orders/<str:pk>/', views.getOrderById, name="user-order"),
+    path('orders/<str:pk>/pay/', views.updateOrderToPaid, name="pay"),
 
 ]

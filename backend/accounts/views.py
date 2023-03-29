@@ -48,7 +48,7 @@ def getProducts(request):
 @api_view(['GET'])
 def getProduct(request, pk):
     product = models.Schedule.objects.get(_id=pk)
-    serializer = serializers.ProductSerializer(product, many=False)
+    serializer = serializers.ScheduleSerializer(product, many=False)
     return Response(serializer.data)
 
 
@@ -101,6 +101,14 @@ def upload_profile_picture(request):
     return Response({'success': 'File uploaded'}, status=status.HTTP_201_CREATED)
 
 
+@api_view(['POST'])
+def user_token_obtain_pair_view(request):
+    serializer = serializers.UserSerializerWithToken(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    data = serializer.validated_data
+    return Response(data)
+
+
 @api_view(["POST", "GET"])
 def addProduct(request):
     data = request.data
@@ -124,22 +132,91 @@ def addProduct(request):
         return Response(message)
 
 
-@api_view(['POST'])
-def my_token_obtain_pair_view(request):
-    serializer = UserSerializerWithToken(data=request.data)
-    serializer.is_valid(raise_exception=True)
-    data = serializer.validated_data
-    return Response({
-        'access_token': data['access'],
-        'refresh_token': data['refresh'],
-    })
 
 
 @api_view(['POST'])
-def uploadImage(request):
+@permission_classes([IsAuthenticated])
+def addOrderItems(request):
+    user = request.user
     data = request.data
-    product_id = data['product_id']
-    product = Schedule.objects.get(_id=product_id)
-    product.image = request.FILES.get('image')
-    product.save()
-    return Response("Image was uploaded")
+    print(data)
+    orderItems = data['orderItems']
+
+    if orderItems and len(orderItems) == 0:
+        return Response({'detail': 'No Order Items', "status": status.HTTP_400_BAD_REQUEST})
+    else:
+        # (1) Create Order
+        order = Order.objects.create(
+            user=user,
+            paymentMethod=data['paymentMethod'],
+            taxPrice=data['taxPrice'],
+            shippingPrice=data['shippingPrice'],
+            totalPrice=data['totalPrice'],
+        )
+
+        # (3) Create order items
+
+        for i in orderItems:
+            product = Schedule.objects.get(_id=i['product'])
+
+            item = OrderItem.objects.create(
+                product=product,
+                order=order,
+                name=product.name,
+                qty=i['qty'],
+                price=i['price'],
+                image=product.image.url,
+            )
+
+            # (4) Update Stock
+
+            product.countInStock -= item.qty
+            product.save()
+
+        serializer = CartScheduleSerializer(order, many=False)
+        return Response(serializer.data)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getMyOrders(request):
+    user = request.user
+    orders = user.order_set.all()
+    serializer = CartScheduleSerializer(orders, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+@permission_classes([IsAdminUser])
+def getOrders(request):
+    orders = CartSchedule.objects.all()
+    serializer = CartScheduleSerializer(orders, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getOrderById(request, pk):
+
+    user = request.user
+
+    try:
+        order = CartSchedule.objects.get(_id=pk)
+        if user.is_staff or order.user == user:
+            serializer = CartScheduleSerializer(order, many=False)
+            return Response(serializer.data)
+        else:
+            Response({'detail': 'Not Authorized  to view this order'},
+                     status=status.HTTP_400_BAD_REQUEST)
+    except:
+        return Response({'detail': 'Order does not exist'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def updateOrderToPaid(request, pk):
+    order = CartSchedule.objects.get(_id=pk)
+    order.isPaid = True
+    order.paidAt = datetime.now()
+    order.save()
+    return Response('Order was paid')

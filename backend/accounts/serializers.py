@@ -19,7 +19,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = '__all__'
 
-    def get_isAdmin(self,obj):
+    def get_isAdmin(self, obj):
         return obj.is_staff
 
 
@@ -35,7 +35,7 @@ class ScheduleSerializer(serializers.ModelSerializer):
         model = Schedule
         fields = '__all__'
 
-    def get_reviews(self,obj):
+    def get_reviews(self, obj):
         reviews = obj.review_set.all()
         serializer = ReviewSerializer(reviews,many=True)
         return serializer.data
@@ -51,5 +51,30 @@ class UserSerializerWithToken(jwt_serializers.TokenObtainPairSerializer):
         data['student'] = self.user.student
 
         return data
+
+
+
+class CartScheduleItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CartScheduleItem
+        fields = '__all__'
+
+class CartScheduleSerializer(serializers.ModelSerializer):
+    orderItems = serializers.SerializerMethodField(read_only=True)
+    User = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = Order
+        fields = '__all__'
+
+    def get_orderItems(self, obj):
+        items = obj.orderitem_set.all()
+        serializer = CartScheduleItemSerializer(items,many=True)
+        return serializer.data
+
+    def get_User(self, obj):
+        items = obj.user
+        serializer = UserSerializer(items,many=False)
+        return serializer.data
 
 

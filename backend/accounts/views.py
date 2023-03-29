@@ -1,8 +1,10 @@
 from django.shortcuts import render
 from django.contrib.auth import get_user_model
-from . import models
-from . import serializers
+from accounts.models import *
+from accounts.serializers import *
 from rest_framework.response import Response
+from rest_framework import status
+from datetime import datetime
 
 # for function-based views:
 from rest_framework.decorators import api_view, permission_classes
@@ -146,7 +148,7 @@ def addOrderItems(request):
         return Response({'detail': 'No Order Items', "status": status.HTTP_400_BAD_REQUEST})
     else:
         # (1) Create Order
-        order = Order.objects.create(
+        order = CartSchedule.objects.create(
             user=user,
             paymentMethod=data['paymentMethod'],
             taxPrice=data['taxPrice'],
@@ -159,7 +161,7 @@ def addOrderItems(request):
         for i in orderItems:
             product = Schedule.objects.get(_id=i['product'])
 
-            item = OrderItem.objects.create(
+            item = CartScheduleItem.objects.create(
                 product=product,
                 order=order,
                 name=product.name,
@@ -187,7 +189,7 @@ def getMyOrders(request):
 
 
 @api_view(['GET'])
-@permission_classes([IsAdminUser])
+# @permission_classes([IsAdminUser])
 def getOrders(request):
     orders = CartSchedule.objects.all()
     serializer = CartScheduleSerializer(orders, many=True)

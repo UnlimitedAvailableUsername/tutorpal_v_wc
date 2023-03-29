@@ -125,21 +125,9 @@ def addProduct(request):
 
 
 @api_view(['POST'])
-def my_token_obtain_pair_view(request):
+def user_token_obtain_pair_view(request):
     serializer = serializers.UserSerializerWithToken(data=request.data)
     serializer.is_valid(raise_exception=True)
     data = serializer.validated_data
-    return Response({
-        'access_token': data['access'],
-        'refresh_token': data['refresh'],
-    })
+    return Response(data)
 
-
-@api_view(['POST'])
-def uploadImage(request):
-    data = request.data
-    product_id = data['product_id']
-    product = Schedule.objects.get(_id=product_id)
-    product.image = request.FILES.get('image')
-    product.save()
-    return Response("Image was uploaded")

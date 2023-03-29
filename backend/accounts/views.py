@@ -126,7 +126,7 @@ def addProduct(request):
 
 @api_view(['POST'])
 def my_token_obtain_pair_view(request):
-    serializer = UserSerializerWithToken(data=request.data)
+    serializer = serializers.UserSerializerWithToken(data=request.data)
     serializer.is_valid(raise_exception=True)
     data = serializer.validated_data
     return Response({

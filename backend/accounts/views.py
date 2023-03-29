@@ -48,7 +48,7 @@ def getProducts(request):
 @api_view(['GET'])
 def getProduct(request, pk):
     product = models.Schedule.objects.get(_id=pk)
-    serializer = serializers.ProductSerializer(product, many=False)
+    serializer = serializers.ScheduleSerializer(product, many=False)
     return Response(serializer.data)
 
 

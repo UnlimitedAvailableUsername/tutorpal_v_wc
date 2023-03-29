@@ -64,7 +64,7 @@ class CartScheduleSerializer(serializers.ModelSerializer):
     User = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
-        model = Order
+        model = CartSchedule
         fields = '__all__'
 
     def get_orderItems(self, obj):

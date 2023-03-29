@@ -7,7 +7,7 @@ User = get_user_model()
 
 class SubjectSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.Subject
+        model = Subject
         fields = '__all__'
 
 

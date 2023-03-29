@@ -151,10 +151,9 @@ class Schedule(models.Model):
     _id = models.AutoField(primary_key=True)
 
 
-
 class Review(models.Model):
-    product = models.ForeignKey(User,on_delete=models.SET_NULL,null=True)
-    user = models.ForeignKey(User,on_delete=models.SET_NULL,null=True)
+    product = models.ForeignKey(User,on_delete=models.SET_NULL,null=True, related_name='reviews_received')
+    user = models.ForeignKey(User,on_delete=models.SET_NULL,null=True, related_name='reviews_made')
     name = models.CharField(max_length=200,null=True,blank=True)
     rating =  models.IntegerField(null=True,blank=True,default=0)
     comment = models.TextField(null=True,blank=True)

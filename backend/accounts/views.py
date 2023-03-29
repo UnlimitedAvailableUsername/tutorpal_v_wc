@@ -40,7 +40,7 @@ def getRoutes(request):
 @api_view(['GET'])
 def getProducts(request):
     products = models.Schedule.objects.all()
-    serializer = serializers.ProductSerializer(products, many=True)
+    serializer = serializers.ScheduleSerializer(products, many=True)
     return Response(serializer.data)
 
 
@@ -124,5 +124,22 @@ def addProduct(request):
         return Response(message)
 
 
-class MyTokenObtainPairView(jwt_views.TokenObtainPairView):
-    serializer_class = serializers.MyTokenObtainPairSerializer
+@api_view(['POST'])
+def my_token_obtain_pair_view(request):
+    serializer = UserSerializerWithToken(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    data = serializer.validated_data
+    return Response({
+        'access_token': data['access'],
+        'refresh_token': data['refresh'],
+    })
+
+
+@api_view(['POST'])
+def uploadImage(request):
+    data = request.data
+    product_id = data['product_id']
+    product = Schedule.objects.get(_id=product_id)
+    product.image = request.FILES.get('image')
+    product.save()
+    return Response("Image was uploaded")

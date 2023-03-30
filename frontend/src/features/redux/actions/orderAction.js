@@ -31,7 +31,7 @@ export const getOrderDetails = (id) => async (dispatch, getState) => {
         }
 
         const { data } = await axios.get(
-            `/api/cartschedules/${id}/`,
+            `/api/orders/${id}/`,
             config
         )
 
@@ -71,7 +71,7 @@ export const payOrder = (id, paymentResult) => async (dispatch, getState) => {
         }
 
         const { data } = await axios.put(
-            `/api/cartschedules/${id}/pay/`,
+            `/api/orders/${id}/pay/`,
             paymentResult,
             config
         )

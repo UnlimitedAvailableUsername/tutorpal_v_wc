@@ -5,6 +5,14 @@ import { userLoginReducer } from "./reducers/authUserReducer";
 import {tutorListReducer, tutorDetailsReducer } from "./reducers/tutorReducer";
 import {productListReducer, productDetailsReducer } from './reducers/productReducer';
 import { subjectDetailReducer, subjectsListReducer } from "./reducers/subjectReducer";
+import {
+    orderCreateReducer,
+    orderDetailsReducer,
+    orderPayReducer,
+    orderListMyReducer,
+    orderListReducer,
+    orderDeliverReducer,
+} from '../redux/reducers/orderReducers'
 
 const reducers = combineReducers({
     userState: userLoginReducer,
@@ -14,6 +22,8 @@ const reducers = combineReducers({
     productDetails: productDetailsReducer,
     subjectList: subjectsListReducer,
     subjectDetails: subjectDetailReducer,
+    orderDetails: orderDetailsReducer,
+    orderPay: orderPayReducer,
     
 });
 

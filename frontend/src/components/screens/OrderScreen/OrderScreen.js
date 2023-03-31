@@ -220,7 +220,7 @@ function OrderScreen() {
 
               {!order.isPaid && (
                 <ListGroup.Item>
-                  {loadingPay && <Loader />}
+                  {/* {loadingPay && <Loader />}
                   {!sdkReady ? (
                     <Loader />
                   ) : (
@@ -228,7 +228,7 @@ function OrderScreen() {
                     //   amount={order.totalPrice}
                     //   onSuccess={successPaymentHandler}
                     // />
-                  )}
+                  )} */}
                 </ListGroup.Item>
               )}
             </ListGroup>

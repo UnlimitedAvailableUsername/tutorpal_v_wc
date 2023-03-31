@@ -11,7 +11,7 @@ import ProductScreen from "./components/screens/ProductScreen/ProductScreen";
 import AddScreen from "./components/screens/AddScreen/AddScreen";
 import OrderScreen from "./components/screens/OrderScreen/OrderScreen";
 import ProfileScreen from "./components/screens/ProfileScreen/ProfileScreen";
-
+import SuccessScreen from "./components/screens/SuccessScreen/Success";
 function App() {
   return (
     <div className="bg-dark">
@@ -34,6 +34,7 @@ function App() {
           <Route path="/profile" element={ <ProfileScreen /> } exact />
 
           <Route path="/contact-us" element={ <ContactScreen /> } exact />
+          <Route path="/contact-success" element={ <SuccessScreen/> } exact />
           {/* <Route path='/order/:id' element={<OrderScreen/>} /> */}
         </Routes>
       </div>

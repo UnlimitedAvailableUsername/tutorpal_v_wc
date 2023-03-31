@@ -247,3 +247,29 @@ def updateOrderToPaid(request, pk):
     order.paidAt = datetime.now()
     order.save()
     return Response('Order was paid')
+
+@permission_classes([IsAuthenticated])
+@api_view(["POST", "GET"])
+def addContact(request):
+    data = request.data
+    print (data)
+    try:
+        user = request.user
+        print(user)
+        contact = Contact.objects.create(
+        email = user,
+        # name = data.get('email'),
+        concern = data['concern'],
+        comment = data['comment'],
+        )
+        serializer = ContactSerializer(contact, many=False)
+        return Response(serializer.data)
+    except:
+        message = {'detail': 'Test'}
+        return Response(message)
+    
+@api_view(['GET'])
+def getContacts(request):
+    contacts = Contact.objects.all()
+    serializer = ContactSerializer(contacts, many=True)
+    return Response(serializer.data)

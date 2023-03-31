@@ -5,11 +5,15 @@ import { listTutors } from "../../../features/redux/actions/tutorActions";
 import { Row, Col, Container } from "react-bootstrap";
 import Tutor from "../../elements/TutorOnCard";
 import "../../../assets/components/screens/TutorListScreen/tutorlist.css";
+import Header from "../../elements/Header";
 
 function TutorListScreen() {
   const [search, setSearch] = useState("");
 
   const dispatch = useDispatch();
+
+  const loginUser = useSelector( (state) => state.userState);
+  const { userInfo } = loginUser;
 
   const tutorList = useSelector((state) => state.tutorList);
   const { users } = tutorList;
@@ -19,6 +23,12 @@ function TutorListScreen() {
   }, [dispatch]);
   return (
     <div>
+
+                { userInfo && userInfo.tutor && (
+                           <Header/>
+                        )}
+      
+      <div>
       <div className="tutor-bg"></div>
       <div className="tutor-bg-text-overlay text-center">
         <h1 className="text-uppercase tutor-text-h1">our tutors</h1>
@@ -32,6 +42,9 @@ function TutorListScreen() {
           <Row>
             <Col>
               <Container>
+                <br></br>
+                <br></br>
+                <br></br>
                 <Form.Control
                   className="shadow"
                   style={{ width: 1000, marginLeft: 140 }}
@@ -40,6 +53,8 @@ function TutorListScreen() {
                   placeholder="Search for Tutors"
                   aria-label="Search"
                 />
+                 <br></br>
+                <br></br>
               </Container>
             </Col>
           </Row>
@@ -56,12 +71,13 @@ function TutorListScreen() {
                     user.subject.toLowerCase().includes(search);
             })
             .map((user) => (
-              <Col key={user.id} sm={12} md={6} lg={4} xl={3}>
+              <Col key={user.id} sm={12} md={6} lg={4} xl={12}>
                 <Tutor user={user} />
               </Col>
             ))}
         </Row>
       </Container>
+      </div>
     </div>
   );
 }

@@ -40,7 +40,7 @@ export const listTutorDetails = (id) => async (dispatch) => {
             type: TUTOR_DETAILS_REQUEST,
         });
 
-        const {data} = await axios.get(`http://127.0.0.1:8000/api/accounts/user/${id}`); //fetch the products from rest api
+        const {data} = await axios.get(`http://127.0.0.1:8000/api/accounts/users/${id}`); //fetch the products from rest api
 
         dispatch({
             type: TUTOR_DETAILS_SUCCESS,

@@ -21,23 +21,23 @@ function TutorDetailScreen() {
   return (
     <div className="affix ">
 
-        <Link to="/tutor-list" className="btn btn-warning btn-outline-dark my-3  ">
-            Fuck, Go Back
-        </Link>
  
         <Container>
+        <Link to="/tutor-list" className="btn btn-warning btn-outline-dark my-3  ">
+            Go Back
+        </Link>
             <Row>
                 
                 <Col  md={{ span: 3, offset: 1 }} style={{position: "relative"}}>
                 <Image src={user.profile_picture} alt={user.first_name} fluid />
                 
                     <ListGroup variant="flush">
-                        <ListGroup.Item>
+                        <ListGroup.Item style={{backgroundColor:"#404040"}}>
                             <h3>{user.first_name} {user.last_name}</h3>
                         </ListGroup.Item>
 
                        
-                        <ListGroup.Item>
+                        <ListGroup.Item style={{backgroundColor:"#404040"}}>
                             <Row>
                                 <Col>
                                     Cotact:
@@ -50,15 +50,21 @@ function TutorDetailScreen() {
                     
                    
         
-                        <ListGroup.Item>
+                        <ListGroup.Item style={{backgroundColor:"#404040"}}>
                             <Row>
-                                <Col>Reviews:</Col>
+                                <Col>Reviews: </Col>
+                                
                             <Col>
-                         
+                            <strong>{user.numReviews}</strong>
                             </Col>
                             </Row>
                         </ListGroup.Item>
                         
+                        <ListGroup.Item style={{backgroundColor:"#404040"}}>
+                    <Row>
+                            <Button style={{height:50, width:250, margin:20}} className="btn-block btn-warning btn-outline-dark mr-2" disabled={user.countInStock === 0} type="btn"><strong>Enroll Now</strong></Button>
+                        </Row>
+                    </ListGroup.Item>
                        
                        
                     </ListGroup>
@@ -71,7 +77,7 @@ function TutorDetailScreen() {
                     
                     <ListGroup variant="flush">
                         
-                    <ListGroup.Item>
+                    <ListGroup.Item style={{backgroundColor:"#404040"}}>
                         <Row>
                             <Col md={{ span: 2 }}> Bio</Col>
                             <Col>
@@ -80,7 +86,7 @@ function TutorDetailScreen() {
                         </Row>
                         </ListGroup.Item>
 
-                        <ListGroup.Item>
+                        <ListGroup.Item style={{backgroundColor:"#404040"}}>
                         <Row>
                             <Col md={{ span: 2 }}> Eduation</Col>
                             <Col>
@@ -89,7 +95,7 @@ function TutorDetailScreen() {
                         </Row>
                         </ListGroup.Item>
 
-                        <ListGroup.Item>
+                        <ListGroup.Item style={{backgroundColor:"#404040"}}>
                         <Row>
                             <Col md={{ span: 2 }}> Policies</Col>
                             <Col>
@@ -98,7 +104,7 @@ function TutorDetailScreen() {
                         </Row>
                         </ListGroup.Item>
 
-                        <ListGroup.Item>
+                        <ListGroup.Item style={{backgroundColor:"#404040"}}>
                         <Row>
                             <Col md={{ span: 2 }}> Schedule</Col>
                             <Col>

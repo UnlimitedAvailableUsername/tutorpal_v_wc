@@ -43,8 +43,8 @@ function OrderScreen() {
   const orderPay = useSelector((state) => state.orderPay);
   const { loading: loadingPay, success: successPay } = orderPay;
 
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
+  const userState = useSelector((state) => state.userState);
+  const { userInfo } = userState;
 
   // ITEMS PRICE GETS CALCULATED ONLY IF WE HAVE AN ORDER
   if (!loading && !error) {

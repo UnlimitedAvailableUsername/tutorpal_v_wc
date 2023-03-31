@@ -43,12 +43,12 @@ function OrderScreen() {
   const orderPay = useSelector((state) => state.orderPay);
   const { loading: loadingPay, success: successPay } = orderPay;
 
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
+  const userState = useSelector((state) => state.userState);
+  const { userInfo } = userState;
 
   // ITEMS PRICE GETS CALCULATED ONLY IF WE HAVE AN ORDER
   if (!loading && !error) {
-    CartSchedule.CartScheduleItemsPrice = CardSchedule.CartScheduleItems
+    order.itemsPrice = order.orderItems
       .reduce((acc, item) => acc + item.price * item.qty, 0)
       .toFixed(2);
   }
@@ -76,13 +76,13 @@ function OrderScreen() {
     if (
       !order ||
       successPay ||
-      CartSchedule._id !== Number(orderId)
+      order._id !== Number(orderId)
     ) {
       dispatch({ type: ORDER_PAY_RESET });
 
 
       dispatch(getOrderDetails(orderId));
-    } else if (!CartSchedule.isPaid) {
+    } else if (!order.isPaid) {
       // ACTIVATING PAYPAL SCRIPTS
       if (!window.paypal) {
         addPayPalScript();
@@ -114,7 +114,7 @@ function OrderScreen() {
       </Link></div>
   
       <div>
-      <h1>Order: {CartSchedule._id}</h1>
+      <h1>Order: {order._id}</h1>
       <Row>
         <Col md={8}>
           <ListGroup variant="flush">
@@ -122,12 +122,12 @@ function OrderScreen() {
               <h2>Shipping</h2>
 
               <p>
-                <strong>Name: {CartSchedule.User.name}</strong>
+                <strong>Name: {order.User.name}</strong>
               </p>
 
               <p>
                 <strong>Email: </strong>
-                <a href={`mailto:${CartSchedule.User.email}`}>{CartSchedule.User.email}</a>
+                <a href={`mailto:${order.User.email}`}>{order.User.email}</a>
               </p>
             </ListGroup.Item>
 
@@ -136,19 +136,19 @@ function OrderScreen() {
 
               <p>
                 <strong>Payment Method: </strong>
-                {CartSchedule.paymentMethod}
+                {order.paymentMethod}
               </p>
 
-              {CartSchedule.isPaid ? (
+              {order.isPaid ? (
                 <Message variant="success">
-                  Paid on {CartSchedule.paidAt ? CartSchedule.paidAt.substring(0, 10) : null}
+                  Paid on {order.paidAt ? order.paidAt.substring(0, 10) : null}
                   <br></br>
                     <br></br>
                     <h6>HERE IS THE ZOOM LINK! </h6>
                     <br></br>
                     <br></br>
                     <br></br>
-                <h5>{CartSchedule.meeting_link}</h5>
+                <h5>{order.meeting_link}</h5>
                 </Message>
               ) : (
                 <Message variant="warning">Not Paid</Message>
@@ -160,11 +160,11 @@ function OrderScreen() {
             <ListGroup.Item>
               <h2>Order Items</h2>
 
-              {CartSchedule.CartScheduleItems.length === 0 ? (
+              {order.orderItems.length === 0 ? (
                 <Message variant="info">Order is empty</Message>
               ) : (
                 <ListGroup variant="flush">
-                  {CartSchedule.CartScheduleItems.map((item, index) => (
+                  {order.orderItems.map((item, index) => (
                     <ListGroup.Item key={index}>
                       <Row>
                         <Col md={1}>
@@ -177,7 +177,7 @@ function OrderScreen() {
                         </Col>
 
                         <Col>
-                          <Link to={`/schedule${item.product}`}>
+                          <Link to={`/schedules/${item.product}`}>
                             {item.name}
                           </Link>
                         </Col>
@@ -206,7 +206,7 @@ function OrderScreen() {
                 <Row>
                   <Col>Number of Hours:</Col>
 
-                  <Col>{CartSchedule.qty}</Col>
+                  <Col>{order.qty}</Col>
                 </Row>
               </ListGroup.Item>
 
@@ -214,18 +214,18 @@ function OrderScreen() {
                 <Row>
                   <Col>Total:</Col>
 
-                  <Col>₱{CartSchedule.totalPrice}</Col>
+                  <Col>₱{order.totalPrice}</Col>
                 </Row>
               </ListGroup.Item>
 
-              {!CartSchedule.isPaid && (
+              {!order.isPaid && (
                 <ListGroup.Item>
                   {loadingPay && <Loader />}
                   {!sdkReady ? (
                     <Loader />
                   ) : (
                     <PayPalButton
-                      amount={CartSchedule.totalPrice}
+                      amount={order.totalPrice}
                       onSuccess={successPaymentHandler}
                     />
                   )}

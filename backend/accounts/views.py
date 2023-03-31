@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from datetime import datetime
 
+
 # for function-based views:
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
@@ -59,6 +60,7 @@ def getProduct(request, pk):
 def getUsers(request):
     user = User.objects.all()
     serializer = UserSerializer(user, many=True)
+    serializer = UserSerializer(user, many=True)
     return Response(serializer.data)
 
 
@@ -104,7 +106,7 @@ def uploadProfilePicture(request):
 
 
 @api_view(['POST'])
-def userTokenObtainPairView(request):
+def user_token_obtain_pair_view(request):
     serializer = UserSerializerWithToken(data=request.data)
     serializer.is_valid(raise_exception=True)
     data = serializer.validated_data

@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Button, Form, Table } from "react-bootstrap";
+import { Row, Col, Button, Form, Table, Container } from "react-bootstrap";
 import Message from "../../elements/MessageAlert"
 import Loader from "../../elements/LoadingIcon";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserDetails, updateUserProfile } from "../actions/userActions";
-import { listMyOrders } from "../actions/orderActions";
-import { USER_UPDATE_PROFILE_RESET } from "../constants/userConstants";
+import { getUserDetails, updateUserProfile } from "../../../features/redux/actions/authUserActions";
+
+import { USER_UPDATE_PROFILE_RESET } from "../../../features/redux/constants/constants";
 import axios from "axios";
+import { useNavigate } from "react-router";
 
 function ProfileScreen({ history }) {
 
@@ -21,18 +22,19 @@ function ProfileScreen({ history }) {
   const [uploading, setUploading] = useState(false);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const userDetails = useSelector((state) => state.userDetails);
   const { user, loading, error } = userDetails;
 
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
+  const loginUser = useSelector( (state) => state.userState);
+  const { userInfo } = loginUser;
 
   const userUpdateProfle = useSelector((state) => state.userUpdateProfle);
   const { success } = userUpdateProfle;
 
-  const orderListMy = useSelector((state) => state.orderListMy);
-  const { loading: loadingOrders, error: errorOrders, orders } = orderListMy;
+  // const orderListMy = useSelector((state) => state.orderListMy);
+  // const { loading: loadingOrders, error: errorOrders, orders } = orderListMy;
 
   useEffect(() => {
     if (!userInfo) {
@@ -43,7 +45,7 @@ function ProfileScreen({ history }) {
 
         dispatch(getUserDetails("profile"));
 
-        dispatch(listMyOrders());
+        // dispatch(listMyOrders());
       } else {
         setUsername(user.username);
         setFirstName(user.first_name);
@@ -102,6 +104,7 @@ function ProfileScreen({ history }) {
 
 
   return (
+    <Container>
     <Row>
       <Col md={3}>
         <h2>User Profile</h2>
@@ -137,10 +140,10 @@ function ProfileScreen({ history }) {
             <Form.Label>First Name</Form.Label>
             <Form.Control
               required
-              type="first_name"
-              placeholder="First Name"
+              type="name"
+              placeholder="first_name"
               value={first_name}
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={(e) => setFirstName(e.target.value)}
             />
           </Form.Group>
 
@@ -148,10 +151,10 @@ function ProfileScreen({ history }) {
             <Form.Label>Last Name</Form.Label>
             <Form.Control
               required
-              type="last_name"
+              type="name"
               placeholder="Last Name"
-              value={first_name}
-              onChange={(e) => setUsername(e.target.value)}
+              value={last_name}
+              onChange={(e) => setLastName(e.target.value)}
             />
           </Form.Group>
 
@@ -192,7 +195,7 @@ function ProfileScreen({ history }) {
         </Form>
       </Col>
 
-      <Col md={9}>
+      {/* <Col md={9}>
         <h2>Tutoring History</h2>
         {loadingOrders ? (
           <Loader />
@@ -237,8 +240,9 @@ function ProfileScreen({ history }) {
             </tbody>
           </Table>
         )}
-      </Col>
+      </Col> */}
     </Row>
+    </Container>
   );
 }
 

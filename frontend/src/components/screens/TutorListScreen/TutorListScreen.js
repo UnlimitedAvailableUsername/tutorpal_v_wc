@@ -24,10 +24,7 @@ function TutorListScreen() {
   return (
     <div>
 
-                { userInfo && userInfo.tutor && (
-                           <Header/>
-                        )}
-      
+              
       <div>
       <div className="tutor-bg"></div>
       <div className="tutor-bg-text-overlay text-center">

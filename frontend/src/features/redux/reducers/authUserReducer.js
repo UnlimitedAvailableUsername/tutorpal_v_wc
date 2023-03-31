@@ -1,18 +1,5 @@
 import * as actionType from '../constants/constants';
-
-import {
-    
-    USER_LOGIN_SUCCESS,
-    
-    USER_DETAILS_REQUEST,
-    USER_DETAILS_SUCCESS,
-    USER_DETAILS_FAIL,
-    USER_DETAILS_RESET,
-    USER_UPDATE_PROFILE_REQUEST,
-    USER_UPDATE_PROFILE_SUCCESS,
-    USER_UPDATE_PROFILE_FAIL,
-    USER_UPDATE_PROFILE_RESET} from "../constants/constants"
-
+// Pls wag nyo na galawin ito if di niyo gets
 
 
 const initialState = {

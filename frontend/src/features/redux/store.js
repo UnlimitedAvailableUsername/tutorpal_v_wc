@@ -1,13 +1,15 @@
 import { applyMiddleware, combineReducers, createStore } from "redux";
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { userLoginReducer } from "./reducers/authUserReducer";
-import {tutorListReducer, tutorDetailsReducer } from "./reducers/tutorReducer";
-import {productListReducer, productDetailsReducer } from './reducers/productReducer';
+import { userLoginReducer, userDetailsReducer, userUpdateProfileReducer } from "./reducers/authUserReducer";
+import { tutorListReducer, tutorDetailsReducer } from "./reducers/tutorReducer";
+import { productListReducer, productDetailsReducer } from './reducers/productReducer';
 import { subjectDetailReducer, subjectsListReducer } from "./reducers/subjectReducer";
 
 const reducers = combineReducers({
     userState: userLoginReducer,
+    userDetails: userDetailsReducer,
+    userUpdateProfle: userUpdateProfileReducer,
     tutorList: tutorListReducer,
     tutorDetails: tutorDetailsReducer,
     productList: productListReducer,
@@ -21,13 +23,9 @@ const userInfoFromStorage = localStorage.getItem('userInfo')
 ? JSON.parse(localStorage.getItem('userInfo'))
 : null
 
-const initialState = { 
+const initialState = {
     userState: {
-        token: localStorage.getItem('token'),
-        isAuthenticated: null,
-        loading: false,
         userInfo: userInfoFromStorage,
-        error: null,
       }
 }
 

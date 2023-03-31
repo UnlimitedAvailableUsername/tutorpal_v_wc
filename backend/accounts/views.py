@@ -42,7 +42,7 @@ def getRoutes(request):
 @api_view(['GET'])
 def getProducts(request):
     products = models.Schedule.objects.all()
-    serializer = serializers.ScheduleSerializer(products, many=True)
+    serializer = ScheduleSerializer(products, many=True)
     return Response(serializer.data)
 
 
@@ -50,7 +50,7 @@ def getProducts(request):
 @api_view(['GET'])
 def getProduct(request, pk):
     product = models.Schedule.objects.get(_id=pk)
-    serializer = serializers.ScheduleSerializer(product, many=False)
+    serializer = ScheduleSerializer(product, many=False)
     return Response(serializer.data)
 
 
@@ -58,44 +58,44 @@ def getProduct(request, pk):
 @api_view(['GET'])
 def getUsers(request):
     user = User.objects.all()
-    serializer = serializers.UserSerializer(user, many=True)
+    serializer = UserSerializer(user, many=True)
     return Response(serializer.data)
 
 
 @api_view(['GET'])
 def getSubjects(request):
     subjects = models.Subject.objects.all()
-    serializer = serializers.SubjectSerializer(subjects, many=True)
+    serializer = SubjectSerializer(subjects, many=True)
     return Response(serializer.data)
 
 
 @api_view(['GET'])
 def getSubject(request, pk):
     subject = models.Subject.objects.get(id=pk)
-    serializer = serializers.SubjectSerializer(subject, many=False)
+    serializer = SubjectSerializer(subject, many=False)
     return Response(serializer.data)
 
 
 @api_view(['GET'])
 def getUser(request, pk):
     user = User.objects.get(id=pk)
-    serializer = serializers.UserSerializer(user, many=False)
+    serializer = UserSerializer(user, many=False)
     return Response(serializer.data)
 
 
 @api_view(['POST'])
 def register(request):
-    serializer = serializers.UserSerializer(data=request.data)
+    serializer = UserSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
     user = serializer.save()
     return Response({
-        "user": serializers.UserSerializer(user, context=serializer.context).data,
+        "user": UserSerializer(user, context=serializer.context).data,
         "token": AuthToken.objects.create(user)[1]
     })
 
 
 @api_view(['POST'])
-def upload_profile_picture(request):
+def uploadProfilePicture(request):
     file = request.data.get('profile_picture')
     if not file:
         return Response({'error': 'No file uploaded'}, status=status.HTTP_400_BAD_REQUEST)
@@ -104,11 +104,35 @@ def upload_profile_picture(request):
 
 
 @api_view(['POST'])
-def user_token_obtain_pair_view(request):
-    serializer = serializers.UserSerializerWithToken(data=request.data)
+def userTokenObtainPairView(request):
+    serializer = UserSerializerWithToken(data=request.data)
     serializer.is_valid(raise_exception=True)
     data = serializer.validated_data
     return Response(data)
+
+
+
+
+@api_view(['PUT', 'PATCH', 'GET'])
+@permission_classes([IsAuthenticated])
+def updateUserProfile(request):
+    user = request.user
+    data = request.data
+    user.email = data.get('email', user.email)
+    user.username = data.get('username', user.username)
+    user.first_name = data.get('first_name') or user.first_name
+    user.last_name = data.get('last_name') or user.last_name
+
+    if data.get('password'):
+        user.set_password(data['password'])
+    user.save()
+
+    serializer = UserSerializer(user, many=False)
+    return Response(serializer.data)
+
+
+
+
 
 
 @api_view(["POST", "GET"])
@@ -127,12 +151,11 @@ def addProduct(request):
         price = data['price_to_be_set'],
         subject = subject2,
         )
-        serializer = serializers.ProductSerializer(product, many=False)
+        serializer = ProductSerializer(product, many=False)
         return Response(serializer.data)
     except:
         message = {'detail': 'Test'}
         return Response(message)
-
 
 
 

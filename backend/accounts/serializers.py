@@ -12,15 +12,32 @@ class SubjectSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    subject = serializers.StringRelatedField()
-    product = serializers.StringRelatedField()
-    isAdmin = serializers.SerializerMethodField(read_only=True)
+    # subject = serializers.StringRelatedField()
+    # product = serializers.StringRelatedField()
     class Meta:
         model = User
         fields = '__all__'
 
-    def get_isAdmin(self, obj):
-        return obj.is_staff
+
+class UserSerializerWithToken(jwt_serializers.TokenObtainPairSerializer):
+    def validate(self, attrs):
+        # data = super().validate(attrs)
+        # data['username'] = self.user.username
+        # data['email'] = self.user.email
+        # data['staff'] = self.user.staff
+        # data['tutor'] = self.user.tutor
+        # data['student'] = self.user.student
+
+        # return data
+
+        data = super().validate(attrs)
+        user = self.user
+
+        # Serialize User object and add to response data
+        user_serializer = UserSerializer(user)
+        data['user'] = user_serializer.data
+
+        return data
 
 
 class ReviewSerializer(serializers.ModelSerializer):
@@ -40,17 +57,6 @@ class ScheduleSerializer(serializers.ModelSerializer):
         serializer = ReviewSerializer(reviews,many=True)
         return serializer.data
 
-
-class UserSerializerWithToken(jwt_serializers.TokenObtainPairSerializer):
-    def validate(self, attrs):
-        data = super().validate(attrs)
-        data['username'] = self.user.username
-        data['email'] = self.user.email
-        data['staff'] = self.user.staff
-        data['tutor'] = self.user.tutor
-        data['student'] = self.user.student
-
-        return data
 
 
 

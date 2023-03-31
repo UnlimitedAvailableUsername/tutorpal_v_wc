@@ -48,3 +48,63 @@ export const userLoginReducer = (state = initialState, action) => {
             
     }
 }
+
+/* REDUCER USED IN UPDATING USER DETAILS IN ProfileScreen COMPONENT */
+export const userUpdateProfileReducer = (state = {}, action) => {
+    switch (action.type) {
+        case actionType.USER_UPDATE_PROFILE_REQUEST:
+            return {
+                loading: true,
+            };
+
+        case actionType.USER_UPDATE_PROFILE_SUCCESS:
+            return {
+                loading: false,
+                success: true,
+                user: action.payload,
+            };
+
+        case actionType.USER_UPDATE_PROFILE_FAIL:
+            return {
+                loading: false,
+                error: action.payload,
+            };
+
+        case actionType.USER_UPDATE_PROFILE_RESET:
+            return {}; /* RESET STATE */
+
+        default:
+            return state;
+    }
+};
+
+/* REDUCER USED IN GETTING USER DETAILS IN ProfileScreen COMPONENT */
+export const userDetailsReducer = (state = { user: {} }, action) => {
+    switch (action.type) {
+        case actionType.USER_DETAILS_REQUEST:
+            return {
+                ...state,
+                loading: true,
+            };
+
+        case actionType.USER_DETAILS_SUCCESS:
+            return {
+                loading: false,
+                user: action.payload,
+            };
+
+        case actionType.USER_DETAILS_FAIL:
+            return {
+                loading: false,
+                error: action.payload,
+            };
+
+        case actionType.USER_DETAILS_RESET:
+            return {
+                user: {},
+            };
+
+        default:
+            return state;
+    }
+};

@@ -9,7 +9,8 @@ import TutorDetailScreen from "./components/screens/TutorDetailScreen/TutorDetai
 import LessonListScreen from "./components/screens/LessonListScreen/LessonListScreen";
 import ProductScreen from "./components/screens/ProductScreen/ProductScreen";
 import AddScreen from "./components/screens/AddScreen/AddScreen";
-import OrderScreen from "./components/screens/OrderScreen/OrderScreen";
+// import OrderScreen from "./components/screens/OrderScreen/OrderScreen";
+import ProfileScreen from "./components/screens/ProfileScreen/ProfileScreen";
 
 function App() {
   return (
@@ -29,8 +30,10 @@ function App() {
           <Route path="/add-lesson" element={ <AddScreen/> } exact />
 
           <Route path="/login" element={ <LoginScreen /> } exact />
+          <Route path="/profile" element={ <ProfileScreen /> } exact />
+
           <Route path="/contact-us" element={ <ContactScreen /> } exact />
-          <Route path='/order/:id' element={<OrderScreen/>} />
+          {/* <Route path='/order/:id' element={<OrderScreen/>} /> */}
         </Routes>
       </div>
 

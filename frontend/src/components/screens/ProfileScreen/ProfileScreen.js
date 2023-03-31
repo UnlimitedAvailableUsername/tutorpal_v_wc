@@ -3,9 +3,9 @@ import { Row, Col, Button, Form, Table } from "react-bootstrap";
 import Message from "../../elements/MessageAlert"
 import Loader from "../../elements/LoadingIcon";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserDetails, updateUserProfile } from "../actions/userActions";
-import { listMyOrders } from "../actions/orderActions";
-import { USER_UPDATE_PROFILE_RESET } from "../constants/userConstants";
+import { getUserDetails, updateUserProfile } from "../../../features/redux/actions/authUserActions";
+// import { listMyOrders } from "../actions/orderActions";
+import { USER_UPDATE_PROFILE_RESET } from "../../../features/redux/constants/constants";
 import axios from "axios";
 
 function ProfileScreen({ history }) {
@@ -25,14 +25,14 @@ function ProfileScreen({ history }) {
   const userDetails = useSelector((state) => state.userDetails);
   const { user, loading, error } = userDetails;
 
-  const userLogin = useSelector((state) => state.userLogin);
+  const userLogin = useSelector((state) => state.userState);
   const { userInfo } = userLogin;
 
   const userUpdateProfle = useSelector((state) => state.userUpdateProfle);
   const { success } = userUpdateProfle;
 
-  const orderListMy = useSelector((state) => state.orderListMy);
-  const { loading: loadingOrders, error: errorOrders, orders } = orderListMy;
+  // const orderListMy = useSelector((state) => state.orderListMy);
+  // const { loading: loadingOrders, error: errorOrders, orders } = orderListMy;
 
   useEffect(() => {
     if (!userInfo) {
@@ -43,7 +43,7 @@ function ProfileScreen({ history }) {
 
         dispatch(getUserDetails("profile"));
 
-        dispatch(listMyOrders());
+        // dispatch(listMyOrders());
       } else {
         setUsername(user.username);
         setFirstName(user.first_name);
@@ -192,7 +192,7 @@ function ProfileScreen({ history }) {
         </Form>
       </Col>
 
-      <Col md={9}>
+      {/* <Col md={9}>
         <h2>Tutoring History</h2>
         {loadingOrders ? (
           <Loader />
@@ -234,10 +234,10 @@ function ProfileScreen({ history }) {
                   </td>
                 </tr>
               ))}
-            </tbody>
+          </tbody>
           </Table>
         )}
-      </Col>
+      </Col> */}
     </Row>
   );
 }

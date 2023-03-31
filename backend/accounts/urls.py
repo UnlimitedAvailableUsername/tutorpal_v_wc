@@ -26,4 +26,6 @@ urlpatterns = [
     path('orders/<str:pk>/', views.getOrderById, name="user-order"),
     path('orders/<str:pk>/pay/', views.updateOrderToPaid, name="pay"),
 
+    path('contact/create', views.addContact, name='add_contact'),
+    path('contacts/', views.getContacts, name='products'),
 ]

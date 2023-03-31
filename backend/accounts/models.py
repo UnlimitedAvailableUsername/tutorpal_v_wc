@@ -190,3 +190,13 @@ class CartScheduleItem(models.Model):
 
     def __str__(self):
         return str(self.name)
+    
+
+class Contact(models.Model):
+    email = models.ForeignKey(User, on_delete=models.SET_NULL,null=True, blank=True, related_name='contact_name')
+    name = models.TextField(max_length=300, null=True, blank=True)
+    concern = models.TextField(max_length=300, null=True, blank=True)
+    comment = models.TextField(max_length=5000, null=True, blank=True)
+
+    def __str__(self):
+        return str(self.email)

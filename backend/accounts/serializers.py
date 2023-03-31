@@ -19,6 +19,8 @@ class UserSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+
+
 class UserSerializerWithToken(jwt_serializers.TokenObtainPairSerializer):
     def validate(self, attrs):
         # data = super().validate(attrs)
@@ -84,3 +86,7 @@ class CartScheduleSerializer(serializers.ModelSerializer):
         return serializer.data
 
 
+class ContactSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Contact
+        fields = '__all__'

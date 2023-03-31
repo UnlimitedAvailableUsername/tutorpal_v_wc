@@ -221,14 +221,14 @@ function OrderScreen() {
               {!order.isPaid && (
                 <ListGroup.Item>
                   {loadingPay && <Loader />}
-                  {!sdkReady ? (
+                  {/* {!sdkReady ? (
                     <Loader />
                   ) : (
                     // <PayPalButton
                     //   amount={order.totalPrice}
                     //   onSuccess={successPaymentHandler}
                     // />
-                  )}
+                  )} */}
                 </ListGroup.Item>
               )}
             </ListGroup>

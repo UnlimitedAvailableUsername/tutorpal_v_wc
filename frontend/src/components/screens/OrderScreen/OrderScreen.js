@@ -220,8 +220,8 @@ function OrderScreen() {
 
               {!order.isPaid && (
                 <ListGroup.Item>
-                  {loadingPay && <Loader />}
-                  {/* {!sdkReady ? (
+                  {/* {loadingPay && <Loader />}
+                  {!sdkReady ? (
                     <Loader />
                   ) : (
                     // <PayPalButton

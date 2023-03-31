@@ -31,8 +31,10 @@ function App() {
           <Route path="/add-lesson" element={ <AddScreen/> } exact />
 
           <Route path="/login" element={ <LoginScreen /> } exact />
+          <Route path="/profile" element={ <ProfileScreen /> } exact />
+
           <Route path="/contact-us" element={ <ContactScreen /> } exact />
-          <Route path='/order/:id' element={<OrderScreen/>} />
+          {/* <Route path='/order/:id' element={<OrderScreen/>} /> */}
         </Routes>
       </div>
 

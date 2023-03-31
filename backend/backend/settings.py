@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'knox',
     'rest_framework',
     'rest_framework_simplejwt',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -112,13 +113,17 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
+STATICFILES_DIRS = [
+    os.path.join(PROJECT_ROOT, 'static_media'),
+]
 
 MEDIA_URL = 'static_media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, MEDIA_URL)
 
-STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
 
 # Replace the default user authentication with our
@@ -187,3 +192,14 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainSlidingSerializer",
     "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
+
+
+AWS_ACCESS_KEY_ID = 'AKIA3O7LAXB7KE34BZ6Z'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'tutorpal-hosting'
+AWS_S3_REGION_NAME = 'ap-southeast-2'
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL =  None
+AWS_S3_VERITY = True
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'

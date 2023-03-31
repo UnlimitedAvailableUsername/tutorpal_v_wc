@@ -4,7 +4,7 @@ import Message from "../../elements/MessageAlert"
 import Loader from "../../elements/LoadingIcon";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserDetails, updateUserProfile } from "../../../features/redux/actions/authUserActions";
-
+// import { listMyOrders } from "../actions/orderActions";
 import { USER_UPDATE_PROFILE_RESET } from "../../../features/redux/constants/constants";
 import axios from "axios";
 import { useNavigate } from "react-router";
@@ -27,8 +27,8 @@ function ProfileScreen({ history }) {
   const userDetails = useSelector((state) => state.userDetails);
   const { user, loading, error } = userDetails;
 
-  const loginUser = useSelector( (state) => state.userState);
-  const { userInfo } = loginUser;
+  const userLogin = useSelector((state) => state.userState);
+  const { userInfo } = userLogin;
 
   const userUpdateProfle = useSelector((state) => state.userUpdateProfle);
   const { success } = userUpdateProfle;
@@ -237,7 +237,7 @@ function ProfileScreen({ history }) {
                   </td>
                 </tr>
               ))}
-            </tbody>
+          </tbody>
           </Table>
         )}
       </Col> */}

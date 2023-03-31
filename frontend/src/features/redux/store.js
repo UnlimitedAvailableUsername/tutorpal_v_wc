@@ -20,8 +20,6 @@ const reducers = combineReducers({
     userUpdateProfle: userUpdateProfileReducer,
     tutorList: tutorListReducer,
     tutorDetails: tutorDetailsReducer,
-    userDetails: userDetailsReducer,
-  userUpdateProfle: userUpdateProfileReducer,
     productList: productListReducer,
     productDetails: productDetailsReducer,
     subjectList: subjectsListReducer,

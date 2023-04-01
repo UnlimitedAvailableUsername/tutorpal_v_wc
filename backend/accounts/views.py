@@ -304,6 +304,7 @@ def updateUserProfile(request):
     user.bio = data.get('bio', user.bio)
     user.username = data.get('username', user.username)
     user.email = data.get('email', user.email)
+    user.meeting_link = data.get('meeting_link', user.meeting_link)
     password = data.get('password')
     if password:
         user.set_password(password)

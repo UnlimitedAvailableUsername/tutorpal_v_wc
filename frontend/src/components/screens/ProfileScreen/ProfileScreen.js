@@ -21,6 +21,7 @@ function ProfileScreen() {
   const [message, setMessage] = useState("");
   const [uploading, setUploading] = useState(false);
   const [bio, setBio] = useState("");
+  const [meeting_link, setMeetingLink] = useState("");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -53,6 +54,7 @@ function ProfileScreen() {
         setLastName(user.last_name)
         setEmail(user.email);
         setBio(user.bio)
+        setMeetingLink(user.meeting_link)
       }
     }
   }, []);
@@ -86,7 +88,8 @@ function ProfileScreen() {
           last_name: last_name,
           email: email,
           password: password,
-          bi: bio,
+          bio: bio,
+          meeting_link: meeting_link,
         })
       );
       setMessage("Update successfully!");
@@ -96,6 +99,105 @@ function ProfileScreen() {
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
   };
+
+  
+  //BASED SA SUGGESTION NI RAILEY!!!
+
+
+  //username
+  useEffect(() => {
+    const storedUsername = localStorage.getItem('username');
+    if (storedUsername) {
+      setUsername(storedUsername);
+    } else {
+      setUsername(user.username);
+    }
+  }, [user.username]);
+
+  const handleUsername = (e) => {
+    setUsername(e.target.value);
+    localStorage.setItem('username', e.target.value);
+  };
+
+
+  //first-name
+  useEffect(() => {
+    const storedFirstName = localStorage.getItem('first_name');
+    if (storedFirstName) {
+      setFirstName(storedFirstName);
+    } else {
+      setFirstName(user.first_name);
+    }
+  }, [user.first_name]);
+
+  const handleFirstname = (e) => {
+    setFirstName(e.target.value);
+    localStorage.setItem('first_name', e.target.value);
+  };
+
+//last-name
+useEffect(() => {
+  const storedLastName = localStorage.getItem('last_name');
+  if (storedLastName) {
+    setLastName(storedLastName);
+  } else {
+    setLastName(user.last_name);
+  }
+}, [user.last_name]);
+
+const handleLastname = (e) => {
+  setLastName(e.target.value);
+  localStorage.setItem('last_name', e.target.value);
+};
+
+//email
+useEffect(() => {
+  const storedEmail = localStorage.getItem('email');
+  if (storedEmail) {
+    setEmail(storedEmail);
+  } else {
+    setEmail(user.email);
+  }
+}, [user.email]);
+
+const handleEmail = (e) => {
+  setEmail(e.target.value);
+  localStorage.setItem('email', e.target.value);
+};
+
+//bio
+useEffect(() => {
+  const storedBio = localStorage.getItem('bio');
+  if (storedBio) {
+    setBio(storedBio);
+  } else {
+    setBio(user.bio);
+  }
+}, [user.bio]);
+
+const handleBio = (e) => {
+  setBio(e.target.value);
+  localStorage.setItem('bio', e.target.value);
+};
+
+   //zoom-link
+   useEffect(() => {
+    const storedMeetingLink = localStorage.getItem('meeting_link');
+    if (storedMeetingLink) {
+      setMeetingLink(storedMeetingLink);
+    } else {
+      setMeetingLink(user.meeting_link);
+    }
+  }, [user.meeting_link]);
+
+  const handleMeetingLinkChange = (e) => {
+    setMeetingLink(e.target.value);
+    localStorage.setItem('meeting_link', e.target.value);
+  };
+
+
+
+
 
 
   return (
@@ -129,9 +231,9 @@ function ProfileScreen() {
             <Form.Control
               required
               type="name"
-              placeholder="Enter Username"
+              placeholder="Plss enter email"
               value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={handleUsername}
             />
           </Form.Group>
 
@@ -140,9 +242,9 @@ function ProfileScreen() {
             <Form.Control
               required
               type="name"
-              placeholder="first_name"
+              placeholder={user.first_name}
               value={first_name}
-              onChange={(e) => setFirstName(e.target.value)}
+              onChange={handleFirstname}
             />
           </Form.Group>
 
@@ -151,9 +253,9 @@ function ProfileScreen() {
             <Form.Control
               required
               type="name"
-              placeholder="Last Name"
+              placeholder={user.last_name}
               value={last_name}
-              onChange={(e) => setLastName(e.target.value)}
+              onChange={handleLastname}
             />
           </Form.Group>
 
@@ -162,9 +264,9 @@ function ProfileScreen() {
             <Form.Control
               required
               type="email"
-              placeholder="Enter Email"
+              placeholder={user.email}
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={handleEmail}
             />
           </Form.Group>
 
@@ -194,9 +296,21 @@ function ProfileScreen() {
                 as="textarea"
                 placeholder={user.bio}
                 value={bio}
-                onChange={(e) => setBio(e.target.value)}
+                onChange={handleBio}
               />
             </Form.Group>
+
+            <Form.Group controlId="text">
+            <Form.Label>Zoom Link</Form.Label>
+            <Form.Control
+              required
+              type="textarea"
+              placeholder={user.meeting_link}
+              value={meeting_link}
+              onChange={handleMeetingLinkChange}
+            />
+          </Form.Group>
+
 
           <Button type="submit" variant="primary" className="mt-3">
             Update

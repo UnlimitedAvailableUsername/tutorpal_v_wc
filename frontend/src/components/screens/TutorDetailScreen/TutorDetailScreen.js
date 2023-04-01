@@ -18,8 +18,9 @@ function TutorDetailScreen() {
   return (
     <div>
       <Container>
+      <Link to="/tutor-list" className="btn btn-warning btn-outline-dark py-3 my-5" >Back to Tutor List</Link>
         <Row>
-            <Link to="/tutor-list" className="btn btn-warning btn-outline-dark py-3 my-5" >Back to Tutor List</Link>
+            
         <Row>
         </Row>
           <Col md={{ span: 3 }} style={{ position: "relative" }}>

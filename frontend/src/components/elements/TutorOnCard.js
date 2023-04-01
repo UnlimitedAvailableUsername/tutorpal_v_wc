@@ -7,15 +7,15 @@ import ReadMore from "./Readmore";
 function Tutor({ user }) {
   return (
     <Row>
-      <Card style={{ backgroundColor: "#404040" }} className="my-10 p-3 rounded" >
+      <Card style={{ backgroundColor: "#404040" }} className=" my-1 p-3 rounded" >
         <Row>
-          <Col>
+          <Col md={3}>
             <Link to={`tutor/${user.id}`}>
-              <Card.Img src={`${user.profile_picture}`} />
+              <Card.Img style={{width: 300}} src={`${user.profile_picture}`} />
             </Link>
           </Col>
           <Col>
-            <Card.Body>
+            <Card.Body >
               <Link to={`tutor/${user.id}`}>
                 <Card.Title>
                   <strong>
@@ -32,7 +32,8 @@ function Tutor({ user }) {
               </Card.Text>
 
               <Card.Text style={{ color: "#D3D3D3" }}>
-                <div>
+               {user.bio}
+                {/* <div>
                   {user.bio.slice(0, 200)}
                   {user.bio.length > 200 ? <span>...</span> : null}
                 </div>
@@ -40,7 +41,7 @@ function Tutor({ user }) {
                   <Link to={`tutor/${user.id}`} style={{ color: "#f8e825" }}>
                     Read More
                   </Link>
-                ) : null}
+                ) : null} */}
               </Card.Text>
 
               <Card.Text as="div">

@@ -9,13 +9,15 @@ function Tutor({ user }) {
     <Row>
       <Card
         style={{ backgroundColor: "#404040", width: 5000 }}
-        className=" sm- my-10 p-3 rounded"
+        className=" sm- my-2 p-3 rounded"
       >
         <Row>
+          <Col>
           <Link to={`tutor/${user.id}`}>
             <Card.Img style={{ height: 303 }} src={`${user.profile_picture}`} />
           </Link>
-
+          </Col>
+<Col>
           <Card.Body style={{ width: 950 }}>
             <Link to={`tutor/${user.id}`}>
               <Card.Title>
@@ -55,7 +57,9 @@ function Tutor({ user }) {
             </Card.Text>
 
             <Card.Text as="h3">${user.price_rate_hour} /hr</Card.Text>
+       
           </Card.Body>
+          </Col>
         </Row>
       </Card>
     </Row>

@@ -56,67 +56,47 @@ function TutorListScreen() {
 
   return (
     <div>
-      <div>
-        <div className="tutor-bg"></div>
-        <div className="tutor-bg-text-overlay text-center">
-          <h1 className="text-uppercase tutor-text-h1">our tutors</h1>
-          <h4>
-            Click on each tutor's profile to learn more about the tutor's
-            education background and experience.
-          </h4>
-        </div>
-        <Container>
-          <Form>
-            <Row>
-              <Col>
-                <Container>
-                  <br />
-                  <br />
-                  <br />
-                  <Form.Control
-                    className="shadow"
-                    style={{ width: 1000, marginLeft: 140 }}
-                    onChange={(e) => setSearch(e.target.value)}
-                    type="search"
-                    placeholder="Search for Tutors"
-                    aria-label="Search"
-                  />
-                  <br />
-                  <br />
-                </Container>
-              </Col>
-            </Row>
-          </Form>
-          <Row>
-            {users
-              .filter((user) =>
-                search === ""
-                  ? user
-
-                  //COVERAGE NG SEARCH FUNCTION
-                  : user.first_name
-                      .toLowerCase()
-                      .includes(search.toLowerCase()) ||
-                    user.last_name
-                      .toLowerCase()
-                      .includes(search.toLowerCase()) ||
-                    user.bio.toLowerCase().includes(search.toLowerCase())
-              )
-              .map((user) => (
-                <Col key={user.id} sm={12} md={6} lg={4} xl={12}>
-                  <Tutor
-                    user={{
-                      ...user,
-                      first_name: highlightSearch(user.first_name),
-                      last_name: highlightSearch(user.last_name),
-                      bio: highlightSearch(user.bio),
-                    }}
-                  />
-                </Col>
-              ))}
-          </Row>
-        </Container>
+      <div className="tutor-bg"></div>
+      <div className="tutor-bg-text-overlay text-center">
+        <h1 className="text-uppercase tutor-text-h1">our tutors</h1>
+        <h4>
+          Click on each tutor's profile to learn more about the tutor's
+          education background and experience.
+        </h4>
       </div>
+      <Container>
+        <Form>
+          <Container className="my-5">
+            <Form.Control
+              className="shadow"
+              onChange={(e) => setSearch(e.target.value)}
+              type="search"
+              placeholder="Search for Tutors"
+              aria-label="Search"
+            />
+          </Container>
+        </Form>
+
+        <Row>
+  {users
+    .filter((user) => user.tutor && (
+      !search ||
+      user.last_name.toLowerCase().includes(search.toLowerCase()) ||
+      user.last_name.toUpperCase().includes(search.toUpperCase()) ||
+      user.subject.toUpperCase().includes(search.toUpperCase()) ||
+      user.subject.toLowerCase().includes(search.toLowerCase()) ||
+      user.bio.toLowerCase().includes(search.toLowerCase()) ||
+      user.bio.toUpperCase().includes(search.toUpperCase()) ||
+      user.first_name.toUpperCase().includes(search.toUpperCase()) ||
+      user.first_name.toLowerCase().includes(search.toLowerCase())
+    ))
+    .map((user) => (
+      <Col key={user.id} sm={12} md={6} lg={4} xl={12}>
+        <Tutor user={user} />
+      </Col>
+    ))}
+</Row>
+      </Container>
     </div>
   );
 }

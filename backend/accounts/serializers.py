@@ -13,7 +13,7 @@ class SubjectSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    # subject = serializers.StringRelatedField()
+    subject = serializers.StringRelatedField()
     # product = serializers.StringRelatedField()
     class Meta:
         model = User

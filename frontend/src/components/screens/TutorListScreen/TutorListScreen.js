@@ -55,20 +55,14 @@ function TutorListScreen() {
             </Row>
           </Form>
 
-          <Row>
-            {users &&
-              users
-                .filter((user) => {
-                  return search.toLowerCase() === ""
-                    ? user
-                    : user.name.toLowerCase().includes(search);
-                })
-                .map((user) => (
-                  <Col key={user.id} sm={12} md={6} lg={4} xl={3}>
-                    <Tutor user={user} />
-                  </Col>
-                ))}
-          </Row>
+
+<Row>
+  {users.filter(user => user.tutor).map(user => (
+    <Col key={user.id} sm={12} md={6} lg={4} xl={12}>
+      <Tutor user={user} />
+    </Col>
+  ))}
+</Row>
         </Container>
       </div>
     </div>

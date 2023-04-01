@@ -9,6 +9,7 @@ import { USER_UPDATE_PROFILE_RESET } from "../../../features/redux/constants/con
 import axios from "axios";
 import { useNavigate } from "react-router";
 
+
 function ProfileScreen() {
 
   const [username, setUsername] = useState("");
@@ -19,6 +20,7 @@ function ProfileScreen() {
   const [password, setpassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [messagee, setMessagee] = useState("");
   const [uploading, setUploading] = useState(false);
   const [bio, setBio] = useState("");
   const [meeting_link, setMeetingLink] = useState("");
@@ -92,7 +94,7 @@ function ProfileScreen() {
           meeting_link: meeting_link,
         })
       );
-      setMessage("Update successfully!");
+      setMessagee("Update successfully!");
     }
   };
 
@@ -195,17 +197,13 @@ const handleBio = (e) => {
     localStorage.setItem('meeting_link', e.target.value);
   };
 
-
-
-
-
-
   return (
     <Container>
     <Row>
       <Col md={3}>
         <h2>User Profile</h2>
 
+        {messagee && <Message variant="success">{messagee}</Message>}
         {message && <Message variant="danger">{message}</Message>}
         {error && <Message variant="danger">{error}</Message>}
         {loading && <Loader />}

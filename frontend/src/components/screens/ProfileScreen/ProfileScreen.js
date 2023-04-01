@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Button, Form, Table, Container } from "react-bootstrap";
+import { Row, Col, Button, Form, Table, Container, Image } from "react-bootstrap";
 import Message from "../../elements/MessageAlert"
 import Loader from "../../elements/LoadingIcon";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,6 +20,7 @@ function ProfileScreen() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
   const [uploading, setUploading] = useState(false);
+  const [bio, setBio] = useState("");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -51,6 +52,7 @@ function ProfileScreen() {
         setFirstName(user.first_name);
         setLastName(user.last_name)
         setEmail(user.email);
+        setBio(user.bio)
       }
     }
   }, []);
@@ -84,9 +86,10 @@ function ProfileScreen() {
           last_name: last_name,
           email: email,
           password: password,
+          bi: bio,
         })
       );
-      setMessage("");
+      setMessage("Update successfully!");
     }
   };
 
@@ -108,6 +111,8 @@ function ProfileScreen() {
         
 
         <Form onSubmit={submitHandler}>
+
+          <Image src={user.profile_picture} alt={user.name} fluid />
 
           <Form.Group controlId="formFileLg" className="mb-3">
             <Form.Label>Profile Picture</Form.Label>
@@ -183,19 +188,32 @@ function ProfileScreen() {
             />
           </Form.Group>
 
+          <Form.Group controlId="bio">
+              <Form.Label>Bio</Form.Label>
+              <Form.Control
+                as="textarea"
+                placeholder={user.bio}
+                value={bio}
+                onChange={(e) => setBio(e.target.value)}
+              />
+            </Form.Group>
+
           <Button type="submit" variant="primary" className="mt-3">
             Update
           </Button>
         </Form>
       </Col>
 
-      {/* <Col md={9}>
+
+
+
+      <Col md={9}>
         <h2>Tutoring History</h2>
-        {loadingOrders ? (
+        {/* {loadingOrders ? (
           <Loader />
         ) : errorOrders ? (
           <Message variant="danger">{errorOrders}</Message>
-        ) : (
+        ) : ( */}
           <Table striped responsive className="table-m-2">
             <thead>
               <tr>
@@ -207,7 +225,7 @@ function ProfileScreen() {
               </tr>
             </thead>
 
-            <tbody>
+            {/* <tbody>
               {orders.map((order) => (
                 <tr key={order._id}>
                   <td>{order._id}</td>
@@ -231,10 +249,10 @@ function ProfileScreen() {
                   </td>
                 </tr>
               ))}
-          </tbody>
+          </tbody> */}
           </Table>
-        )}
-      </Col> */}
+        {/* )} */}
+      </Col>
     </Row>
     </Container>
   );

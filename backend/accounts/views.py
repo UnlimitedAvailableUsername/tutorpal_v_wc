@@ -158,7 +158,7 @@ def addProduct(request):
         price = data['price_to_be_set'],
         subject = subject2,
         )
-        serializer = ProductSerializer(product, many=False)
+        serializer = SubjectSerializer(product, many=False)
         return Response(serializer.data)
     except:
         message = {'detail': 'Test'}

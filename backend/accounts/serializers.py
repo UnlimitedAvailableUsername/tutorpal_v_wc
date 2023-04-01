@@ -2,6 +2,7 @@ from rest_framework import serializers
 from rest_framework_simplejwt import serializers as jwt_serializers
 from django.contrib.auth import get_user_model, authenticate
 from .models import *
+from rest_framework_simplejwt.tokens import RefreshToken
 
 User = get_user_model()
 
@@ -40,6 +41,17 @@ class UserSerializerWithToken(jwt_serializers.TokenObtainPairSerializer):
         data['user'] = user_serializer.data
 
         return data
+    
+
+class UserSerializerWithToken1(UserSerializer):
+    token= serializers.SerializerMethodField(read_only=True)
+    class Meta:
+        model =User
+        fields = '__all__'
+
+    def get_token(self,obj):
+        token = RefreshToken.for_user(obj)
+        return str(token.access_token)
 
 
 class ReviewSerializer(serializers.ModelSerializer):

@@ -70,12 +70,12 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
       const config = {
         headers: {
           "Content-type": "application/json",
-          Authorization: `Bearer ${userInfo.access}` /* PASSING IN USER TOKEN AND IF THE USER IN AUTHORISED HE'LL HAVE FULL ACCESS TO HIS PROFILE INFORMATION */,
+          Authorization: `Bearer ${userInfo.access && userInfo.token ? userInfo.access + ' ' + userInfo.token : userInfo.access || userInfo.token}` /* PASSING IN USER TOKEN AND IF THE USER IN AUTHORISED HE'LL HAVE FULL ACCESS TO HIS PROFILE INFORMATION */,
         },
       };
   
       // USING ${id} BECAUSE WHILE ACCESSING NORMAL USER WE'LL PASS STRING 'profile' BUT WHILE ACCESSING ADMIN PANEL WE'LL PASS THE 'id' SO LINK HAS TO BE DYNAMIC
-      const { data } = await axios.get(`http://127.0.0.1:8000/api/accounts/users/current/`, config);
+      const { data } = await axios.get(`http://127.0.0.1:8000/api/accounts/users/profile/`, config);
   
       /* IF GET REQUEST SUCCESSFULL WE DISPATCH & SEND THE PAYLOAD TO OUR REDUCER */
       dispatch({
@@ -109,12 +109,12 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
       const config = {
         headers: {
           "Content-type": "application/json",
-          Authorization: `Bearer ${userInfo.token}` /* PASSING IN USER TOKEN AND IF THE USER IN AUTHORISED HE'LL HAVE FULL ACCESS TO HIS PROFILE INFORMATION */,
+          Authorization: `Bearer ${userInfo.access && userInfo.token ? userInfo.access + ' ' + userInfo.token : userInfo.access || userInfo.token}` /* PASSING IN USER TOKEN AND IF THE USER IN AUTHORISED HE'LL HAVE FULL ACCESS TO HIS PROFILE INFORMATION */,
         },
       };
   
       // USING ${id} BECAUSE WHILE ACCESSING NORMAL USER WE'LL PASS STRING 'profile' BUT WHILE ACCESSING ADMIN PANEL WE'LL PASS THE 'id' SO LINK HAS TO BE DYNAMIC
-      const { data } = await axios.put(`/api/users/profile/update/`, user, config);
+      const { data } = await axios.put(`http://127.0.0.1:8000/api/accounts/users/profile/update/`, user, config);
   
       /* IF PUT REQUEST SUCCESSFULL WE DISPATCH & SEND THE PAYLOAD TO OUR REDUCER */
       dispatch({

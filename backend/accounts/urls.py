@@ -11,6 +11,8 @@ urlpatterns = [
     path('users/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
     path('users/upload/', views.uploadProfilePicture, name="upload_image"),
     path('users/current/', views.updateUserProfile, name="update_current_user"),
+    path('users/profile/',views.getUserProfile,name="user_profile"),
+    path('users/profile/update/',views.updateUserProfile,name="user_profile_update"),
 
     path('schedules/', views.getProducts, name='products'),
     path('schedules/create', views.addProduct, name='add_product'),
@@ -28,5 +30,5 @@ urlpatterns = [
 
     path('contact/create', views.addContact, name='add_contact'),
     path('contacts/', views.getContacts, name='contact'),
-    path('contacts/<str:pk>', views.getContact, name='contact'),
+    # path('contacts/<str:pk>', views.getContact, name='contact'),
 ]

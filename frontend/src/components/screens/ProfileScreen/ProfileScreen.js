@@ -9,7 +9,7 @@ import { USER_UPDATE_PROFILE_RESET } from "../../../features/redux/constants/con
 import axios from "axios";
 import { useNavigate } from "react-router";
 
-function ProfileScreen({ history }) {
+function ProfileScreen() {
 
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -38,7 +38,7 @@ function ProfileScreen({ history }) {
 
   useEffect(() => {
     if (!userInfo) {
-      history.push("/login");
+      navigate("/login");
     } else {
       if (!user || !user.name || success || userInfo._id !== user._id) {
         dispatch({ type: USER_UPDATE_PROFILE_RESET });
@@ -55,15 +55,30 @@ function ProfileScreen({ history }) {
     }
   }, []);
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("image", file);
+    try {
+      const response = await axios.post("http://127.0.0.1:8000/api/accounts/users/upload/", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${userInfo.access && userInfo.token ? userInfo.access + ' ' + userInfo.token : userInfo.access || userInfo.token}`
+        },
+      });
+      setMessage(response.data.message);
+    } catch (error) {
+      setMessage(error.response.data.error);
+    };
+
     if (password !== confirmPassword) {
       setMessage("Passwords do not match");
     } else {
       dispatch(
         updateUserProfile({
           id: user._id,
-          profile_picture: file,
+          // profile_picture: file,
           username: username,
           first_name: first_name,
           last_name: last_name,
@@ -75,31 +90,8 @@ function ProfileScreen({ history }) {
     }
   };
 
-  const uploadFileHandler = async (e) => {
-    setFile(e.target.files[0]);
-    
-    const formData = new FormData();
-    formData.append("profile_picture", file);
-
-    setUploading(true);
-
-    try {
-      const config = {
-        header: {
-          "Content-Type": "multipart/form-data",
-        },
-      };
-
-      const { data } = await axios.post(
-        "/api/users/upload/",
-        formData,
-        config
-      );
-      setFile(data);
-      setUploading(false);
-    } catch (error) {
-      setUploading(false);
-    }
+  const handleFileChange = (event) => {
+    setFile(event.target.files[0]);
   };
 
 
@@ -113,6 +105,8 @@ function ProfileScreen({ history }) {
         {error && <Message variant="danger">{error}</Message>}
         {loading && <Loader />}
 
+        
+
         <Form onSubmit={submitHandler}>
 
           <Form.Group controlId="formFileLg" className="mb-3">
@@ -120,7 +114,7 @@ function ProfileScreen({ history }) {
             <Form.Control
               type="file" 
               size="lg" 
-              onChange={uploadFileHandler}
+              onChange={handleFileChange}
             />
             {uploading && <Loader />}
           </Form.Group>

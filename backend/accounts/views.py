@@ -60,7 +60,6 @@ def getProduct(request, pk):
 def getUsers(request):
     user = User.objects.all()
     serializer = UserSerializer(user, many=True)
-    serializer = UserSerializer(user, many=True)
     return Response(serializer.data)
 
 

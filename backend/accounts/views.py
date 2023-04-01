@@ -281,6 +281,12 @@ def getContacts(request):
 
 
 @api_view(['GET'])
+def getContact(request, pk):
+    contact = Contact.objects.get(id=pk)
+    serializer = ContactSerializer(contact, many=False)
+
+
+@api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def getUserProfile(request):
     user =request.user 

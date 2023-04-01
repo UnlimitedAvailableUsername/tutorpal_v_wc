@@ -57,10 +57,10 @@ def getProduct(request, pk):
 
 # For fetching all the users
 @api_view(['GET'])
+# @permission_classes([IsAdminUser])
 def getUsers(request):
-    user = User.objects.all()
-    serializer = UserSerializer(user, many=True)
-    serializer = UserSerializer(user, many=True)
+    users = User.objects.all()
+    serializer = UserSerializer(users,many = True)
     return Response(serializer.data)
 
 
@@ -97,12 +97,17 @@ def register(request):
 
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def uploadProfilePicture(request):
-    file = request.data.get('profile_picture')
-    if not file:
-        return Response({'error': 'No file uploaded'}, status=status.HTTP_400_BAD_REQUEST)
-    # TODO: Save the file to the user's profile_picture field
-    return Response({'success': 'File uploaded'}, status=status.HTTP_201_CREATED)
+    image = request.FILES.get('image', None)
+    if image is not None:
+        # Do whatever you want to do with the image here
+        # For example, save it to the user's profile picture field
+        request.user.profile_picture = image
+        request.user.save()
+        return Response({'message': 'Image uploaded successfully!'})
+    else:
+        return Response({'error': 'No image provided.'})
 
 
 @api_view(['POST'])
@@ -115,22 +120,22 @@ def user_token_obtain_pair_view(request):
 
 
 
-@api_view(['PUT', 'PATCH', 'GET'])
-@permission_classes([IsAuthenticated])
-def updateUserProfile(request):
-    user = request.user
-    data = request.data
-    user.email = data.get('email', user.email)
-    user.username = data.get('username', user.username)
-    user.first_name = data.get('first_name') or user.first_name
-    user.last_name = data.get('last_name') or user.last_name
+# @api_view(['PUT', 'PATCH', 'GET'])
+# @permission_classes([IsAuthenticated])
+# def updateUserProfile(request):
+#     user = request.user
+#     data = request.data
+#     user.email = data.get('email', user.email)
+#     user.username = data.get('username', user.username)
+#     user.first_name = data.get('first_name') or user.first_name
+#     user.last_name = data.get('last_name') or user.last_name
 
-    if data.get('password'):
-        user.set_password(data['password'])
-    user.save()
+#     if data.get('password'):
+#         user.set_password(data['password'])
+#     user.save()
 
-    serializer = UserSerializer(user, many=False)
-    return Response(serializer.data)
+#     serializer = UserSerializer(user, many=False)
+#     return Response(serializer.data)
 
 
 
@@ -272,4 +277,29 @@ def addContact(request):
 def getContacts(request):
     contacts = Contact.objects.all()
     serializer = ContactSerializer(contacts, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getUserProfile(request):
+    user =request.user 
+    serializer = UserSerializer(user,many = False)
+    return Response(serializer.data)
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def updateUserProfile(request):
+    user = request.user 
+    serializer = UserSerializerWithToken1(user, many=False)
+    data = request.data
+    user.first_name = data.get('first_name', user.first_name)
+    user.last_name = data.get('last_name', user.last_name)
+    user.bio = data.get('bio', user.bio)
+    user.username = data.get('username', user.username)
+    user.email = data.get('email', user.email)
+    password = data.get('password')
+    if password:
+        user.set_password(password)
+    user.save()
     return Response(serializer.data)

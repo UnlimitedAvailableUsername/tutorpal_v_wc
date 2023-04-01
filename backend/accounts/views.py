@@ -273,3 +273,9 @@ def getContacts(request):
     contacts = Contact.objects.all()
     serializer = ContactSerializer(contacts, many=True)
     return Response(serializer.data)
+
+@api_view(['GET'])
+def getContact(request, pk):
+    contact = Contact.objects.get(id=pk)
+    serializer = ContactSerializer(contact, many=False)
+    return Response(serializer.data)

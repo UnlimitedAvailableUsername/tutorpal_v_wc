@@ -41,12 +41,24 @@ function TutorListScreen() {
         </Form>
 
         <Row>
-          {users.filter((user) => user.tutor).map((user) => (
-              <Col key={user.id} sm={12} md={6} lg={4} xl={12}>
-                <Tutor user={user} />
-              </Col>
-            ))}
-        </Row>
+  {users
+    .filter((user) => user.tutor && (
+      !search ||
+      user.last_name.toLowerCase().includes(search.toLowerCase()) ||
+      user.last_name.toUpperCase().includes(search.toUpperCase()) ||
+      user.subject.toUpperCase().includes(search.toUpperCase()) ||
+      user.subject.toLowerCase().includes(search.toLowerCase()) ||
+      user.bio.toLowerCase().includes(search.toLowerCase()) ||
+      user.bio.toUpperCase().includes(search.toUpperCase()) ||
+      user.first_name.toUpperCase().includes(search.toUpperCase()) ||
+      user.first_name.toLowerCase().includes(search.toLowerCase())
+    ))
+    .map((user) => (
+      <Col key={user.id} sm={12} md={6} lg={4} xl={12}>
+        <Tutor user={user} />
+      </Col>
+    ))}
+</Row>
       </Container>
     </div>
   );

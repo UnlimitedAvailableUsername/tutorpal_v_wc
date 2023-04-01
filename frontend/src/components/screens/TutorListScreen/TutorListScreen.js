@@ -77,7 +77,9 @@ function TutorListScreen() {
           </Container>
         </Form>
 
+      
         <Row>
+        
   {users
     .filter((user) => user.tutor && (
       !search ||
@@ -92,7 +94,16 @@ function TutorListScreen() {
     ))
     .map((user) => (
       <Col key={user.id} sm={12} md={6} lg={4} xl={12}>
-        <Tutor user={user} />
+        <Tutor
+
+        //BINOBOLD YUNG WORDS NA SINEARCH
+                    user={{
+                      ...user,
+                      first_name: highlightSearch(user.first_name),
+                      last_name: highlightSearch(user.last_name),
+                      bio: highlightSearch(user.bio),
+                    }}
+                  />
       </Col>
     ))}
 </Row>

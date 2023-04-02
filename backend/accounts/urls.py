@@ -34,5 +34,6 @@ urlpatterns = [
 
     path('contact/create', views.addContact, name='add_contact'),
     path('contacts/', views.getContacts, name='contact'),
+    path('contacts/<str:pk>', views.getContact, name='contact'),
     # path('contacts/<str:pk>', views.getContact, name='contact'),
 ]

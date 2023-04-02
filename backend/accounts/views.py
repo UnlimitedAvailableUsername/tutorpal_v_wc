@@ -69,14 +69,14 @@ def getUsers(request):
 
 @api_view(['GET'])
 def getSubjects(request):
-    subjects = models.Subject.objects.all()
+    subjects = Subject.objects.all()
     serializer = SubjectSerializer(subjects, many=True)
     return Response(serializer.data)
 
 
 @api_view(['GET'])
 def getSubject(request, pk):
-    subject = models.Subject.objects.get(id=pk)
+    subject = Subject.objects.get(id=pk)
     serializer = SubjectSerializer(subject, many=False)
     return Response(serializer.data)
 
@@ -281,10 +281,13 @@ def addContact(request):
     print (data)
     try:
         user = request.user
+        user2 = request.user.first_name
+        user3 = request.user.last_name
         print(user)
         contact = Contact.objects.create(
         email = user,
-        # name = data.get('email'),
+        first_name = user2,
+        last_name = user3,
         concern = data['concern'],
         comment = data['comment'],
         )
@@ -305,6 +308,7 @@ def getContacts(request):
 def getContact(request, pk):
     contact = Contact.objects.get(id=pk)
     serializer = ContactSerializer(contact, many=False)
+    return Response(serializer.data)
 
 
 @api_view(['GET'])

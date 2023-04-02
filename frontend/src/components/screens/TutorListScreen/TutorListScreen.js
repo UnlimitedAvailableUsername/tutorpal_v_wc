@@ -5,12 +5,30 @@ import { listTutors } from "../../../features/redux/actions/tutorActions";
 import { Row, Col, Container } from "react-bootstrap";
 import Tutor from "../../elements/TutorOnCard";
 import "../../../assets/components/screens/TutorListScreen/tutorlist.css";
-import Header from "../../elements/Header";
-
+import Dropdown from "react-bootstrap/Dropdown";
 
 function TutorListScreen() {
   const [search, setSearch] = useState("");
 
+  const [sortOrder, setSortOrder] = useState("asc");
+
+// function para ma sort by review or price
+
+  const sortUsersByPrice = (users) => {
+    if (sortOrder === "asc") {
+      return users.sort((a, b) => a.price_rate_hour - b.price_rate_hour);
+    } else if (sortOrder === "desc") {
+      return users.sort((a, b) => b.price_rate_hour - a.price_rate_hour);
+    } else if (sortOrder === "revAsc") {
+      return users.sort((a, b) => a.numReviews - b.numReviews);
+    } else if (sortOrder === "revdesc") {
+      return users.sort((a, b) => b.numReviews - a.numReviews);
+    }
+  };
+  
+  const handleSortOrderChange = (eventKey) => {
+    setSortOrder(eventKey);
+  };
   const dispatch = useDispatch();
 
   const loginUser = useSelector((state) => state.userState);
@@ -22,7 +40,6 @@ function TutorListScreen() {
   useEffect(() => {
     dispatch(listTutors());
   }, [dispatch]);
-
 
   //FUNCTION PARA MAG-HIGHLIGHT NG WHITE YUNG TERMS NA SINESEARCH
   const highlightSearch = (text) => {
@@ -76,37 +93,51 @@ function TutorListScreen() {
             />
           </Container>
         </Form>
+        <Dropdown onSelect={handleSortOrderChange}>
+          <Dropdown.Toggle id="dropdown-basic" style={{backgroundColor: "#037d50 ",  borderColor: '#037d50'}} >
+            Sort by price ({sortOrder === "asc" ? "low to high" : "high to low"}
+            )
+          </Dropdown.Toggle>
+          <Dropdown.Menu>
+            <Dropdown.Item eventKey="asc">Price: Low to High</Dropdown.Item>
+            <Dropdown.Item eventKey="desc">Price: High to Low</Dropdown.Item>
+            <Dropdown.Item eventKey="revdesc">Review: High to Low</Dropdown.Item>
+            <Dropdown.Item eventKey="revAsc">Review: Low to High</Dropdown.Item>
+           
+          </Dropdown.Menu>
+        </Dropdown>
+        <br></br>
 
-      
         <Row>
-        
-  {users
-    .filter((user) => user.tutor && (
-      !search ||
-      user.last_name.toLowerCase().includes(search.toLowerCase()) ||
-      user.last_name.toUpperCase().includes(search.toUpperCase()) ||
-      user.subject.toUpperCase().includes(search.toUpperCase()) ||
-      user.subject.toLowerCase().includes(search.toLowerCase()) ||
-      user.bio.toLowerCase().includes(search.toLowerCase()) ||
-      user.bio.toUpperCase().includes(search.toUpperCase()) ||
-      user.first_name.toUpperCase().includes(search.toUpperCase()) ||
-      user.first_name.toLowerCase().includes(search.toLowerCase())
-    ))
-    .map((user) => (
-      <Col key={user.id} sm={12} md={6} lg={4} xl={12}>
-        <Tutor
-
-        //BINOBOLD YUNG WORDS NA SINEARCH
-                    user={{
-                      ...user,
-                      first_name: highlightSearch(user.first_name),
-                      last_name: highlightSearch(user.last_name),
-                      bio: highlightSearch(user.bio),
-                    }}
-                  />
-      </Col>
-    ))}
-</Row>
+          {sortUsersByPrice(users)
+            .filter(
+              (user) =>
+                user.tutor &&
+                (!search ||
+                  user.last_name.toLowerCase().includes(search.toLowerCase()) ||
+                  user.last_name.toUpperCase().includes(search.toUpperCase()) ||
+                  user.subject.toUpperCase().includes(search.toUpperCase()) ||
+                  user.subject.toLowerCase().includes(search.toLowerCase()) ||
+                  user.bio.toLowerCase().includes(search.toLowerCase()) ||
+                  user.bio.toUpperCase().includes(search.toUpperCase()) ||
+                  user.first_name
+                    .toUpperCase()
+                    .includes(search.toUpperCase()) ||
+                  user.first_name.toLowerCase().includes(search.toLowerCase()))
+            )
+            .map((user) => (
+              <Col key={user.id} sm={12} md={6} lg={4} xl={12}>
+                <Tutor
+                  user={{
+                    ...user,
+                    first_name: highlightSearch(user.first_name),
+                    last_name: highlightSearch(user.last_name),
+                    bio: highlightSearch(user.bio),
+                  }}
+                />
+              </Col>
+            ))}
+        </Row>
       </Container>
     </div>
   );

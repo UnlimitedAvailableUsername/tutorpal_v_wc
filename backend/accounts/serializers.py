@@ -7,6 +7,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 User = get_user_model()
 
 class SubjectSerializer(serializers.ModelSerializer):
+    
     class Meta:
         model = Subject
         fields = '__all__'
@@ -22,7 +23,7 @@ class SubjectSerializer(serializers.ModelSerializer):
 
 #//FOR REGSISTER VIEW (PARTIAL)
 class UserSerializer(serializers.ModelSerializer):
-
+    subject = serializers.StringRelatedField()
     class Meta:
         model = User
         fields = '__all__'
@@ -66,7 +67,7 @@ class UserSerializerWithToken(jwt_serializers.TokenObtainPairSerializer):
 # //FOR UPDATE PROFILE & {REGISTER VIEW (PARTIAL)}
 class UserSerializerWithToken1(UserSerializer):
     token = serializers.SerializerMethodField(read_only=True)
-
+    
     class Meta:
         model = User
         fields = '__all__'

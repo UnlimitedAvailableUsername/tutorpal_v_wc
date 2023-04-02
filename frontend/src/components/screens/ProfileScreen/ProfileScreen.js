@@ -121,21 +121,42 @@ function ProfileScreen() {
     localStorage.setItem('username', e.target.value);
   };
 
+  // Listen for logout event and remove 'username' from local storage
+useEffect(() => {
+  const handleLogout = () => {
+    localStorage.removeItem('username');
+  };
+  window.addEventListener('logout', handleLogout);
+  return () => {
+    window.removeEventListener('logout', handleLogout);
+  };
+}, []);
 
   //first-name
-  useEffect(() => {
-    const storedFirstName = localStorage.getItem('first_name');
-    if (storedFirstName) {
-      setFirstName(storedFirstName);
-    } else {
-      setFirstName(user.first_name);
-    }
-  }, [user.first_name]);
+useEffect(() => {
+  const storedFirstName = localStorage.getItem('first_name');
+  if (storedFirstName) {
+    setFirstName(storedFirstName);
+  } else {
+    setFirstName(user.first_name);
+  }
+}, [user.first_name]);
 
-  const handleFirstname = (e) => {
-    setFirstName(e.target.value);
-    localStorage.setItem('first_name', e.target.value);
+const handleFirstname = (e) => {
+  setFirstName(e.target.value);
+  localStorage.setItem('first_name', e.target.value);
+};
+
+// Listen for logout event and remove 'first_name' from local storage
+useEffect(() => {
+  const handleLogout = () => {
+    localStorage.removeItem('first_name');
   };
+  window.addEventListener('logout', handleLogout);
+  return () => {
+    window.removeEventListener('logout', handleLogout);
+  };
+}, []);
 
 //last-name
 useEffect(() => {
@@ -152,6 +173,18 @@ const handleLastname = (e) => {
   localStorage.setItem('last_name', e.target.value);
 };
 
+// Listen for logout event and remove 'last_name' from local storage
+useEffect(() => {
+  const handleLogout = () => {
+    localStorage.removeItem('last_name');
+  };
+  window.addEventListener('logout', handleLogout);
+  return () => {
+    window.removeEventListener('logout', handleLogout);
+  };
+}, []);
+
+
 //email
 useEffect(() => {
   const storedEmail = localStorage.getItem('email');
@@ -166,6 +199,18 @@ const handleEmail = (e) => {
   setEmail(e.target.value);
   localStorage.setItem('email', e.target.value);
 };
+
+// Listen for logout event and remove 'email' from local storage
+useEffect(() => {
+  const handleLogout = () => {
+    localStorage.removeItem('email');
+  };
+  window.addEventListener('logout', handleLogout);
+  return () => {
+    window.removeEventListener('logout', handleLogout);
+  };
+}, []);
+
 
 //bio
 useEffect(() => {
@@ -182,6 +227,18 @@ const handleBio = (e) => {
   localStorage.setItem('bio', e.target.value);
 };
 
+// Listen for logout event and remove 'bio' from local storage
+useEffect(() => {
+  const handleLogout = () => {
+    localStorage.removeItem('bio');
+  };
+  window.addEventListener('logout', handleLogout);
+  return () => {
+    window.removeEventListener('logout', handleLogout);
+  };
+}, []);
+
+
    //zoom-link
    useEffect(() => {
     const storedMeetingLink = localStorage.getItem('meeting_link');
@@ -196,6 +253,17 @@ const handleBio = (e) => {
     setMeetingLink(e.target.value);
     localStorage.setItem('meeting_link', e.target.value);
   };
+
+  // Listen for logout event and remove 'zoom_link' from local storage
+useEffect(() => {
+  const handleLogout = () => {
+    localStorage.removeItem('meeting_link');
+  };
+  window.addEventListener('logout', handleLogout);
+  return () => {
+    window.removeEventListener('logout', handleLogout);
+  };
+}, []);
 
   return (
     <Container>

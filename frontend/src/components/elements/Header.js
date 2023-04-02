@@ -13,7 +13,17 @@ function Header() {
 
     const handleLogout = () => {
       dispatch(logoutUser());
+
+      //PARA MAREMOVE DIN YUNG NAKA STORE WHEN UPDATING THE FORM
+    localStorage.removeItem('first_name');
+    localStorage.removeItem('last_name');
+    localStorage.removeItem('email');
+    localStorage.removeItem('username');
+    localStorage.removeItem('meeting_link');
+    localStorage.removeItem('bio');
     };
+
+    
   
   const loginUser = useSelector( (state) => state.userState);
   const { userInfo } = loginUser;

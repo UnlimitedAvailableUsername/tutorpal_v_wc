@@ -8,14 +8,20 @@ import {
     TUTOR_DETAILS_FAIL,
 } from '../constants/tutorConstants'
 
-export const tutorListReducer = (state = {users:[]}, action) => {
+const initialState = {
+    loading: false,
+    users: [],
+    error: null,
+}
+
+export const tutorListReducer = (state = initialState, action) => {
     switch (action.type) {
         case TUTOR_LIST_REQUEST:
-            return {loading:true, users: []};
+            return {...state, loading:true};
         case TUTOR_LIST_SUCCESS:
-            return {loading:false, users: action.payload};
+            return {...state, loading:false, users: action.payload};
         case TUTOR_LIST_FAIL:
-            return {loading:false, error: action.payload};
+            return {...state, loading:false, error: action.payload};
         
         default:
             return state;

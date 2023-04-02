@@ -11,7 +11,6 @@ import { Row, Col, ListGroup, Image, Card, Button } from "react-bootstrap";
 
 /* COMPONENTS */
 import Message from "../../elements/MessageAlert";
-import Loader from "../../elements/LoadingIcon";
 
 /* REACT - REDUX */
 import { useDispatch, useSelector } from "react-redux";
@@ -26,6 +25,7 @@ import {
 import {
   ORDER_PAY_RESET,
 } from "../../../features/redux/constants/orderConstants";
+import LoadingIconBig from "../../elements/LoadingIcon";
 
 function OrderScreen() {
 
@@ -104,7 +104,7 @@ function OrderScreen() {
 //   };
 
   return loading ? (
-    <Loader />
+    <LoadingIconBig />
   ) : error ? (
     <Message variant="danger">{error}</Message>
   ) : (

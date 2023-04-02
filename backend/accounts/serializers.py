@@ -1,4 +1,11 @@
+import datetime
+from decimal import Decimal
+
 from rest_framework import serializers
+
+from django.db.models.fields.files import ImageFieldFile
+from django.forms.models import model_to_dict
+
 from rest_framework_simplejwt import serializers as jwt_serializers
 from django.contrib.auth import get_user_model, authenticate
 from .models import *
@@ -19,29 +26,6 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = '__all__'
 
-
-
-
-class UserSerializerWithToken(jwt_serializers.TokenObtainPairSerializer):
-    def validate(self, attrs):
-        # data = super().validate(attrs)
-        # data['username'] = self.user.username
-        # data['email'] = self.user.email
-        # data['staff'] = self.user.staff
-        # data['tutor'] = self.user.tutor
-        # data['student'] = self.user.student
-
-        # return data
-
-        data = super().validate(attrs)
-        user = self.user
-
-        # Serialize User object and add to response data
-        user_serializer = UserSerializer(user)
-        data['user'] = user_serializer.data
-
-        return data
-    
 
 class UserSerializerWithToken1(UserSerializer):
     token= serializers.SerializerMethodField(read_only=True)

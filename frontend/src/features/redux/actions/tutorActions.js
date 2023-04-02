@@ -10,6 +10,9 @@ import {
 } from '../constants/tutorConstants';
 import axios from 'axios';
 
+
+// FOR LISTING ALL THE TUTORS
+
 export const listTutors = () => async (dispatch) => {
     try {
         dispatch({
@@ -33,6 +36,8 @@ export const listTutors = () => async (dispatch) => {
         });
     }
 }
+
+// FOR LISTING THE SPECIFIC TUTOR USER DETAILS
 
 export const listTutorDetails = (id) => async (dispatch) => {
     try {

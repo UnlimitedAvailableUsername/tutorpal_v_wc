@@ -5,6 +5,8 @@ import { listTutors } from "../../../features/redux/actions/tutorActions";
 import { Row, Col, Container } from "react-bootstrap";
 import Tutor from "../../elements/TutorOnCard";
 import "../../../assets/components/screens/TutorListScreen/tutorlist.css";
+import LoadingIconBig from "../../elements/LoadingIcon";
+import MessageAlert from "../../elements/MessageAlert";
 
 function TutorListScreen() {
   const [search, setSearch] = useState("");
@@ -12,7 +14,7 @@ function TutorListScreen() {
   const dispatch = useDispatch();
 
   const tutorList = useSelector((state) => state.tutorList);
-  const { users } = tutorList;
+  const { loading, error, users } = tutorList;
 
   useEffect(() => {
     dispatch(listTutors());
@@ -40,13 +42,21 @@ function TutorListScreen() {
           </Container>
         </Form>
 
-        <Row>
-          {users.filter((user) => user.tutor).map((user) => (
-              <Col key={user.id} sm={12} md={6} lg={4} xl={12}>
-                <Tutor user={user} />
-              </Col>
-            ))}
-        </Row>
+        { loading ? (
+          <LoadingIconBig />
+        ) : error ? (
+          <MessageAlert variant="danger">{ error }</MessageAlert>
+        ) : (
+        <div>
+          <Row>
+            {users.filter((user) => user.tutor).map((user) => (
+                <Col key={user.id} sm={12} md={6} lg={4} xl={12}>
+                  <Tutor user={user} />
+                </Col>
+              ))}
+          </Row>
+        </div>
+        )}
       </Container>
     </div>
   );

@@ -109,7 +109,6 @@ function TutorDetailScreen() {
           </Col>
         </Row>
       </Container>
-      {/* )} */}
     </div>
   );
 }

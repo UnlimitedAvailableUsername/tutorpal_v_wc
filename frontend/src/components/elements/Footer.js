@@ -1,5 +1,6 @@
 import React from "react";
 import { Row, Col } from 'react-bootstrap'
+import { Link } from "react-router-dom";
 import "../../assets/components/elements/Footer/footer.css";
 
 function Footer() {
@@ -41,7 +42,7 @@ function Footer() {
           <Col>
             <h4 className="text-uppercase">learn with us</h4>
             <ul className="list-unstyled">
-              <li>Find a Tutor</li>
+              <li><Link to="/tutor-list" className="main-footer">Find a Tutor</Link></li>
               <li>Online Tutoring</li>
               <li>Get Math Help</li>
               <li>Learning Resources</li>

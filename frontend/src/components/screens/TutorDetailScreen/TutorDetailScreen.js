@@ -18,7 +18,7 @@ function TutorDetailScreen() {
   return (
     <div>
       <Container>
-      <Link to="/tutor-list" className="btn btn-warning btn-outline-dark py-3 my-5" >Back to Tutor List</Link>
+      <Link to="/tutor-list" className="btn btn-warning btn-outline-dark py-3 my-5" ><strong>Back to Tutor List </strong></Link>
         <Row>
             
         <Row>

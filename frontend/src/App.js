@@ -15,6 +15,7 @@ import SuccessScreen from "./components/screens/SuccessScreen/Success";
 import RegisterScreen from "./components/screens/RegisterScreen/RegisterScreen";
 import TermsofServiceScreen from "./components/screens/TermsofServiceScreen/Termofservice";
 import PrivacyPolicyScreen from "./components/screens/PrivacyPolicyScreen/PrivacyPolicy";
+
 function App() {
   return (
     <div className="bg-dark">

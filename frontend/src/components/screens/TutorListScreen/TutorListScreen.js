@@ -85,8 +85,8 @@ function TutorListScreen() {
       !search ||
       user.last_name.toLowerCase().includes(search.toLowerCase()) ||
       user.last_name.toUpperCase().includes(search.toUpperCase()) ||
-      user.subject.toUpperCase().includes(search.toUpperCase()) ||
-      user.subject.toLowerCase().includes(search.toLowerCase()) ||
+      // user.subject.toUpperCase().includes(search.toUpperCase()) ||
+      // user.subject.toLowerCase().includes(search.toLowerCase()) ||
       user.bio.toLowerCase().includes(search.toLowerCase()) ||
       user.bio.toUpperCase().includes(search.toUpperCase()) ||
       user.first_name.toUpperCase().includes(search.toUpperCase()) ||

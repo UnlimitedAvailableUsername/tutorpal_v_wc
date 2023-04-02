@@ -10,7 +10,7 @@ urlpatterns = [
 
     #//PARTIAL 
     path('users/register/', views.RegisterView.as_view(), name='register'),
-    
+
     path('users/login/', views.user_token_obtain_pair_view, name='my_token_obtain_pair'),
     path('users/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
     path('users/upload/', views.uploadProfilePicture, name="upload_image"),
@@ -34,5 +34,5 @@ urlpatterns = [
 
     path('contact/create', views.addContact, name='add_contact'),
     path('contacts/', views.getContacts, name='contact'),
-    # path('contacts/<str:pk>', views.getContact, name='contact'),
+    path('contacts/<str:pk>', views.getContact, name='contact'),
 ]

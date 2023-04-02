@@ -5,7 +5,7 @@ import { listTutors } from "../../../features/redux/actions/tutorActions";
 import { Row, Col, Container } from "react-bootstrap";
 import Tutor from "../../elements/TutorOnCard";
 import "../../../assets/components/screens/TutorListScreen/tutorlist.css";
-import LoadingIconBig from "../../elements/LoadingIcon";
+import LoadingIconBig from "../../elements/Loader/LoadingIconBig";
 import MessageAlert from "../../elements/MessageAlert";
 
 function TutorListScreen() {

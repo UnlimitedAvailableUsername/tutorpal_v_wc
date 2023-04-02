@@ -25,7 +25,7 @@ import {
 import {
   ORDER_PAY_RESET,
 } from "../../../features/redux/constants/orderConstants";
-import LoadingIconBig from "../../elements/LoadingIcon";
+import LoadingIconBig from "../../elements/Loader/LoadingIconBig";
 
 function OrderScreen() {
 
@@ -43,8 +43,8 @@ function OrderScreen() {
   const orderPay = useSelector((state) => state.orderPay);
   const { loading: loadingPay, success: successPay } = orderPay;
 
-  const userState = useSelector((state) => state.userState);
-  const { userInfo } = userState;
+  const userLoginState = useSelector((state) => state.userLoginState);
+  const { userInfo } = userLoginState;
 
   // ITEMS PRICE GETS CALCULATED ONLY IF WE HAVE AN ORDER
   if (!loading && !error) {

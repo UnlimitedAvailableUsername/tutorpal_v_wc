@@ -11,7 +11,7 @@ import ProductScreen from "./components/screens/ProductScreen/ProductScreen";
 import AddScreen from "./components/screens/AddScreen/AddScreen";
 import OrderScreen from "./components/screens/OrderScreen/OrderScreen";
 import ProfileScreen from "./components/screens/ProfileScreen/ProfileScreen";
-import SuccessScreen from "./components/screens/SuccessScreen/Success";
+import SuccessScreen from "./components/screens/ContactScreen/Success";
 function App() {
   return (
     <div className="bg-dark">

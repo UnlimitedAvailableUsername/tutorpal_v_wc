@@ -5,7 +5,7 @@ from accounts.serializers import *
 from rest_framework.response import Response
 from rest_framework import status
 from datetime import datetime
-
+from rest_framework.exceptions import APIException
 
 # for function-based views:
 from rest_framework.decorators import api_view, permission_classes
@@ -15,11 +15,9 @@ from rest_framework.response import Response
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 
-#### knox ####
-from knox.models import AuthToken
-
 #### simple_jwt ####
 from rest_framework_simplejwt import views as jwt_views 
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
 User = get_user_model()
@@ -112,20 +110,10 @@ def uploadProfilePicture(request):
 
 @api_view(['POST'])
 def loginUser(request):
-    email = request.data.get('email')
-    password = request.data.get('password')
-
-    user = authenticate(email=email, password=password)
-
-    if user:
-        refresh = RefreshToken.for_user(user)
-        serializer = UserSerializer(user)
-        return Response({
-            'token': str(refresh.access_token),
-            'user': serializer.data
-        })
-    else:
-        return Response(status=status.HTTP_401_UNAUTHORIZED)
+    serializer_class = MyTokenObtainPairSerializer
+    token_obtain_pair = jwt_views.TokenObtainPairView.as_view(serializer_class=serializer_class)
+    response = token_obtain_pair(request._request)
+    return Response(response.data, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
@@ -159,7 +147,7 @@ def getUserProfile(request):
 def updateUserProfile(request):
     user = request.user
     data = request.data
-    serializer = UserSerializer(user, many=False)
+    serializer = UserSerializerWithToken(user, many=False)
 
     user.first_name = data.get('first_name') or user.first_name
     user.last_name = data.get('last_name') or user.last_name
@@ -292,25 +280,18 @@ def updateOrderToPaid(request, pk):
 
 
 # FOR CONTACT US 
+@api_view(['POST'])
 @permission_classes([IsAuthenticated])
-@api_view(["POST", "GET"])
 def addContact(request):
     data = request.data
-    print (data)
-    try:
-        user = request.user
-        print(user)
-        contact = Contact.objects.create(
-        email = user,
-        # name = data.get('email'),
-        concern = data['concern'],
-        comment = data['comment'],
-        )
-        serializer = ContactSerializer(contact, many=False)
-        return Response(serializer.data)
-    except:
-        message = {'detail': 'Test'}
-        return Response(message)
+    user = request.user
+    contact = Contact.objects.create(
+        name=user,
+        concern=data['concern'],
+        comment=data['comment'],
+    )
+    serializer = ContactSerializer(contact)
+    return Response(serializer.data)
 
 
 @api_view(['GET'])

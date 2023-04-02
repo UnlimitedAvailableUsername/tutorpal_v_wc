@@ -5,7 +5,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { loginUser } from '../../../features/redux/actions/authUserActions';
 import { useSelector, useDispatch } from 'react-redux'; 
 import MessageAlert from '../../elements/MessageAlert';
-import LoadingIconBig from '../../elements/LoadingIcon';
+import LoadingIconBig from '../../elements/Loader/LoadingIconBig';
 
 
 function LoginScreen() {
@@ -13,8 +13,8 @@ function LoginScreen() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const userLogin = useSelector( state => state.userState )
-    const { error, loading, userInfo } = userLogin
+    const userLoginState = useSelector( state => state.userLoginState )
+    const { error, loading, userInfo } = userLoginState
 
     const dispatch = useDispatch();
     const location = useLocation();
@@ -34,7 +34,9 @@ function LoginScreen() {
     }
 
 
-    useEffect( () => { if(userInfo){ navigate(redirect) } }, [ navigate, userInfo, redirect ] )
+    useEffect( () => { 
+        if(userInfo){ navigate(redirect) } 
+    }, [ navigate, userInfo, redirect ] )
  
     
     return (

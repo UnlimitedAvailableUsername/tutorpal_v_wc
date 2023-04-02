@@ -27,15 +27,35 @@ class UserSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class UserSerializerWithToken1(UserSerializer):
-    token= serializers.SerializerMethodField(read_only=True)
+class UserSerializerWithToken(UserSerializer):
+    token = serializers.SerializerMethodField(read_only=True)
     class Meta:
-        model =User
+        model = User
         fields = '__all__'
 
     def get_token(self,obj):
         token = RefreshToken.for_user(obj)
         return str(token.access_token)
+
+
+class MyTokenObtainPairSerializer(jwt_serializers.TokenObtainPairSerializer):
+    def validate(self, attrs):
+        data = super().validate(attrs)
+       
+        serializer = UserSerializerWithToken(self.user).data
+
+        for k,v in serializer.items():
+            data[k] = v
+
+        return data
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        # Add custom claims
+        token['email'] = user.email
+
+        return token
 
 
 class ReviewSerializer(serializers.ModelSerializer):

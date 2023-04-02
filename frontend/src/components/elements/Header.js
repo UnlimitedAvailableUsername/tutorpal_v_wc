@@ -15,7 +15,7 @@ function Header() {
       dispatch(logoutUser());
     };
   
-  const loginUser = useSelector( (state) => state.userState);
+  const loginUser = useSelector( (state) => state.userLoginState);
   const { userInfo } = loginUser;
 
   const navAccountTitle = <FontAwesomeIcon title="" fixedWidth inverse icon={faUser} />;
@@ -53,7 +53,7 @@ function Header() {
             </Nav>
             <Nav className="md-auto">
               {userInfo && userInfo.staff ? (
-                <NavDropdown variant="dark" title={userInfo.user.username} id="basic-nav-dropdown" >
+                <NavDropdown variant="dark" title={userInfo.username} id="basic-nav-dropdown" >
                   <NavDropdown.Item as={Link} to="/profile"> Profile </NavDropdown.Item>
                   <NavDropdown.Item as={Link} to="#user-list-management"> Users </NavDropdown.Item>
                   <NavDropdown.Item as={Link} to="#tutor-list-management"> Tutors </NavDropdown.Item>

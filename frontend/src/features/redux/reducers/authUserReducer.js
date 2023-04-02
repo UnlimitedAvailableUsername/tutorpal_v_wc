@@ -1,8 +1,8 @@
-import * as actionType from '../constants/constants';
+import * as actionType from '../constants/authConstants';
 // Pls wag nyo na galawin ito if di niyo gets
 
 
-const initialState = {
+const loginInitialState = {
     token: localStorage.getItem('token'),
     isAuthenticated: null,
     loading: false,
@@ -10,7 +10,7 @@ const initialState = {
     error: null,
 }
 
-export const userLoginReducer = (state = initialState, action) => {
+export const userLoginReducer = (state = loginInitialState, action) => {
 
     switch(action.type) {
         case actionType.USER_LOGIN_REQUEST:
@@ -50,28 +50,43 @@ export const userLoginReducer = (state = initialState, action) => {
 }
 
 /* REDUCER USED IN UPDATING USER DETAILS IN ProfileScreen COMPONENT */
-export const userUpdateProfileReducer = (state = {}, action) => {
+
+const profileInitialState = {
+    loading: false,
+    success: null,
+    userInfo: null,
+    error: null,
+}
+
+export const userUpdateProfileReducer = (state = profileInitialState, action) => {
+
     switch (action.type) {
         case actionType.USER_UPDATE_PROFILE_REQUEST:
             return {
+                ...state,
                 loading: true,
             };
 
         case actionType.USER_UPDATE_PROFILE_SUCCESS:
             return {
+                ...state,
                 loading: false,
                 success: true,
-                user: action.payload,
+                userInfo: action.payload,
             };
 
         case actionType.USER_UPDATE_PROFILE_FAIL:
             return {
+                ...state,
                 loading: false,
+                success: false,
                 error: action.payload,
             };
 
         case actionType.USER_UPDATE_PROFILE_RESET:
-            return {}; /* RESET STATE */
+            return {
+                ...state,
+            }; /* RESET STATE */
 
         default:
             return state;
@@ -79,7 +94,9 @@ export const userUpdateProfileReducer = (state = {}, action) => {
 };
 
 /* REDUCER USED IN GETTING USER DETAILS IN ProfileScreen COMPONENT */
-export const userDetailsReducer = (state = { user: {} }, action) => {
+
+export const userDetailsReducer = (state = profileInitialState, action) => {
+
     switch (action.type) {
         case actionType.USER_DETAILS_REQUEST:
             return {
@@ -89,19 +106,21 @@ export const userDetailsReducer = (state = { user: {} }, action) => {
 
         case actionType.USER_DETAILS_SUCCESS:
             return {
+                ...state,
                 loading: false,
                 user: action.payload,
             };
 
         case actionType.USER_DETAILS_FAIL:
             return {
+                ...state,
                 loading: false,
                 error: action.payload,
             };
 
         case actionType.USER_DETAILS_RESET:
             return {
-                user: {},
+                ...state,
             };
 
         default:

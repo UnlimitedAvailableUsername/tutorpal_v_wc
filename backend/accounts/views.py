@@ -1,3 +1,4 @@
+from django.db import IntegrityError
 from django.shortcuts import render
 from django.contrib.auth import get_user_model
 from accounts.models import *
@@ -5,7 +6,9 @@ from accounts.serializers import *
 from rest_framework.response import Response
 from rest_framework import status
 from datetime import datetime
-
+from django.contrib.auth.hashers import make_password
+from rest_framework.views import (APIView, Response)
+from rest_framework.authentication import TokenAuthentication
 
 # for function-based views:
 from rest_framework.decorators import api_view, permission_classes
@@ -85,15 +88,31 @@ def getUser(request, pk):
     return Response(serializer.data)
 
 
-@api_view(['POST'])
-def register(request):
-    serializer = UserSerializer(data=request.data)
-    serializer.is_valid(raise_exception=True)
-    user = serializer.save()
-    return Response({
-        "user": UserSerializer(user, context=serializer.context).data,
-        "token": AuthToken.objects.create(user)[1]
-    })
+# @api_view(['POST'])
+# def register(request):
+#     serializer = UserSerializer(data=request.data)
+#     serializer.is_valid(raise_exception=True)
+#     user = serializer.save()
+#     token = AuthToken.objects.create(user)[1]
+#     response_data = {
+#         "user": UserSerializer(user, context=serializer.context).data,
+#         "token": token
+#     }
+#     return Response(response_data)
+
+#//PARTIAL 
+class RegisterView(APIView):
+    def post(self, request):
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            serializer_with_token = UserSerializerWithToken1(user, many=False)
+            return Response(serializer_with_token.data, status=201)
+        else:
+            return Response(serializer.errors, status=400)
+        
+
+
 
 
 @api_view(['POST'])
@@ -116,6 +135,8 @@ def user_token_obtain_pair_view(request):
     serializer.is_valid(raise_exception=True)
     data = serializer.validated_data
     return Response(data)
+
+
 
 
 

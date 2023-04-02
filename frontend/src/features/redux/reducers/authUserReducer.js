@@ -1,6 +1,10 @@
 import * as actionType from '../constants/constants';
 // Pls wag nyo na galawin ito if di niyo gets
 
+import {USER_REGISTER_REQUEST,
+    USER_REGISTER_SUCCESS,
+    USER_REGISTER_FAIL, USER_LOGOUT,} from "../constants/constants"
+
 
 const initialState = {
     token: localStorage.getItem('token'),
@@ -108,3 +112,35 @@ export const userDetailsReducer = (state = { user: {} }, action) => {
             return state;
     }
 };
+
+
+/* REDUCER USED IN USER REGISTRATION IN RegisterScreen COMPONENT */
+export const userRegisterReducer = (state = {}, action) => {
+    switch (action.type) {
+      case USER_REGISTER_REQUEST:
+        return {
+          loading: true,
+        };
+  
+      case USER_REGISTER_SUCCESS:
+        return {
+          loading: false,
+          userInfo: action.payload,
+        };
+  
+      case USER_REGISTER_FAIL:
+        return {
+          loading: false,
+          error: action.payload,
+        };
+  
+        case actionType.USER_LOGOUT:
+            localStorage.removeItem('userInfo', 'token')
+            return {
+                ...state
+            };
+
+      default:
+        return state;
+    }
+  };

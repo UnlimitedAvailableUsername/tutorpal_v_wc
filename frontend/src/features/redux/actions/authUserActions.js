@@ -10,7 +10,10 @@ import {
     USER_DETAILS_RESET,
     USER_UPDATE_PROFILE_REQUEST,
     USER_UPDATE_PROFILE_SUCCESS,
-    USER_UPDATE_PROFILE_FAIL} from "../constants/constants"
+    USER_UPDATE_PROFILE_FAIL, 
+    USER_REGISTER_REQUEST,
+    USER_REGISTER_SUCCESS,
+    USER_REGISTER_FAIL,} from "../constants/constants"
 
 export const loginUser = ( email, password ) => async(dispatch) => {
 
@@ -140,3 +143,47 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
       });
     }
   };
+
+
+  /* ACTION CREATOR USED IN USER REGISTRATION IN RegisterScreen COMPONENT & HEADER */
+  export const register =(first_name, last_name, username,email,password)=> async(dispatch)=>{
+    try{
+  
+       dispatch({
+           type:USER_REGISTER_REQUEST
+       })
+  
+       const config = {
+           headers:{
+               'Content-type':'application/json'
+           }
+       }
+       console.log(first_name, last_name, username,email,password)
+       const {data}= await axios.post('http://127.0.0.1:8000/api/accounts/users/register/',
+       
+       
+       {first_name, last_name, username, email,password },config )
+  
+       dispatch({
+           type:USER_REGISTER_SUCCESS,
+           payload:data
+       })
+       dispatch({
+           type:USER_LOGIN_SUCCESS,
+           payload:data
+       })
+  
+       localStorage.setItem('userInfo',JSON.stringify(data))
+  
+    }
+    catch(error){
+  
+       dispatch({
+           type:USER_REGISTER_FAIL,
+           payload:error.response && error.response.data.detail
+           ? error.response.data.detail
+           :error.message,
+       })
+       console.log(error)
+    }
+  }

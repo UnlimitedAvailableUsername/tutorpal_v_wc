@@ -12,12 +12,33 @@ class SubjectSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+# class UserSerializer(serializers.ModelSerializer):
+#     subject = serializers.StringRelatedField()
+#     # product = serializers.StringRelatedField()
+#     class Meta:
+#         model = User
+#         fields = '__all__'
+
+
+#//FOR REGSISTER VIEW (PARTIAL)
 class UserSerializer(serializers.ModelSerializer):
-    subject = serializers.StringRelatedField()
-    # product = serializers.StringRelatedField()
+
     class Meta:
         model = User
         fields = '__all__'
+
+    def create(self, validated_data):
+        user = User.objects.create(email=validated_data['email'],
+                                       username=validated_data['username'],
+                                       first_name=validated_data['first_name'],
+                                       last_name=validated_data['last_name'],
+                                         )
+        user.set_password(validated_data['password'])
+        user.save()
+        return user
+
+
+
 
 
 
@@ -42,14 +63,15 @@ class UserSerializerWithToken(jwt_serializers.TokenObtainPairSerializer):
 
         return data
     
-
+# //FOR UPDATE PROFILE & {REGISTER VIEW (PARTIAL)}
 class UserSerializerWithToken1(UserSerializer):
-    token= serializers.SerializerMethodField(read_only=True)
+    token = serializers.SerializerMethodField(read_only=True)
+
     class Meta:
-        model =User
+        model = User
         fields = '__all__'
 
-    def get_token(self,obj):
+    def get_token(self, obj):
         token = RefreshToken.for_user(obj)
         return str(token.access_token)
 

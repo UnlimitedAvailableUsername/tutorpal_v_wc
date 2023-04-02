@@ -6,7 +6,11 @@ urlpatterns = [
     path('', views.getRoutes, name='routes'),
     path('users', views.getUsers, name='users'),
     path('users/<str:pk>', views.getUser, name='user'),
-    path('users/register/', views.register, name='register'),
+    # path('users/register/', views.register, name='register'),
+
+    #//PARTIAL 
+    path('users/register/', views.RegisterView.as_view(), name='register'),
+    
     path('users/login/', views.user_token_obtain_pair_view, name='my_token_obtain_pair'),
     path('users/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
     path('users/upload/', views.uploadProfilePicture, name="upload_image"),

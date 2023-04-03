@@ -118,7 +118,13 @@ def loginUser(request):
     serializer_class = MyTokenObtainPairSerializer
     token_obtain_pair = jwt_views.TokenObtainPairView.as_view(serializer_class=serializer_class)
     response = token_obtain_pair(request._request)
-    return Response(response.data, status=status.HTTP_200_OK)
+
+    # Check if login is successful
+    if response.status_code == status.HTTP_200_OK:
+        return Response(response.data, status=status.HTTP_200_OK)
+    
+    # If login fails, return 401 Unauthorized status code
+    return Response({'detail': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
 
 @api_view(['GET'])

@@ -18,42 +18,49 @@ function Header() {
   const loginUser = useSelector( (state) => state.userLoginState);
   const { userInfo } = loginUser;
 
-  const navAccountTitle = <FontAwesomeIcon title="" fixedWidth inverse icon={faUser} />;
+  const navAccountTitle = (
+    <>
+      <FontAwesomeIcon title="" fixedWidth inverse icon={faUser} />
+      &nbsp;
+      {userInfo && userInfo.username ? userInfo.username : "Account"}
+    </>
+  );  
 
     return (
       <Navbar sticky="top" bg="dark" expand="lg" variant="dark">
-        <Container className="justify-content-center">
-          <Navbar.Brand as={Link} to="/">
-            <img
-              alt="Logo"
-              src={logo}
-              className="ms-5"
-              height="auto"
-              width="160"
-            />
+        <Container className="">
+          <Navbar.Brand as={Link} to="/" className="ms-5">
+            <img alt="Logo" src={logo} className="ms-5" height="auto" width="160" />
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mx-auto">
-              <NavLink as={Link} to="/lesson-list">
-                Lessons
-              </NavLink>
-              <NavLink as={Link} to="/tutor-list">
-                Tutors
-              </NavLink>
-              <NavLink as={Link} to="/add-lesson">
-                Add Lesson
-              </NavLink>
-              <NavLink as={Link} to="/about">
-                About Us
-              </NavLink>
-              <NavLink as={Link} to="/contact-us">
-                Contact Us
-              </NavLink>
+              {userInfo && userInfo.tutor ? (
+                <Nav>
+                  <NavLink as={Link} to="/add-lesson">
+                    Add Lesson
+                  </NavLink>
+                </Nav>
+              ) : (
+                <Nav>
+                  <NavLink as={Link} to="/lesson-list">
+                    Lessons
+                  </NavLink>
+                  <NavLink as={Link} to="/tutor-list">
+                    Tutors
+                  </NavLink>
+                  <NavLink as={Link} to="/about">
+                    About Us
+                  </NavLink>
+                  <NavLink as={Link} to="/contact-us">
+                    Contact Us
+                  </NavLink>
+                </Nav>
+              )}
             </Nav>
-            <Nav className="md-auto">
+            <Nav className="me-5">
               {userInfo && userInfo.staff ? (
-                <NavDropdown variant="dark" title={userInfo.username} id="basic-nav-dropdown" >
+                <NavDropdown variant="dark" title={navAccountTitle} id="basic-nav-dropdown" >
                   <NavDropdown.Item as={Link} to="/profile"> Profile </NavDropdown.Item>
                   <NavDropdown.Item as={Link} to="#user-list-management"> Users </NavDropdown.Item>
                   <NavDropdown.Item as={Link} to="#tutor-list-management"> Tutors </NavDropdown.Item>
@@ -70,7 +77,7 @@ function Header() {
                     <NavDropdown.Item as={Link} to="/student-signup"> Sign up as Student </NavDropdown.Item>
                     <NavDropdown.Item as={Link} to="/tutor-signup"> Sign up as Tutor{" "} </NavDropdown.Item>
                   </NavDropdown>
-                  <NavDropdown variant="dark" title={"Account"} id="basic-nav-dropdown" >
+                  <NavDropdown variant="dark" title={navAccountTitle} id="basic-nav-dropdown" >
                     <NavDropdown.Item as={Link} to="/login"> Sign In </NavDropdown.Item>
                   </NavDropdown>
                 </Nav>

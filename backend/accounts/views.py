@@ -47,45 +47,56 @@ def getRoutes(request):
 def getProducts(request):
     products = models.Schedule.objects.all()
     serializer = ScheduleSerializer(products, many=True)
-    return Response(serializer.data)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 ## For fetching specific product with id, pk
 @api_view(['GET'])
 def getProduct(request, pk):
-    product = models.Schedule.objects.get(_id=pk)
-    serializer = ScheduleSerializer(product, many=False)
-    return Response(serializer.data)
+    try:
+        product = models.Schedule.objects.get(_id=pk)
+        serializer = ScheduleSerializer(product, many=False)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except models.Schedule.DoesNotExist:
+        return Response({'detail': 'Product not found'}, status=status.HTTP_404_NOT_FOUND)
+
 
 
 # For fetching all the users
 @api_view(['GET'])
-# @permission_classes([IsAdminUser])
+@permission_classes([IsAdminUser])
 def getUsers(request):
     users = User.objects.all()
-    serializer = UserSerializer(users,many = True)
-    return Response(serializer.data)
+    serializer = UserSerializer(users, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
 def getSubjects(request):
     subjects = models.Subject.objects.all()
     serializer = SubjectSerializer(subjects, many=True)
-    return Response(serializer.data)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
 def getSubject(request, pk):
-    subject = models.Subject.objects.get(id=pk)
+    try:
+        subject = models.Subject.objects.get(id=pk)
+    except models.Subject.DoesNotExist:
+        return Response({'error': 'Subject does not exist'}, status=status.HTTP_404_NOT_FOUND)
+    
     serializer = SubjectSerializer(subject, many=False)
-    return Response(serializer.data)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
 def getUser(request, pk):
-    user = User.objects.get(id=pk)
+    try:
+        user = User.objects.get(id=pk)
+    except User.DoesNotExist:
+        return Response({"error": "User does not exist."}, status=status.HTTP_404_NOT_FOUND)
     serializer = UserSerializer(user, many=False)
-    return Response(serializer.data)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
@@ -93,10 +104,11 @@ def registerUser(request):
     serializer = UserSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
     user = serializer.save()
-    return Response({
+    response_data = {
         "user": UserSerializer(user, context=serializer.context).data,
         "token": AuthToken.objects.create(user)[1]
-    })
+    }
+    return Response(response_data, status=status.HTTP_201_CREATED)
 
 
 @api_view(['POST'])
@@ -119,11 +131,9 @@ def loginUser(request):
     token_obtain_pair = jwt_views.TokenObtainPairView.as_view(serializer_class=serializer_class)
     response = token_obtain_pair(request._request)
 
-    # Check if login is successful
     if response.status_code == status.HTTP_200_OK:
         return Response(response.data, status=status.HTTP_200_OK)
     
-    # If login fails, return 401 Unauthorized status code
     return Response({'detail': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
 
@@ -154,8 +164,7 @@ def updateUserProfile(request):
         user.set_password(password)
     user.save()
 
-    return Response(serializer.data)
-
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 # Create a new Product
@@ -171,8 +180,8 @@ def addProduct(request):
         count_in_stock_hour=data['count_in_stock_hour'],
     )
 
-    serializer = ProductSerializer(product, many=False)
-    return Response(serializer.data)
+    serializer = ScheduleSerializer(product, many=False)
+    return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 
@@ -225,7 +234,7 @@ def getMyOrders(request):
     user = request.user
     orders = user.order_set.all()
     serializer = OrderScheduleSerializer(orders, many=True)
-    return Response(serializer.data)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
@@ -233,15 +242,13 @@ def getMyOrders(request):
 def getOrders(request):
     orders = OrderSchedule.objects.all()
     serializer = OrderScheduleSerializer(orders, many=True)
-    return Response(serializer.data)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def getOrderById(request, pk):
-
     user = request.user
-
     try:
         order = OrderSchedule.objects.get(_id=pk)
         if user.is_staff or order.user == user:
@@ -261,7 +268,7 @@ def updateOrderToPaid(request, pk):
     order.isPaid = True
     order.paidAt = datetime.now()
     order.save()
-    return Response('Order was paid')
+    return Response({'message': f'Order {pk} was paid.'}, status=status.HTTP_200_OK)
 
 
 # FOR CONTACT US 
@@ -290,3 +297,4 @@ def getContacts(request):
 def getContact(request, pk):
     contact = Contact.objects.get(id=pk)
     serializer = ContactSerializer(contact, many=False)
+    return Response(serializer.data)

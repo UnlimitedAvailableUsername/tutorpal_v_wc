@@ -122,6 +122,8 @@ class CartScheduleSerializer(serializers.ModelSerializer):
 
 
 class ContactSerializer(serializers.ModelSerializer):
+    email = serializers.StringRelatedField()
+
     class Meta:
         model = Contact
         fields = '__all__'

@@ -15,6 +15,9 @@ import SuccessScreen from "./components/screens/SuccessScreen/Success";
 import RegisterScreen from "./components/screens/RegisterScreen/RegisterScreen";
 import TermsofServiceScreen from "./components/screens/TermsofServiceScreen/Termofservice";
 import PrivacyPolicyScreen from "./components/screens/PrivacyPolicyScreen/PrivacyPolicy";
+import Contactlist from "./components/screens/ContactListScreen/ContactList";
+import ContactDetail from "./components/screens/ContactDetailScreen/ContactDetail";
+
 function App() {
   return (
     <div className="bg-dark">
@@ -39,6 +42,8 @@ function App() {
 
           <Route path="/contact-us" element={ <ContactScreen /> } exact />
           <Route path="/contact-success" element={ <SuccessScreen/> } exact />
+          <Route path="/concern-list" element={ <Contactlist/> } exact />
+          <Route path="/concern-list/concern/:id" element={ <ContactDetail /> } exact />
           {/* <Route path='/order/:id' element={<OrderScreen/>} /> */}
 
           <Route path="/termsofservice" element={ <TermsofServiceScreen/> } exact />

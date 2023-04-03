@@ -39,7 +39,17 @@ function Header() {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mx-auto">
-                        <NavLink as={ Link } to="/lesson-list">Lessons</NavLink>
+                        {/* <NavLink as={ Link } to="/lesson-list">Lessons</NavLink> */}
+                        <NavDropdown variant="dark" title="Subjects" id="basic-nav-dropdown">
+                            <NavDropdown.Item as={ Link } to="/student-signup">Math</NavDropdown.Item>
+                            <NavDropdown.Item as={ Link } to="/student-signup">Geography</NavDropdown.Item>
+                            <NavDropdown.Item as={ Link } to="/student-signup">Science</NavDropdown.Item>
+                            <NavDropdown.Item as={ Link } to="/student-signup">Physical Education</NavDropdown.Item>
+                            <NavDropdown.Item as={ Link } to="/student-signup">Arts</NavDropdown.Item>
+                            <NavDropdown.Item as={ Link } to="/student-signup">Social Sciences</NavDropdown.Item>
+                            <NavDropdown.Item as={ Link } to="/student-signup">Language</NavDropdown.Item>
+                            <NavDropdown.Item as={ Link } to="/student-signup">History</NavDropdown.Item>
+                        </NavDropdown>
                         <NavLink as={ Link } to="/tutor-list">Tutors</NavLink>
                         <NavLink as={ Link } to="/add-lesson">Add Lesson</NavLink>
                         <NavLink as={ Link } to="/about">About Us</NavLink>
@@ -53,6 +63,7 @@ function Header() {
                         { userInfo ? (
                             <NavDropdown variant="dark" title={navAccountTitle} id="basic-nav-dropdown">
                                 <NavDropdown.Item as={ Link } to="/profile">Profile</NavDropdown.Item>
+                                <NavDropdown.Item as={ Link } to="/concern-list">Concerns</NavDropdown.Item>
                                 <NavDropdown.Item href="/" onClick={ handleLogout }>Sign Out</NavDropdown.Item>
                             </NavDropdown>
                         ) : (

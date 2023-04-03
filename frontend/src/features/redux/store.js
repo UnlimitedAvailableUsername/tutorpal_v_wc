@@ -5,7 +5,7 @@ import { userLoginReducer, userDetailsReducer, userUpdateProfileReducer, userReg
 import { tutorListReducer, tutorDetailsReducer } from "./reducers/tutorReducer";
 import { productListReducer, productDetailsReducer } from './reducers/productReducer';
 import { subjectDetailReducer, subjectsListReducer } from "./reducers/subjectReducer";
-import { ConcernDetailsReducer, ConcernListReducer } from "./reducers/concernReducer";
+import { contactDetailsReducer, contactListReducer } from "./reducers/contactReducer";
 import {
     orderCreateReducer,
     orderDetailsReducer,
@@ -28,8 +28,8 @@ const reducers = combineReducers({
     subjectDetails: subjectDetailReducer,
     orderDetails: orderDetailsReducer,
     orderPay: orderPayReducer,
-    ConcernList: ConcernListReducer,
-    ConcernDetails: ConcernDetailsReducer,
+    contactList: contactListReducer,
+    contactDetails: contactDetailsReducer,
     
     
 });

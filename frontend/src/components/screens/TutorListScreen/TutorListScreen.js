@@ -50,7 +50,7 @@ function TutorListScreen() {
         <div>
           <Row>
             {users.filter((user) => user.tutor).map((user) => (
-                <Col key={user.id} sm={12} md={6} lg={4} xl={12}>
+                <Col key={user.id} sm={12} md={6} xl={12}>
                   <Tutor user={user} />
                 </Col>
               ))}

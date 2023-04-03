@@ -1,24 +1,29 @@
 from django.shortcuts import render
 from django.contrib.auth import get_user_model
-from accounts.models import *
-from accounts.serializers import *
+
+## FROM PYTHON IMPORTS
+from datetime import datetime
+
+# FROM REST FRAMEWORK IMPORTS
 from rest_framework.response import Response
 from rest_framework import status
-from datetime import datetime
 from rest_framework.exceptions import APIException
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
-# for function-based views:
+## FOR REST FRAMEWORK FUNCTION-BASED VIEWS:
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 
-## for class-based views:
+## FOR REST FRAMEWORK CLASS-BASED VIEWS:
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated
 
-#### simple_jwt ####
+## SIMPLE JWT ##
 from rest_framework_simplejwt import views as jwt_views 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
+## LOCAL IMPORTS ##
+from accounts.models import *
+from accounts.serializers import *
 
 User = get_user_model()
 
@@ -124,23 +129,6 @@ def getUserProfile(request):
     return Response(serializer.data)
 
 
-# @api_view(['PUT'])
-# @permission_classes([IsAuthenticated])
-# def updateUserProfile(request):
-#     user = request.user 
-#     serializer = UserSerializerWithToken1(user, many=False)
-#     data = request.data
-#     user.first_name = data.get('first_name', user.first_name)
-#     user.last_name = data.get('last_name', user.last_name)
-#     user.bio = data.get('bio', user.bio)
-#     user.username = data.get('username', user.username)
-#     user.email = data.get('email', user.email)
-#     password = data.get('password')
-#     if password:
-#         user.set_password(password)
-#     user.save()
-#     return Response(serializer.data)
-
 
 @api_view(['PUT', 'PATCH', 'GET'])
 @permission_classes([IsAuthenticated])
@@ -164,30 +152,21 @@ def updateUserProfile(request):
 
 
 
-
-
-
-@api_view(["POST", "GET"])
+# Create a new Product
+@api_view(['POST'])
+@permission_classes([IsAdminUser])
 def addProduct(request):
+    user = request.user
     data = request.data
-    print (data)
-    try:
-        # user1 = request.data.user
-        price_to_be_set = request.data.user.price
-        subject2 = models.Subject.objects.get(_id=data['subject'])
-        product = models.Schedule.objects.create(
-        # user = user1,
-        lesson_name = data['lesson'],
-        schedule = data['schedule'],
-        rate_hour = data['rate'],
-        price = data['price_to_be_set'],
-        subject = subject2,
-        )
-        serializer = SubjectSerializer(product, many=False)
-        return Response(serializer.data)
-    except:
-        message = {'detail': 'Test'}
-        return Response(message)
+    product = Schedule.objects.create(
+        user=user,
+        date=data['date'],
+        price=data['price'],
+        count_in_stock_hour=data['count_in_stock_hour'],
+    )
+
+    serializer = ProductSerializer(product, many=False)
+    return Response(serializer.data)
 
 
 
@@ -203,7 +182,7 @@ def addOrderItems(request):
         return Response({'detail': 'No Order Items', "status": status.HTTP_400_BAD_REQUEST})
     else:
         # (1) Create Order
-        order = CartSchedule.objects.create(
+        order = OrderSchedule.objects.create(
             user=user,
             paymentMethod=data['paymentMethod'],
             taxPrice=data['taxPrice'],
@@ -216,7 +195,7 @@ def addOrderItems(request):
         for i in orderItems:
             product = Schedule.objects.get(_id=i['product'])
 
-            item = CartScheduleItem.objects.create(
+            item = OrderScheduleItem.objects.create(
                 product=product,
                 order=order,
                 name=product.name,
@@ -230,7 +209,7 @@ def addOrderItems(request):
             product.countInStock -= item.qty
             product.save()
 
-        serializer = CartScheduleSerializer(order, many=False)
+        serializer = OrderScheduleSerializer(order, many=False)
         return Response(serializer.data)
 
 
@@ -239,15 +218,15 @@ def addOrderItems(request):
 def getMyOrders(request):
     user = request.user
     orders = user.order_set.all()
-    serializer = CartScheduleSerializer(orders, many=True)
+    serializer = OrderScheduleSerializer(orders, many=True)
     return Response(serializer.data)
 
 
 @api_view(['GET'])
 # @permission_classes([IsAdminUser])
 def getOrders(request):
-    orders = CartSchedule.objects.all()
-    serializer = CartScheduleSerializer(orders, many=True)
+    orders = OrderSchedule.objects.all()
+    serializer = OrderScheduleSerializer(orders, many=True)
     return Response(serializer.data)
 
 
@@ -258,9 +237,9 @@ def getOrderById(request, pk):
     user = request.user
 
     try:
-        order = CartSchedule.objects.get(_id=pk)
+        order = OrderSchedule.objects.get(_id=pk)
         if user.is_staff or order.user == user:
-            serializer = CartScheduleSerializer(order, many=False)
+            serializer = OrderScheduleSerializer(order, many=False)
             return Response(serializer.data)
         else:
             Response({'detail': 'Not Authorized  to view this order'},
@@ -272,7 +251,7 @@ def getOrderById(request, pk):
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def updateOrderToPaid(request, pk):
-    order = CartSchedule.objects.get(_id=pk)
+    order = OrderSchedule.objects.get(_id=pk)
     order.isPaid = True
     order.paidAt = datetime.now()
     order.save()

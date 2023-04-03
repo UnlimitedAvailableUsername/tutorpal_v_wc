@@ -1,15 +1,13 @@
-import datetime
-from decimal import Decimal
+# DJANGO IMPORTS
+from django.contrib.auth import get_user_model
 
+# REST FRAMEWORK IMPORTS
 from rest_framework import serializers
-
-from django.db.models.fields.files import ImageFieldFile
-from django.forms.models import model_to_dict
-
 from rest_framework_simplejwt import serializers as jwt_serializers
-from django.contrib.auth import get_user_model, authenticate
-from .models import *
 from rest_framework_simplejwt.tokens import RefreshToken
+
+# LOCAL IMPORTS
+from .models import *
 
 User = get_user_model()
 
@@ -58,10 +56,12 @@ class MyTokenObtainPairSerializer(jwt_serializers.TokenObtainPairSerializer):
         return token
 
 
+
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = '__all__'
+
 
 
 class ScheduleSerializer(serializers.ModelSerializer):
@@ -78,22 +78,22 @@ class ScheduleSerializer(serializers.ModelSerializer):
 
 
 
-class CartScheduleItemSerializer(serializers.ModelSerializer):
+class OrderScheduleItemSerializer(serializers.ModelSerializer):
     class Meta:
-        model = CartScheduleItem
+        model = OrderScheduleItem
         fields = '__all__'
 
-class CartScheduleSerializer(serializers.ModelSerializer):
+class OrderScheduleSerializer(serializers.ModelSerializer):
     orderItems = serializers.SerializerMethodField(read_only=True)
     User = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
-        model = CartSchedule
+        model = OrderSchedule
         fields = '__all__'
 
     def get_orderItems(self, obj):
         items = obj.orderitem_set.all()
-        serializer = CartScheduleItemSerializer(items,many=True)
+        serializer = OrderScheduleItemSerializer(items,many=True)
         return serializer.data
 
     def get_User(self, obj):

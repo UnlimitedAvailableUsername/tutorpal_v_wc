@@ -78,14 +78,6 @@ class UserManager(BaseUserManager):
 
         return user
 
-# have other plan for this:
-class Subject(models.Model):
-    subject_title = models.TextField(max_length=100)
-    _id = models.AutoField(primary_key=True)
-
-    def __str__(self):
-        return self.subject_title
-
 
 class User(AbstractBaseUser):
 
@@ -97,7 +89,6 @@ class User(AbstractBaseUser):
     profile_picture = models.ImageField(("User Picture"), null=True, default='profile_pictures/default/tutor.jpg', upload_to=upload_image_path)
     contact = models.CharField(("contact number"), max_length=50, blank=True)
     bio = models.TextField(("bio which also houses the lessons"), max_length=999999, blank=True)
-    subject = models.ForeignKey(Subject, on_delete=models.SET_NULL, null=True, blank=True)
     active = models.BooleanField(("active"), default=True, help_text=("Designates whether this user should be treated as active. Unselect this instead of deleting accounts."),)
     staff = models.BooleanField(("staff status"), default=False, help_text=("Designates whether the user can log into this admin site."),)
     student = models.BooleanField(("Student"), default=False, help_text=("Categorizes the user as student"),)
@@ -114,7 +105,8 @@ class User(AbstractBaseUser):
     objects = UserManager()
 
     def __str__(self):
-        return self.email + " (" + self.username + ")"
+        username = self.username if self.username else "No username"
+        return f"{self.email} ({username})"
 
     ###########################################################
     #### important bits for logging into Django Admin page ####
@@ -143,11 +135,21 @@ class User(AbstractBaseUser):
         return self.student
 
 
+# have other plan for this:
+class Subject(models.Model):
+    subject_title = models.TextField(max_length=100)
+    user = models.ForeignKey(User, verbose_name=("User assigned (Tutor)"), on_delete=models.CASCADE)
+    _id = models.AutoField(primary_key=True)
+
+    def __str__(self):
+        return f"{self.subject_title} ({self.user.username})"
+
+
 class Schedule(models.Model):
-    date = models.CharField(("Day to be scheduled"), max_length=50)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
-    count_in_stock_hour = models.PositiveIntegerField(("How many slots of hours available?"), )
+    date = models.CharField(("Day to be scheduled"), max_length=50)
     price = models.CharField(max_length=255, blank=True, null=True)
+    count_in_stock_hour = models.PositiveIntegerField(("How many slots of hours available?"), )
     _id = models.AutoField(primary_key=True)
 
 
@@ -164,7 +166,7 @@ class Review(models.Model):
         return str(self.rating)
 
 
-class CartSchedule(models.Model):
+class OrderSchedule(models.Model):
     user = models.ForeignKey(User,on_delete=models.SET_NULL,null=True)
     paymentMethod = models.CharField(max_length=200,null=True,blank=True)
     totalPrice = models.DecimalField(max_digits=12,decimal_places=2,null=True,blank=True)
@@ -179,9 +181,9 @@ class CartSchedule(models.Model):
         return str(self.createdAt)
 
 
-class CartScheduleItem(models.Model):
+class OrderScheduleItem(models.Model):
     product = models.ForeignKey(Schedule,on_delete=models.SET_NULL,null=True, help_text=("Schedule Date"))
-    order  = models.ForeignKey(CartSchedule,on_delete=models.SET_NULL,null=True, help_text=("From the cart"))
+    order  = models.ForeignKey(OrderSchedule,on_delete=models.SET_NULL,null=True, help_text=("From the cart"))
     name = models.CharField(max_length=200,null=True,blank=True, help_text=("Cart Item Name"))
     qty = models.IntegerField(null=True,blank=True,default=0, help_text=("Quantity of Hour"))
     price = models.DecimalField(max_digits=12,decimal_places=2,null=True,blank=True, help_text=("Price from the Product"))

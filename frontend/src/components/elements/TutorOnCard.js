@@ -11,7 +11,7 @@ function Tutor({ user }) {
         <Row>
           <Col>
             <Link to={`tutor/${user.id}`}>
-              <Card.Img src={`${user.profile_picture}`} />
+              <Card.Img className="img-responsive" style={{ width: 'auto', height: '16em' }} src={`${user.profile_picture}`} />
             </Link>
           </Col>
           <Col>

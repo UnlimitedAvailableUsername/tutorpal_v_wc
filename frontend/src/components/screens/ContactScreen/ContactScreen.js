@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "../../../assets/components/screens/ContactScreen/Contact.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -7,10 +7,10 @@ import {
   faEnvelope,
 } from "@fortawesome/free-solid-svg-icons";
 import { useState} from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,  } from "react-router-dom";
 import {Form, Button } from "react-bootstrap";
-import { useDispatch, useSelector} from "react-redux";
-import { AddContact } from "../../../features/redux/actions/productAction";
+import { useDispatch, useSelector } from "react-redux"
+import { AddContact } from "../../../features/redux/actions/contactActions";
 import HeaderHome from '../../elements/HeaderHomePage'
 import HeaderStudent from '../../elements/HeaderStudent'
 import HeaderTutor from '../../elements/HeaderTutor'

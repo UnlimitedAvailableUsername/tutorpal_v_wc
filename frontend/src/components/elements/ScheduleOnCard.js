@@ -2,26 +2,26 @@ import React from 'react';
 import { Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
- 
-function Product( {product }) {
+
+function Product( {schedule }) {
   return (
     <Card className="my-3 p-3 rounded">
-    <Link to={`products/${product._id}`}>
+    <Link to={`products/${schedule._id}`}>
     </Link>
     <Card.Body>
-      <Link to={`products/${product._id}`}>
+      <Link to={`products/${schedule._id}`}>
         <Card.Title>
-          <strong>{product.lesson_name}</strong>
+          <strong>{schedule.lesson_name}</strong>
         </Card.Title>
       </Link>
       <Card.Text as="div">
-        <div> Subject: {product.subject_name} <br></br>
-       Tutor:   {product.user}
+        <div> Subject: {schedule.subject_name} <br></br>
+       Tutor:   {schedule.user}
         </div>
       </Card.Text>
       <Card.Text >
-        Schedule: {product.schedule} <br></br>
-        Php: {product.rate_hour}
+        Schedule: {schedule.schedule} <br></br>
+        Php: {schedule.rate_hour}
               </Card.Text>
     </Card.Body>
   </Card>

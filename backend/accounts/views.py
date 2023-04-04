@@ -44,17 +44,17 @@ def getRoutes(request):
 
 
 @api_view(['GET'])
-def getProducts(request):
-    products = models.Schedule.objects.all()
-    serializer = ScheduleSerializer(products, many=True)
+def getSchedules(request):
+    Schedules = Schedule.objects.all()
+    serializer = ScheduleSerializer(Schedules, many=True)
     return Response(serializer.data)
 
 
-## For fetching specific product with id, pk
+
 @api_view(['GET'])
-def getProduct(request, pk):
-    product = models.Schedule.objects.get(_id=pk)
-    serializer = ScheduleSerializer(product, many=False)
+def getSchedule(request, pk):
+    schedule = Schedule.objects.get(_id=pk)
+    serializer = ScheduleSerializer(schedule, many=False)
     return Response(serializer.data)
 
 
@@ -190,28 +190,26 @@ class MyTokenObtainPairView(TokenObtainPairView):
 
 
 
+@permission_classes([IsAuthenticated])
 @api_view(["POST", "GET"])
-def addProduct(request):
+def addSchedule(request):
     data = request.data
     print (data)
     try:
-        # user1 = request.data.user
-        price_to_be_set = request.data.user.price
-        subject2 = models.Subject.objects.get(_id=data['subject'])
-        product = models.Schedule.objects.create(
-        # user = user1,
-        lesson_name = data['lesson'],
-        schedule = data['schedule'],
-        rate_hour = data['rate'],
-        price = data['price_to_be_set'],
-        subject = subject2,
+        user1 = request.user
+        price1= request.user.price_rate_hour
+        print(user1)
+        schedule = Schedule.objects.create(
+        date = data['date'],
+        user = user1,
+        count_in_stock_hour = data['stock'],
+        price = price1,
         )
-        serializer = SubjectSerializer(product, many=False)
+        serializer = ScheduleSerializer(schedule, many=False)
         return Response(serializer.data)
     except:
         message = {'detail': 'Test'}
         return Response(message)
-
 
 
 @api_view(['POST'])

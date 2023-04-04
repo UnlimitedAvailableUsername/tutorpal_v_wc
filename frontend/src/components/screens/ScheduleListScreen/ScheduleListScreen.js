@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import {useDispatch, useSelector} from 'react-redux';
-import { listProducts } from "../../../features/redux/actions/productAction";
+import { listSchedules } from "../../../features/redux/actions/scheduleAction";
 import { Row, Col, Container } from "react-bootstrap";
-import Product from "../../elements/LessonOnCard";
+import Schedule from "../../elements/ScheduleOnCard";
 
 
 function LessonListScreen() {
@@ -13,11 +13,11 @@ function LessonListScreen() {
 
   const dispatch = useDispatch() 
 
-  const productList = useSelector(state => state.productList)
-  const {products} = productList
+  const scheduleList = useSelector(state => state.scheduleList)
+  const {schedules} = scheduleList
 
   useEffect(() => {
-    dispatch(listProducts())
+    dispatch(listSchedules())
    
 
   }, [dispatch]);
@@ -59,17 +59,17 @@ function LessonListScreen() {
       <br></br>
    
         <Row>
-         {products.filter((product)=>
+         {schedules.filter((schedule)=>
         {
           return search.toLowerCase() === '' ? 
-          product : product.lesson_name.toLowerCase().includes(search)||
-          product.user.toLowerCase().includes(search) ||
-          product.rate_hour.includes(search) ||
-          product.subject_name.toLowerCase().includes(search) ||
-          product.schedule.toLowerCase().includes(search);
-        }).map((product) => (
-            <Col key={product.id} sm={12} md={6} lg={4} xl={3}>
-              <Product product={product} />
+          schedule : schedule.lesson_name.toLowerCase().includes(search)||
+          schedule.user.toLowerCase().includes(search) ||
+          schedule.rate_hour.includes(search) ||
+          schedule.subject_name.toLowerCase().includes(search) ||
+          schedule.schedule.toLowerCase().includes(search);
+        }).map((schedule) => (
+            <Col key={schedule.id} sm={12} md={6} lg={4} xl={3}>
+              <Schedule schedule={schedule} />
             </Col>
           ))}
         </Row>

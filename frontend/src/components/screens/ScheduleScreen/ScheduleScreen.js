@@ -2,16 +2,16 @@ import React, { useEffect } from "react";
 import { Row, Col, ListGroup, Container } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {listProductDetails} from "../../../features/redux/actions/productAction";
+import {listScheduleDetails} from "../../../features/redux/actions/scheduleAction";
 
 function ProductScreen() {
   const { id } = useParams();
- 
+
   const dispatch = useDispatch();
-  const productDetails = useSelector((state) => state.productDetails)
-  const {product} = productDetails
+  const scheduleDetails = useSelector((state) => state.scheduleDetails)
+  const {schedule} = scheduleDetails
   useEffect(() => {
-    dispatch(listProductDetails(id))
+    dispatch(listScheduleDetails(id))
 
   }, [dispatch]);
 
@@ -31,7 +31,7 @@ function ProductScreen() {
                 
                     <ListGroup variant="flush">
                         <ListGroup.Item>
-                            <h3>{product.lesson_name}</h3>
+                            <h3>{schedule.lesson_name}</h3>
                         </ListGroup.Item>
 
                        
@@ -41,7 +41,7 @@ function ProductScreen() {
                                     Service:
                                 </Col>
                                 <Col>
-                                    <strong>$ {product.rate_hour}</strong>
+                                    <strong>$ {schedule.rate_hour}</strong>
                                 </Col>
                             </Row>
                         </ListGroup.Item>
@@ -52,7 +52,7 @@ function ProductScreen() {
                                     Tutor:
                                 </Col>
                                 <Col>
-                                {product.user}
+                                {schedule.user}
                                 </Col>
                             </Row>
                         </ListGroup.Item>
@@ -63,7 +63,7 @@ function ProductScreen() {
                                     Subject:
                                 </Col>
                                 <Col>
-                                {product.subject_name}
+                                {schedule.subject_name}
                                 </Col>
                             </Row>
                         </ListGroup.Item>

@@ -23,23 +23,11 @@ import ContactDetail from '../src/components/screens/ContactDetailScreen/Contact
 
 function App() {
 
- 
-    //ETO AY PARA GUMANA ANG CONDITIONING BY CALLING THE LOCALSTORAGE
-    const [userInfo, setUserInfo] = useState(null);
- const navigate = useNavigate()
-    useEffect(() => {
-      // Here, you can fetch the user info from an API or a local storage.
-      // For this example, let's assume we're fetching it from local storage.
-      const storedUserInfo = localStorage.getItem('userInfo');
-      setUserInfo(storedUserInfo);
-    }, []);
-   
-
   return (
     <div className="bg-dark">
 
   
-
+ 
       <div className="screen" style={{overflowX: "hidden"}} >
         <Routes>
 

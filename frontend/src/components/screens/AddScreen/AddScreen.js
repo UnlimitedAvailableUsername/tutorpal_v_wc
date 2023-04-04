@@ -14,7 +14,7 @@
 
 //   const subjectList = useSelector((state) => state.subjectList);
 //   const subjects = subjectList?.subjects || [];
-
+ 
 //   useEffect(() => {
 //     dispatch(listsubjects());
 //   }, []);

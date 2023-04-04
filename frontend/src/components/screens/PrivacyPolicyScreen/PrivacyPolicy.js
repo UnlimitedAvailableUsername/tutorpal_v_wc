@@ -4,7 +4,7 @@ import { Form, Button, Row, Col, Card, Container } from 'react-bootstrap'
 
 
 function PrivacyPolicyScreen() {
-
+ 
     return (
       <div>
       <Row className="justify-content-center align-items-center">

@@ -5,7 +5,7 @@ import { Form, Button, Row, Col, Card, Container } from 'react-bootstrap'
 
 function TermsofServiceScreen() {
 
-    return (
+    return ( 
       <div>
       <Row className="justify-content-center align-items-center">
           <Col xl={8} xs={10}>

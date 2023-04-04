@@ -12,7 +12,7 @@ const Video = ({ videoRef, aboutRef }) => {
       behavior: "smooth",
     });
   };
-
+ 
   return (
     <div ref={videoRef}>
       <video className='video-bg' playsInline autoPlay muted loop >

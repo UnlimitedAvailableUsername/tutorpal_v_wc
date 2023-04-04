@@ -20,5 +20,5 @@ const ReadMore = ({ text, maxLength }) => {
     </>
   );
 };
-
+ 
 export default ReadMore;

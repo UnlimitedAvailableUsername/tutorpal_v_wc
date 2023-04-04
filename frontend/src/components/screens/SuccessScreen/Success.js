@@ -10,7 +10,7 @@ function Success() {
           Thank you for contacting us, your response has been sent and is now being processed. Please keep an eye on your provided email in your account. The response will be sent there.
         
         </h4>
-
+ 
         <Link
           to="/"
           className="btn btn-warning btn-lg btn-outline-dark my-4 "

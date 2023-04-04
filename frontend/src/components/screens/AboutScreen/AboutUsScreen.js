@@ -13,7 +13,7 @@ function AboutUs() {
     {
       name: 'Manuel Mendez',
       image: { src: image },
-      email: 'jane.doe@example.com'
+      email: 'jane.doe@example.com' 
     },
     {
       name: 'Marc Joshua Beltran',

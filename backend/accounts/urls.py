@@ -7,7 +7,7 @@ urlpatterns = [
     path('users', views.getUsers, name='users'),
     path('users/<str:pk>', views.getUser, name='user'),
     # path('users/register/', views.register, name='register'),
-
+ 
     #//PARTIAL 
     path('users/register/', views.RegisterView.as_view(), name='register'),
     path('users/login/', views.MyTokenObtainPairView.as_view(), name='token_obtain_pair'),

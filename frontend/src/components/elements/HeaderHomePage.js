@@ -7,7 +7,7 @@ import { useLocation, useNavigate, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { logoutUser } from "../../features/redux/actions/authUserActions";
 
-
+ 
 function Header() {
     const dispatch = useDispatch();
 

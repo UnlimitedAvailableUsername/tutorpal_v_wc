@@ -20,7 +20,7 @@ export const tutorListReducer = (state = {users:[]}, action) => {
         default:
             return state;
     }
-};
+}; 
 
 export const tutorDetailsReducer = (state = {user:[]}, action) => {
     switch (action.type) {

@@ -15,7 +15,7 @@ function ContactDetail() {
   useEffect(() => {
     dispatch(listContactDetails(id));
   }, [dispatch, id]);
-
+  
   return (
     <div>
       <Container>

@@ -9,7 +9,7 @@ function Contact({ contact }) {
   const toggleComment = () => {
     setShowComment(!showComment);
   };
-
+ 
   return (
     <div>
       <Row>

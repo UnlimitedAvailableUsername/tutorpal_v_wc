@@ -6,7 +6,7 @@ import {listProductDetails} from "../../../features/redux/actions/productAction"
 
 function ProductScreen() {
   const { id } = useParams();
-
+ 
   const dispatch = useDispatch();
   const productDetails = useSelector((state) => state.productDetails)
   const {product} = productDetails

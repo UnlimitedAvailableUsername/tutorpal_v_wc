@@ -8,7 +8,7 @@ import MessageAlert from '../../elements/MessageAlert'
 import { register } from '../../../features/redux/actions/authUserActions'
 
 function RegisterScreen() {
-
+ 
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [first_name, setFirstName] = useState("");

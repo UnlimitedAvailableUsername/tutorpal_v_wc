@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import MessageAlert from '../../elements/MessageAlert';
 import LoadingIconBig from '../../elements/LoadingIcon';
 
-
+ 
 function LoginScreen() {
     
     const [email, setEmail] = useState("");

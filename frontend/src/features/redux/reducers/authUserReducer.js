@@ -13,7 +13,7 @@ const initialState = {
     userInfo: null,
     error: null,
 }
-
+ 
 export const userLoginReducer = (state = initialState, action) => {
 
     switch(action.type) {

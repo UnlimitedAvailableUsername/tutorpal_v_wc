@@ -1,6 +1,6 @@
 import { Spinner } from "react-bootstrap";
 import '../../assets/components/elements/LoadingIconBig/spinner.css'
-
+ 
 
 function LoadingIconBig() {
     return (

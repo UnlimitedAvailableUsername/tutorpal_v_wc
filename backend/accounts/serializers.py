@@ -66,7 +66,7 @@ class UserSerializerWithToken(jwt_serializers.TokenObtainPairSerializer):
         data['user'] = user_serializer.data
 
         return data
-    
+     
 # //FOR UPDATE PROFILE & {REGISTER VIEW (PARTIAL)}
 class UserSerializerWithToken1(UserSerializer):
     student = serializers.SerializerMethodField(read_only=True)

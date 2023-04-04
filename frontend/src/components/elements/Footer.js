@@ -8,7 +8,7 @@ function Footer() {
       <div className="container">
 
         <hr />
-
+ 
         <Row>
             
           {/* Column1 */}

@@ -13,7 +13,7 @@ function Tutor({ user }) {
             <Link to={`tutor/${user.id}`}>
               <Card.Img style={{width: 300}} src={`${user.profile_picture}`} />
             </Link>
-          </Col>
+          </Col> 
           <Col>
             <Card.Body >
               <Link to={`tutor/${user.id}`}>

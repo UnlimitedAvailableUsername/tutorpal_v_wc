@@ -8,7 +8,7 @@ def upload_image_path(instance, filename):
     ext = filename.split('.')[-1]
     filename = "%s.%s" %(uuid.uuid4(), ext)
     destination = os.path.join('profile_pictures/', "%s/%s" %(instance.username, filename))
-    return destination
+    return destination 
 
 
 def update_last_login(sender, user, **kwargs):

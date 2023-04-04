@@ -4,7 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { listTutorDetails } from "../../../features/redux/actions/tutorActions";
-
+ 
 function TutorDetailScreen() {
   const { id } = useParams();
 

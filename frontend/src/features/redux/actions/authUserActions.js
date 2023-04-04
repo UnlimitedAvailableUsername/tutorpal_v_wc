@@ -54,7 +54,7 @@ export const logoutUser = () => (dispatch) => {
     dispatch({ type: actionType.USER_LOGOUT })
 };
 
-
+ 
 
 
 /* ACTION CREATOR USED IN GETTING USER DETAILS IN ProfileScreen COMPONENT  */

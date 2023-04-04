@@ -18,9 +18,9 @@ urlpatterns = [
     path('users/profile/',views.getUserProfile,name="user_profile"),
     path('users/profile/update/',views.updateUserProfile,name="user_profile_update"),
 
-    path('schedules/', views.getProducts, name='products'),
-    path('schedules/create', views.addProduct, name='add_product'),
-    path('schedules/<str:pk>', views.getProduct, name='product'),
+    path('schedules/', views.getSchedules, name='schedules'),
+    path('schedules/create', views.addSchedule, name='add_schedule'),
+    path('schedules/<str:pk>', views.getSchedule, name='schedule'),
 
     path('subjects/', views.getSubjects, name='subjects'),
     path('subjects/<str:pk>', views.getSubject, name='subject'),

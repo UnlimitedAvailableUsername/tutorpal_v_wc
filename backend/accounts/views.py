@@ -207,10 +207,19 @@ def getUsersBySubject(request, subject_id):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
 
+## CREATED A CUSTOM PERMISSION FOR TUTOR ONLY
+from rest_framework.permissions import BasePermission
+
+class IsTutorUser(BasePermission):
+    def has_permission(self, request, view):
+        user = request.user
+        return user.is_authenticated and user.is_tutor
+
+
 # Create a new Product
 @api_view(['POST'])
-@permission_classes([IsAdminUser])
-def addProduct(request):
+@permission_classes([IsTutorUser])
+def addSchedule(request):
     user = request.user
     data = request.data
     product = Schedule.objects.create(
@@ -222,6 +231,15 @@ def addProduct(request):
 
     serializer = ScheduleSerializer(product, many=False)
     return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getMyOwnSchedules(request, user_id):
+    user = request.user
+    schedules = Schedule.objects.filter(user=user)
+    serializer = ScheduleSerializer(schedules, many=True)
+    return Response(serializer.data)
 
 
 @api_view(['POST'])

@@ -3,10 +3,16 @@ import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { userLoginReducer, userDetailsReducer, userUpdateProfileReducer } from "./reducers/authUserReducer";
 import { tutorListReducer, tutorDetailsReducer } from "./reducers/tutorReducer";
-import { productListReducer, productDetailsReducer } from './reducers/productReducer';
-import { subjectDetailReducer, subjectsListReducer } from "./reducers/subjectReducer";
+import { scheduleListReducer, scheduleDetailsReducer } from './reducers/scheduleReducer';
 import { addContactReducer } from "./reducers/contactReducer";
-import { orderCreateReducer, orderDetailsReducer, orderPayReducer, orderListMyReducer, orderListReducer, orderDeliverReducer, } from '../redux/reducers/orderReducers'
+import {
+	orderCreateReducer,
+	orderDetailsReducer,
+	orderPayReducer,
+	orderListMyReducer,
+	orderListReducer,
+	orderDeliverReducer,
+} from "../redux/reducers/orderReducers";
 
 const reducers = combineReducers({
     userLoginState: userLoginReducer,
@@ -15,10 +21,8 @@ const reducers = combineReducers({
     contactUsFormState: addContactReducer,
     tutorList: tutorListReducer,
     tutorDetails: tutorDetailsReducer,
-    productList: productListReducer,
-    productDetails: productDetailsReducer,
-    subjectList: subjectsListReducer,
-    subjectDetails: subjectDetailReducer,
+    scheduleListState: scheduleListReducer,
+    scheduleDetailsState: scheduleDetailsReducer,
     orderDetails: orderDetailsReducer,
     orderPay: orderPayReducer,
 });

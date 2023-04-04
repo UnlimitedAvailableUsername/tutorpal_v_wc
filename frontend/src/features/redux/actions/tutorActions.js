@@ -9,7 +9,7 @@ import {
 
 } from '../constants/tutorConstants';
 import axios from 'axios';
-
+import { BASE_URL } from '../../../config';
 
 // FOR LISTING ALL THE TUTORS
 
@@ -19,7 +19,7 @@ export const listTutors = () => async (dispatch) => {
             type: TUTOR_LIST_REQUEST,
         });
 
-        const {data} = await axios.get('http://127.0.0.1:8000/api/accounts/users'); //fetch the products from rest api
+        const {data} = await axios.get(`${BASE_URL}/api/accounts/users/`); //fetch the products from rest api
 
         dispatch({
             type: TUTOR_LIST_SUCCESS,
@@ -45,7 +45,7 @@ export const listTutorDetails = (id) => async (dispatch) => {
             type: TUTOR_DETAILS_REQUEST,
         });
 
-        const {data} = await axios.get(`http://127.0.0.1:8000/api/accounts/users/${id}`); //fetch the products from rest api
+        const {data} = await axios.get(`${BASE_URL}/api/accounts/users/${id}`); //fetch the products from rest api
 
         dispatch({
             type: TUTOR_DETAILS_SUCCESS,

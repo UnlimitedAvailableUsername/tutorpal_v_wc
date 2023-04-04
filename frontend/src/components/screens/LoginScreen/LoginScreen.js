@@ -19,7 +19,7 @@ function LoginScreen() {
     const dispatch = useDispatch();
     const location = useLocation();
     const navigate = useNavigate();
-    const redirect = location.search ? location.search.split('=')[1] : '/';
+    const redirect = location.search ? location.search.split('=')[1] : '/profile';
 
 
     const handleEmail = e => {

@@ -42,9 +42,6 @@ function Header() {
                 </Nav>
               ) : (
                 <Nav>
-                  <NavLink as={Link} to="/lesson-list">
-                    Lessons
-                  </NavLink>
                   <NavLink as={Link} to="/tutor-list">
                     Tutors
                   </NavLink>

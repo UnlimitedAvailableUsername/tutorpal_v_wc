@@ -11,12 +11,13 @@ urlpatterns = [
     path('users/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
     path('users/upload/', views.uploadProfilePicture, name="upload_image"),
     path('users/current/', views.updateUserProfile, name="update_current_user"),
-    path('users/profile/',views.getUserProfile,name="user_profile"),
-    path('users/profile/update/',views.updateUserProfile,name="user_profile_update"),
+    path('users/profile/', views.getUserProfile,name="user_profile"),
+    path('users/profile/update/', views.updateUserProfile,name="user_profile_update"),
+    path('users/<int:user_id>/schedules/', views.getMyOwnSchedules, name="get_current_user_schedule"),
 
-    path('schedules/', views.getProducts, name='products'),
-    path('schedules/create', views.addProduct, name='add_product'),
-    path('schedules/<str:pk>', views.getProduct, name='product'),
+    # path('schedules/', views.getSchedules, name='products'),
+    # path('schedules/create', views.addSchedule, name='add_product'),
+    # path('schedules/<str:pk>', views.getSchedule, name='product'),
 
     path('subjects/', views.getSubjects, name='subjects'),
     path('subjects/<str:pk>', views.getSubject, name='subject'),
@@ -29,8 +30,8 @@ urlpatterns = [
     path('orders/<str:pk>/', views.getOrderById, name="user-order"),
     path('orders/<str:pk>/pay/', views.updateOrderToPaid, name="pay"),
 
-    path('contact/create', views.addContact, name='add_contact'),
     path('contacts/', views.getContacts, name='contact'),
+    path('contact/create', views.addContact, name='add_contact'),
     path('contacts/<str:pk>', views.getContact, name='contact'),
 
 ]

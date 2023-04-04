@@ -72,7 +72,7 @@ function ProfileScreen() {
       const response = await axios.post("http://127.0.0.1:8000/api/accounts/users/upload/", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${userInfo.access && userInfo.token ? userInfo.access + ' ' + userInfo.token : userInfo.access || userInfo.token}`
+          Authorization: `Bearer ${userInfo.token}`
         },
       });
       setMessage(response.data.message);

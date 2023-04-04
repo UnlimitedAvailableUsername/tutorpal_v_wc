@@ -10,8 +10,8 @@ urlpatterns = [
 
     #//PARTIAL 
     path('users/register/', views.RegisterView.as_view(), name='register'),
-
-    path('users/login/', views.user_token_obtain_pair_view, name='my_token_obtain_pair'),
+    path('users/login/', views.MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    # path('users/login/', views.user_token_obtain_pair_view, name='my_token_obtain_pair'),
     path('users/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
     path('users/upload/', views.uploadProfilePicture, name="upload_image"),
     path('users/current/', views.updateUserProfile, name="update_current_user"),

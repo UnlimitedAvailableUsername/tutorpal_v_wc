@@ -73,7 +73,8 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
       const config = {
         headers: {
           "Content-type": "application/json",
-          Authorization: `Bearer ${userInfo.access && userInfo.token ? userInfo.access + ' ' + userInfo.token : userInfo.access || userInfo.token}` /* PASSING IN USER TOKEN AND IF THE USER IN AUTHORISED HE'LL HAVE FULL ACCESS TO HIS PROFILE INFORMATION */,
+          Authorization: `Bearer ${userInfo.token}` /* PASSING IN USER TOKEN AND IF THE USER IN AUTHORISED HE'LL HAVE FULL ACCESS TO HIS PROFILE INFORMATION */,
+          // Authorization: `Bearer ${userInfo.access && userInfo.token ? userInfo.access + ' ' + userInfo.token : userInfo.access || userInfo.token}` /* PASSING IN USER TOKEN AND IF THE USER IN AUTHORISED HE'LL HAVE FULL ACCESS TO HIS PROFILE INFORMATION */,
         },
       };
   
@@ -112,7 +113,7 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
       const config = {
         headers: {
           "Content-type": "application/json",
-          Authorization: `Bearer ${userInfo.access && userInfo.token ? userInfo.access + ' ' + userInfo.token : userInfo.access || userInfo.token}` /* PASSING IN USER TOKEN AND IF THE USER IN AUTHORISED HE'LL HAVE FULL ACCESS TO HIS PROFILE INFORMATION */,
+          Authorization: `Bearer ${userInfo.token}` /* PASSING IN USER TOKEN AND IF THE USER IN AUTHORISED HE'LL HAVE FULL ACCESS TO HIS PROFILE INFORMATION */,
         },
       };
   

@@ -129,14 +129,41 @@ def uploadProfilePicture(request):
         return Response({'error': 'No image provided.'})
 
 
-@api_view(['POST'])
-def user_token_obtain_pair_view(request):
-    serializer = UserSerializerWithToken(data=request.data)
-    serializer.is_valid(raise_exception=True)
-    data = serializer.validated_data
-    return Response(data)
+# @api_view(['POST'])
+# def user_token_obtain_pair_view(request):
+#     serializer = UserSerializerWithToken(data=request.data)
+#     serializer.is_valid(raise_exception=True)
+#     data = serializer.validated_data
+#     return Response(data)
 
+# Rest Framework JWT 
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
 
+# JWT Views
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        data = super().validate(attrs)
+       
+        serializer = UserSerializerWithToken1(self.user).data
+
+        for k,v in serializer.items():
+            data[k] =v
+
+        return data
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        # Add custom claims
+        token['username'] = user.username
+        token['message'] = "Hello Proshop"
+        # ...
+
+        return token
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
 
 
 

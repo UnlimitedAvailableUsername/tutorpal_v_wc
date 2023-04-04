@@ -45,26 +45,8 @@ function App() {
 
           <Route path="/" element={ <HomeScreen /> } exact />
           <Route path="/register" element={ <RegisterScreen /> } exact />
-
-
-
-
-                {/* //CONDITIONING PARA SI STUDENT AT NON-LOGIN USER MAKA-ACCESS */}
-
-                {(userInfo && userInfo.user?.student) || (userInfo && userInfo.student) && (
-  <>
-    <Route path="/tutor-list" element={<TutorListScreen />} exact />
-    <Route path="/tutor-list/tutor/:id" element={<TutorDetailScreen />} exact />
-  </>
-)}
-
-{!userInfo && (
-  <>
-    <Route path="/tutor-list" element={<TutorListScreen />} exact />
-    <Route path="/tutor-list/tutor/:id" element={<TutorDetailScreen />} exact />
-  </>
-)}
-             
+      <Route path="/tutor-list" element={<TutorListScreen /> }  />
+      <Route path="/tutor/:id" element={<TutorDetailScreen />} />
           <Route path="/profile" element={ <ProfileScreen /> } exact />
 
           <Route path="/lesson-list" element={ <LessonListScreen /> } exact />

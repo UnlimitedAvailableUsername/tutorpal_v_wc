@@ -79,6 +79,17 @@ class UserManager(BaseUserManager):
         return user
 
 
+# have other plan for this:
+class Subject(models.Model):
+    subject_title = models.TextField(max_length=100)
+    # user = models.ForeignKey(User, verbose_name=("User assigned (Tutor)"), on_delete=models.CASCADE)
+    _id = models.AutoField(primary_key=True)
+
+    def __str__(self):
+        # return f"{self.subject_title} ({self.user.username})"
+        return self.subject_title
+
+
 class User(AbstractBaseUser):
 
     username = models.CharField(("username"), max_length=150, unique=True, help_text=("Required. 150 characters or fewer"), error_messages={"unique": ("A user with that username already exists."),},)
@@ -93,11 +104,12 @@ class User(AbstractBaseUser):
     staff = models.BooleanField(("staff status"), default=False, help_text=("Designates whether the user can log into this admin site."),)
     student = models.BooleanField(("Student"), default=False, help_text=("Categorizes the user as student"),)
     tutor = models.BooleanField(("Tutor"), default=False, help_text=("Categorizes the user as tutor"),)
+    subjects = models.ManyToManyField(Subject, related_name='users', blank=True)
     date_joined = models.DateTimeField(("date joined"), default=timezone.now)
     last_login = models.DateTimeField(("last login"), blank=True, null=True)
     numReviews = models.IntegerField(("reviews"), null=True, blank=True)
     meeting_link = models.TextField(("Zoom Link"), blank=True, null=True)
-    price_rate_hour = models.DecimalField(("Hourly Price Rate"), max_digits=3, decimal_places=0, null=True)
+    price_rate_hour = models.DecimalField(("Hourly Price Rate"), max_digits=3, decimal_places=0, default=0, null=True)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
@@ -135,14 +147,6 @@ class User(AbstractBaseUser):
         return self.student
 
 
-# have other plan for this:
-class Subject(models.Model):
-    subject_title = models.TextField(max_length=100)
-    user = models.ForeignKey(User, verbose_name=("User assigned (Tutor)"), on_delete=models.CASCADE)
-    _id = models.AutoField(primary_key=True)
-
-    def __str__(self):
-        return f"{self.subject_title} ({self.user.username})"
 
 
 class Schedule(models.Model):

@@ -4,7 +4,7 @@ from rest_framework_simplejwt import views as jwt_views
 
 urlpatterns = [
     path('', views.getRoutes, name='routes'),
-    path('users', views.getUsers, name='users'),
+    path('users/', views.getUsers, name='users'),
     path('users/<str:pk>', views.getUser, name='user'),
     path('users/register/', views.registerUser, name='register'),
     path('users/login/', views.loginUser, name='my_token_obtain_pair'),
@@ -20,6 +20,7 @@ urlpatterns = [
 
     path('subjects/', views.getSubjects, name='subjects'),
     path('subjects/<str:pk>', views.getSubject, name='subject'),
+    path('subjects/<int:subject_id>/users/', views.getUsersBySubject, name='get_users_by_subject'),
 
     path('orders/', views.getOrders, name="allorders"),
     path('orders/add/', views.addOrderItems, name="orders-add"),
@@ -31,4 +32,5 @@ urlpatterns = [
     path('contact/create', views.addContact, name='add_contact'),
     path('contacts/', views.getContacts, name='contact'),
     path('contacts/<str:pk>', views.getContact, name='contact'),
+
 ]

@@ -15,14 +15,14 @@ class SubjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Subject
         fields = '__all__'
+        extra_kwargs = {'users': {'required': False}}
 
 
 class UserSerializer(serializers.ModelSerializer):
-    # subject = serializers.StringRelatedField()
-    # product = serializers.StringRelatedField()
     class Meta:
         model = User
         fields = '__all__'
+        extra_kwargs = {'subjects': {'required': False}}
 
 
 class UserSerializerWithToken(UserSerializer):

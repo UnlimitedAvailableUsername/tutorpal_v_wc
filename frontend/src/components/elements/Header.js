@@ -2,7 +2,6 @@ import { Container, Nav, NavLink, Navbar, NavDropdown, } from "react-bootstrap";
 import logo from "../../assets/components/elements/Header/logo.png";
 import { useDispatch, useSelector } from "react-redux";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
-import "font-awesome/css/font-awesome.min.css";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { logoutUser } from "../../features/redux/actions/authUserActions";

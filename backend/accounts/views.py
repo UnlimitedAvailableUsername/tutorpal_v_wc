@@ -1,10 +1,14 @@
+## FROM DJANGO
 from django.shortcuts import render
 from django.contrib.auth import get_user_model
+from django.contrib.auth.hashers import make_password
+from django.http import HttpResponse
 
 ## FROM PYTHON IMPORTS
 from datetime import datetime
+import json
 
-# FROM REST FRAMEWORK IMPORTS
+## FROM REST FRAMEWORK IMPORTS
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.exceptions import APIException
@@ -62,30 +66,38 @@ def getProduct(request, pk):
 
 
 
-# For fetching all the users
-@api_view(['GET'])
-@permission_classes([IsAdminUser])
-def getUsers(request):
-    users = User.objects.all()
-    serializer = UserSerializer(users, many=True)
-    return Response(serializer.data, status=status.HTTP_200_OK)
-
-
-@api_view(['GET'])
+@api_view(['GET', 'POST'])
 def getSubjects(request):
-    subjects = models.Subject.objects.all()
-    serializer = SubjectSerializer(subjects, many=True)
-    return Response(serializer.data, status=status.HTTP_200_OK)
+    if request.method == 'GET':
+        subjects = Subject.objects.all()
+        serializer = SubjectSerializer(subjects, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    elif request.method == 'POST':
+        serializer = SubjectSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=201)
+        return Response(serializer.errors, status=400)
 
 
 @api_view(['GET'])
 def getSubject(request, pk):
     try:
-        subject = models.Subject.objects.get(id=pk)
+        subject = Subject.objects.get(id=pk)
     except models.Subject.DoesNotExist:
         return Response({'error': 'Subject does not exist'}, status=status.HTTP_404_NOT_FOUND)
     
     serializer = SubjectSerializer(subject, many=False)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+# For fetching all the users
+@api_view(['GET'])
+# @permission_classes([IsAdminUser])
+def getUsers(request):
+    users = User.objects.all()
+    serializer = UserSerializer(users, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -102,13 +114,31 @@ def getUser(request, pk):
 @api_view(['POST'])
 def registerUser(request):
     serializer = UserSerializer(data=request.data)
-    serializer.is_valid(raise_exception=True)
-    user = serializer.save()
-    response_data = {
-        "user": UserSerializer(user, context=serializer.context).data,
-        "token": AuthToken.objects.create(user)[1]
-    }
-    return Response(response_data, status=status.HTTP_201_CREATED)
+    if serializer.is_valid():
+        user = serializer.save()
+        token = RefreshToken.for_user(user)
+        response_data = {
+            "email": user.email,
+            "username": user.username,
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+            "profile_picture": str(user.profile_picture), # Convert ImageFieldFile to string
+            "contact": user.contact,
+            "bio": user.bio,
+            "active": user.active,
+            "staff": user.staff,
+            "student": user.student,
+            "tutor": user.tutor,
+            "subjects": serializer.data.get("subjects", []),
+            "numReviews": user.numReviews,
+            "meeting_link": user.meeting_link,
+            "price_rate_hour": user.price_rate_hour,
+            "token": str(token.access_token)
+        }
+        response = HttpResponse(json.dumps(response_data), content_type="application/json")
+        response.status_code = status.HTTP_201_CREATED
+        return response
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])
@@ -120,9 +150,9 @@ def uploadProfilePicture(request):
         # For example, save it to the user's profile picture field
         request.user.profile_picture = image
         request.user.save()
-        return Response({'message': 'Image uploaded successfully!'})
+        return Response({'message': 'Image uploaded successfully!'}, status=status.HTTP_200_OK)
     else:
-        return Response({'error': 'No image provided.'})
+        return Response({'error': 'No image provided.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])
@@ -145,8 +175,7 @@ def getUserProfile(request):
     return Response(serializer.data)
 
 
-
-@api_view(['PUT', 'PATCH', 'GET'])
+@api_view(['PUT', 'PATCH'])
 @permission_classes([IsAuthenticated])
 def updateUserProfile(request):
     user = request.user
@@ -167,6 +196,17 @@ def updateUserProfile(request):
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+@api_view(['GET'])
+def getUsersBySubject(request, subject_id):
+    try:
+        subject = Subject.objects.get(_id=subject_id)
+        users = subject.users.all()
+        serializer = UserSerializer(users, many=True)
+        return Response(serializer.data)
+    except Subject.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+
 # Create a new Product
 @api_view(['POST'])
 @permission_classes([IsAdminUser])
@@ -182,7 +222,6 @@ def addProduct(request):
 
     serializer = ScheduleSerializer(product, many=False)
     return Response(serializer.data, status=status.HTTP_201_CREATED)
-
 
 
 @api_view(['POST'])

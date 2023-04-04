@@ -14,6 +14,9 @@ from rest_framework import status
 from rest_framework.exceptions import APIException
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
+## CREATED A CUSTOM PERMISSION FOR TUTOR ONLY
+from rest_framework.permissions import BasePermission
+
 ## FOR REST FRAMEWORK FUNCTION-BASED VIEWS:
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
@@ -47,24 +50,8 @@ def getRoutes(request):
     return Response(routes)
 
 
-@api_view(['GET'])
-def getProducts(request):
-    products = models.Schedule.objects.all()
-    serializer = ScheduleSerializer(products, many=True)
-    return Response(serializer.data, status=status.HTTP_200_OK)
 
-
-## For fetching specific product with id, pk
-@api_view(['GET'])
-def getProduct(request, pk):
-    try:
-        product = models.Schedule.objects.get(_id=pk)
-        serializer = ScheduleSerializer(product, many=False)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    except models.Schedule.DoesNotExist:
-        return Response({'detail': 'Product not found'}, status=status.HTTP_404_NOT_FOUND)
-
-
+#### FOR SUBJECTS ####
 
 @api_view(['GET', 'POST'])
 def getSubjects(request):
@@ -92,9 +79,10 @@ def getSubject(request, pk):
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-# For fetching all the users
+#### FOR USERS #####
+
 @api_view(['GET'])
-# @permission_classes([IsAdminUser])
+@permission_classes([IsAdminUser])
 def getUsers(request):
     users = User.objects.all()
     serializer = UserSerializer(users, many=True)
@@ -160,7 +148,6 @@ def loginUser(request):
     serializer_class = MyTokenObtainPairSerializer
     token_obtain_pair = jwt_views.TokenObtainPairView.as_view(serializer_class=serializer_class)
     response = token_obtain_pair(request._request)
-
     if response.status_code == status.HTTP_200_OK:
         return Response(response.data, status=status.HTTP_200_OK)
     
@@ -207,16 +194,15 @@ def getUsersBySubject(request, subject_id):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
 
-## CREATED A CUSTOM PERMISSION FOR TUTOR ONLY
-from rest_framework.permissions import BasePermission
 
+
+#### FOR SCHEDULES OF TUTORS ####
 class IsTutorUser(BasePermission):
     def has_permission(self, request, view):
         user = request.user
         return user.is_authenticated and user.is_tutor
+    
 
-
-# Create a new Product
 @api_view(['POST'])
 @permission_classes([IsTutorUser])
 def addSchedule(request):
@@ -234,6 +220,19 @@ def addSchedule(request):
 
 
 @api_view(['GET'])
+def getScheduleOfTutor(request, pk):
+    try:
+        schedule = Schedule.objects.filter(user__pk=pk)
+
+    except Schedule.DoesNotExist:
+        message = {"detail": "User does not have any schedule"}
+        return Response(message, status=status.HTTP_404_NOT_FOUND)
+    
+    serializer = ScheduleSerializer(schedule, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def getMyOwnSchedules(request, user_id):
     user = request.user
@@ -241,6 +240,10 @@ def getMyOwnSchedules(request, user_id):
     serializer = ScheduleSerializer(schedules, many=True)
     return Response(serializer.data)
 
+
+
+
+#### FOR ORDERS ####
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -328,7 +331,10 @@ def updateOrderToPaid(request, pk):
     return Response({'message': f'Order {pk} was paid.'}, status=status.HTTP_200_OK)
 
 
-# FOR CONTACT US 
+
+
+#### FOR CONTACT US ####
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def addContact(request):

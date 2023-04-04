@@ -1,10 +1,8 @@
 import * as actionType from "../constants/scheduleConstants";
 
-
 /* REDUCER USED IN SCHEDULEListScreen COMPONENT */
 export const scheduleCreateReducer = (state = {}, action) => {
 	switch (action.type) {
-    
 		case actionType.SCHEDULE_CREATE_REQUEST:
 			return {
 				loading: true,
@@ -31,37 +29,37 @@ export const scheduleCreateReducer = (state = {}, action) => {
 	}
 };
 
-
 const scheduleListInitialState = {
-  loading: false,
-  success: null,
-  schedule: null,
-  error: null
-}
+	loading: false,
+	success: null,
+	schedules: null,
+	error: null,
+};
 
-
-export const scheduleListReducer = (state = scheduleListInitialState, action) => {
-  switch (action.type) {
-
+export const scheduleListReducer = (
+	state = scheduleListInitialState,
+	action
+) => {
+	switch (action.type) {
 		case actionType.SCHEDULE_LIST_REQUEST:
 			return {
-        ...state,
+				...state,
 				loading: true,
 			};
 
 		case actionType.SCHEDULE_LIST_SUCCESS:
 			return {
-        ...state,
+				...state,
 				loading: false,
 				success: true,
-				schedule: action.payload,
+				schedules: action.payload,
 			};
 
 		case actionType.SCHEDULE_LIST_FAIL:
 			return {
-        ...state,
+				...state,
 				loading: false,
-        success: false,
+				success: false,
 				error: action.payload,
 			};
 
@@ -73,37 +71,39 @@ export const scheduleListReducer = (state = scheduleListInitialState, action) =>
 	}
 };
 
-
 const scheduleDetailsInitialState = {
-  loading: false,
-  schedule: null,
-  error: null
-}
+	loading: false,
+	schedule: null,
+	error: null,
+};
 
 /* REDUCER USED IN ProductScreen COMPONENT */
-export const scheduleDetailsReducer = ( state = scheduleDetailsInitialState, action ) => {
-  switch (action.type) {
-    case actionType.SCHEDULE_DETAILS_REQUEST:
-      return {
-        ...state,
-        loading: true,
-      };
+export const scheduleDetailsReducer = (
+	state = scheduleDetailsInitialState,
+	action
+) => {
+	switch (action.type) {
+		case actionType.SCHEDULE_DETAILS_REQUEST:
+			return {
+				...state,
+				loading: true,
+			};
 
-    case actionType.SCHEDULE_DETAILS_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        product: action.payload,
-      };
+		case actionType.SCHEDULE_DETAILS_SUCCESS:
+			return {
+				...state,
+				loading: false,
+				product: action.payload,
+			};
 
-    case actionType.SCHEDULE_DETAILS_FAIL:
-      return {
-        ...state,
-        loading: false,
-        error: action.payload,
-      };
+		case actionType.SCHEDULE_DETAILS_FAIL:
+			return {
+				...state,
+				loading: false,
+				error: action.payload,
+			};
 
-    default:
-      return state;
-  }
+		default:
+			return state;
+	}
 };

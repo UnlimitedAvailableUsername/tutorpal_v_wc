@@ -6,6 +6,7 @@ import * as actionType from "../constants/scheduleConstants";
 /* ACTION CREATOR USED IN CREATING PRODUCTS IN ProductListScreen COMPONENT */
 export const createSchedule = () => async (formData, dispatch, getState) => {
   try {
+
     dispatch({
       type: actionType.SCHEDULE_CREATE_REQUEST,
     });
@@ -32,6 +33,7 @@ export const createSchedule = () => async (formData, dispatch, getState) => {
     });
 
   } catch (error) {
+
     dispatch({
       type: actionType.SCHEDULE_CREATE_FAIL,
       payload:
@@ -41,3 +43,30 @@ export const createSchedule = () => async (formData, dispatch, getState) => {
     });
   }
 };
+
+
+export const listSchedules = (id) => async (dispatch) => {
+  try {
+    dispatch({
+      type: actionType.SCHEDULE_LIST_REQUEST,
+    });
+
+    const { data } = await axios.get(`${BASE_URL}/api/accounts/users/${id}/schedules/`);
+    
+    dispatch({
+      type: actionType.SCHEDULE_LIST_SUCCESS,
+      payload: data,
+    });
+
+  } catch (error) {
+
+    dispatch({
+			type: actionType.SCHEDULE_LIST_FAIL,
+			payload:
+				error.response && error.response.data.detail
+					? error.response.data.detail
+					: error.message,
+		});
+
+  }
+}

@@ -156,6 +156,9 @@ class Schedule(models.Model):
     count_in_stock_hour = models.PositiveIntegerField(("How many slots of hours available?"), )
     _id = models.AutoField(primary_key=True)
 
+    def __str__(self):
+        return f"{self.date} ({self.user})"
+
 
 class Review(models.Model):
     product = models.ForeignKey(User,on_delete=models.SET_NULL,null=True, related_name='reviews_received')

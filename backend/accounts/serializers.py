@@ -69,7 +69,12 @@ class ScheduleSerializer(serializers.ModelSerializer):
         model = Schedule
         fields = '__all__'
 
-
+    def validate(self, data):
+        required_fields = ['date', 'count_in_stock_hour']
+        missing_fields = [field for field in required_fields if field not in data]
+        if missing_fields:
+            raise serializers.ValidationError(f"The following fields are required: {', '.join(missing_fields)}")
+        return data
 
 
 class OrderScheduleItemSerializer(serializers.ModelSerializer):

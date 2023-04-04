@@ -3,6 +3,7 @@ import Video from './Video';
 import HomeAbout from './HomeAbout';
 import Section from './Section';
 import { useNavigate } from 'react-router-dom';
+import HeaderHomePage from '../../elements/HeaderHomePage'
 
 function HomeScreen() {
 
@@ -30,6 +31,7 @@ function HomeScreen() {
   return (
 
     <div>
+      <HeaderHomePage/> 
       <Video videoRef={ videoRef } aboutRef={ aboutRef } />
       <HomeAbout videoRef={ videoRef } aboutRef={ aboutRef } />
       <Section />

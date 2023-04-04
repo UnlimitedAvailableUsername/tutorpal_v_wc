@@ -146,7 +146,7 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
 
 
   /* ACTION CREATOR USED IN USER REGISTRATION IN RegisterScreen COMPONENT & HEADER */
-  export const register =(first_name, last_name, username,email,password)=> async(dispatch)=>{
+  export const register =(form)=> async(dispatch)=>{
     try{
   
        dispatch({
@@ -158,11 +158,11 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
                'Content-type':'application/json'
            }
        }
-       console.log(first_name, last_name, username,email,password)
+       console.log(form)
        const {data}= await axios.post('http://127.0.0.1:8000/api/accounts/users/register/',
        
        
-       {first_name, last_name, username, email,password },config )
+       form, config )
   
        dispatch({
            type:USER_REGISTER_SUCCESS,

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../../../assets/components/screens/ContactScreen/Contact.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -9,8 +9,11 @@ import {
 import { useState} from "react";
 import { useNavigate } from "react-router-dom";
 import {Form, Button } from "react-bootstrap";
-import { useDispatch} from "react-redux";
+import { useDispatch, useSelector} from "react-redux";
 import { AddContact } from "../../../features/redux/actions/productAction";
+import HeaderHome from '../../elements/HeaderHomePage'
+import HeaderStudent from '../../elements/HeaderStudent'
+import HeaderTutor from '../../elements/HeaderTutor'
 
 function ContactScreen() {
   const [concern, setConcern] = useState("");
@@ -29,9 +32,35 @@ function ContactScreen() {
       navigate("/contact-success");
     });
   };
+
+  const userLogin = useSelector((state) => state.userState);
+  const { userInfo } = userLogin;
+
+  // const [userInfo, setUserInfo] = useState(null);
+
+
+  // useEffect(() => {
+  //   // Here, you can fetch the user info from an API or a local storage.
+  //   // For this example, let's assume we're fetching it from local storage.
+  //   const storedUserInfo = localStorage.getItem('userInfo');
+  //   setUserInfo(storedUserInfo);
+  // }, []);
   return (
     <div>
+
+{userInfo && (userInfo.tutor || userInfo.user?.tutor) && (
+      <HeaderTutor/>
+    ) }
+
+    {userInfo && (userInfo.student || userInfo.user?.student) && (
+      <HeaderStudent/>
+    ) }
+
+{!userInfo && <HeaderHome />}
+
       <section className="contact">
+      <br></br>
+        <br></br>
         <div className="contact-heading">
           <h2>Contact Us</h2>
         </div>
@@ -100,8 +129,12 @@ function ContactScreen() {
                 />
               </Form.Group>
 
+
+
+            <div style={{width: 400, margin: 'auto'}}>
               <Button
-                className="btn btn-warning"
+              
+                className="btn btn-warning text-center"
                 onClick={() => {
                   if (comment.length < 100) {
                     alert(
@@ -113,8 +146,9 @@ function ContactScreen() {
                   }
                 }}
               >
-                Post Lesson
+                <strong>SEND</strong>
               </Button>
+              </div>
             </Form>
           </div>
           <br></br>

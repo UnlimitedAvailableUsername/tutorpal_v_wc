@@ -8,6 +8,8 @@ import { getUserDetails, updateUserProfile } from "../../../features/redux/actio
 import { USER_UPDATE_PROFILE_RESET } from "../../../features/redux/constants/constants";
 import axios from "axios";
 import { useNavigate } from "react-router";
+import HeaderTutor from '../../elements/HeaderTutor'
+import HeaderStudent from '../../elements/HeaderStudent'
 
 
 function ProfileScreen() {
@@ -266,9 +268,22 @@ useEffect(() => {
 }, []);
 
   return (
+    <div>
+      {userInfo && (userInfo.tutor || userInfo.user?.tutor) && (
+        <HeaderTutor/>
+      ) }
+
+      {userInfo && (userInfo.student || userInfo.user?.student) && (
+        <HeaderStudent/>
+      ) }
+
+
+      
+
     <Container>
     <Row>
       <Col md={3}>
+        <br/>
         <h2>User Profile</h2>
 
         {messagee && <Message variant="success">{messagee}</Message>}
@@ -366,7 +381,7 @@ useEffect(() => {
               />
             </Form.Group>
 
-            <Form.Group controlId="text">
+            <Form.Group controlId="bio">
             <Form.Label>Zoom Link</Form.Label>
             <Form.Control
               required
@@ -387,7 +402,7 @@ useEffect(() => {
 
 
 
-      <Col md={9}>
+      <Col md={9}><br/>
         <h2>Tutoring History</h2>
         {/* {loadingOrders ? (
           <Loader />
@@ -435,6 +450,7 @@ useEffect(() => {
       </Col>
     </Row>
     </Container>
+    </div>
   );
 }
 

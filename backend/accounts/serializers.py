@@ -7,6 +7,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 User = get_user_model()
 
 class SubjectSerializer(serializers.ModelSerializer):
+    
     class Meta:
         model = Subject
         fields = '__all__'
@@ -22,7 +23,8 @@ class SubjectSerializer(serializers.ModelSerializer):
 
 #//FOR REGSISTER VIEW (PARTIAL)
 class UserSerializer(serializers.ModelSerializer):
-
+    subject = serializers.StringRelatedField()
+    student = serializers.BooleanField()
     class Meta:
         model = User
         fields = '__all__'
@@ -32,6 +34,8 @@ class UserSerializer(serializers.ModelSerializer):
                                        username=validated_data['username'],
                                        first_name=validated_data['first_name'],
                                        last_name=validated_data['last_name'],
+                                       student=validated_data['student'],
+                                       
                                          )
         user.set_password(validated_data['password'])
         user.save()
@@ -65,8 +69,9 @@ class UserSerializerWithToken(jwt_serializers.TokenObtainPairSerializer):
     
 # //FOR UPDATE PROFILE & {REGISTER VIEW (PARTIAL)}
 class UserSerializerWithToken1(UserSerializer):
+    student = serializers.SerializerMethodField(read_only=True)
     token = serializers.SerializerMethodField(read_only=True)
-
+    
     class Meta:
         model = User
         fields = '__all__'
@@ -74,6 +79,8 @@ class UserSerializerWithToken1(UserSerializer):
     def get_token(self, obj):
         token = RefreshToken.for_user(obj)
         return str(token.access_token)
+    def get_student(self, obj):
+        return obj.is_student
 
 
 class ReviewSerializer(serializers.ModelSerializer):

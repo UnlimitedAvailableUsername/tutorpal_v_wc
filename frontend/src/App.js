@@ -1,5 +1,5 @@
-import { Routes, Route } from "react-router-dom";
-import Header from "./components/elements/Header";
+import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
+import Header from "./components/elements/HeaderHomePage";
 import Footer from "./components/elements/Footer";
 import HomeScreen from "./components/screens/HomeScreen/HomeScreen";
 import TutorListScreen from "./components/screens/TutorListScreen/TutorListScreen";
@@ -15,20 +15,54 @@ import SuccessScreen from "./components/screens/SuccessScreen/Success";
 import RegisterScreen from "./components/screens/RegisterScreen/RegisterScreen";
 import TermsofServiceScreen from "./components/screens/TermsofServiceScreen/Termofservice";
 import PrivacyPolicyScreen from "./components/screens/PrivacyPolicyScreen/PrivacyPolicy";
+import AboutUsScreen from "./components/screens/AboutScreen/AboutUsScreen";
+import { useEffect, useState } from "react";
+
 
 function App() {
+
+ 
+    //ETO AY PARA GUMANA ANG CONDITIONING BY CALLING THE LOCALSTORAGE
+    const [userInfo, setUserInfo] = useState(null);
+ const navigate = useNavigate()
+    useEffect(() => {
+      // Here, you can fetch the user info from an API or a local storage.
+      // For this example, let's assume we're fetching it from local storage.
+      const storedUserInfo = localStorage.getItem('userInfo');
+      setUserInfo(storedUserInfo);
+    }, []);
+   
+
   return (
     <div className="bg-dark">
 
-      <Header />
+  
 
       <div className="screen" style={{overflowX: "hidden"}} >
         <Routes>
+
           <Route path="/" element={ <HomeScreen /> } exact />
           <Route path="/register" element={ <RegisterScreen /> } exact />
 
-          <Route path="/tutor-list" element={ <TutorListScreen /> } exact />
-          <Route path="/tutor-list/tutor/:id" element={ <TutorDetailScreen /> } exact />
+
+
+
+                {/* //CONDITIONING PARA SI STUDENT AT NON-LOGIN USER MAKA-ACCESS */}
+
+                {(userInfo && userInfo.user?.student) || (userInfo && userInfo.student) && (
+  <>
+    <Route path="/tutor-list" element={<TutorListScreen />} exact />
+    <Route path="/tutor-list/tutor/:id" element={<TutorDetailScreen />} exact />
+  </>
+)}
+
+{!userInfo && (
+  <>
+    <Route path="/tutor-list" element={<TutorListScreen />} exact />
+    <Route path="/tutor-list/tutor/:id" element={<TutorDetailScreen />} exact />
+  </>
+)}
+             
           <Route path="/profile" element={ <ProfileScreen /> } exact />
 
           <Route path="/lesson-list" element={ <LessonListScreen /> } exact />
@@ -44,6 +78,8 @@ function App() {
 
           <Route path="/termsofservice" element={ <TermsofServiceScreen/> } exact />
           <Route path="/privacypolicy" element={ <PrivacyPolicyScreen/> } exact />
+          <Route path="/about" element={ <AboutUsScreen/> } exact />
+
         </Routes>
       </div>
 

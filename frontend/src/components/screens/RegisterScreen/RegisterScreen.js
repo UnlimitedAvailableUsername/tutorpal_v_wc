@@ -14,37 +14,43 @@ function RegisterScreen() {
   const [first_name, setFirstName] = useState("");
   const [last_name, setLastName] = useState("");
   const [file, setFile] = useState("");
-  const [password, setpassword] = useState("");
+  const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
     const [message, setMessage] = useState('')
     const [student, setStudent] = useState(false);
 
     const dispatch = useDispatch()
     const navigate = useNavigate();
-    const location = useLocation();
+    
+    const form = async () => {
+        let formField = new FormData();
 
-    const redirect = location.search ? location.search.split('=')[1] : '/'
+        formField.append("username", username);
+        formField.append("email", email);
+        formField.append("first_name", first_name);
+        formField.append("password", password);
+        formField.append("last_name", last_name);
+        formField.append("student", "true");
+dispatch(register(formField)).then((response) => {
+    navigate("/");
+});
+};
 
-    const userRegister = useSelector(state => state.userRegister)
-    const { error, loading, userInfo } = userRegister
-
-    useEffect(() => {
-        if (userInfo) {
-            navigate(redirect)
-        }
-    }, [userInfo, redirect])
 
     const submitHandler = (e) => {
         e.preventDefault()
 
-        if (password != confirmPassword) {
+        if (password !== confirmPassword) {
             setMessage('Passwords do not match')
         } else {
-            dispatch(register(first_name, last_name, username, email, password, student))
+            form();
         }
 
-    }
+    };
 
+    const userRegister = useSelector (state => state.userRegister)
+    const {loading} = userRegister
+    console.log('RegisterScreen rendered!') // added console log
     return (
       <div>
       <Row className="justify-content-center align-items-center">
@@ -54,8 +60,7 @@ function RegisterScreen() {
                       <div className="mb-3 mt-md-4">
                           <div className='mb-5' >
                               <h2 className="fw-bold text-uppercase ">SIGN UP</h2>
-                              { error && <MessageAlert variant='danger'>{ error }</MessageAlert> }
-                              { loading && <LoadingIconBig/> }
+                              
                           </div>
                           <div className="mb-3">
                      
@@ -83,10 +88,10 @@ function RegisterScreen() {
 
                                   <Form.Group className="mb-3" controlId="formBasicPassword">
                                       <Form.Label>Password</Form.Label>
-                                      <Form.Control value={ password } onChange={(e) => setpassword(e.target.value)} type="password" placeholder="Enter Password" />
+                                      <Form.Control value={ password } onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Enter Password" />
                                   </Form.Group>
 
-                                  <Form.Group className="mb-3" controlId="formBasicPassword">
+                                  <Form.Group className="mb-3" controlId="formBasicConfirmPassword">
                                       <Form.Label>Confirm Password</Form.Label>
                                       <Form.Control value={ confirmPassword } onChange={(e) => setConfirmPassword(e.target.value)} type="password" placeholder="Enter Password" />
                                   </Form.Group>
@@ -113,7 +118,7 @@ function RegisterScreen() {
                                         />
                                     </Form.Group>
                                   <div style={{margin: 'auto', width: 200}}className="d-grid my-5">
-                                      <Button variant="warning" disabled={ !email || !password || !student } onChange={ submitHandler } type="submit"><stong>Sign Up</stong></Button>
+                                      <Button variant="warning" disabled={ !email || !password || !student }  type="submit"><stong>Sign Up</stong></Button>
                                   </div>
                               </Form>
                               <div className="mt-3">

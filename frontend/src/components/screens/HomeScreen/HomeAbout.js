@@ -5,7 +5,7 @@ import React from 'react'
 
 const HomeAbout = ({ videoRef, aboutRef }) => {
   return (
-    <div ref={ aboutRef } className="hero-image">
+    <div ref={ videoRef} className="hero-image">
       <div className="hero-text">
         <Container>
           <p className='text-center display-1'>YEP, YOU CAN LEARN THAT</p>

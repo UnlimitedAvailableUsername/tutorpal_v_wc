@@ -58,6 +58,7 @@ function Header() {
                         { userInfo ? (
                             <NavDropdown variant="dark" title={navAccountTitle} id="basic-nav-dropdown">
                                 <NavDropdown.Item as={ Link } to="/profile">Profile</NavDropdown.Item>
+                                <NavDropdown.Item as={ Link } to="/concern-list">Concerns</NavDropdown.Item>
                                 <NavDropdown.Item href="/" onClick={ handleLogout }>Sign Out</NavDropdown.Item>
                             </NavDropdown>
                         ) : (

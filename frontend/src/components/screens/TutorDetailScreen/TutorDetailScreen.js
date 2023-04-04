@@ -35,7 +35,7 @@ function TutorDetailScreen() {
 
               <ListGroup.Item style={{ backgroundColor: "#404040" }}>
                 <Row>
-                  <Col>Cotact:</Col>
+                  <Col>Contact:</Col>
                   <Col>
                     <strong>
                       {user.contact} {user.email}
@@ -51,6 +51,16 @@ function TutorDetailScreen() {
                   <Col>
                     <strong>{user.numReviews}</strong>
                   </Col>
+                </Row>
+              </ListGroup.Item>
+
+              <ListGroup.Item style={{ backgroundColor: "#404040" }}>
+                <Row>
+                  <Col>Rate Per Hour: </Col>
+
+                  
+                    <strong> Php: {user.price_rate_hour}</strong>
+                  
                 </Row>
               </ListGroup.Item>
 
@@ -77,40 +87,20 @@ function TutorDetailScreen() {
 
               <ListGroup.Item style={{ backgroundColor: "#404040" }}>
                 <Row>
-                  <Col md={{ span: 2 }}> Eduation</Col>
-                  <Col>
-                    {user.Eduction}
-                    <br />
-                    <br />
-                  </Col>
-                </Row>
-              </ListGroup.Item>
-
-              <ListGroup.Item style={{ backgroundColor: "#404040" }}>
-                <Row>
-                  <Col md={{ span: 2 }}> Policies</Col>
-                  <Col>
-                    {user.policies}
-                    <br />
-                    <br />
-                  </Col>
-                </Row>
-              </ListGroup.Item>
-
-              <ListGroup.Item style={{ backgroundColor: "#404040" }}>
-                <Row>
                   <Col md={{ span: 2 }}> Schedule</Col>
                   <Col>
-                    {user.schedule} <br />
+                    {user.Schedule}
+                    <br />
                     <br />
                   </Col>
                 </Row>
               </ListGroup.Item>
+
             </ListGroup>
           </Col>
         </Row>
       </Container>
-      {/* )} */}
+     
     </div>
   );
 }

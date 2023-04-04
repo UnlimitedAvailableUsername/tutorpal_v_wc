@@ -17,6 +17,8 @@ import TermsofServiceScreen from "./components/screens/TermsofServiceScreen/Term
 import PrivacyPolicyScreen from "./components/screens/PrivacyPolicyScreen/PrivacyPolicy";
 import AboutUsScreen from "./components/screens/AboutScreen/AboutUsScreen";
 import { useEffect, useState } from "react";
+import Contactlist from '../src/components/screens/ContactListScreen/ContactList'
+import ContactDetail from '../src/components/screens/ContactDetailScreen/ContactDetail'
 
 
 function App() {
@@ -74,6 +76,8 @@ function App() {
 
           <Route path="/contact-us" element={ <ContactScreen /> } exact />
           <Route path="/contact-success" element={ <SuccessScreen/> } exact />
+          <Route path="/concern-list" element={ <Contactlist/> } exact />
+          <Route path="/concern-list/concern/:id" element={ <ContactDetail /> } exact />
           {/* <Route path='/order/:id' element={<OrderScreen/>} /> */}
 
           <Route path="/termsofservice" element={ <TermsofServiceScreen/> } exact />

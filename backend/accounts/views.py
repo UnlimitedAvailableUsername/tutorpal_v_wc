@@ -38,6 +38,7 @@ User = get_user_model()
 ####    FOR SUBJECTS    ####
 ####                    ####
 
+
 @api_view(['GET', 'POST'])
 def getSubjects(request):
     if request.method == 'GET':
@@ -191,9 +192,15 @@ def getUsersBySubject(request, subject_id):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
 
+####    END USERS   ####
+########################
 
 
-#### FOR SCHEDULES OF TUTORS ####
+####################################
+####    FOR SCHEDULES OF TUTORS ####
+####                            ####
+
+
 class IsTutorUser(BasePermission):
     def has_permission(self, request, view):
         user = request.user
@@ -239,15 +246,22 @@ def getMyOwnSchedules(request, user_id):
 
 
 
+########################
+####    FOR ORDERS  ####
 
-#### FOR ORDERS ####
+
+
+class IsStudentUser(BasePermission):
+    def has_permission(self, request, view):
+        user = request.user
+        return user.is_authenticated and user.is_student
+   
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+@permission_classes([IsStudentUser])
 def addOrderItems(request):
     user = request.user
     data = request.data
-    print(data)
     orderItems = data['orderItems']
 
     if orderItems and len(orderItems) == 0:
@@ -256,30 +270,29 @@ def addOrderItems(request):
         # (1) Create Order
         order = OrderSchedule.objects.create(
             user=user,
-            paymentMethod=data['paymentMethod'],
-            taxPrice=data['taxPrice'],
-            shippingPrice=data['shippingPrice'],
-            totalPrice=data['totalPrice'],
+            payment_method=data['payment_method'],
+            tax_price=data['tax_price'],
+            total_price=data['total_price'],
         )
 
         # (3) Create order items
 
-        for i in orderItems:
-            product = Schedule.objects.get(_id=i['product'])
+        for instance in orderItems:
+            schedule = Schedule.objects.get(_id=instance['schedule'])
 
             item = OrderScheduleItem.objects.create(
-                product=product,
+                schedule=schedule,
                 order=order,
-                name=product.name,
-                qty=i['qty'],
-                price=i['price'],
-                image=product.image.url,
+                name=schedule.name,
+                qty=instance['qty'],
+                price=instance['price'],
+                image=schedule.image,
             )
 
             # (4) Update Stock
 
-            product.countInStock -= item.qty
-            product.save()
+            schedule.countInStock -= item.qty
+            schedule.save()
 
         serializer = OrderScheduleSerializer(order, many=False)
         return Response(serializer.data)
@@ -312,7 +325,7 @@ def getOrderById(request, pk):
             serializer = OrderScheduleSerializer(order, many=False)
             return Response(serializer.data)
         else:
-            Response({'detail': 'Not Authorized  to view this order'},
+            Response({'detail': 'Not Authorized to view this order'},
                      status=status.HTTP_400_BAD_REQUEST)
     except:
         return Response({'detail': 'Order does not exist'}, status=status.HTTP_400_BAD_REQUEST)

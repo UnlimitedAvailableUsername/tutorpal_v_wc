@@ -78,7 +78,7 @@ export const registerUser = (formData) => async (dispatch) => {
   } catch (error) {
     
     dispatch({
-			type: actionType.USER_DETAILS_FAIL,
+			type: actionType.USER_REGISTER_FAIL,
 			payload:
 				error.response && error.response.data.detail
 					? error.response.data.detail

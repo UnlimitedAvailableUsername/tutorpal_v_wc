@@ -1,5 +1,5 @@
 
-# TutorPal (Version: White Comet)
+# TutorPal (Version: Void Drifter)
 
 A sophisticated bootleg mixup of wayzant.org and tutorly.com websites.
 

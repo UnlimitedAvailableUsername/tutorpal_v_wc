@@ -1,43 +1,70 @@
-import {
-    TUTOR_LIST_REQUEST,
-    TUTOR_LIST_SUCCESS,
-    TUTOR_LIST_FAIL,
+import * as actionType from '../constants/tutorConstants'
 
-    TUTOR_DETAILS_REQUEST,
-    TUTOR_DETAILS_SUCCESS,
-    TUTOR_DETAILS_FAIL,
-} from '../constants/tutorConstants'
-
-const initialState = {
+const tutorListInitialState = {
     loading: false,
-    users: [],
+    users: null,
     error: null,
 }
 
-export const tutorListReducer = (state = initialState, action) => {
+export const tutorListReducer = (state = tutorListInitialState, action) => {
     switch (action.type) {
-        case TUTOR_LIST_REQUEST:
-            return {...state, loading:true};
-        case TUTOR_LIST_SUCCESS:
-            return {...state, loading:false, users: action.payload};
-        case TUTOR_LIST_FAIL:
-            return {...state, loading:false, error: action.payload};
+
+        case actionType.TUTOR_LIST_REQUEST:
+            return {
+                ...state, 
+                loading:true
+            };
+
+        case actionType.TUTOR_LIST_SUCCESS:
+            return {
+                ...state, 
+                loading:false, 
+                users: action.payload
+            };
+
+        case actionType.TUTOR_LIST_FAIL:
+            return {
+                ...state, 
+                loading:false, 
+                error: action.payload
+            };
         
         default:
             return state;
+
     }
 };
 
-export const tutorDetailsReducer = (state = {user:[]}, action) => {
+const tutorDetailsInitialState = {
+    loading: false,
+    user: null,
+    error: null,
+}
+
+
+export const tutorDetailsReducer = (state = tutorDetailsInitialState, action) => {
     switch (action.type) {
-        case TUTOR_DETAILS_REQUEST:
-            return {loading:true, ...state};
-        case TUTOR_DETAILS_SUCCESS:
-            return {loading:false, user: action.payload};
-        case TUTOR_DETAILS_FAIL:
-            return {loading:false, error: action.payload};
+
+        case actionType.TUTOR_DETAILS_REQUEST:
+            return {
+                ...state,
+                loading:true,
+            };
+            
+        case actionType.TUTOR_DETAILS_SUCCESS:
+            return {
+                loading:false,
+                user: action.payload,
+            };
+
+        case actionType.TUTOR_DETAILS_FAIL:
+            return {
+                loading:false, 
+                error: action.payload,
+            };
         
         default:
             return state;
+
     }
 };

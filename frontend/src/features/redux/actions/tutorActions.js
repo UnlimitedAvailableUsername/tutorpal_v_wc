@@ -30,13 +30,13 @@ export const listTutors = () => async (dispatch) => {
 
 // FOR LISTING THE SPECIFIC TUTOR USER DETAILS
 
-export const listTutorDetails = (id) => async (dispatch) => {
+export const listTutorDetails = (tutorId) => async (dispatch) => {
     try {
         dispatch({
             type: actionType.TUTOR_DETAILS_REQUEST,
         });
 
-        const {data} = await axios.get(`${BASE_URL}/api/accounts/users/${id}`); //fetch the products from rest api
+        const {data} = await axios.get(`${BASE_URL}/api/accounts/users/${tutorId}`); //fetch the products from rest api
 
         dispatch({
             type: actionType.TUTOR_DETAILS_SUCCESS,

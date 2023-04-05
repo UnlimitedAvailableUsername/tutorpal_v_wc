@@ -51,7 +51,6 @@ export const logoutUser = () => (dispatch) => {
     type: actionType.USER_LOGOUT
   });
 
-
 };
 
 
@@ -74,6 +73,14 @@ export const registerUser = (formData) => async (dispatch) => {
       type: actionType.USER_REGISTER_SUCCESS,
       payload: data
     });
+
+    /* WE ALSO LOGIN THE REGISTERED USER */
+    dispatch({
+      type: actionType.USER_LOGIN_SUCCESS,
+      payload: data
+    });
+
+    localStorage.setItem('userInfo', JSON.stringify(data))
 
   } catch (error) {
     

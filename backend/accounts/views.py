@@ -1,7 +1,7 @@
 ## FROM DJANGO
 from django.shortcuts import render
 from django.contrib.auth import get_user_model
-from django.http import HttpResponse
+from django.http import JsonResponse
 
 ## FROM PYTHON IMPORTS
 from datetime import datetime
@@ -34,23 +34,9 @@ from accounts.serializers import *
 User = get_user_model()
 
 
-@api_view(['GET'])
-def getRoutes(request):
-    routes = [
-        '../products/',
-        '../products/create/',
-        '../products/upload/',
-        '../products/<id>/reviews/',
-        '../products/top/',
-        '../products/<id>/',
-        '../products/delete/<id>/',
-        '../products/<update>/<id>',
-    ]
-    return Response(routes)
-
-
-
-#### FOR SUBJECTS ####
+############################
+####    FOR SUBJECTS    ####
+####                    ####
 
 @api_view(['GET', 'POST'])
 def getSubjects(request):
@@ -78,7 +64,14 @@ def getSubject(request, pk):
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-#### FOR USERS #####
+#####    END SUBJECTS    #####
+##############################
+
+
+#########################        
+#####   FOR USERS   #####
+#####               #####
+
 
 @api_view(['GET'])
 # @permission_classes([IsAdminUser])
@@ -139,7 +132,7 @@ def registerUser(request):
             "price_rate_hour": user.price_rate_hour,
             "token": str(token.access_token)
         }
-        response = HttpResponse(json.dumps(response_data), content_type="application/json")
+        response = JsonResponse(response_data, content_type="application/json")
         response.status_code = status.HTTP_201_CREATED
         return response
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -173,7 +166,6 @@ def updateUserProfile(request):
     user = request.user
     data = request.data
     serializer = UserSerializerWithToken(user, many=False)
-
     user.first_name = data.get('first_name') or user.first_name
     user.last_name = data.get('last_name') or user.last_name
     user.bio = data.get('bio', user.bio)

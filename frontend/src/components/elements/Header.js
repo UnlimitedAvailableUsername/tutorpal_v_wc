@@ -20,7 +20,7 @@ function Header() {
   const navAccountTitle = (
     <>
       <FontAwesomeIcon title="" fixedWidth inverse icon={faUser} />
-      &nbsp;
+      &nbsp;{" "}
       {userInfo && userInfo.username ? userInfo.username : "Account"}
     </>
   );  
@@ -42,7 +42,7 @@ function Header() {
                 </Nav>
               ) : (
                 <Nav>
-                  <NavLink as={Link} to="/tutor-list">
+                  <NavLink as={Link} to="/tutor">
                     Tutors
                   </NavLink>
                   <NavLink as={Link} to="/about">
@@ -69,10 +69,6 @@ function Header() {
                 </NavDropdown>
               ) : (
                 <Nav>
-                 <NavDropdown variant="dark" title="Apply" id="basic-nav-dropdown" >
-                    <NavDropdown.Item as={Link} to="/student-signup"> Sign up as Student </NavDropdown.Item>
-                    <NavDropdown.Item as={Link} to="/tutor-signup"> Sign up as Tutor{" "} </NavDropdown.Item>
-                  </NavDropdown>
                   <NavDropdown variant="dark" title={navAccountTitle} id="basic-nav-dropdown" >
                     <NavDropdown.Item as={Link} to="/login"> Sign In </NavDropdown.Item>
                     <NavDropdown.Item as={Link} to="/register">Register</NavDropdown.Item>

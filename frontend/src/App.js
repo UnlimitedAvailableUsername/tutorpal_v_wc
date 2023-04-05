@@ -7,7 +7,7 @@ import LoginScreen from "./components/screens/LoginScreen/LoginScreen";
 import ContactScreen from "./components/screens/ContactScreen/ContactScreen";
 import TutorDetailScreen from "./components/screens/TutorDetailScreen/TutorDetailScreen";
 import AddScreen from "./components/screens/AddScreen/AddScreen";
-import OrderScreen from "./components/screens/OrderScreen/OrderScreen";
+import OrderScreen from "./components/screens/ChooseScheduleScreen/ChooseScheduleScreen";
 import ProfileScreen from "./components/screens/ProfileScreen/ProfileScreen";
 import SuccessScreen from "./components/screens/ContactScreen/Success";
 import DoesNotExistScreen from "./components/screens/DoesNotExistScreen/DoesNotExistScreen";
@@ -22,8 +22,10 @@ function App() {
         <Routes>
           <Route path="/" element={ <HomeScreen /> } exact />
 
-          <Route path="/tutor-list" element={ <TutorListScreen /> } exact />
-          <Route path="/tutor-list/:id" element={ <TutorDetailScreen /> } exact />
+          <Route path="/tutor/:tutorId/schedules/:scheduleId" />
+
+          <Route path="/tutor" element={ <TutorListScreen /> } exact />
+          <Route path="/tutor/:tutorId" element={ <TutorDetailScreen /> } exact />
 
           <Route path="/add-lesson" element={ <AddScreen/> } exact />
 
@@ -33,8 +35,9 @@ function App() {
 
           <Route path="/contact-us" element={ <ContactScreen /> } exact />
           <Route path="/contact-success" element={ <SuccessScreen/> } exact />
+
           <Route path="*" element={ <DoesNotExistScreen /> } />
-          {/* <Route path='/order/:id' element={<OrderScreen/>} /> */}
+    
         </Routes>
       </div>
 

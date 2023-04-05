@@ -21,7 +21,6 @@ function LoginScreen() {
     const navigate = useNavigate();
     const redirect = location.search ? location.search.split('=')[1] : '/profile';
 
-
     const handleEmail = e => {
         setEmail(e.target.value);
     }
@@ -32,16 +31,16 @@ function LoginScreen() {
         e.preventDefault()
         if (!error) {
             dispatch(loginUser(email, password));
+            navigate(redirect);
         }
     }
 
-
     useEffect(() => {
-        if (userInfo && !error) {
+        if (userInfo) {
             navigate(redirect);
         }
-    }, [navigate, userInfo, redirect, error]);
- 
+    }, [navigate, userInfo, redirect]);
+
     
     return (
         <div>

@@ -33,6 +33,18 @@ class UserSerializer(serializers.ModelSerializer):
         fields = '__all__'
         extra_kwargs = {'subjects': {'required': False}}
 
+
+class UserSerializerWithToken(UserSerializer):
+    token = serializers.SerializerMethodField(read_only=True)
+    class Meta:
+        model = User
+        fields = '__all__'
+
+    def get_token(self,obj):
+        token = RefreshToken.for_user(obj)
+        return str(token.access_token)
+
+
 class MyTokenObtainPairSerializer(jwt_serializers.TokenObtainPairSerializer):
     def validate(self, attrs):
         data = super().validate(attrs)
@@ -52,12 +64,10 @@ class MyTokenObtainPairSerializer(jwt_serializers.TokenObtainPairSerializer):
         return token
 
 
-
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = '__all__'
-
 
 
 class ScheduleSerializer(serializers.ModelSerializer):

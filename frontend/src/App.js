@@ -10,6 +10,8 @@ import AddScreen from "./components/screens/AddScreen/AddScreen";
 import OrderScreen from "./components/screens/OrderScreen/OrderScreen";
 import ProfileScreen from "./components/screens/ProfileScreen/ProfileScreen";
 import SuccessScreen from "./components/screens/ContactScreen/Success";
+import DoesNotExistScreen from "./components/screens/DoesNotExistScreen/DoesNotExistScreen";
+import RegisterScreen from "./components/screens/RegisterScreen/RegisterScreen";
 function App() {
   return (
     <div className="bg-dark">
@@ -21,16 +23,17 @@ function App() {
           <Route path="/" element={ <HomeScreen /> } exact />
 
           <Route path="/tutor-list" element={ <TutorListScreen /> } exact />
-          <Route path="/tutor-list/tutor/:id" element={ <TutorDetailScreen /> } exact />
-          <Route path="/profile" element={ <ProfileScreen /> } exact />
+          <Route path="/tutor-list/:id" element={ <TutorDetailScreen /> } exact />
 
           <Route path="/add-lesson" element={ <AddScreen/> } exact />
 
           <Route path="/login" element={ <LoginScreen /> } exact />
+          <Route path="/register" element={ <RegisterScreen /> } exact />
           <Route path="/profile" element={ <ProfileScreen /> } exact />
 
           <Route path="/contact-us" element={ <ContactScreen /> } exact />
           <Route path="/contact-success" element={ <SuccessScreen/> } exact />
+          <Route path="*" element={ <DoesNotExistScreen /> } />
           {/* <Route path='/order/:id' element={<OrderScreen/>} /> */}
         </Routes>
       </div>

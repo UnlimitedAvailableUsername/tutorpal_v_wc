@@ -82,7 +82,6 @@ class UserManager(BaseUserManager):
 # have other plan for this:
 class Subject(models.Model):
     subject_title = models.TextField(max_length=100)
-    # user = models.ForeignKey(User, verbose_name=("User assigned (Tutor)"), on_delete=models.CASCADE)
     _id = models.AutoField(primary_key=True)
 
     def __str__(self):

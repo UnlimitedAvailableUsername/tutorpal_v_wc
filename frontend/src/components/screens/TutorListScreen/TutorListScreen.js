@@ -49,13 +49,11 @@ function TutorListScreen() {
 				) : (
 					<div>
 						<Row>
-							{users
-								.filter((user) => user.tutor)
-								.map((user) => (
-									<Col key={user.id} sm={12} md={6} xl={12}>
-										<Tutor user={user} />
-									</Col>
-								))}
+							{users.map((user) => (
+								<Col key={user.id} sm={12} md={6} xl={12}>
+									<Tutor user={user} />
+								</Col>
+							))}
 						</Row>
 						{users.filter((user) => user.tutor).length === 0 && (
 							<div className="text-center my-5">

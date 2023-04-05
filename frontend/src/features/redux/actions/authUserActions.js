@@ -34,9 +34,12 @@ export const loginUser = (email, password) => async (dispatch) => {
   } catch (error) {
 
     dispatch({
-      type: actionType.USER_LOGIN_FAIL,
-      payload: error.response && error.response.data.detail ? error.response.data.detail : error.message
-    });
+			type: actionType.USER_LOGIN_FAIL,
+			payload:
+				error.response && error.response.data.detail
+					? error.response.data.detail
+					: error.message,
+		});
 
   };
 };
@@ -50,6 +53,40 @@ export const logoutUser = () => (dispatch) => {
 
 
 };
+
+
+export const registerUser = (formData) => async (dispatch) => {
+  try {
+
+    dispatch({ type: actionType.USER_REGISTER_REQUEST });
+
+    const body = JSON.stringify(formData)
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    const { data } = await axios.post(`${BASE_URL}/api/accounts/users/register/`, body, config);
+
+    dispatch({
+      type: actionType.USER_REGISTER_SUCCESS,
+      payload: data
+    });
+
+  } catch (error) {
+    
+    dispatch({
+			type: actionType.USER_DETAILS_FAIL,
+			payload:
+				error.response && error.response.data.detail
+					? error.response.data.detail
+					: error.message,
+		});
+
+  }
+}
 
 
 

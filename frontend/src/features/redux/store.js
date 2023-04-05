@@ -1,30 +1,25 @@
 import { applyMiddleware, combineReducers, createStore } from "redux";
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { userLoginReducer, userDetailsReducer, userUpdateProfileReducer } from "./reducers/authUserReducer";
+import { userLoginReducer, userRegisterReducer, userDetailsReducer, userUpdateProfileReducer } from "./reducers/authUserReducer";
 import { tutorListReducer, tutorDetailsReducer } from "./reducers/tutorReducer";
 import { scheduleListReducer, scheduleDetailsReducer } from './reducers/scheduleReducer';
 import { addContactReducer } from "./reducers/contactReducer";
-import {
-	orderCreateReducer,
-	orderDetailsReducer,
-	orderPayReducer,
-	orderListMyReducer,
-	orderListReducer,
-	orderDeliverReducer,
-} from "../redux/reducers/orderReducers";
+
 
 const reducers = combineReducers({
     userLoginState: userLoginReducer,
+    userRegisterState: userRegisterReducer,
     userDetails: userDetailsReducer,
     userUpdateProfileState: userUpdateProfileReducer,
+
     contactUsFormState: addContactReducer,
+
     tutorList: tutorListReducer,
     tutorDetails: tutorDetailsReducer,
+
     scheduleListState: scheduleListReducer,
     scheduleDetailsState: scheduleDetailsReducer,
-    orderDetails: orderDetailsReducer,
-    orderPay: orderPayReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem('userInfo')

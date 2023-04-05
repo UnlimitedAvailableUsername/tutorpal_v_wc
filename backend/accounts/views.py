@@ -1,7 +1,6 @@
 ## FROM DJANGO
 from django.shortcuts import render
 from django.contrib.auth import get_user_model
-from django.contrib.auth.hashers import make_password
 from django.http import HttpResponse
 
 ## FROM PYTHON IMPORTS
@@ -82,9 +81,16 @@ def getSubject(request, pk):
 #### FOR USERS #####
 
 @api_view(['GET'])
-@permission_classes([IsAdminUser])
+# @permission_classes([IsAdminUser])
 def getUsers(request):
     users = User.objects.all()
+    serializer = UserSerializer(users, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def getTutorUsers(request):
+    users = User.objects.filter(tutor=True, active=True)
     serializer = UserSerializer(users, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -97,6 +103,16 @@ def getUser(request, pk):
         return Response({"error": "User does not exist."}, status=status.HTTP_404_NOT_FOUND)
     serializer = UserSerializer(user, many=False)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def loginUser(request):
+    serializer_class = MyTokenObtainPairSerializer
+    token_obtain_pair = jwt_views.TokenObtainPairView.as_view(serializer_class=serializer_class)
+    response = token_obtain_pair(request._request)
+    if response.status_code == status.HTTP_200_OK:
+        return Response(response.data, status=status.HTTP_200_OK)
+    return Response({'detail': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
 
 @api_view(['POST'])
@@ -141,17 +157,6 @@ def uploadProfilePicture(request):
         return Response({'message': 'Image uploaded successfully!'}, status=status.HTTP_200_OK)
     else:
         return Response({'error': 'No image provided.'}, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['POST'])
-def loginUser(request):
-    serializer_class = MyTokenObtainPairSerializer
-    token_obtain_pair = jwt_views.TokenObtainPairView.as_view(serializer_class=serializer_class)
-    response = token_obtain_pair(request._request)
-    if response.status_code == status.HTTP_200_OK:
-        return Response(response.data, status=status.HTTP_200_OK)
-    
-    return Response({'detail': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
 
 @api_view(['GET'])
@@ -360,4 +365,4 @@ def getContacts(request):
 def getContact(request, pk):
     contact = Contact.objects.get(id=pk)
     serializer = ContactSerializer(contact, many=False)
-    return Response(serializer.data)
+    return Response(serializer.data, status=status.HTTP_200_OK)

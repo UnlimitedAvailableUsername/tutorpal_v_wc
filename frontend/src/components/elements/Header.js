@@ -75,6 +75,7 @@ function Header() {
                   </NavDropdown>
                   <NavDropdown variant="dark" title={navAccountTitle} id="basic-nav-dropdown" >
                     <NavDropdown.Item as={Link} to="/login"> Sign In </NavDropdown.Item>
+                    <NavDropdown.Item as={Link} to="/register">Register</NavDropdown.Item>
                   </NavDropdown>
                 </Nav>
               )}

@@ -16,6 +16,8 @@ urlpatterns = [
     path('users/<str:pk>/schedules/', views.getScheduleOfTutor, name="get_current_user_schedule"),
     path('users/<int:user_id>/my-own-schedules/', views.getMyOwnSchedules, name="get_logged_user_schedule"),
 
+    path('tutors/', views.getTutorUsers, name="tutors"),
+
     # path('schedules/', views.getSchedules, name='products'),
     path('schedules/create/', views.addSchedule, name='add_product'),
     # path('schedules/<str:pk>', views.getSchedule, name='product'),

@@ -4,16 +4,17 @@ import { Link } from "react-router-dom";
 import Rating from "./Rating";
 
 function Tutor({ user }) {
+	
+	const subjectNamesById = {
+		1: "Mathematics",
+		2: "Science",
+		3: "English",
+		4: "History",
+	};
 
-  const subjectNamesById = {
-    1: "Mathematics",
-    2: "Science",
-    3: "English",
-    4: "History",
-    // add more subject IDs and names here
-  };
+	const urlPath = `${user.id}`;
 
-  return (
+	return (
 		<Row>
 			<Card
 				style={{ backgroundColor: "#404040" }}
@@ -21,7 +22,7 @@ function Tutor({ user }) {
 			>
 				<Row>
 					<Col>
-						<Link to={`tutor/${user.id}`}>
+						<Link to={urlPath}>
 							<Card.Img
 								className="img-responsive"
 								style={{ width: "auto", height: "16em" }}
@@ -31,7 +32,7 @@ function Tutor({ user }) {
 					</Col>
 					<Col>
 						<Card.Body>
-							<Link to={`tutor/${user.id}`}>
+							<Link to={urlPath}>
 								<Card.Title>
 									<strong>
 										{user.first_name} {user.last_name}
@@ -40,15 +41,15 @@ function Tutor({ user }) {
 							</Link>
 							<Card.Text as="div">
 								<div>
-                  <strong>Main Subject:</strong>{" "}
-                  {user.subjects.map((subjectId, index) => (
-                    <span key={subjectId}>
-                      {subjectNamesById[subjectId]}
-                      {index < user.subjects.length - 1 ? ", " : ""}
-                    </span>
-                  ))}
-                  <br></br>{" "}
-                </div>
+									<strong>Main Subject:</strong>{" "}
+									{user.subjects.map((subjectId, index) => (
+										<span key={subjectId}>
+											{subjectNamesById[subjectId]}
+											{index < user.subjects.length - 1 ? ", " : ""}
+										</span>
+									))}
+									<br></br>{" "}
+								</div>
 							</Card.Text>
 
 							<Card.Text style={{ color: "#D3D3D3" }}>
@@ -57,7 +58,7 @@ function Tutor({ user }) {
 									{user.bio.length > 200 ? <span>...</span> : null}
 								</div>
 								{user.bio.length > 200 ? (
-									<Link to={`tutor/${user.id}`} style={{ color: "#f8e825" }}>
+									<Link to={urlPath} style={{ color: "#f8e825" }}>
 										Read More
 									</Link>
 								) : null}
@@ -81,5 +82,5 @@ function Tutor({ user }) {
 		</Row>
 	);
 }
-  
+
 export default Tutor;

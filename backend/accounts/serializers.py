@@ -1,5 +1,6 @@
 # DJANGO IMPORTS
 from django.contrib.auth import get_user_model
+from django.contrib.auth.hashers import make_password
 
 # REST FRAMEWORK IMPORTS
 from rest_framework import serializers
@@ -19,38 +20,33 @@ class SubjectSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
+
+    def create(self, validated_data):
+        password = validated_data.pop('password')
+        validated_data['password'] = make_password(password)
+        validated_data['active'] = True
+        return super().create(validated_data)
+    
     class Meta:
         model = User
         fields = '__all__'
         extra_kwargs = {'subjects': {'required': False}}
 
-
-class UserSerializerWithToken(UserSerializer):
-    token = serializers.SerializerMethodField(read_only=True)
-    class Meta:
-        model = User
-        fields = '__all__'
-
-    def get_token(self,obj):
-        token = RefreshToken.for_user(obj)
-        return str(token.access_token)
-
-
 class MyTokenObtainPairSerializer(jwt_serializers.TokenObtainPairSerializer):
     def validate(self, attrs):
         data = super().validate(attrs)
-       
-        serializer = UserSerializerWithToken(self.user).data
+        serializer = UserSerializer(self.user).data
+        data['token'] = data.pop('access', None)
 
         for k,v in serializer.items():
             data[k] = v
 
         return data
+    
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
-
-        # Add custom claims
         token['email'] = user.email
 
         return token

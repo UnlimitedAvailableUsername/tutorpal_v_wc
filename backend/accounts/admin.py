@@ -3,10 +3,6 @@ from . import models
 
 admin.site.register(models.Subject)
 admin.site.register(models.User)
-# @admin.register(models.OrderSchedule)
-# class OrderScheduleAdmin(admin.ModelAdmin):
-#     list_display = ["user", "created_date", "total_price"]
-
 admin.site.register(models.Contact)
 admin.site.register(models.Review)
 

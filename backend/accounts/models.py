@@ -1,6 +1,7 @@
 import os, uuid
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.core.validators import MaxValueValidator
 from django.utils import timezone
 
 
@@ -82,7 +83,6 @@ class UserManager(BaseUserManager):
 # have other plan for this:
 class Subject(models.Model):
     subject_title = models.TextField(max_length=100)
-    _id = models.AutoField(primary_key=True)
 
     def __str__(self):
         # return f"{self.subject_title} ({self.user.username})"
@@ -146,55 +146,15 @@ class User(AbstractBaseUser):
         return self.student
 
 
-
-
-class Schedule(models.Model):
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
-    date = models.CharField(("Day to be scheduled"), max_length=50)
-    price = models.CharField(max_length=255, blank=True, null=True)
-    count_in_stock_hour = models.PositiveIntegerField(("How many slots of hours available?"), )
-    _id = models.AutoField(primary_key=True)
-
-    def __str__(self):
-        return f"{self.date} ({self.user})"
-
-
 class Review(models.Model):
     user_tutor = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='reviews_received')
     user_student = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='reviews_made')
     rating =  models.IntegerField(null=True, blank=True, default=0)
     comment = models.TextField(null=True, blank=True)
     created_date = models.DateTimeField(auto_now_add=True)
-    _id = models.AutoField(primary_key=True, editable=False)
 
     def __str__(self):
         return f"{self.rating} {self.user_student.username} to {self.user_tutor.username}"
-
-
-class OrderSchedule(models.Model):
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name="Who ordered?")
-    payment_method = models.CharField(max_length=200, null=True, blank=True)
-    total_price = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
-    paid_status = models.BooleanField(default=False)
-    paid_date = models.DateTimeField(auto_now_add=False, null=True, blank=True)
-    created_date = models.DateTimeField(auto_now_add=True, null=True, blank=True)
-    _id = models.AutoField(primary_key=True, editable=False)
-
-    def __str__(self):
-        return f"{self.user.email} - {self.created_date.strftime('%Y-%m-%d %H:%M:%S')}"
-
-
-class OrderScheduleItem(models.Model):
-    schedule = models.ForeignKey( Schedule, on_delete=models.SET_NULL, null=True, verbose_name=("Schedule Date"))
-    order = models.ForeignKey( OrderSchedule, on_delete=models.SET_NULL, null=True, verbose_name=("From the cart")) 
-    name = models.CharField(max_length=200, null=True, blank=True, verbose_name=("Order Item Name"))
-    qty = models.IntegerField(null=True, blank=True, default=0, verbose_name=("Quantity of Hour"))     
-    price = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True, verbose_name=("Price from the Product"))     
-    image = models.ImageField(("User Picture"), null=True, default='profile_pictures/default/tutor.jpg', upload_to=upload_image_path)
-    _id = models.AutoField(primary_key=True, editable=False)
-
-    def __str__(self):
-        return str(self.name)
     
 
 class Contact(models.Model):
@@ -204,3 +164,46 @@ class Contact(models.Model):
 
     def __str__(self):
         return f"concern of {self.name.username}"
+    
+
+class Schedule(models.Model):
+    name = models.CharField(max_length=255)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    count_in_stock = models.PositiveIntegerField(default=1, validators=[MaxValueValidator(24)])
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def reduce_stock(self, quantity):
+        self.count_in_stock -= quantity
+        self.save()
+
+    def save(self, *args, **kwargs):
+        if self.owner.price_rate_hour:
+            self.price = self.owner.price_rate_hour
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.name}"
+
+
+class ScheduleOrder(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    schedules = models.ManyToManyField(Schedule, through='ScheduleOrderItem')
+    date_created = models.DateTimeField(auto_now_add=True)
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    payment_method = models.CharField(max_length=200, null=True, blank=True)
+    paid_status = models.BooleanField(default=False)
+    paid_date = models.DateTimeField(auto_now_add=False, null=True, blank=True)
+
+    def __str__(self) -> str:
+        return f"Date: {self.date_created.strftime('%Y-%m-%d')} - Time: {self.date_created.strftime('%H:%M:%S')} - {self.user.username}"
+
+
+class ScheduleOrderItem(models.Model):
+    schedule = models.ForeignKey(Schedule, on_delete=models.CASCADE)
+    schedule_order = models.ForeignKey(ScheduleOrder, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f"{self.schedule.name}"
+    
+

@@ -16,7 +16,7 @@ export const addContact = (formData) => async (dispatch, getState) => {
             },
         };
 
-        const { data } = await axios.post(`${BASE_URL}/api/accounts/contact/create/`, formData, config);
+        const { data } = await axios.post(`${BASE_URL}/api/accounts/contacts/create/`, formData, config);
 
         console.log("I happened before the dispatch CONTACT_ADD_SUCCESS")
 

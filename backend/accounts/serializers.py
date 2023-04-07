@@ -4,13 +4,13 @@ from django.contrib.auth.hashers import make_password
 
 # REST FRAMEWORK IMPORTS
 from rest_framework import serializers
-from rest_framework_simplejwt import serializers as jwt_serializers
-from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 
 # LOCAL IMPORTS
 from .models import *
 
 User = get_user_model()
+
 
 class SubjectSerializer(serializers.ModelSerializer):
     class Meta:
@@ -18,96 +18,72 @@ class SubjectSerializer(serializers.ModelSerializer):
         fields = '__all__'
         extra_kwargs = {'users': {'required': False}}
 
+class ScheduleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Schedule
+        fields = '__all__'
 
 class UserSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True)
+    schedules = ScheduleSerializer(source='schedule_set', many=True, required=False)
 
+    class Meta:
+        model = User
+        fields = '__all__'
+
+# NOTE: THIS SERIALIZER MUST ONLY BE USED FOR AUTHENTICATION
+# OR ANY TYPE OF PERSONAL USER MODIFICATION SUCH AS UPDATE
+# PROFILE, DELETE MY PROFILE ETC. THIS IS DUE TO THE FACT THAT
+# THIS RETURNS THE TOKEN AND REFRESH KEYS
+
+class UserSerializerWithToken(serializers.ModelSerializer):
+    schedules = ScheduleSerializer(source='schedule_set', many=True, required=False)
+    token = serializers.SerializerMethodField(read_only=True)
+    refresh = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = User
+        fields = '__all__'
+
+    def get_token(self, obj):
+        token = AccessToken.for_user(obj)
+        return str(token)
+
+    def get_refresh(self, obj):
+        token = RefreshToken.for_user(obj)
+        return str(token)
+    
     def create(self, validated_data):
         password = validated_data.pop('password')
-        validated_data['password'] = make_password(password)
-        validated_data['active'] = True
-        return super().create(validated_data)
-    
-    class Meta:
-        model = User
-        fields = '__all__'
-        extra_kwargs = {'subjects': {'required': False}}
+        hashed_password = make_password(password)
+        user = User.objects.create(password=hashed_password, **validated_data)
+        return user
 
-
-class UserSerializerWithToken(UserSerializer):
-    token = serializers.SerializerMethodField(read_only=True)
-    class Meta:
-        model = User
-        fields = '__all__'
-
-    def get_token(self,obj):
-        token = RefreshToken.for_user(obj)
-        return str(token.access_token)
-
-
-class MyTokenObtainPairSerializer(jwt_serializers.TokenObtainPairSerializer):
-    def validate(self, attrs):
-        data = super().validate(attrs)
-        serializer = UserSerializer(self.user).data
-        data['token'] = data.pop('access', None)
-
-        for k,v in serializer.items():
-            data[k] = v
-
-        return data
-    
-    @classmethod
-    def get_token(cls, user):
-        token = super().get_token(user)
-        token['email'] = user.email
-
-        return token
-
+    def update(self, instance, validated_data):
+        password = validated_data.pop('password', None)
+        if password:
+            hashed_password = make_password(password)
+            instance.password = hashed_password
+        return super().update(instance, validated_data)
 
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = '__all__'
 
+class ContactSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Contact
+        fields = '__all__'
 
 class ScheduleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Schedule
         fields = '__all__'
 
-    def validate(self, data):
-        required_fields = ['date', 'count_in_stock_hour']
-        missing_fields = [field for field in required_fields if field not in data]
-        if missing_fields:
-            raise serializers.ValidationError(f"The following fields are required: {', '.join(missing_fields)}")
-        return data
-
-
-class OrderScheduleItemSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = OrderScheduleItem
-        fields = '__all__'
-
-class OrderScheduleSerializer(serializers.ModelSerializer):
-    orderItems = serializers.SerializerMethodField(read_only=True)
-    User = serializers.SerializerMethodField(read_only=True)
+class ScheduleOrderSerializer(serializers.ModelSerializer):
+    schedules = ScheduleSerializer(many=True, read_only=True)
+    payment_method = serializers.CharField(max_length=200)
 
     class Meta:
-        model = OrderSchedule
-        fields = '__all__'
-
-    def get_orderItems(self, obj):
-        items = obj.orderitem_set.all()
-        serializer = OrderScheduleItemSerializer(items,many=True)
-        return serializer.data
-
-    def get_User(self, obj):
-        items = obj.user
-        serializer = UserSerializer(items,many=False)
-        return serializer.data
-
-
-class ContactSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Contact
+        model = ScheduleOrder
         fields = '__all__'

@@ -51,24 +51,21 @@ class UserSerializerWithToken(serializers.ModelSerializer):
     def get_refresh(self, obj):
         token = RefreshToken.for_user(obj)
         return str(token)
-    
-    def create(self, validated_data):
-        password = validated_data.pop('password')
-        hashed_password = make_password(password)
-        user = User.objects.create(password=hashed_password, **validated_data)
-        return user
 
-    def update(self, instance, validated_data):
-        password = validated_data.pop('password', None)
-        if password:
-            hashed_password = make_password(password)
-            instance.password = hashed_password
-        return super().update(instance, validated_data)
 
 class ReviewSerializer(serializers.ModelSerializer):
+    user_student = serializers.SerializerMethodField()
     class Meta:
         model = Review
         fields = '__all__'
+
+    def get_user_student(self, obj):
+        return obj.user_student.username
+    
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data['user_student'] = instance.user_student.username
+        return data
 
 class ContactSerializer(serializers.ModelSerializer):
     class Meta:

@@ -149,7 +149,7 @@ class User(AbstractBaseUser):
 class Review(models.Model):
     user_tutor = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='reviews_received')
     user_student = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='reviews_made')
-    rating =  models.IntegerField(null=True, blank=True, default=0)
+    rating =  models.IntegerField(null=True, blank=True, default=1)
     comment = models.TextField(null=True, blank=True)
     created_date = models.DateTimeField(auto_now_add=True)
 

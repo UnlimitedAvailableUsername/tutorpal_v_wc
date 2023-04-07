@@ -200,6 +200,10 @@ def user_profile(request):
         serializer = UserSerializerWithToken(user)
         return Response(serializer.data)
     elif request.method == 'PUT':
+        data = request.data
+        password = data.pop('password', None)
+        if password:
+            data['password'] = make_password(password)
         serializer = UserSerializerWithToken(user, data=request.data, partial=True)
         if serializer.is_valid():
             profile_picture = request.FILES.get('profile_picture')
@@ -207,8 +211,6 @@ def user_profile(request):
                 image_path = handle_uploaded_file(profile_picture)
                 # Update the user profile with the image file path
                 user.profile_picture = image_path
-            if 'password' in request.data:
-                serializer.validated_data['password'] = make_password(request.data['password'])
             user.save()
             serializer.save()
             Schedule.objects.filter(owner=user).update(price=user.price_rate_hour)
@@ -305,8 +307,8 @@ def schedule_detail(request, id):
 
 
 
-########################
-####    FOR ORDERS  ####
+############################
+####    FOR ORDERS      ####
 
 ####################################
 # THIS WILL CREATE/PLACE A NEW ORDER
@@ -430,9 +432,9 @@ def my_schedule_order_list(request):
 
 
 
-############################
-####    FOR CONTACT US  ####
-####                    ####
+################################
+####    FOR CONTACT US      ####
+####                        ####
 
 ##########################################################
 # THIS WILL LET THE USER CREATE A CONCERN MESSAGE <object>
@@ -470,7 +472,94 @@ def contact_detail(request, id):
     serializer = ContactSerializer(contact, many=False)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
-####    END CONTACT US  ####
+####    END CONTACT US      ####
+################################
+
+
+
 ############################
+####    FOR REVIEWS     ####
 
+#####################################################
+# THIS WILL LIST ALL THE REVIEWS, FOR ADMIN EYES ONLY
 
+@api_view(['GET'])
+@permission_classes([IsAdminUser])
+def review_list(request):
+    review = Review.objects.all()
+    serializer = ReviewSerializer(review)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+##################################################################
+# THIS WILL GIVE A LIST OF ALL REVIEWS ON SPECIFIC USER TUTOR <id>
+
+@api_view(['GET'])
+def review_list_tutor(request, id):
+    review = Review.objects.filter(user_tutor=id)
+    serializer = ReviewSerializer(review)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+################################################
+# THIS WILL LET THE CURRENT USER CREATE A REVIEW
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def review_create(request):
+    data = request.data
+    user = request.user
+    user_tutor_id = data.get('user_tutor')
+    rating = data.get('rating')
+    comment = data.get('comment')
+    try:
+        user_tutor = User.objects.get(id=user_tutor_id)
+    except User.DoesNotExist:
+        return Response({'detail': 'The tutor does not exist.'}, status=status.HTTP_404_NOT_FOUND)
+    if user_tutor == request.user:
+        return Response({'error': 'You cannot create a review for yourself.'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    review = Review.objects.create(
+        user_tutor=user_tutor, 
+        user_student=user, 
+        rating=rating, 
+        comment=comment,
+    )
+    serializer = ReviewSerializer(review)
+    return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+##############################################################################
+# THIS WILL LET THE USER SEE THE DETAILS, EDIT, AND DELETE HIS/HER REVIEW <id>
+# IT ALSO PERMITS THE ADMINS TO MODIFY IT
+
+@api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([IsAuthenticated])
+def review_detail(request, id):
+    user = request.user
+    try:
+        review = Review.objects.get(id=id)
+    except Review.DoesNotExist:
+        return Response({'detail': 'That review does not exist'}, status=status.HTTP_404_NOT_FOUND)
+
+    # Get the user who created the review
+    review_creator = review.user_student
+
+    # Only allow the user who created the review and admin to modify or delete it
+    if user != review_creator and not user.is_superuser:
+        return Response({'detail': 'You do not have permission to modify or delete this review.'}, status=status.HTTP_403_FORBIDDEN)
+
+    if request.method == 'GET':
+        serializer = ReviewSerializer(review)
+        return Response(serializer.data)
+    elif request.method == 'PUT':
+        data = request.data
+        serializer = ReviewSerializer(review, data=data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == 'DELETE':
+        review.delete()
+        return Response({'detail': 'Review successfully deleted.'})
+
+####    FOR REVIEWS     ####
+############################

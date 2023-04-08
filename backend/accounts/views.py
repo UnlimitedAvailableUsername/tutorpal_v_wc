@@ -157,6 +157,19 @@ def user_login(request):
 
     return Response(response_data, status=status.HTTP_200_OK)
 
+#######################################################################
+# THIS WILL LET US CREATE A TEMPORARY DIRECTORY TO STORE THE IMAGE FILE
+
+import os
+import tempfile
+
+def handle_uploaded_file(f):
+    with tempfile.NamedTemporaryFile(delete=False) as tmpfile:
+        for chunk in f.chunks():
+            tmpfile.write(chunk)
+    return tmpfile.name
+
+
 #######################################################################################
 # THIS WILL LET THE USERS REGISTER AND RETURN AN 'ACCESS' AS 'TOKEN' AND 'REFRESH' KEYS
 
@@ -169,6 +182,11 @@ def user_register(request):
     data['password'] = hashed_password
     serializer = UserSerializer(data=data)
     if serializer.is_valid():
+        profile_picture = request.FILES.get('profile_picture')
+        if profile_picture:
+            image_path = handle_uploaded_file(profile_picture)
+            # Update the user profile with the image file path
+            user.profile_picture = image_path
         user = serializer.save()
         for subject in subjects_data:
             user.subjects.add(subject)
@@ -183,15 +201,6 @@ def user_register(request):
 #########################################################################################
 # THIS WILL LET THE CURRENT USER VIEW ('GET') AND UPDATE ('PUT') HIS/HER PROFILE
 # NOTE: USE 'Content-Type': 'multipart/form-data' FOR 'headers' WHEN DOING UPDATE ('PUT')
-
-import os
-import tempfile
-
-def handle_uploaded_file(f):
-    with tempfile.NamedTemporaryFile(delete=False) as tmpfile:
-        for chunk in f.chunks():
-            tmpfile.write(chunk)
-    return tmpfile.name
 
 @api_view(['GET', 'PUT'])
 def user_profile(request):

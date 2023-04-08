@@ -1,31 +1,42 @@
 import { applyMiddleware, combineReducers, createStore } from "redux";
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { userReducer } from "./reducers/authUserReducer";
+import { userLoginReducer, userDetailsReducer, userUpdateProfileReducer, userRegisterReducer, } from "./reducers/authUserReducer";
 import { tutorListReducer, tutorDetailsReducer } from "./reducers/tutorReducer";
 import { scheduleListReducer, scheduleDetailsReducer } from './reducers/scheduleReducer';
-import { addContactReducer } from "./reducers/contactReducer";
+import { addContactReducer} from "./reducers/contactReducer";
 
-
+ 
 const reducers = combineReducers({
-    userAuthenticatedState: userReducer,
-
-    contactUsFormState: addContactReducer,
-
+    userState: userLoginReducer,
+    userDetails: userDetailsReducer,
+    userUpdateProfle: userUpdateProfileReducer,
+    userRegister: userRegisterReducer,
     tutorList: tutorListReducer,
     tutorDetails: tutorDetailsReducer,
-
-    scheduleListState: scheduleListReducer,
-    scheduleDetailsState: scheduleDetailsReducer,
+    scheduleList: scheduleListReducer,
+    scheduleDetails: scheduleDetailsReducer,
+    contactUsFormState: addContactReducer, 
 });
 
 const userInfoFromStorage = localStorage.getItem('userInfo')
 ? JSON.parse(localStorage.getItem('userInfo'))
 : null
 
+// const cartItemsFromStorage = localStorage.getItem('cartItems') ?
+//     JSON.parse(localStorage.getItem('cartItems')) : []
+
 const initialState = { 
-    userLoginState: { userInfo: userInfoFromStorage, }
+
+    // cart: {
+    //     cartItems: cartItemsFromStorage,
+    // },
+
+    userState: {
+        userInfo: userInfoFromStorage,
+      }
 }
+
 
 const middleware = [thunk];
 

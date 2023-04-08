@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { logoutUser } from "../../features/redux/actions/authUserActions";
+import { logoutUser} from "../../features/redux/actions/authUserActions";
 
 
 function Header() {
@@ -14,8 +14,8 @@ function Header() {
       dispatch(logoutUser());
     };
   
-  const loginUser = useSelector( (state) => state.userLoginState);
-  const { userInfo } = loginUser;
+    const userLoginState = useSelector((state) => state.userState);
+    const { userInfo } = userLoginState;
 
   const navAccountTitle = (
     <>

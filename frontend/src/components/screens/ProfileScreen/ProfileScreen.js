@@ -36,12 +36,11 @@ function ProfileScreen() {
   const userDetails = useSelector((state) => state.userDetails);
   const { user, loading, error } = userDetails;
 
-  const userLoginState = useSelector((state) => state.userLoginState);
-  const { userInfo } = userLoginState;
+  const userLogin = useSelector((state) => state.userState);
+  const { userInfo } = userLogin;
 
-  const userUpdateProfileState = useSelector((state) => state.userUpdateProfileState);
-  const { success } = userUpdateProfileState;
-
+  const userUpdateProfle = useSelector((state) => state.userUpdateProfle);
+  const { success } = userUpdateProfle;
 
 
   // THIS WILL RUN FIRST
@@ -229,8 +228,8 @@ function ProfileScreen() {
             </div>
           ) : (
             <div>
-              <Col>
-                <Row>
+             <Row>
+                <Col>
                   <p>Profile Picture: </p>
                   <p>Username: </p>
                   <p>Email: </p>
@@ -239,20 +238,20 @@ function ProfileScreen() {
                   <p>Bio: </p>
                   <p></p>
                   <p></p>
-                </Row>
+            
               </Col>
-              <Col xs={6}>
-                <Row>                  
+              <Col xs={10}>
+                             
                   <p>
-                    <img src={profile_picture} alt="Profile" />
+                    <img src={userInfo.profile_picture} style={{width: 150}} alt="Profile" />
                   </p>
-                  <p>{username}</p>
-                  <p>{email}</p>
-                  <p>{first_name}</p>
-                  <p>{last_name}</p>
-                  <p>{bio}</p>
-                </Row>
-              </Col>
+                  <p>{userInfo.username}</p>
+                  <p>{userInfo.email}</p>
+                  <p>{userInfo.first_name}</p>
+                  <p>{userInfo.last_name}</p>
+                  <p>{userInfo.bio}</p>
+                </Col>
+              </Row>
               <Button variant="warning" onClick={handleEditButton}>
                 <FontAwesomeIcon icon={faPenToSquare} /> Edit
               </Button>

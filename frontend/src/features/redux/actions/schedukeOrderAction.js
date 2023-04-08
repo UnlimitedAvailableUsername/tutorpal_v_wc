@@ -3,7 +3,7 @@ import axios from 'axios';
 import { BASE_URL } from '../../../config';
 
 // CONSTANTS
-import * as actionType from '../constants/orderConstants';
+import * as actionType from '../constants/scheduleOrderConstants';
 
 
 export const getOrderDetails = (id) => async (dispatch, getState) => {

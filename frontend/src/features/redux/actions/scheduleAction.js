@@ -51,7 +51,7 @@ export const listSchedules = (id) => async (dispatch) => {
       type: actionType.SCHEDULE_LIST_REQUEST,
     });
 
-    const { data } = await axios.get(`${BASE_URL}/api/accounts/users/${id}/schedules/`);
+    const { data } = await axios.get(`${BASE_URL}/api/accounts/users/tutors/${id}/schedules/`);
     
     dispatch({
       type: actionType.SCHEDULE_LIST_SUCCESS,

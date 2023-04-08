@@ -4,7 +4,6 @@ import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { listTutorDetails } from "../../../features/redux/actions/tutorActions";
-import { listSchedules } from "../../../features/redux/actions/scheduleAction";
 import LoadingIconBig from "../../elements/Loader/LoadingIconBig";
 import MessageAlert from "../../elements/MessageAlert";
 
@@ -20,12 +19,8 @@ function TutorDetailScreen() {
 	const tutorDetails = useSelector(state => state.tutorDetails);
 	const { error, loading, user } = tutorDetails;
 
-	const scheduleList = useSelector(state => state.scheduleListState);
-	const { schedules } = scheduleList;
-
 	useEffect(() => {
 		dispatch(listTutorDetails(tutorId));
-		dispatch(listSchedules(tutorId));
 	}, [dispatch, tutorId]);
 
 	if (loading) {
@@ -45,7 +40,7 @@ function TutorDetailScreen() {
 	}
 
 	/* DISABLE THE ENROLL BUTTON IF SCHEDULE IS EMPTY */
-	const isDisabled = !schedules || schedules.length === 0;
+	const isDisabled = !user?.schedules || user.schedules.length === 0;
 
 	function handleSubmit() {
 		if (userInfo) {
@@ -156,20 +151,20 @@ function TutorDetailScreen() {
 								</ListGroup.Item>
 
 								<ListGroup.Item style={{ backgroundColor: "#404040" }}>
-									{schedules && schedules.length > 0 ? (
+									{user.schedules && user.schedules.length > 0 ? (
 										<div>
 											<div>Schedule:</div>
 											<div>
-												{schedules.map((schedule, index) => (
+												{user.schedules.map((schedule, index) => (
 													<React.Fragment key={schedule._id}>
 														{index > 0 && ", "}
-														{schedule.date}
+														{schedule.name}
 													</React.Fragment>
 												))}
 											</div>
 										</div>
 									) : (
-										<div>No schedules available</div>
+										<div>No schedules available at the moment</div>
 									)}
 								</ListGroup.Item>
 							</ListGroup>

@@ -210,11 +210,12 @@ def user_profile(request):
         serializer = UserSerializerWithToken(user)
         return Response(serializer.data)
     elif request.method == 'PUT':
-        data = request.data
+        data = request.data.copy()
         password = data.pop('password', None)
         if password:
             data['password'] = make_password(password)
-        serializer = UserSerializerWithToken(user, data=request.data, partial=True)
+        subject_ids = data.pop('subjects', [])
+        serializer = UserSerializerWithToken(user, data=data, partial=True)
         if serializer.is_valid():
             profile_picture = request.FILES.get('profile_picture')
             if profile_picture:
@@ -224,6 +225,11 @@ def user_profile(request):
             user.save()
             serializer.save()
             Schedule.objects.filter(owner=user).update(price=user.price_rate_hour)
+            # update user's subjects
+            user.subjects.clear()
+            for subject_id in subject_ids:
+                subject = Subject.objects.get(id=subject_id)
+                user.subjects.add(subject)
             return Response(serializer.data)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

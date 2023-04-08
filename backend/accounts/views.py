@@ -160,14 +160,10 @@ def user_login(request):
 #######################################################################
 # THIS WILL LET US CREATE A TEMPORARY DIRECTORY TO STORE THE IMAGE FILE
 
-import os
-import tempfile
+from django.core.files.base import ContentFile
 
 def handle_uploaded_file(f):
-    with tempfile.NamedTemporaryFile(delete=False) as tmpfile:
-        for chunk in f.chunks():
-            tmpfile.write(chunk)
-    return tmpfile.name
+    return ContentFile(f.read())
 
 #######################################################################################
 # THIS WILL LET THE USERS REGISTER AND RETURN AN 'ACCESS' AS 'TOKEN' AND 'REFRESH' KEYS
@@ -176,34 +172,36 @@ def handle_uploaded_file(f):
 
 @api_view(['POST'])
 def user_register(request):
-    data = request.data
+    # Important, because we don't want Django to mutate our data
+    data = request.data.copy()
     subjects_data = data.pop('subjects', [])
     password = data.pop('password')
-    hashed_password = make_password(password)
+    hashed_password = make_password(str(password))
     data['password'] = hashed_password
-
-    # Manually handle subjects data
-    subject_ids = []
-    for subject_id in subjects_data:
-        try:
-            subject = Subject.objects.get(id=subject_id)
-            subject_ids.append(subject.id)
-        except Subject.DoesNotExist:
-            return Response({'subjects': [f"Subject with ID {subject_id} does not exist."]}, status=status.HTTP_400_BAD_REQUEST)
-    data['subjects'] = subject_ids
+    
+    # Validate subject IDs
+    invalid_ids = set(subjects_data) - set(Subject.objects.values_list('id', flat=True))
+    if invalid_ids:
+        return Response({'subjects': [f"Subject with ID {id} does not exist." for id in invalid_ids]}, status=status.HTTP_400_BAD_REQUEST)
 
     serializer = UserSerializer(data=data)
     if serializer.is_valid():
+        user = serializer.save()
         profile_picture = request.FILES.get('profile_picture')
         if profile_picture:
-            image_path = handle_uploaded_file(profile_picture)
-            # Update the user profile with the image file path
-            user.profile_picture = image_path
-        user = serializer.save()
+            user.profile_picture.save(profile_picture.name, profile_picture, save=True)
+            response_data = serializer.data
+            response_data['profile_picture_url'] = request.build_absolute_uri(user.profile_picture.url)
+
+        # Associate subjects with user
+        subjects = Subject.objects.filter(id__in=subjects_data)
+        user.subjects.set(subjects)
+
         serializer_with_token = UserSerializerWithToken(user)
         response_data = serializer_with_token.data
         response_data['token'] = serializer_with_token.get_token(user)
         response_data['refresh'] = serializer_with_token.get_refresh(user)
+
         return Response(response_data, status=status.HTTP_201_CREATED)
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -23,12 +23,13 @@ class ScheduleSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class UserSerializer(serializers.ModelSerializer):
-    schedules = ScheduleSerializer(source='schedule_set', many=True, required=False)
-    subjects = serializers.PrimaryKeyRelatedField(queryset=Subject.objects.all(), many=True, required=False)
+    schedules = ScheduleSerializer(source='schedule_set', many=True, required=False, read_only=True)
+    subjects = SubjectSerializer(many=True, required=False, read_only=True)
 
     class Meta:
         model = User
         fields = '__all__'
+        extra_kwargs = {'password': {'write_only': True}}
 
 # NOTE: THIS SERIALIZER MUST ONLY BE USED FOR AUTHENTICATION
 # OR ANY TYPE OF PERSONAL USER MODIFICATION SUCH AS UPDATE
@@ -37,7 +38,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 class UserSerializerWithToken(serializers.ModelSerializer):
     schedules = ScheduleSerializer(source='schedule_set', many=True, required=False)
-    subjects = SubjectSerializer(many=True)
+    subjects = SubjectSerializer(many=True, required=False, read_only=True)
     token = serializers.SerializerMethodField(read_only=True)
     refresh = serializers.SerializerMethodField(read_only=True)
 

@@ -2,7 +2,7 @@ import * as actionType from '../constants/contactConstants';
 
 const initialState ={
     loading: false,
-    data: {},
+    data: null,
     error: null,
 }
 

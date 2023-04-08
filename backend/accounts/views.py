@@ -181,6 +181,17 @@ def user_register(request):
     password = data.pop('password')
     hashed_password = make_password(password)
     data['password'] = hashed_password
+
+    # Manually handle subjects data
+    subject_ids = []
+    for subject_id in subjects_data:
+        try:
+            subject = Subject.objects.get(id=subject_id)
+            subject_ids.append(subject.id)
+        except Subject.DoesNotExist:
+            return Response({'subjects': [f"Subject with ID {subject_id} does not exist."]}, status=status.HTTP_400_BAD_REQUEST)
+    data['subjects'] = subject_ids
+
     serializer = UserSerializer(data=data)
     if serializer.is_valid():
         profile_picture = request.FILES.get('profile_picture')
@@ -189,8 +200,6 @@ def user_register(request):
             # Update the user profile with the image file path
             user.profile_picture = image_path
         user = serializer.save()
-        for subject in subjects_data:
-            user.subjects.add(subject)
         serializer_with_token = UserSerializerWithToken(user)
         response_data = serializer_with_token.data
         response_data['token'] = serializer_with_token.get_token(user)

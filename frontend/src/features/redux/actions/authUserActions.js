@@ -1,12 +1,12 @@
-// FOR ACCESSING API DJANGO BACKEND
+// IMPORTS THAT WILL CALL THE BACKEND DJANGO REST API
 import axios from 'axios';
 import { BASE_URL } from '../../../config';
 
-// CONSTANTS
+// THESE ARE JUST CONSTANTS, FOR THE SAKE OF CALLING ACTIONS WITH THEIR PROPER NAMES
 import * as actionType from '../constants/authConstants';
 
 
-// LOGIN-RELATED ACTIONS
+// THIS ACTION IS RESPONSIBLE FOR THE LOGGING IN FOR USER
 export const loginUser = (email, password) => async (dispatch) => {
 
   try {
@@ -15,6 +15,7 @@ export const loginUser = (email, password) => async (dispatch) => {
 
     const body = JSON.stringify({ email, password });
 
+// SINCE WE DON"T
     const config = {
       headers: {
         'Content-Type': 'application/json'

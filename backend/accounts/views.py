@@ -169,9 +169,10 @@ def handle_uploaded_file(f):
             tmpfile.write(chunk)
     return tmpfile.name
 
-
 #######################################################################################
 # THIS WILL LET THE USERS REGISTER AND RETURN AN 'ACCESS' AS 'TOKEN' AND 'REFRESH' KEYS
+# NOTE: USE 'Content-Type': 'multipart/form-data' FOR 'headers'
+# WHEN REGISTERING WITH AN IMAGE FILE ON THE PROFILE PICTURE
 
 @api_view(['POST'])
 def user_register(request):

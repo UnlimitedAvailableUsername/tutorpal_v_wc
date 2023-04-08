@@ -220,7 +220,7 @@ def user_profile(request):
         data = request.data.copy()
         password = data.pop('password', None)
         if password:
-            data['password'] = make_password(password)
+            data['password'] = make_password(str(password))
         subject_ids = data.pop('subjects', [])
         
         # Exclude empty strings and None values

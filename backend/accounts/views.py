@@ -215,6 +215,10 @@ def user_profile(request):
         if password:
             data['password'] = make_password(password)
         subject_ids = data.pop('subjects', [])
+        
+        # Exclude empty strings and None values
+        subject_ids = [sid for sid in subject_ids if sid]
+        
         serializer = UserSerializerWithToken(user, data=data, partial=True)
         if serializer.is_valid():
             profile_picture = request.FILES.get('profile_picture')
@@ -225,11 +229,26 @@ def user_profile(request):
             user.save()
             serializer.save()
             Schedule.objects.filter(owner=user).update(price=user.price_rate_hour)
-            # update user's subjects
-            user.subjects.clear()
-            for subject_id in subject_ids:
-                subject = Subject.objects.get(id=subject_id)
-                user.subjects.add(subject)
+            
+            if subject_ids:
+                try:
+                    subjects = Subject.objects.filter(id__in=subject_ids)
+                    if subjects.count() != len(subject_ids):
+                        raise serializers.ValidationError("Invalid subject id(s)")
+                except Subject.DoesNotExist:
+                    raise serializers.ValidationError("Invalid subject id(s)")
+                # add or remove subjects as necessary
+                user.subjects.clear()
+                for subject_id in subject_ids:
+                    try:
+                        subject = Subject.objects.get(id=subject_id)
+                        user.subjects.add(subject)
+                    except Subject.DoesNotExist:
+                        # if the subject does not exist, return an error
+                        return Response({'subjects': f'Subject with id {subject_id} does not exist.'}, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                user.subjects.clear()
+
             return Response(serializer.data)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

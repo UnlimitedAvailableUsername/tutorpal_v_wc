@@ -24,7 +24,7 @@ const userInfoFromStorage = localStorage.getItem('userInfo')
 : null
 
 const initialState = { 
-    userLoginState: { userInfo: userInfoFromStorage, }
+    userAuthenticatedState: { userInfo: userInfoFromStorage, }
 }
 
 const middleware = [thunk];

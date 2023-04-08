@@ -27,7 +27,6 @@ function ProfileScreen() {
 
   const [message, setMessage] = useState("");
   
-  const [uploading, setUploading] = useState(false);
   const [editMode, setEditMode] = useState(false);
 
   const dispatch = useDispatch();
@@ -149,7 +148,6 @@ function ProfileScreen() {
                       onClick={handleClickOnProfilePicture}
                     />
                   </Row>
-                  {uploading && <LoadingIconRegular />}
                 </Form.Group>
 
                 <Form.Group controlId="username">

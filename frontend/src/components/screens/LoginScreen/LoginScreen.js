@@ -13,13 +13,13 @@ function LoginScreen() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const userLoginState = useSelector( state => state.userLoginState )
-    const { error, loading, userInfo } = userLoginState
+    const userAuthenticatedState = useSelector( state => state.userAuthenticatedState )
+    const { error, loading, userInfo } = userAuthenticatedState
 
     const dispatch = useDispatch();
     const location = useLocation();
     const navigate = useNavigate();
-    const redirect = location.search ? location.search.split('=')[1] : '/profile';
+    const redirect = location.search ? location.search.split('=')[1] : '/';
 
     const handleEmail = e => {
         setEmail(e.target.value);

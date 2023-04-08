@@ -14,8 +14,8 @@ function Header() {
       dispatch(logoutUser());
     };
   
-  const loginUser = useSelector( (state) => state.userLoginState);
-  const { userInfo } = loginUser;
+  const userAuthenticatedState = useSelector( (state) => state.userAuthenticatedState);
+  const { userInfo } = userAuthenticatedState;
 
   const navAccountTitle = (
     <>
@@ -23,7 +23,7 @@ function Header() {
       &nbsp;{" "}
       {userInfo && userInfo.username ? userInfo.username : "Account"}
     </>
-  );  
+  );
 
     return (
       <Navbar sticky="top" bg="dark" expand="lg" variant="dark">

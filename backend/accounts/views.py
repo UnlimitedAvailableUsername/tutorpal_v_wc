@@ -189,7 +189,7 @@ def user_register(request):
             subject = Subject.objects.get(id=subject_id)
             subject_ids.append(subject.id)
         except Subject.DoesNotExist:
-            pass
+            return Response({'subjects': [f"Subject with ID {subject_id} does not exist."]}, status=status.HTTP_400_BAD_REQUEST)
     data['subjects'] = subject_ids
 
     serializer = UserSerializer(data=data)

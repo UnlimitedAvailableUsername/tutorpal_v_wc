@@ -16,7 +16,6 @@ class SubjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Subject
         fields = '__all__'
-        extra_kwargs = {'users': {'required': False}}
 
 class ScheduleSerializer(serializers.ModelSerializer):
     class Meta:
@@ -25,7 +24,7 @@ class ScheduleSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     schedules = ScheduleSerializer(source='schedule_set', many=True, required=False)
-    subjects = SubjectSerializer(many=True)
+    subjects = serializers.PrimaryKeyRelatedField(queryset=Subject.objects.all(), many=True, required=False)
 
     class Meta:
         model = User

@@ -565,6 +565,11 @@ def review_create(request):
         rating=rating, 
         comment=comment,
     )
+
+    # Increase the numReviews of the tutor associated with the review created
+    user_tutor.numReviews = user_tutor.reviews_received.count()
+    user_tutor.save()
+
     serializer = ReviewSerializer(review)
     return Response(serializer.data, status=status.HTTP_201_CREATED)
 

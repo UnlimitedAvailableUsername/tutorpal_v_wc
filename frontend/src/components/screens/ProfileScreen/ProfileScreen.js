@@ -164,9 +164,10 @@ function ProfileScreen() {
                   />
                   <Row>
                     <Image
-                      src={profile_picture}
+                      src={user.profile_picture}
                       alt="This is my kingdom cum"
                       onClick={handleClickOnProfilePicture}
+                      style={{height: 100, width: 150}}
                     />
                   </Row>
                   {uploading && <LoadingIconRegular />}
@@ -243,7 +244,7 @@ function ProfileScreen() {
                     onChange={(e) => setConfirmPassword(e.target.value)}
                   />
                 </Form.Group>
-                <Button variant="warning" disabled={loading} type="submit" >Update</Button>
+                <Button style={{width: 100, margin:'auto', marginBottom: 15}} variant="warning" disabled={loading} type="submit" >Update</Button>
               </Form>
               <Button variant="warning" onClick={handleCancelButton} >Cancel</Button>
             </div>
@@ -261,7 +262,7 @@ function ProfileScreen() {
              <Col>
 
 
-            <Card className=" my-2 p-3 rounded" style={{backgroundColor: "#565656", width: 286, height: 448}}>
+            <Card className=" my-2 p-3 rounded" style={{backgroundColor: "#565656", width: 286, height: 490}}>
               <Row>
                 <Col>
                   <p>
@@ -285,8 +286,13 @@ function ProfileScreen() {
                   </Row>
                   <Row>
                     <Col>
-                      <pre style={{fontSize: 18, fontFamily: "Calibri", marginBottom: 3}}><strong>Contact:</strong>  {user.contact}</pre>
+                      <pre style={{fontSize: 18, fontFamily: "Calibri", marginBottom: 8}}><strong>Contact:</strong>  {user.contact}</pre>
                     </Col>
+                  </Row>
+                  <Row>
+                    <Button style={{width: 100, margin:'auto'}} variant="warning" onClick={handleEditButton}>
+                     <FontAwesomeIcon icon={faPenToSquare} /> Edit
+                     </Button>
                   </Row>
                 </Col>
               </Row>
@@ -297,10 +303,13 @@ function ProfileScreen() {
             {userInfo && userInfo.tutor ? (
 
               <Col xs={9}>
-                <Card className=" my-2 p-3 rounded" style={{backgroundColor: "#565656", width: 963, height: 448}}>
+                <Card className=" my-2 p-3 rounded" style={{backgroundColor: "#565656", width: 963, height: 490}}>
                   <Row>
                     <Col>
-                      <p style={{fontSize: 18, fontFamily: "Calibri", marginBottom: 6 }}><strong>Bio:</strong>  {user.bio}</p>
+                      <p style={{fontSize: 18, fontFamily: "Calibri", marginBottom: 6 }}><strong>Bio:</strong></p>
+                    </Col>
+                    <Col style={{marginRight: 120}}>
+                      <p style={{width: 850, marginLeft: 50}}> {user.bio}</p>
                     </Col>
                   </Row>
                   <Row>
@@ -373,9 +382,7 @@ function ProfileScreen() {
 
 </Row>
 
-            <Button variant="warning" onClick={handleEditButton}>
-                <FontAwesomeIcon icon={faPenToSquare} /> Edit
-              </Button>
+            
 
 
     

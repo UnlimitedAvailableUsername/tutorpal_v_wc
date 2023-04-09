@@ -24,7 +24,7 @@ function ProfileScreen() {
   const [last_name, setLastName] = useState("");
   const [bio, setBio] = useState("");
   const [file, setFile] = useState("");
-  const [password, setpassword] = useState("");
+  const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [profile_picture, setProfilePicture] = useState("")
 
@@ -66,6 +66,7 @@ function ProfileScreen() {
         setLastName(user.last_name);
         setBio(user.bio);
         setEmail(user.email);
+        setPassword(user.password);
       }
     }
   }, []);
@@ -153,114 +154,213 @@ function ProfileScreen() {
 
           {editMode ? (
             <div>
-              <Form onSubmit={submitHandler}>
-                <Form.Group controlId="formFileLg" className="mb-3">
-                  <Form.Label>Profile Picture</Form.Label>
-                  <Form.Control
-                    type="file"
-                    id="profilePicture"
-                    size="lg"
-                    onChange={handleFileChange}
-                  />
-                  <Row>
-                    <Image
-                      src={user.profile_picture}
-                      alt="This is my kingdom cum"
-                      onClick={handleClickOnProfilePicture}
-                      style={{height: 100, width: 150}}
-                    />
-                  </Row>
-                  {uploading && <LoadingIconRegular />}
-                </Form.Group>
+            <>
+  {userInfo && userInfo.tutor ? (
+    <Form onSubmit={submitHandler}>
+      <Form.Group controlId="formFileLg" className="mb-3">
+        <Form.Label>Profile Picture</Form.Label>
+        <Form.Control
+          type="file"
+          id="profilePicture"
+          size="lg"
+          onChange={handleFileChange}
+        />
+        <Row>
+          <Image
+            src={user.profile_picture}
+            alt="This is my kingdom cum"
+            onClick={handleClickOnProfilePicture}
+            style={{ height: 100, width: 150 }}
+          />
+        </Row>
+        {uploading && <LoadingIconRegular />}
+      </Form.Group>
 
-                <Form.Group controlId="username">
-                  <Form.Label>Username</Form.Label>
-                  <Form.Control
-                    required
-                    placeholder="Enter Username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                  />
-                </Form.Group>
+      <Form.Group controlId="username">
+        <Form.Label>Username</Form.Label>
+        <Form.Control
+          required
+          placeholder="Enter Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+      </Form.Group>
 
-                <Form.Group controlId="firstName">
-                  <Form.Label>First Name</Form.Label>
-                  <Form.Control
-                    required
-                    placeholder="first_name"
-                    value={first_name}
-                    onChange={(e) => setFirstName(e.target.value)}
-                  />
-                </Form.Group>
+      <Form.Group controlId="firstName">
+        <Form.Label>First Name</Form.Label>
+        <Form.Control
+          required
+          placeholder="first_name"
+          value={first_name}
+          onChange={(e) => setFirstName(e.target.value)}
+        />
+      </Form.Group>
 
-                <Form.Group controlId="lastName">
-                  <Form.Label>Last Name</Form.Label>
-                  <Form.Control
-                    required
-                    placeholder="Last Name"
-                    value={last_name}
-                    onChange={(e) => setLastName(e.target.value)}
-                  />
-                </Form.Group>
+      <Form.Group controlId="lastName">
+        <Form.Label>Last Name</Form.Label>
+        <Form.Control
+          required
+          placeholder="Last Name"
+          value={last_name}
+          onChange={(e) => setLastName(e.target.value)}
+        />
+      </Form.Group>
 
-                <Form.Group controlId="bio">
-                  <Form.Label>Bio</Form.Label>
-                  <Form.Control
-                    required
-                    as="textarea"
-                    placeholder="Enter your Bio here"
-                    value={bio}
-                    onChange={(e) => setLastName(e.target.value)}
-                  />
-                </Form.Group>
+      <Form.Group controlId="bio">
+        <Form.Label>Bio</Form.Label>
+        <Form.Control
+          required
+          as="textarea"
+          placeholder="Enter your Bio here"
+          value={bio}
+          onChange={(e) => setBio(e.target.value)} // fixed typo in function name
+        />
+      </Form.Group>
 
-                <Form.Group controlId="email">
-                  <Form.Label>Email Address</Form.Label>
-                  <Form.Control
-                    required
-                    type="email"
-                    placeholder="Enter Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </Form.Group>
+      <Form.Group controlId="email">
+        <Form.Label>Email Address</Form.Label>
+        <Form.Control
+          required
+          type="email"
+          placeholder="Enter Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+      </Form.Group>
 
-                <Form.Group controlId="password">
-                  <Form.Label>Password</Form.Label>
-                  <Form.Control
-                    type="password"
-                    placeholder="Enter Password"
-                    value={password}
-                    onChange={(e) => setpassword(e.target.value)}
-                  />
-                </Form.Group>
+      <Form.Group controlId="password">
+        <Form.Label>Password</Form.Label>
+        <Form.Control
+          type="password"
+          placeholder="Enter Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)} // fixed typo in function name
+        />
+      </Form.Group>
 
-                <Form.Group controlId="passwordConfirm">
-                  <Form.Label>Confirm Password</Form.Label>
-                  <Form.Control
-                    type="password"
-                    placeholder="Confirm Password"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                  />
-                </Form.Group>
-                <Button style={{width: 100, margin:'auto', marginBottom: 15}} variant="warning" disabled={loading} type="submit" >Update</Button>
-              </Form>
-              <Button variant="warning" onClick={handleCancelButton} >Cancel</Button>
-            </div>
+      <Form.Group controlId="passwordConfirm">
+        <Form.Label>Confirm Password</Form.Label>
+        <Form.Control
+          type="password"
+          placeholder="Confirm Password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
+      </Form.Group>
+      <Button
+        style={{ width: 100, margin: "auto", marginBottom: 15 }}
+        variant="warning"
+        disabled={loading}
+        type="submit"
+      >
+        Update
+      </Button>
+    </Form>
+  ) : (
+    <Form onSubmit={submitHandler}>
+      <Form.Group controlId="formFileLg" className="mb-3">
+        <Form.Label>Profile Picture</Form.Label>
+        <Form.Control
+          type="file"
+          id="profilePicture"
+          size="lg"
+          onChange={handleFileChange}
+        />
+        <Row>
+          <Image
+            src={user.profile_picture}
+            alt="This is my kingdom cum"
+            onClick={handleClickOnProfilePicture}
+            style={{ height: 100, width: 150 }}
+          />
+        </Row>
+        {uploading && <LoadingIconRegular />}
+      </Form.Group>
+
+      <Form.Group controlId="username">
+        <Form.Label>Username</Form.Label>
+        <Form.Control
+          required
+          placeholder="Enter Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+      </Form.Group>
+
+      <Form.Group controlId="firstName">
+        <Form.Label>First Name</Form.Label>
+        <Form.Control
+          required
+          placeholder="first_name"
+          value={first_name}
+          onChange={(e) => setFirstName(e.target.value)}
+        />
+      </Form.Group>
+
+      <Form.Group controlId="lastName">
+        <Form.Label>Last Name</Form.Label>
+        <Form.Control
+          required
+          placeholder="Last Name"
+          value={last_name}
+          onChange={(e) => setLastName(e.target.value)}
+        />
+      </Form.Group>
+
+      
+
+      <Form.Group controlId="email">
+        <Form.Label>Email Address</Form.Label>
+        <Form.Control
+          required
+          type="email"
+          placeholder="Enter Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+      </Form.Group>
+
+      <Form.Group controlId="password">
+        <Form.Label>Password</Form.Label>
+        <Form.Control
+          type="password"
+          placeholder="Enter Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)} // fixed typo in function name
+        />
+      </Form.Group>
+
+      <Form.Group controlId="passwordConfirm">
+        <Form.Label>Confirm Password</Form.Label>
+        <Form.Control
+          type="password"
+          placeholder="Confirm Password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
+      </Form.Group>
+      <Button
+        style={{ width: 100, margin: "auto", marginBottom: 15 }}
+        variant="warning"
+        disabled={loading}
+        type="submit"
+      >
+        Update
+      </Button>
+    </Form>
+  )}
+
+  <Button variant="warning" onClick={handleCancelButton}>
+    Cancel
+  </Button>
+</>
+</div>
           ) : (
 
-
-            <div>
-          
-              
+<div>          
 <Row>
-
-   
-    <Row xs={7}>
-            
+    <Row xs={7}>   
              <Col>
-
 
             <Card className=" my-2 p-3 rounded" style={{backgroundColor: "#565656", width: 286, height: 490}}>
               <Row>
@@ -337,23 +437,23 @@ function ProfileScreen() {
 
             ) : (
 
-                <Card className=" my-2 p-3 rounded" style={{backgroundColor: "#565656", width: 990, height: 448, marginRight: 10}}>
+                <Card className=" my-2 p-3 rounded" style={{backgroundColor: "#565656", width: 963, height: 448, marginRight: 10}}>
               <h5>TUTORING History</h5>
               <br/>
 
-              <table>
+              <table style={{border: '1px solid black'}} className='table-sm'>
                 <thead>
-                  <tr>
-                    <th>Column 1</th>
-                    <th>Column 2</th>
-                    <th>Column 3</th>
+                  <tr style={{border: '1px solid black'}}>
+                    <th style={{border: '1px solid black'}}>Column 1</th>
+                    <th style={{border: '1px solid black'}}>Column 2</th>
+                    <th style={{border: '1px solid black'}}>Column 3</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td>Row 1, Column 1</td>
-                    <td>Row 1, Column 2</td>
-                    <td>Row 1, Column 3</td>
+                    <td style={{border: '1px solid black'}}>Row 1, Column 1</td>
+                    <td style={{border: '1px solid black'}}>Row 1, Column 2</td>
+                    <td style={{border: '1px solid black'}}>Row 1, Column 3</td>
                   </tr>
                   <tr>
                     <td>Row 2, Column 1</td>

@@ -15,10 +15,10 @@ function LoginScreen() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const userLoginState = useSelector( state => state.userLoginState )
-    const error = userLoginState ? userLoginState.error : null;
-const loading = userLoginState ? userLoginState.loading : false;
-const userInfo = userLoginState ? userLoginState.userInfo : null;
+    const userLogin = useSelector( state => state.userState )
+    const error = userLogin ? userLogin.error : null;
+    const loading = userLogin ? userLogin.loading : false;
+    const userInfo = userLogin ? userLogin.userInfo : null;
 
     const dispatch = useDispatch();
     const location = useLocation();

@@ -107,7 +107,7 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
     dispatch({ type: actionType.USER_DETAILS_REQUEST, });
 
     // PULLING OUT THE CURRENT USER WE ARE LOGGED IN AS
-    const { userLoginState: { userInfo } } = getState();
+    const { userState: { userInfo } } = getState();
 
     /* MAKE GET REQUEST TO GET BACK THE USER DATA */
     const config = {
@@ -147,7 +147,7 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
     dispatch({ type: actionType.USER_UPDATE_PROFILE_REQUEST, });
 
     // PULLING OUT THE CURRENT USER WE ARE LOGGED IN AS
-    const { userLoginState: { userInfo }, } = getState();
+    const { userState: { userInfo }, } = getState();
 
     /* MAKE PUT REQUEST TO SET THE THE USER DATA */
     const config = {

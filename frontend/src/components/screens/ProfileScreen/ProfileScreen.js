@@ -56,7 +56,7 @@ function ProfileScreen() {
     if (!userInfo) {
       navigate("/login");
     } else {
-      if (!user || userInfo._id !== user._id) {
+      if (!user || !user.name || success || userInfo._id !== user._id) {
         dispatch({ type: profileActionType.USER_UPDATE_PROFILE_RESET });
         dispatch(getUserDetails("profile"));
       } else {
@@ -68,7 +68,7 @@ function ProfileScreen() {
         setEmail(user.email);
       }
     }
-  }, [dispatch, navigate, userInfo, user]);
+  }, []);
 
 
   const submitHandler = async (e) => {
@@ -132,6 +132,8 @@ function ProfileScreen() {
 
   return (
 <>
+
+
     {userInfo && (userInfo.tutor || userInfo.user?.tutor) && (
       <HeaderTutor/>
     ) }
@@ -249,7 +251,7 @@ function ProfileScreen() {
 
 
             <div>
-              {user && (
+          
               
 <Row>
 
@@ -378,7 +380,7 @@ function ProfileScreen() {
 
     
         </Row>
-      )}
+
             </div>
           )} 
         </Col>

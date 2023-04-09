@@ -13,8 +13,8 @@ function TutorDetailScreen() {
 	const location = useLocation();
 	const navigate = useNavigate();
 
-	const userLoginState = useSelector(state => state.userLoginState);
-	const { userInfo } = userLoginState
+	const userAuthenticatedState = useSelector(state => state.userAuthenticatedState);
+	const { userInfo } = userAuthenticatedState
 
 	const tutorDetails = useSelector(state => state.tutorDetails);
 	const { error, loading, user } = tutorDetails;

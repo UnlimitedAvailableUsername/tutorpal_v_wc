@@ -31,7 +31,6 @@ function LoginScreen() {
         e.preventDefault()
         if (!error) {
             dispatch(loginUser(email, password));
-            navigate(redirect);
         }
     }
 

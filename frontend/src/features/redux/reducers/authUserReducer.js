@@ -43,7 +43,7 @@ export const userReducer = (state = userInitialState, action) => {
             };
 
         case actionType.USER_LOGOUT:
-            return {};
+            return {...userInitialState};
 
         case actionType.USER_UPDATE_PROFILE_REQUEST:
             return {

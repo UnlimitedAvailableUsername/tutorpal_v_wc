@@ -144,6 +144,11 @@ def user_login(request):
     email = request.data.get('email', None)
     password = request.data.get('password', None)
 
+    try:
+        user = User.objects.get(email=email)
+    except User.DoesNotExist:
+        return Response({'detail': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
     user = authenticate(email=email, password=password)
 
     if user is None:

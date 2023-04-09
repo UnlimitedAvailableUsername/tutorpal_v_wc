@@ -7,7 +7,7 @@ export const addContact = (formData) => async (dispatch, getState) => {
     try {
         dispatch({ type: actionType.CONTACT_ADD_REQUEST });
 
-        const { userLoginState: { userInfo } } = getState();
+        const { userState: { userInfo } } = getState();
 
         const config = {
             headers: {

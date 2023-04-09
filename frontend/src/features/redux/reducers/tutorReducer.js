@@ -1,5 +1,6 @@
 import * as actionType from '../constants/tutorConstants'
 
+
 const tutorListInitialState = {
     loading: false,
     users: null,
@@ -68,3 +69,22 @@ export const tutorDetailsReducer = (state = tutorDetailsInitialState, action) =>
 
     }
 };
+
+export const tutorReviewCreateReducer = (state = {}, action) => {
+    switch (action.type) {
+        case actionType.TUTOR_CREATE_REVIEW_REQUEST:
+            return { loading: true }
+
+        case actionType.TUTOR_CREATE_REVIEW_SUCCESS:
+            return { loading: false, success: true, }
+
+        case actionType.TUTOR_CREATE_REVIEW_FAIL:
+            return { loading: false, error: action.payload }
+
+        case actionType.TUTOR_CREATE_REVIEW_RESET:
+            return {}
+
+        default:
+            return state
+    }
+}

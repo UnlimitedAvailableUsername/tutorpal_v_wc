@@ -7,6 +7,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import MessageAlert from '../../elements/MessageAlert';
 import LoadingIconBig from '../../elements/Loader/LoadingIconBig';
 
+import HeaderHomePage from '../../elements/HeaderHomePage'
+
 
 function LoginScreen() {
     
@@ -46,9 +48,11 @@ const userInfo = userLoginState ? userLoginState.userInfo : null;
     
     return (
         <div>
+            <HeaderHomePage/>
+            
             <Row className="justify-content-center align-items-center">
                 <Col xl={8} xs={10}>
-                    <Card className="px-4 my-5">
+                    <Card className="px-4 my-5 shadow">
                         <Card.Body>
                             <div className="mb-3 mt-md-4">
                                 <div className='mb-5' >
@@ -66,7 +70,7 @@ const userInfo = userLoginState ? userLoginState.userInfo : null;
                                             <Form.Label>Password</Form.Label>
                                             <Form.Control value={ password } onChange={ handlePassword } type="password" placeholder="Enter Password" />
                                         </Form.Group>
-                                        <div className="d-grid my-5">
+                                        <div className="d-grid my-5" style={{width: 300, margin: 'auto'}}>
                                             <Button variant="warning" disabled={ !email || !password } onChange={ handleSubmit } type="submit">Continue</Button>
                                         </div>
                                     </Form>

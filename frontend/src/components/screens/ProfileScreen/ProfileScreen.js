@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Button, Form, Container, Image } from "react-bootstrap";
+import { Row, Col, Button, Form, Container, Image, Card } from "react-bootstrap";
 import Message from "../../elements/MessageAlert"
 import { useDispatch, useSelector } from "react-redux";
 import { getUserDetails, updateUserProfile } from "../../../features/redux/actions/authUserActions";
@@ -12,6 +12,9 @@ import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import * as profileActionType from '../../../features/redux/constants/authConstants';
 import LoadingIconBig from "../../elements/Loader/LoadingIconBig";
 import LoadingIconRegular from "../../elements/Loader/LoadingIconRegular";
+
+import HeaderTutor from '../../elements/HeaderTutor'
+import HeaderStudent from '../../elements/HeaderStudent'
 
 function ProfileScreen() {
 
@@ -120,7 +123,23 @@ function ProfileScreen() {
     document.getElementById("profilePicture").click();
   }
 
+  const subjectNamesById = {
+		1: "Mathematics",
+		2: "Science",
+		3: "English",
+		4: "History",
+	};
+
   return (
+<>
+    {userInfo && (userInfo.tutor || userInfo.user?.tutor) && (
+      <HeaderTutor/>
+    ) }
+
+    {userInfo && (userInfo.student || userInfo.user?.student) && (
+      <HeaderStudent/>
+    ) }
+
     <Container>
       <Row>
         <Col>
@@ -227,39 +246,145 @@ function ProfileScreen() {
               <Button variant="warning" onClick={handleCancelButton} >Cancel</Button>
             </div>
           ) : (
+
+
             <div>
-             <Row>
-                <Col>
-                  <p>Profile Picture: </p>
-                  <p>Username: </p>
-                  <p>Email: </p>
-                  <p>First Name: </p>
-                  <p>Last Name: </p>
-                  <p>Bio: </p>
-                  <p></p>
-                  <p></p>
+              {user && (
+              
+<Row>
+
+   
+    <Row xs={7}>
             
-              </Col>
-              <Col xs={10}>
-                             
+             <Col>
+
+
+            <Card className=" my-2 p-3 rounded" style={{backgroundColor: "#565656", width: 286, height: 448}}>
+              <Row>
+                <Col>
                   <p>
-                    <img src={userInfo.profile_picture} style={{width: 150}} alt="Profile" />
+                    <img src={user.profile_picture} style={{width: 250}} alt="Profile" />
                   </p>
-                  <p>{userInfo.username}</p>
-                  <p>{userInfo.email}</p>
-                  <p>{userInfo.first_name}</p>
-                  <p>{userInfo.last_name}</p>
-                  <p>{userInfo.bio}</p>
+                  <Row>
+                    <Col>
+                      <pre style={{fontSize: 18, fontFamily: "Calibri", marginBottom: 3}}><strong>Username:</strong>  {user.username}</pre>
+                    </Col>
+                    <Col>
+                      <pre style={{fontSize: 18, fontFamily: "Calibri", marginBottom: 3}}><strong>Email:</strong>  {user.email}</pre>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <pre style={{fontSize: 18, fontFamily: "Calibri", marginBottom: 3}}><strong>First Name:</strong>  {user.first_name}</pre>
+                    </Col>
+                    <Col>
+                      <pre style={{fontSize: 18, fontFamily: "Calibri", marginBottom: 3}}><strong>Last Name:</strong>  {user.last_name}</pre>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <pre style={{fontSize: 18, fontFamily: "Calibri", marginBottom: 3}}><strong>Contact:</strong>  {user.contact}</pre>
+                    </Col>
+                  </Row>
                 </Col>
               </Row>
-              <Button variant="warning" onClick={handleEditButton}>
+            </Card>
+          </Col>
+
+
+            {userInfo && userInfo.tutor ? (
+
+              <Col xs={9}>
+                <Card className=" my-2 p-3 rounded" style={{backgroundColor: "#565656", width: 963, height: 448}}>
+                  <Row>
+                    <Col>
+                      <p style={{fontSize: 18, fontFamily: "Calibri", marginBottom: 6 }}><strong>Bio:</strong>  {user.bio}</p>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <pre style={{fontSize: 18, fontFamily: "Calibri", marginBottom: 3}}><strong>Subjects:</strong>  {user.subjects && user.subjects.map((subjectId, index) => (
+                        <span key={subjectId}>
+                          {subjectNamesById[subjectId]}
+                          {index < user.subjects.length - 1 ? ", " : ""}
+                        </span>
+                      ))}</pre>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <pre style={{fontSize: 18, fontFamily: "Calibri", marginBottom: 6 }}><strong>Meeting Link:</strong>  {user.meeting_link}</pre>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <p style={{fontSize: 18, fontFamily: "Calibri", marginBottom: 6 }}><strong>Schedules:</strong>  {user.schedules}</p>
+                    </Col>
+                  </Row>
+                </Card>
+              </Col>
+
+            ) : (
+
+                <Card className=" my-2 p-3 rounded" style={{backgroundColor: "#565656", width: 990, height: 448, marginRight: 10}}>
+              <h5>TUTORING History</h5>
+              <br/>
+
+              <table>
+                <thead>
+                  <tr>
+                    <th>Column 1</th>
+                    <th>Column 2</th>
+                    <th>Column 3</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Row 1, Column 1</td>
+                    <td>Row 1, Column 2</td>
+                    <td>Row 1, Column 3</td>
+                  </tr>
+                  <tr>
+                    <td>Row 2, Column 1</td>
+                    <td>Row 2, Column 2</td>
+                    <td>Row 2, Column 3</td>
+                  </tr>
+                  <tr>
+                    <td>Row 3, Column 1</td>
+                    <td>Row 3, Column 2</td>
+                    <td>Row 3, Column 3</td>
+                  </tr>
+                  <tr>
+                    <td>Row 4, Column 1</td>
+                    <td>Row 4, Column 2</td>
+                    <td>Row 4, Column 3</td>
+                  </tr>
+                </tbody>
+              </table>
+                </Card>
+
+
+
+  
+)}
+
+
+</Row>
+
+            <Button variant="warning" onClick={handleEditButton}>
                 <FontAwesomeIcon icon={faPenToSquare} /> Edit
               </Button>
+
+
+    
+        </Row>
+      )}
             </div>
-          )}
+          )} 
         </Col>
       </Row>
     </Container>
+    </>
   );
 }
 

@@ -54,3 +54,43 @@ export const listTutorDetails = (tutorId) => async (dispatch) => {
     }
 }
 
+
+//creating review
+export const createTutorReview = (tutorId, review) => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: actionType.TUTOR_CREATE_REVIEW_REQUEST
+        })
+
+        const {
+            userState: { userInfo },
+        } = getState()
+
+        const config = {
+            headers: {
+                'Content-type': 'application/json',
+                Authorization: `Bearer ${userInfo.token}`
+            }
+        }
+
+        const { data } = await axios.post(
+            `${BASE_URL}api/accounts/reviews/create/`,
+            review,
+            config
+        )
+        dispatch({
+            type: actionType.TUTOR_CREATE_REVIEW_SUCCESS,
+            payload: data,
+        })
+
+
+
+    } catch (error) {
+        dispatch({
+            type: actionType.TUTOR_CREATE_REVIEW_FAIL,
+            payload: error.response && error.response.data.detail
+                ? error.response.data.detail
+                : error.message,
+        })
+    }
+}

@@ -8,6 +8,8 @@ import Dropdown from "react-bootstrap/Dropdown";
 import "../../../assets/components/screens/TutorListScreen/tutorlist.css";
 import LoadingIconBig from "../../elements/Loader/LoadingIconBig";
 import MessageAlert from "../../elements/MessageAlert";
+import HeaderHomePage from '../../elements/HeaderHomePage'
+import HeaderStudent from '../../elements/HeaderStudent'
 
 function TutorListScreen() {
 	const [search, setSearch] = useState("");
@@ -83,16 +85,14 @@ function TutorListScreen() {
 	};
   
   
-  
-  
 	return (
   
 	  <div>
-			  {/* {userInfo && (userInfo.student || userInfo.user?.student) && (
+			  {userInfo && (userInfo.student || userInfo.user?.student) && (
 		<HeaderStudent/>
 	  ) }
   
-  {!userInfo && <HeaderHome />} */}
+  {!userInfo && <HeaderHomePage />}
   
   
   

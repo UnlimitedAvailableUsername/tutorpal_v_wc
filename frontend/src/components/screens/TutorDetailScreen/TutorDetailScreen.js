@@ -1,11 +1,17 @@
-import React, { useEffect } from "react";
-import { Row, Col, Image, ListGroup, Button, Container, Table, } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Row, Col, Image, ListGroup, Button, Container, Table, Form } from "react-bootstrap";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { listTutorDetails } from "../../../features/redux/actions/tutorActions";
+import { listTutorDetails, createTutorReview } from "../../../features/redux/actions/tutorActions";
 import LoadingIconBig from "../../elements/Loader/LoadingIconBig";
 import MessageAlert from "../../elements/MessageAlert";
+import Rating from '../../elements/Rating'
+
+import { TUTOR_CREATE_REVIEW_RESET } from '../../../features/redux/constants/tutorConstants'
+
+import HeaderHomePage from '../../elements/HeaderHomePage'
+import HeaderStudent from '../../elements/HeaderStudent'
 
 function TutorDetailScreen() {
 	const { tutorId } = useParams();
@@ -19,9 +25,44 @@ function TutorDetailScreen() {
 	const tutorDetails = useSelector(state => state.tutorDetails);
 	const { error, loading, user } = tutorDetails;
 
-	useEffect(() => {
-		dispatch(listTutorDetails(tutorId));
-	}, [dispatch, tutorId]);
+
+
+	const [rating, setRating] = useState(0)
+    const [comment, setComment] = useState('')
+	const tutorReviewCreate = useSelector(state => state.tutorReviewCreate)
+    const {
+        loading: loadingTutorReview,
+        error: errorTutorReview,
+        success: successTutorReview,
+    } = tutorReviewCreate
+
+    useEffect(() => {
+        if (successTutorReview) {
+            setRating(0)
+            setComment('')
+            dispatch({ type: TUTOR_CREATE_REVIEW_RESET })
+        }
+
+        dispatch(listTutorDetails(tutorId))
+
+    }, [dispatch, successTutorReview])
+
+	const submitHandler = (e) => {
+        e.preventDefault()
+        dispatch(createTutorReview(
+            tutorId, {
+            rating,
+            comment
+        }
+        ))
+    }
+
+
+
+
+	// useEffect(() => {
+	// 	dispatch(listTutorDetails(tutorId));
+	// }, [dispatch, tutorId]);
 
 	if (loading) {
 		return (
@@ -52,6 +93,14 @@ function TutorDetailScreen() {
 
 	return (
 		<div>
+
+{userInfo && (userInfo.student || userInfo.user?.student) && (
+		<HeaderStudent/>
+	  ) }
+  
+  {!userInfo && <HeaderHomePage />}
+  
+			{user&& (
 			<Container>
 				<Button
 					as={Link}
@@ -61,7 +110,7 @@ function TutorDetailScreen() {
 				>
 					Fuck, Back to Tutor List
 				</Button>
-				{user && (
+		
 					<Row>
 						<Col xs={12} md={4}>
 							<div className="d-flex align-items-center justify-content-center mb-4">
@@ -116,12 +165,12 @@ function TutorDetailScreen() {
 						</Col>
 
 						<Col xs={12} md={8}>
-							<ListGroup variant="flush">
-								<ListGroup.Item style={{ backgroundColor: "#404040" }}>
+							<ListGroup variant="flush" >
+								<ListGroup.Item style={{ backgroundColor: "#404040", }}>
 									<Row>
 										<Col md={{ span: 2 }}> Bio</Col>
-										<Col>
-											{user.bio}
+										<Col >
+											<p >{user.bio}</p>
 											<br />
 											<br />
 										</Col>
@@ -169,9 +218,76 @@ function TutorDetailScreen() {
 								</ListGroup.Item>
 							</ListGroup>
 						</Col>
+					
+                                {/* <Col md={6}>
+                                    <h4>Reviews</h4>
+                                    {user.reviews.length === 0 && <MessageAlert variant='info'>No Reviews</MessageAlert>}
+
+                                    <ListGroup variant='flush'>
+                                        {user.reviews.map((review) => (
+                                            <ListGroup.Item key={review._id}>
+                                                <strong>{review.name}</strong>
+                                                <Rating value={review.rating} color='#f8e825' />
+                                                <p>{review.createdAt.substring(0, 10)}</p>
+                                                <p>{review.comment}</p>
+                                            </ListGroup.Item>
+                                        ))}
+
+                                        <ListGroup.Item>
+                                            <h4>Write a review</h4>
+
+                                            {loadingTutorReview && <LoadingIconBig/>}
+                                            {successTutorReview && <MessageAlert variant='success'>Review Submitted</MessageAlert>}
+                                            {errorTutorReview && <MessageAlert variant='danger'>{errorTutorReview}</MessageAlert>}
+
+                                            {userInfo ? (
+                                                <Form onSubmit={submitHandler}>
+                                                    <Form.Group controlId='rating'>
+                                                        <Form.Label>Rating</Form.Label>
+                                                        <Form.Control
+                                                            as='select'
+                                                            value={rating}
+                                                            onChange={(e) => setRating(e.target.value)}
+                                                        >
+                                                            <option value=''>Select...</option>
+                                                            <option value='1'>1 - Poor</option>
+                                                            <option value='2'>2 - Fair</option>
+                                                            <option value='3'>3 - Good</option>
+                                                            <option value='4'>4 - Very Good</option>
+                                                            <option value='5'>5 - Excellent</option>
+                                                        </Form.Control>
+                                                    </Form.Group>
+
+                                                    <Form.Group controlId='comment'>
+                                                        <Form.Label>Review</Form.Label>
+                                                        <Form.Control
+                                                            as='textarea'
+                                                            row='5'
+                                                            value={comment}
+                                                            onChange={(e) => setComment(e.target.value)}
+                                                        ></Form.Control>
+                                                    </Form.Group>
+
+                                                    <Button
+                                                        disabled={loadingTutorReview}
+                                                        type='submit'
+                                                        variant='primary'
+                                                    >
+                                                        Submit
+                                                    </Button>
+
+                                                </Form>
+                                            ) : (
+                                                    <MessageAlert variant='info'>Please <Link to='/login'>login</Link> to write a review</MessageAlert>
+                                                )}
+                                        </ListGroup.Item>
+                                    </ListGroup>
+                                </Col> */}
+                            
 					</Row>
-				)}
+			
 			</Container>
+			)}
 		</div>
 	);
 }

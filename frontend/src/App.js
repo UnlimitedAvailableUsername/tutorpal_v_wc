@@ -12,6 +12,8 @@ import SuccessScreen from "./components/screens/ContactScreen/Success";
 import DoesNotExistScreen from "./components/screens/DoesNotExistScreen/DoesNotExistScreen";
 import RegisterScreen from "./components/screens/RegisterScreen/RegisterScreen";
 import AboutUsScreen from "./components/screens/AboutUs/AboutUsScreen";
+import ListContact from "./components/screens/ListContactsScreen/ListContact";
+import ContactDetail from "./components/screens/ContactDetailScreen/ContactDetail";
 function App() {
   return (
     <div className="bg-dark">
@@ -35,6 +37,9 @@ function App() {
 
           <Route path="/contact-us" element={ <ContactScreen /> } exact />
           <Route path="/contact-success" element={ <SuccessScreen/> } exact />
+          <Route path="/contact-details/:contactId" element={ <ContactDetail/> } exact />
+          <Route path="/concern-list" element={ <ListContact /> } exact />
+
           <Route path="/about-us" element={ <AboutUsScreen/> } exact />
 
           <Route path="*" element={ <DoesNotExistScreen /> } />

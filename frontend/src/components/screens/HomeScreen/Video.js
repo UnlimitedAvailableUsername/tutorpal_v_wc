@@ -17,7 +17,7 @@ const Video = ({ videoRef, aboutRef }) => {
 
     return (
         <div ref={ videoRef } >
-            <video className='video-bg' playsInline autoPlay="autoplay" muted="muted" loop="loop" preload="auto">
+            <video className='video-bg' playsInline autoPlay muted loop >
                 <source src={vid} type="video/mp4" />
             </video>
             <div className='video-text-overlay text-center'>

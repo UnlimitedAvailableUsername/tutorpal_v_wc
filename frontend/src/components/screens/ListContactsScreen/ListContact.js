@@ -2,19 +2,28 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { listContacts } from "../../../features/redux/actions/contactActions";
 import { Button, Col, Container, Form, Row, Table } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import HeaderTutor from "../../elements/HeaderTutor";
 function ListContact() {
   const [search, setSearch] = useState("");
   const [expandedComments, setExpandedComments] = useState([]);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const contactList = useSelector((state) => state.contactList);
   const { contacts } = contactList || {};
 
+  const userLogin = useSelector((state) => state.userState);
+  const { userInfo } = userLogin;
+
   useEffect(() => {
-    dispatch(listContacts());
-  }, [dispatch]);
+    if (userInfo && userInfo.staff) {
+        dispatch(listContacts())
+    } else {
+        navigate('/login')
+    }
+
+}, [dispatch, userInfo])
 
   const handleReadMoreClick = (e, commentId) => {
     e.preventDefault();

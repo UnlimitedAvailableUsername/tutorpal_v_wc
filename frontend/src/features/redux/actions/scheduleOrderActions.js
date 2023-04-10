@@ -4,14 +4,113 @@ import { BASE_URL } from "../../../config";
 
 // THESE ARE JUST CONSTANTS, FOR THE SAKE OF CALLING ACTIONS WITH THEIR PROPER NAMES
 import * as actionType from "../constants/scheduleOrderConstants";
+import * as cartActionType from "../constants/scheduleCartConstants";
 
 
-export const getOrderSchedule = (orderId) => async (dispatch, getState) => {
+export const createOrderSchedule = (orderSchedule) => async(dispatch, getState) => {
+    try {
+        dispatch({ type:actionType.SCHEDULE_ORDER_CREATE_REQUEST });
+
+        const { userState: { userInfo }, } = getState();
+
+        const config = {
+            headers: {
+                "Content-type": "application/json",
+                Authorization: `Bearer ${userInfo.token}`
+            },
+        };
+
+        const { data } = await axios.post(`${BASE_URL}/api/accounts/schedule_orders/create/`, scheduleOrder, config);
+
+        dispatch({ 
+            type: actionType.SCHEDULE_ORDER_CREATE_SUCCESS,
+            payload: data,
+        });
+
+        dispatch({
+            type: cartActionType.SCHEDULE_CART_RESET,
+            payload: data,
+        });
+    } catch (error) {
+        dispatch({
+            type: actionType.SCHEDULE_ORDER_CREATE_FAIL,
+            payload:
+                error.response && error.response.data.detail
+                    ? error.response.data.detail
+                    : error.message,
+        });
+    };
+};
+
+
+export const listMyScheduleOrders = () => async (dispatch, getState) => {
+    try {
+        dispatch({ type: actionType.SCHEDULE_ORDER_MY_LIST_REQUEST });
+
+        const { userState: { userInfo }, } = getState();
+
+        const config = {
+            headers: {
+                "Content-type": "application/json",
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        };
+
+        const { data } = await axios.get(`${BASE_URL}/api/schedule_orders/my_list/`, config);
+
+        dispatch({
+            type: actionType.SCHEDULE_ORDER_MY_LIST_SUCCESS,
+            payload: data,
+        });
+    } catch (error) {
+        dispatch({
+            type: actionType.SCHEDULE_ORDER_MY_LIST_FAIL,
+            payload:
+                error.response && error.response.data.detail
+                    ? error.response.data.detail
+                    : error.message,
+        });
+    };
+};
+
+
+export const listHasMeScheduleOrders = () => async (dispatch, getState) => {
+    try {
+        dispatch({ type: actionType.SCHEDULE_ORDER_ME_ON_LIST_REQUEST });
+
+        const { userState: { userInfo }, } = getState();
+
+        const config = {
+            headers: {
+                "Content-type": "application/json",
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        };
+
+        const { data } = await axios.get(`${BASE_URL}/api/schedule_orders/me_included/`, config);
+
+        dispatch({
+            type: actionType.SCHEDULE_ORDER_ME_ON_LIST_SUCCESS,
+            payload: data,
+        });
+    } catch (error) {
+        dispatch({
+            type: actionType.SCHEDULE_ORDER_ME_ON_LIST_FAIL,
+            payload:
+                error.response && error.response.data.detail
+                    ? error.response.data.detail
+                    : error.message,
+        });
+    };
+};
+
+
+export const getOrderScheduleDetails = (orderId) => async (dispatch, getState) => {
     try {
 
         dispatch({ type: actionType.ORDER_DETAILS_REQUEST });
 
-        const { userLogin: { userInfo } } = getState();
+        const { userState: { userInfo } } = getState();
 
         const config = {
             headers: {
@@ -36,17 +135,16 @@ export const getOrderSchedule = (orderId) => async (dispatch, getState) => {
                 ? error.response.data.detail
                 : error.message,
         });
-    }
+    };
 };
 
 
-
-export const payOrder = (id, paymentResult) => async (dispatch, getState) => {
+export const payScheduleOrder = (orderId, paymentResult) => async (dispatch, getState) => {
     try {
 
-        dispatch({ type: actionType.ORDER_PAY_REQUEST });
+        dispatch({ type: actionType.SCHEDULE_ORDER_PAY_REQUEST });
 
-        const { userLogin: { userInfo }, } = getState();
+        const { userState: { userInfo }, } = getState();
 
         const config = {
             headers: {
@@ -55,10 +153,10 @@ export const payOrder = (id, paymentResult) => async (dispatch, getState) => {
             }
         };
 
-        const { data } = await axios.put(`${BASE_URL}/api/orders/${id}/pay/`, paymentResult, config);
+        const { data } = await axios.put(`${BASE_URL}/api/accounts/schedule_orders/${orderId}/mark_as_paid/`, paymentResult, config);
 
         dispatch({
-            type: actionType.ORDER_PAY_SUCCESS,
+            type: actionType.SCHEDULE_ORDER_PAY_SUCCESS,
             payload: data
         });
 
@@ -66,12 +164,12 @@ export const payOrder = (id, paymentResult) => async (dispatch, getState) => {
     } catch (error) {
 
         dispatch({
-            type: actionType.ORDER_PAY_FAIL,
+            type: actionType.SCHEDULE_ORDER_PAY_FAIL,
             payload: error.response && error.response.data.detail
                 ? error.response.data.detail
                 : error.message,
         });
         
-    }
+    };
 };
 

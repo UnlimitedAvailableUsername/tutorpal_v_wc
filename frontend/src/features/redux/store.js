@@ -7,6 +7,8 @@ import { addContactReducer, listContactDetailsReducer, listContactReducer } from
 import { scheduleListMineReducer, scheduleReducer } from "./reducers/scheduleReducer";
 import { listReviewsOfTutor } from "./actions/reviewsActions";
 import { reviewReducer } from "./reducers/reviewsReducer";
+import { scheduleCartReducer } from "./reducers/scheduleCartReducer";
+import { scheduleOrderDetailsReducer } from "./reducers/scheduleOrderReducer";
 
 
 const reducers = combineReducers({
@@ -24,6 +26,11 @@ const reducers = combineReducers({
 
     reviewsListState: listReviewsOfTutor,
     reviewsState: reviewReducer,
+
+    scheduleCartState: scheduleCartReducer,
+    scheduleOrderState: scheduleOrderDetailsReducer,
+
+    
 });
 
 const userInfoFromStorage = localStorage.getItem('userInfo')

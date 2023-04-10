@@ -29,9 +29,7 @@ function LoginScreen() {
     }
     const handleSubmit = (e) => {
         e.preventDefault()
-        if (!error) {
-            dispatch(loginUser(email, password));
-        }
+        dispatch(loginUser(email, password));
     }
 
     useEffect(() => {

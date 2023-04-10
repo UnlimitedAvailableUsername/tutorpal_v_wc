@@ -16,10 +16,7 @@ function Tutor({ user }) {
 
 	return (
 		<Row>
-			<Card
-				style={{ backgroundColor: "#404040" }}
-				className="my-10 p-3 rounded"
-			>
+			<Card style={{ backgroundColor: "#404040" }} className="my-10 p-3 rounded" >
 				<Row>
 					<Col>
 						<Link to={urlPath}>
@@ -81,6 +78,6 @@ function Tutor({ user }) {
 			</Card>
 		</Row>
 	);
-}
+};
 
 export default Tutor;

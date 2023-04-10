@@ -3,36 +3,41 @@ import axios from "axios";
 import { BASE_URL } from "../../../config";
 
 // THESE ARE JUST CONSTANTS, FOR THE SAKE OF CALLING ACTIONS WITH THEIR PROPER NAMES
-import * as actionType from "../constants/authConstants";
+import * as actionType from "../constants/authUserConstants";
 
-// THIS ACTION IS RESPONSIBLE FOR THE LOGGING IN FOR USER
+// REDUX: AIGHT BUDDY, I'LL LOG YOU IN, SEND ME YOUR INFO FIRST
 export const loginUser = (email, password) => async (dispatch) => {
 	try {
 		dispatch({ type: actionType.USER_LOGIN_REQUEST });
 
+		// THE 'GOOD STUFF' ENCLOSED IN WRAPPER
 		const body = JSON.stringify({ email, password });
 
-		// WE'RE JUST GOING TO SEND 'EMAIL' AND 'PASSWORD' AS STRING
-		// HENCE, THE CONTENT TYPE IS JUST JSON
 		const config = {
+			// AXIOS: AIGHT, WHAT ARE YOU GOING TO SEND ANYWAY?
 			headers: {
 				"Content-Type": "application/json",
 			},
 		};
 
+		// AXIOS: YO REDUX, I'M GONNA SEND THE PACKAGE, FETCH WHATEVER I'M GONNA RECEIVE EH? 
 		const { data } = await axios.post(
 			`${BASE_URL}/api/accounts/users/login/`,
 			body,
 			config
 		);
 
+		// REDUX: AIGHT, GOT YOUR BACK. HEY USER HERE'S YOUR PARCEL
 		dispatch({
 			type: actionType.USER_LOGIN_SUCCESS,
 			payload: data,
 		});
 
+		// REDUX: HEY MAN, I'LL ALSO NEED A COPY OF YOUR PARCEL, FOR FUTURE REFERENCE
 		localStorage.setItem("userInfo", JSON.stringify(data));
 	} catch (error) {
+
+		// REDUX: DAMN, THIS PARCEL HERE IS SH*T, GOTTA INFORM USER ABOUT IT
 		dispatch({
 			type: actionType.USER_LOGIN_FAIL,
 			payload:
@@ -42,6 +47,7 @@ export const loginUser = (email, password) => async (dispatch) => {
 		});
 	}
 };
+
 
 export const logoutUser = () => (dispatch) => {
 	localStorage.removeItem("userInfo");
@@ -79,7 +85,9 @@ export const registerUser = (formData) => async (dispatch) => {
 		});
 
 		localStorage.setItem("userInfo", JSON.stringify(data));
+
 	} catch (error) {
+
 		dispatch({
 			type: actionType.USER_REGISTER_FAIL,
 			payload:
@@ -90,16 +98,13 @@ export const registerUser = (formData) => async (dispatch) => {
 	}
 };
 
-/* ACTION CREATOR USED IN GETTING USER DETAILS IN ProfileScreen COMPONENT  */
 
-export const getUserDetails = (id) => async (dispatch, getState) => {
+export const getUserDetails = () => async (dispatch, getState) => {
 	try {
 		dispatch({ type: actionType.USER_DETAILS_REQUEST });
 
 		// PULLING OUT THE CURRENT USER WE ARE LOGGED IN AS
-		const {
-			userLoginState: { userInfo },
-		} = getState();
+		const { userLoginState: { userInfo }, } = getState();
 
 		/* MAKE GET REQUEST TO GET BACK THE USER DATA */
 		const config = {

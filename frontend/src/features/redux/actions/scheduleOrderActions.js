@@ -1,12 +1,12 @@
-// FOR ACCESSING API DJANGO BACKEND
-import axios from 'axios';
-import { BASE_URL } from '../../../config';
+// IMPORTS THAT WILL CALL THE BACKEND DJANGO REST API
+import axios from "axios";
+import { BASE_URL } from "../../../config";
 
-// CONSTANTS
-import * as actionType from '../constants/scheduleOrderConstants';
+// THESE ARE JUST CONSTANTS, FOR THE SAKE OF CALLING ACTIONS WITH THEIR PROPER NAMES
+import * as actionType from "../constants/scheduleOrderConstants";
 
 
-export const getOrderDetails = (id) => async (dispatch, getState) => {
+export const getOrderSchedule = (orderId) => async (dispatch, getState) => {
     try {
 
         dispatch({ type: actionType.ORDER_DETAILS_REQUEST });
@@ -20,7 +20,7 @@ export const getOrderDetails = (id) => async (dispatch, getState) => {
             }
         };
 
-        const { data } = await axios.get(`${BASE_URL}/api/orders/${id}/`, config);
+        const { data } = await axios.get(`${BASE_URL}/api/orders/${orderId}/`, config);
 
         dispatch({ 
             type: actionType.ORDER_DETAILS_SUCCESS, 
@@ -71,6 +71,7 @@ export const payOrder = (id, paymentResult) => async (dispatch, getState) => {
                 ? error.response.data.detail
                 : error.message,
         });
+        
     }
 };
 

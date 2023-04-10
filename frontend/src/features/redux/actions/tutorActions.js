@@ -10,7 +10,7 @@ export const listTutors = () => async (dispatch) => {
             type: actionType.TUTOR_LIST_REQUEST,
         });
 
-        const {data} = await axios.get(`${BASE_URL}/api/accounts/users/tutors/`); //fetch the products from rest api
+        const {data} = await axios.get(`${BASE_URL}/api/accounts/users/tutors/`);
 
         dispatch({
             type: actionType.TUTOR_LIST_SUCCESS,

@@ -1,28 +1,50 @@
 import * as actionType from "../constants/scheduleConstants";
 
 /* REDUCER USED IN SCHEDULEListScreen COMPONENT */
-export const scheduleCreateReducer = (state = {}, action) => {
+const scheduleInitialState = {
+	loading: false,
+	error: null,
+	success: null,
+	schedule: null,
+}
+
+export const scheduleReducer = (state = scheduleInitialState, action) => {
 	switch (action.type) {
 		case actionType.SCHEDULE_CREATE_REQUEST:
+		case actionType.SCHEDULE_DETAILS_REQUEST:
+		case actionType.SCHEDULE_UPDATE_REQUEST:
 			return {
+				...state,
 				loading: true,
+				success: null,
+				error: null,
 			};
 
 		case actionType.SCHEDULE_CREATE_SUCCESS:
+		case actionType.SCHEDULE_DETAILS_SUCCESS:
+		case actionType.SCHEDULE_UPDATE_SUCCESS:
 			return {
+				...state,
 				loading: false,
 				success: true,
 				schedule: action.payload,
 			};
 
 		case actionType.SCHEDULE_CREATE_FAIL:
+		case actionType.SCHEDULE_DETAILS_FAIL:
+		case actionType.SCHEDULE_UPDATE_FAIL:
 			return {
+				...state,
 				loading: false,
+				success: false,
 				error: action.payload,
 			};
 
 		case actionType.SCHEDULE_CREATE_RESET:
-			return {};
+		case actionType.SCHEDULE_UPDATE_RESET:
+			return {
+				...scheduleListInitialState
+			};
 
 		default:
 			return state;
@@ -36,18 +58,15 @@ const scheduleListInitialState = {
 	error: null,
 };
 
-export const scheduleListReducer = (
-	state = scheduleListInitialState,
-	action
-) => {
+export const scheduleListMineReducer = ( state = scheduleListInitialState, action ) => {
 	switch (action.type) {
-		case actionType.SCHEDULE_LIST_REQUEST:
+		case actionType.SCHEDULE_LIST_MINE_REQUEST:
 			return {
 				...state,
 				loading: true,
 			};
 
-		case actionType.SCHEDULE_LIST_SUCCESS:
+		case actionType.SCHEDULE_LIST_MINE_SUCCESS:
 			return {
 				...state,
 				loading: false,
@@ -55,7 +74,7 @@ export const scheduleListReducer = (
 				schedules: action.payload,
 			};
 
-		case actionType.SCHEDULE_LIST_FAIL:
+		case actionType.SCHEDULE_LIST_MINE_FAIL:
 			return {
 				...state,
 				loading: false,
@@ -63,47 +82,10 @@ export const scheduleListReducer = (
 				error: action.payload,
 			};
 
-		case actionType.SCHEDULE_LIST_RESET:
+		case actionType.SCHEDULE_LIST_MINE_RESET:
 			return scheduleListInitialState;
 
 		default:
 			return state;
-	}
-};
-
-const scheduleDetailsInitialState = {
-	loading: false,
-	schedule: null,
-	error: null,
-};
-
-/* REDUCER USED IN ProductScreen COMPONENT */
-export const scheduleDetailsReducer = (
-	state = scheduleDetailsInitialState,
-	action
-) => {
-	switch (action.type) {
-		case actionType.SCHEDULE_DETAILS_REQUEST:
-			return {
-				...state,
-				loading: true,
-			};
-
-		case actionType.SCHEDULE_DETAILS_SUCCESS:
-			return {
-				...state,
-				loading: false,
-				product: action.payload,
-			};
-
-		case actionType.SCHEDULE_DETAILS_FAIL:
-			return {
-				...state,
-				loading: false,
-				error: action.payload,
-			};
-
-		default:
-			return state;
-	}
+	};
 };

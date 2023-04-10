@@ -3,28 +3,41 @@ import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { userReducer } from "./reducers/authUserReducer";
 import { tutorListReducer, tutorDetailsReducer } from "./reducers/tutorReducer";
-import { scheduleListReducer, scheduleDetailsReducer } from './reducers/scheduleReducer';
-import { addContactReducer } from "./reducers/contactReducer";
+import { addContactReducer, listContactDetailsReducer, listContactReducer } from "./reducers/contactReducer";
+import { scheduleListMineReducer, scheduleReducer } from "./reducers/scheduleReducer";
+import { listReviewsOfTutor } from "./actions/reviewsActions";
+import { reviewReducer } from "./reducers/reviewsReducer";
 
 
 const reducers = combineReducers({
     userAuthenticatedState: userReducer,
 
     contactUsFormState: addContactReducer,
+    contactListState: listContactReducer,
+    contactDetailsState: listContactDetailsReducer,
 
     tutorList: tutorListReducer,
     tutorDetails: tutorDetailsReducer,
 
-    scheduleListState: scheduleListReducer,
-    scheduleDetailsState: scheduleDetailsReducer,
+    scheduleListMineState: scheduleListMineReducer,
+    scheduleState: scheduleReducer,
+
+    reviewsListState: listReviewsOfTutor,
+    reviewsState: reviewReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem('userInfo')
-? JSON.parse(localStorage.getItem('userInfo'))
-: null
+    ? JSON.parse(localStorage.getItem('userInfo'))
+    : null
 
 const initialState = { 
-    userAuthenticatedState: { userInfo: userInfoFromStorage, }
+    userAuthenticatedState: {
+        loading: null,
+        error: null,
+        success: null,
+        authenticated: !!userInfoFromStorage,
+        userInfo: userInfoFromStorage,
+    }
 }
 
 const middleware = [thunk];

@@ -583,7 +583,6 @@ def review_create(request):
 # IT ALSO PERMITS THE ADMINS TO MODIFY IT
 
 @api_view(['GET', 'PUT', 'DELETE'])
-@permission_classes([IsAuthenticated])
 def review_detail(request, id):
     user = request.user
     try:

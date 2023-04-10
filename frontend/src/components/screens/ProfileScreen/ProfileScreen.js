@@ -9,7 +9,7 @@ import { useNavigate } from "react-router";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 
-import * as profileActionType from '../../../features/redux/constants/authConstants';
+import * as profileActionType from '../../../features/redux/constants/authUserConstants';
 import LoadingIconBig from "../../elements/Loader/LoadingIconBig";
 import LoadingIconRegular from "../../elements/Loader/LoadingIconRegular";
 

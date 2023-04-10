@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Row, Col, Image, ListGroup, Button, Container } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import Header from "../../elements/HeaderHomePage";
+import HeaderTutor from "../../elements/HeaderTutor";
 import { listContactDetails } from "../../../features/redux/actions/contactActions";
 
 function ContactDetail() {
@@ -17,8 +17,10 @@ function ContactDetail() {
   }, [dispatch, contactId]);
 
   return (
+    <>
+    <HeaderTutor/>
     <div>
-      <Header></Header>
+
       <Container>
         <Link to="/concern-list" className="btn btn-warning btn-outline-dark py-3 my-5" >Back to Concern List</Link>
         <Row>
@@ -58,6 +60,7 @@ function ContactDetail() {
         </Row>
       </Container>
     </div>
+    </>
   );
 }
 

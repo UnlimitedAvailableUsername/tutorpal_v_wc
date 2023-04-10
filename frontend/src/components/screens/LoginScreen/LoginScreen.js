@@ -24,6 +24,7 @@ function LoginScreen() {
     const location = useLocation();
     const navigate = useNavigate();
     const redirect = location.search ? location.search.split('=')[1] : '/profile';
+    const redirectadmin = location.search ? location.search.split('=')[1] : '/concern-list';
 
     const handleEmail = e => {
         setEmail(e.target.value);
@@ -40,10 +41,14 @@ function LoginScreen() {
     }
 
     useEffect(() => {
-        if (userInfo) {
+        if (userInfo && !userInfo.staff) {
             navigate(redirect);
-        }
-    }, [navigate, userInfo, redirect]);
+        } 
+        else if (userInfo && userInfo.staff) {
+            navigate (redirectadmin)
+        } 
+    
+    }, [navigate, userInfo, redirect, redirectadmin]);
 
     
     return (

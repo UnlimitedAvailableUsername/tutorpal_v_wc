@@ -23,20 +23,20 @@ function Header() {
     localStorage.removeItem('bio');
     };
 
-    
-  
+
+
   const loginUser = useSelector( (state) => state.userState);
   const { userInfo } = loginUser;
 
   const navAccountTitle = <FontAwesomeIcon title="" fixedWidth inverse icon={faUser} />;
- 
+
   const headerStyle = {
     boxShadow: '0px 1px 10px rgba(0, 0, 0, 0.25)',
   };
-  
+
 
     return (
-        
+
         <Navbar style={headerStyle} sticky="top" bg="dark" expand="lg" variant="dark" >
             <Container className="justify-content-center" >
                 <Navbar.Brand as={ Link } to='/'>
@@ -63,7 +63,7 @@ function Header() {
                                 <NavDropdown.Item as={ Link } to="/register">Sign Up</NavDropdown.Item>
                             </NavDropdown>
                         )}
-                       
+
 
                         {/* GANTO ANG CONDITION PARA EITHER ALIN SA DALAWANG USERINFO LUMITAW
                         {userInfo && (userInfo.user?.tutor || userInfo.tutor) && (

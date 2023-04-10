@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { listContacts } from "../../../features/redux/actions/contactActions";
 import { Button, Col, Container, Form, Row, Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import Header from "../../elements/HeaderHomePage";
+import HeaderTutor from "../../elements/HeaderTutor";
 function ListContact() {
   const [search, setSearch] = useState("");
   const [expandedComments, setExpandedComments] = useState([]);
@@ -26,8 +26,9 @@ function ListContact() {
   };
 
   return (
+<>
+    <HeaderTutor/>
     <Container>
-      <Header></Header>
       <div className="tutor-text text-center">
         <p style={{ fontSize: 50 }}>Concerns</p>
       </div>
@@ -123,6 +124,7 @@ function ListContact() {
         }
       `}</style>
     </Container>
+    </>
   );
 }
 

@@ -1,13 +1,13 @@
 import * as actionType from '../constants/scheduleOrderConstants'
 
 
-const orderListMineInitialState = {
+const scheduleOrderListMineInitialState = {
     loading: false,
     error: null,
     scheduleOrders: [],
 }
 
-export const orderListMyReducer = (state = orderListMineInitialState, action) => {
+export const scheduleOrderListMineReducer = (state = scheduleOrderListMineInitialState, action) => {
     switch (action.type) {
       case actionType.SCHEDULE_ORDER_MY_LIST_REQUEST:
         return {
@@ -33,7 +33,7 @@ export const orderListMyReducer = (state = orderListMineInitialState, action) =>
       // WHEN USER LOGS OUT WE WANT ALL DATA REGARDING ORDERS TO BE RESET AS WELL
       case actionType.SCHEDULE_ORDER_MY_LIST_RESET:
         return { 
-            ...orderListMineInitialState,
+            ...scheduleOrderListMineInitialState,
          };
   
       default:
@@ -49,7 +49,7 @@ const scheduleOrderDetailsInitialState = {
     orderScheduleItems: [],
 }
 
-export const orderDetailsReducer = (state = scheduleOrderDetailsInitialState, action) => {
+export const scheduleOrderDetailsReducer = (state = scheduleOrderDetailsInitialState, action) => {
     switch (action.type) {
         case actionType.SCHEDULE_ORDER_DETAILS_REQUEST:
             return {

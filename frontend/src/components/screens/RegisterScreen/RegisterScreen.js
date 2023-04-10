@@ -3,8 +3,12 @@ import { Form, Button, Row, Col, Card, Container } from 'react-bootstrap'
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import HeaderHomePage from '../../elements/HeaderHomePage'
+import { registerUser } from '../../../features/redux/actions/authUserActions';
 
 function RegisterScreen() {
+
+  const [message, setMessage] = useState('')
+
     const dispatch = useDispatch();
     const location = useLocation();
     const navigate = useNavigate();
@@ -52,9 +56,10 @@ function RegisterScreen() {
     };
   
     const handleSubmit = (e) => {
-      e.preventDefault()
-      
-    //   dispatch(registerUser(formData));
+      e.preventDefault();
+      console.log("Form data:", formData);
+     
+        dispatch(registerUser(formData));
     }
 
 
@@ -96,7 +101,8 @@ function RegisterScreen() {
                           </div>
                           <div className="mb-3">
                      
-                              <Form onSubmit={handleSubmit}>
+                    
+                              <Form >
                                 <Row>
                                     <Col>
                                   <Form.Group className="mb-2" controlId="formBasicFirstName">
@@ -219,10 +225,10 @@ function RegisterScreen() {
 
                                   <Row>
                                   <div style={{margin: 'auto', width: 200}}className="d-grid my-4">
-                                      <Button variant="warning"  type="submit">Sign Up</Button>
+                                      <Button variant="warning"  type="submit" onClick={handleSubmit}>Sign Up</Button>
                                   </div>
                                   </Row>
-
+                                 
 
 
                                   </Row>

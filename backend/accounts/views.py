@@ -185,9 +185,16 @@ def user_register(request):
     data['password'] = hashed_password
     
     # Validate subject IDs
-    invalid_ids = set(subjects_data) - set(Subject.objects.values_list('id', flat=True))
+    subject_ids = [int(id) for id in subjects_data]
+    invalid_ids = set(subject_ids) - set(Subject.objects.values_list('id', flat=True))
     if invalid_ids:
         return Response({'subjects': [f"Subject with ID {id} does not exist." for id in invalid_ids]}, status=status.HTTP_400_BAD_REQUEST)
+    
+    # Set active based on tutor and student fields
+    if data.get('tutor'):
+        data['active'] = False
+    elif data.get('student'):
+        data['active'] = True
 
     serializer = UserSerializer(data=data)
     if serializer.is_valid():

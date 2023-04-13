@@ -24,7 +24,7 @@ class ScheduleSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     schedules = ScheduleSerializer(source='schedule_set', many=True, required=False, read_only=True)
-    subjects = SubjectSerializer(many=True, required=False, read_only=True)
+    subjects = SubjectSerializer(many=True, required=False)
 
     class Meta:
         model = User
@@ -38,7 +38,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 class UserSerializerWithToken(serializers.ModelSerializer):
     schedules = ScheduleSerializer(source='schedule_set', many=True, required=False)
-    subjects = SubjectSerializer(many=True, required=False, read_only=True)
+    subjects = SubjectSerializer(many=True, required=False)
     token = serializers.SerializerMethodField(read_only=True)
     refresh = serializers.SerializerMethodField(read_only=True)
 

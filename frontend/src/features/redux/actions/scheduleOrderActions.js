@@ -20,7 +20,7 @@ export const createOrderSchedule = (orderSchedule) => async(dispatch, getState) 
             },
         };
 
-        const { data } = await axios.post(`${BASE_URL}/api/accounts/schedule_orders/create/`, scheduleOrder, config);
+        const { data } = await axios.post(`${BASE_URL}/api/accounts/schedule_orders/create/`, orderSchedule, config);
 
         dispatch({ 
             type: actionType.SCHEDULE_ORDER_CREATE_SUCCESS,

@@ -57,6 +57,12 @@ function TutorDetailScreen() {
         ))
     }
 
+	const subjectNamesById = {
+		1: "Mathematics",
+		2: "Science",
+		3: "English",
+		4: "History",
+	};
 
 
 
@@ -179,9 +185,14 @@ function TutorDetailScreen() {
 
 								<ListGroup.Item style={{ backgroundColor: "#404040" }}>
 									<Row>
-										<Col md={{ span: 2 }}> Eduation</Col>
+										<Col md={{ span: 2 }}> Subjects</Col>
 										<Col>
-											{user.Eduction}
+										{user.subjects.map((subjectId, index) => (
+										<span key={subjectId}>
+											{subjectNamesById[subjectId]}
+											{index < user.subjects.length - 1 ? ", " : ""}
+										</span>
+									))}
 											<br />
 											<br />
 										</Col>
@@ -208,6 +219,8 @@ function TutorDetailScreen() {
 													<React.Fragment key={schedule._id}>
 														{index > 0 && ", "}
 														{schedule.name}
+														{schedule.price}
+
 													</React.Fragment>
 												))}
 											</div>

@@ -35,8 +35,6 @@ function ListContact() {
   };
 
   return (
-<>
-    <HeaderTutor/>
     <Container>
       <div className="tutor-text text-center">
         <p style={{ fontSize: 50 }}>Concerns</p>
@@ -133,7 +131,6 @@ function ListContact() {
         }
       `}</style>
     </Container>
-    </>
   );
 }
 

@@ -28,8 +28,6 @@ function EditSchedule() {
 
   };
   return (
-    <>
-    <HeaderTutor/>
     <div>
       
 
@@ -77,7 +75,6 @@ function EditSchedule() {
         </Row>
       </Container>
     </div>
-    </>
   );
 }
 

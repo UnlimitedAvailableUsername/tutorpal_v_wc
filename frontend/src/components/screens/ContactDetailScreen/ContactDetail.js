@@ -17,8 +17,6 @@ function ContactDetail() {
   }, [dispatch, contactId]);
 
   return (
-    <>
-    <HeaderTutor/>
     <div>
 
       <Container>
@@ -60,7 +58,6 @@ function ContactDetail() {
         </Row>
       </Container>
     </div>
-    </>
   );
 }
 

@@ -4,26 +4,24 @@ import { Form, Button, Container } from "react-bootstrap";
 import { addContact } from "../../../features/redux/actions/contactActions";
 import Widgets from "./Widgets";
 import MapWidget from "./MapWidget";
-import { useNavigate,  } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 
 function ContactScreen() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const contactUsFormState = useSelector(state => state.contactUsFormState);
+  const contactUsFormState = useSelector((state) => state.contactUsFormState);
   const { loading, error } = contactUsFormState;
 
   const [formData, setFormData] = useState({
-    concern: '',
-    comment: '',
+    concern: "",
+    comment: "",
   });
 
   useEffect(() => {
     if (loading === false && error === null) {
-      setFormData({ concern: '', comment: '' });
+      setFormData({ concern: "", comment: "" });
     }
   }, [loading, error]);
-
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -32,7 +30,6 @@ function ContactScreen() {
     });
   };
 
-  
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -40,7 +37,6 @@ function ContactScreen() {
     });
 
     console.log("formData after handleChange: ", formData);
-
   };
 
   return (
@@ -85,8 +81,7 @@ function ContactScreen() {
             onClick={(e) => {
               if (formData.comment.length < 100) {
                 alert(
-                  "Please enter a comment with at least" +
-                  " 100 characters"
+                  "Please enter a comment with at least" + " 100 characters"
                 );
               } else {
                 handleSubmit(e);
@@ -99,7 +94,6 @@ function ContactScreen() {
       </Container>
 
       <MapWidget />
-
     </div>
   );
 }

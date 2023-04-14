@@ -1,116 +1,153 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { Container, Form, Button, Row, Table } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { Container, Form, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-// import { addProduct } from "../../../features/redux/actions/productAction";
-// import { listsubjects } from "../../../features/redux/actions/subjectActions";
+import { createSchedule } from "../../../features/redux/actions/scheduleAction";
+import { listSchedules } from "../../../features/redux/actions/scheduleAction";
+import HeaderHome from "../../elements/HeaderHomePage";
+import HeaderStudent from "../../elements/HeaderStudent";
+import HeaderTutor from "../../elements/HeaderTutor";
 
 function AddScreen() {
-//   const [subject, setSubject] = useState("");
-//   const [lesson, setLesson] = useState("");
-//   const [schedule, setSchedule] = useState("");
-//   const [rate, setRate] = useState("");
+  const [name, setName] = useState("");
+  const [count_in_stock, setCount_in_stock] = useState("");
+  const [showForm, setShowForm] = useState(false);
 
-//   const subjectList = useSelector((state) => state.subjectList);
-//   const subjects = subjectList?.subjects || [];
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-//   useEffect(() => {
-//     dispatch(listsubjects());
-//   }, []);
+  const userLogin = useSelector((state) => state.userState);
+  const { userInfo } = userLogin;
 
-//   const navigate = useNavigate();
-//   const dispatch = useDispatch();
+  const scheduleList = useSelector((state) => state.scheduleList);
+  const { schedules } = scheduleList || {};
 
-//   const Post = async () => {
-//     let formField = new FormData();
+  useEffect(() => {
+    dispatch(listSchedules());
+  }, [dispatch]);
 
-//     formField.append("subject", subject);
-//     formField.append("lesson", lesson);
-//     formField.append("schedule", schedule);
-//     formField.append("rate", rate);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-//     dispatch(addProduct(formField)).then((response) => {
-//       navigate("/add-lesson");
-//     });
-//   };
+    if (!name && parseInt(count_in_stock) < 1) {
+      console.log("Please enter a date and a valid hour.");
+      return;
+    }
+
+    try {
+      const formField = new FormData();
+      formField.append("name", name);
+      formField.append("count_in_stock", count_in_stock);
+
+      await dispatch(createSchedule(formField));
+      navigate("/add-lesson");
+      window.location.reload(); // <-- add this line
+    } catch (error) {
+      console.log(error);
+      // handle error
+    }
+  };
+
+  const handleShowForm = () => {
+    setShowForm(true);
+  };
+
+  const handleHideForm = () => {
+    setShowForm(false);
+  };
 
   return (
     <div>
-      {/* <div className="text-center" variant="light">
-        <h1>Add Lesson</h1>
+      {userInfo && (userInfo.tutor || userInfo.user?.tutor) && <HeaderTutor />}
+
+      {userInfo && (userInfo.student || userInfo.user?.student) && (
+        <HeaderStudent />
+      )}
+
+      {!userInfo && <HeaderHome />}
+
+      <div className="text" variant="light">
+        <h5>My Schedules:</h5>
       </div>
-      <Container>
-        <Link
-          to="/LessonList"
-          className="btn btn-warning btn-outline-dark my-3  "
-        >
-          Fuck, Go Back
-        </Link>
 
-        <Form.Group className="mb-3">
-          <Form.Label></Form.Label>
-          <Form.Control
-            as="select"
-            id="subject"
-            name="subject"
-            className="form-control"
-            placeholder="Please Select"
-            value={subject}
-            onChange={(e) => setSubject(e.target.value)}
-          >
-            <option value="">--Pick subject--</option>
-            {subjects.map((item) => (
-              <option key={item._id} value={item._id}>
-                {item.subject_title}
-              </option>
+      <Table striped responsive className="table-m-2">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Hours Available</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {schedules &&
+            schedules.map((schedule) => (
+              <tr key={schedule.id}>
+                <td>{schedule.name}</td>
+                <td>{schedule.count_in_stock}</td>
+              </tr>
             ))}
-          </Form.Control>
-        </Form.Group>
+        </tbody>
+      </Table>
 
-        <Form>
-          <Form.Group className="mb-3">
-            <Form.Label>Lesson Name</Form.Label>
-            <Form.Control
-              type="text"
-              id="lesson"
-              name="lesson"
-              className="form-control"
-              value={lesson}
-              onChange={(e) => setLesson(e.target.value)}
-            />
-          </Form.Group>
+      <br />
 
-          <Form.Group className="mb-3">
-            <Form.Label>Schedule</Form.Label>
-            <Form.Control
-              type="text"
-              id="schedule"
-              name="schedule"
-              className="form-control"
-              value={schedule}
-              onChange={(e) => setSchedule(e.target.value)}
-            />
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label>Rate</Form.Label>
-            <Form.Control
-              type="text"
-              id="rate"
-              name="rate"
-              className="form-control"
-              value={rate}
-              onChange={(e) => setRate(e.target.value)}
-            />
-          </Form.Group>
-
-          <Button className="btn btn-primary" onClick={Post}>
-            Post Lesson
+      <div className="d-flex justify-content-center align-items-center">
+        {!showForm && (
+          <Button
+            className="btn btn-warning btn-outline-dark my-3"
+            onClick={handleShowForm}
+            size="lg"
+          >
+            Add Schedule
           </Button>
-        </Form>
-      </Container> */}
+        )}
+      </div>
+
+      {showForm && (
+        <Container>
+          <Button
+            className="btn btn-warning btn-outline-dark my-3"
+            onClick={handleHideForm}
+          >
+            Hide
+          </Button>
+
+          <Form onSubmit={handleSubmit}>
+            <Form.Group className="mb-3">
+              <Form.Label>Date</Form.Label>
+              <Form.Control
+                type="text"
+                id="name"
+                name="name"
+                className="form-control"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Hours</Form.Label>
+              <Form.Control
+                type="text"
+                id="count_in_stock"
+                name="count_in_stock"
+                className="form-control"
+                value={count_in_stock}
+                onChange={(e) => setCount_in_stock(e.target.value)}
+              />
+            </Form.Group>
+
+            <Button
+              type="submit"
+              className="btn btn-warning"
+              disabled={!name || parseInt(count_in_stock) < 1}
+            >
+              Post Schedule
+            </Button>
+          </Form>
+        </Container>
+      )}
     </div>
   );
 }
+
 export default AddScreen;

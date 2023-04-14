@@ -1,19 +1,17 @@
 import axios from "axios";
 import { BASE_URL } from "../../../config";
 import * as actionType from "../constants/scheduleConstants";
+import * as userActionType from "../constants/authConstants";
 
 
-/* ACTION CREATOR USED IN CREATING PRODUCTS IN ProductListScreen COMPONENT */
-export const createSchedule = () => async (formData, dispatch, getState) => {
-  try {
 
-    dispatch({
-      type: actionType.SCHEDULE_CREATE_REQUEST,
-    });
+export const createSchedule = (formData) => async (dispatch, getState) => {
+  try {dispatch({
+          type: actionType.SCHEDULE_CREATE_REQUEST,
+        });
 
-    // PULLING OUT THE CURRENT USER WE ARE LOGGED IN AS
     const {
-      userLoginState: { userInfo },
+      userState: { userInfo },
     } = getState();
 
     const config = {
@@ -23,35 +21,54 @@ export const createSchedule = () => async (formData, dispatch, getState) => {
       },
     };
 
-    /* MAKING API CALL TO CREATE PRODUCT */
-    const { data } = await axios.post(`${BASE_URL}/api/accounts/schedules/create/`, formData, config);
+    const { data } = await axios.post(
+      `${BASE_URL}/api/accounts/schedules/create/`,
+      formData,
+      config
+    );
 
-    /* IF POST REQUEST SUCCESSFULL WE DISPATCH & SEND THE PAYLOAD TO OUR REDUCER */
+    console.log("I happened before the dispatch SCHEDULE_CREATE_SUCCESS");
+
     dispatch({
       type: actionType.SCHEDULE_CREATE_SUCCESS,
       payload: data,
     });
 
+    console.log("I happened after the dispatch SCHEDULE_CREATE_SUCCESS");
   } catch (error) {
+    if (error.response && error.response.status === 401) {
+      dispatch({ type: userActionType.USER_LOGIN_FAIL });
+      return;
+    }
+
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
 
     dispatch({
       type: actionType.SCHEDULE_CREATE_FAIL,
-      payload:
-        error.response && error.response.data.detail
-          ? error.response.data.detail
-          : error.message,
+      payload: message,
     });
   }
 };
 
-
-export const listSchedules = (id) => async (dispatch) => {
+export const listSchedules = () => async (dispatch, getState) => {
   try {
-    dispatch({
-      type: actionType.SCHEDULE_LIST_REQUEST,
-    });
+    dispatch({ type: actionType.SCHEDULE_LIST_REQUEST });
 
-    const { data } = await axios.get(`${BASE_URL}/api/accounts/users/tutors/${id}/schedules/`);
+    const {
+      userState: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+  
+    const { data } = await axios.get(`${BASE_URL}/api/accounts/users/tutors/${userInfo.id}/schedules/`);
     
     dispatch({
       type: actionType.SCHEDULE_LIST_SUCCESS,
@@ -69,4 +86,4 @@ export const listSchedules = (id) => async (dispatch) => {
 		});
 
   }
-}
+};

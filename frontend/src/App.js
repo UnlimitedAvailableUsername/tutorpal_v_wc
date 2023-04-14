@@ -29,7 +29,7 @@ function App() {
           <Route path="/tutor" element={ <TutorListScreen /> } exact />
           <Route path="tutor/tutor/:tutorId" element={ <TutorDetailScreen /> } exact />
 
-          <Route path="/add-lesson" element={ <AddScreen/> } exact />
+          <Route path="/myschedule" element={ <AddScreen/> } exact />
 
           <Route path="/login" element={ <LoginScreen /> } exact />
           <Route path="/register" element={ <RegisterScreen /> } exact />

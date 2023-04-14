@@ -47,7 +47,7 @@ function Header() {
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mx-auto">
                         <NavLink as={ Link } to="/lesson-list">Lessons</NavLink>
-                        <NavLink as={ Link } to="/add-lesson">Add Schedule</NavLink>
+                        <NavLink as={ Link } to="/myschedule">Schedule</NavLink>
                         <NavLink as={ Link } to="/about-us">About Us</NavLink>
                         <NavLink as={ Link } to="/contact-us">Contact Us</NavLink>
                     </Nav>

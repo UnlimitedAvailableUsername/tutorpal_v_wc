@@ -4,11 +4,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { createSchedule } from "../../../features/redux/actions/scheduleAction";
 import { listSchedules } from "../../../features/redux/actions/scheduleAction";
-import HeaderHome from "../../elements/HeaderHomePage";
-import HeaderStudent from "../../elements/HeaderStudent";
-import HeaderTutor from "../../elements/HeaderTutor";
 
-function AddScreen() {
+
+function MyScheduleScreenTutor() {
   const [name, setName] = useState("");
   const [count_in_stock, setCount_in_stock] = useState("");
   const [showForm, setShowForm] = useState(false);
@@ -20,7 +18,7 @@ function AddScreen() {
   const { userInfo } = userLogin;
 
   const scheduleList = useSelector((state) => state.scheduleList);
-  const { schedules } = scheduleList || {};
+  const { schedules } = scheduleList;
 
   useEffect(() => {
     dispatch(listSchedules());
@@ -58,13 +56,6 @@ function AddScreen() {
 
   return (
     <div>
-      {userInfo && (userInfo.tutor || userInfo.user?.tutor) && <HeaderTutor />}
-
-      {userInfo && (userInfo.student || userInfo.user?.student) && (
-        <HeaderStudent />
-      )}
-
-      {!userInfo && <HeaderHome />}
 
       <div className="text" variant="light">
         <h5>My Schedules:</h5>
@@ -150,4 +141,4 @@ function AddScreen() {
   );
 }
 
-export default AddScreen;
+export default MyScheduleScreenTutor;

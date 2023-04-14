@@ -1,0 +1,72 @@
+.privacy-policy {
+    font-family: "Gotham Book!important";
+}
+
+.hero-privacy-policy {
+    background-color: #247FBB;
+}
+
+.hero-privacy-policy h1 {
+    padding-top: 150px;
+    color: #fff;
+    margin-bottom: 35px;
+    font-size: 45px;
+    font-family: "Gotham Black" !important;
+}
+
+.hero-privacy-policy p {
+    color: #fff;
+    font-family: "Gotham Black" !important;
+    font-size: 24px;
+    padding-bottom: 50px;
+}
+
+.hero-privacy-policy a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.hero-privacy-policy a:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.legal-copy p {
+    font-size: 16px;
+    letter-spacing: -0.34px;
+    font-family: "Gotham Book" !important;
+    color: #000;
+}
+
+.legal-copy h3 {
+    font-size: 22px;
+    letter-spacing: -0.34px;
+    font-family: "Gotham Book" !important;
+    color: #000;
+}
+
+.legal-copy p span {
+    color: #605C5C;
+    font-weight: 600;
+    font-family: "Gotham Black";
+}
+
+.legal-copy ul li {
+    font-family: "Gotham Book" !important;
+}
+
+.legal-copy a {
+    color: #000;
+    text-decoration: none;
+    font-family: "Gotham Black";
+}
+
+.legal-copy a:hover {
+    text-decoration: underline;
+}
+
+@media(max-width:990px) {
+    .hero-privacy-policy h1 {
+        font-size: 30px;
+    }
+}

@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { logoutUser } from "../../features/redux/actions/authUserActions";
 
 
-function Header() {
+function HeaderHomePage() {
     const dispatch = useDispatch();
 
     const handleLogout = () => {
@@ -83,4 +83,4 @@ function Header() {
 }
 
 
-export default Header;
+export default HeaderHomePage;

@@ -42,7 +42,7 @@ export const userLoginReducer = (state = initialState, action) => {
         case actionType.USER_LOGOUT:
             localStorage.removeItem('userInfo', 'token')
             return {
-                ...state
+                ...initialState
             };
 
         default:

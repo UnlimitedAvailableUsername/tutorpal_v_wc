@@ -7,9 +7,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import MessageAlert from '../../elements/MessageAlert';
 import LoadingIconBig from '../../elements/Loader/LoadingIconBig';
 
-import HeaderHomePage from '../../elements/HeaderHomePage'
-
-
 function LoginScreen() {
     
     const [email, setEmail] = useState("");
@@ -53,8 +50,6 @@ function LoginScreen() {
     
     return (
         <div>
-            <HeaderHomePage/>
-            
             <Row className="justify-content-center align-items-center">
                 <Col xl={8} xs={10}>
                     <Card className="px-4 my-5 shadow">
@@ -82,7 +77,7 @@ function LoginScreen() {
                                     <div className="mt-3">
                                         <p className="mb-0  text-center">
                                             Don't have an account?{' '}
-                                            <Link to='#register' className="text-primary fw-bold">
+                                            <Link to='/register' className="text-primary fw-bold">
                                                 Sign Up
                                             </Link>
                                         </p>

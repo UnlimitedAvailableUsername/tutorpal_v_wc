@@ -5,18 +5,13 @@ import { addContact } from "../../../features/redux/actions/contactActions";
 import Widgets from "./Widgets";
 import MapWidget from "./MapWidget";
 import { useNavigate,  } from "react-router-dom";
-import HeaderHome from '../../elements/HeaderHomePage'
-import HeaderStudent from '../../elements/HeaderStudent'
-import HeaderTutor from '../../elements/HeaderTutor'
+
 
 function ContactScreen() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const contactUsFormState = useSelector(state => state.contactUsFormState);
   const { loading, error } = contactUsFormState;
-
-  const userLogin = useSelector((state) => state.userState);
-  const { userInfo } = userLogin;
 
   const [formData, setFormData] = useState({
     concern: '',
@@ -50,17 +45,6 @@ function ContactScreen() {
 
   return (
     <div>
-{userInfo && (userInfo.tutor || userInfo.user?.tutor) && (
-      <HeaderTutor/>
-    ) }
-
-    {userInfo && (userInfo.student || userInfo.user?.student) && (
-      <HeaderStudent/>
-    ) }
-
-{!userInfo && <HeaderHome />}
-
-       <br/>
       <div className="contact-heading">
         <h2>Contact Us</h2>
       </div>

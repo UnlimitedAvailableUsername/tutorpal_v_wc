@@ -19,13 +19,13 @@ function Tutor({ user }) {
 		<Card style={{ backgroundColor: "#404040" }} className=" my-1 p-3 rounded" >
 		  <Row>
 			<Col md={3}>
-			  <Link to={`tutor/${user.id}`}>
+			  <Link to={`${user.id}`}>
 				<Card.Img style={{width: 300}} src={`${user.profile_picture}`} />
 			  </Link>
 			</Col>
 			<Col md={9}>
 			  <Card.Body >
-				<Link to={`tutor/${user.id}`}>
+				<Link to={`${user.id}`}>
 				  <Card.Title>
 					<strong>
 					  {user.first_name} {user.last_name}

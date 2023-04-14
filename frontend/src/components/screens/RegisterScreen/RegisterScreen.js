@@ -1,11 +1,15 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { Form, Button, Row, Col, Card, Container } from 'react-bootstrap'
+import { Form, Button, Row, Col, Card, Container, Image } from 'react-bootstrap'
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import HeaderHomePage from '../../elements/HeaderHomePage'
 import { registerUser } from '../../../features/redux/actions/authUserActions';
+import '../../../../src/assets/components/elements/Register/Register.css'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBullseye } from "@fortawesome/free-solid-svg-icons";
+import backgroundImage from  '../../../assets/components/elements/Register/ama.png'
 
-function RegisterScreen() {
+function RegisterScreen({height, imageSrc}) {
 
   const [message, setMessage] = useState('')
 
@@ -30,6 +34,8 @@ function RegisterScreen() {
       meeting_link: "",
       tutor: false,
       student: false,
+      id_photo: "",
+      education_background_photo: "",
       subjects: []
     });
   
@@ -84,14 +90,44 @@ function RegisterScreen() {
 		option.selected = !option.selected;
 	  };
 	
+    const backgroundStyles = {
+      backgroundImage: `url(${backgroundImage})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center center',
+      // height: '100vh',
+      backgroundAttachment: 'fixed',
+    };
 
+
+   
+   const handleClickOnProfilePicture = (e) => {
+      document.getElementById("profilePicture").click();
+    }
 
     return (
-      <div>
+      <div style={backgroundStyles}> 
+
+
+ 
 		   <HeaderHomePage/>
+       
+       <Col >
+           <div class="container1">
+  <p><FontAwesomeIcon  icon={faBullseye} size='2x'/> Choose from many highly qualified and trusted Tutors</p>
+  <p><FontAwesomeIcon  icon={faBullseye} size='2x'/>100% risk free</p>
+  <p><FontAwesomeIcon  icon={faBullseye} size='2x'/>24/7 access to the best tutors</p>
+  <p><FontAwesomeIcon  icon={faBullseye} size='2x'/>Expert help in 10+ subjects</p>
+  <p><FontAwesomeIcon  icon={faBullseye} size='2x'/>All tutors qualified and background-checked</p>
+    </div>
+        </Col>
+    
+
 		
-      <Row className="justify-content-center align-items-center">
-          <Col xl={7} xs={10}>
+      <Row  style={{marginLeft: 700}} className="align-items-center">
+
+     
+          <Col  xl={11} xs={10}>
+         
               <Card className="px-5 my-5 shadow p-3 mb-5 rounded">
                   <Card.Body>
                       <div className="mb-4 mt-md-3">
@@ -158,28 +194,26 @@ function RegisterScreen() {
                                     </Form.Select>
                                   </Form.Group>
 
-
-                                  {/* <Form.Group controlId="formBasicCheckbox">
-                                        <Form.Check
-                                        type="checkbox"
-                                        label={
+                                  {formData.student && (
+                                  <Row> 
+                                <Form.Group className="mb-1 my-3" controlId="formBasicLastName">
+                                      <Form.Label className="text-center">{
                                             <>
-                                            I accept the{' '}
-                                            <a href="/termsofservice" target="_blank">
+                                            <pre style={{fontSize: 18, fontFamily: "Calibri", }}>
+                                            By clicking "Sign Up", you agree to TutorPal website{' '}
+                                            <a href="/studenttermsofservice" target="_blank">
                                                 Terms of Service
                                             </a>{' '}
                                             &{' '}
-                                            <a href="/privacypolicy" target="_blank">
+                                            <a href="/studentprivacypolicy" target="_blank">
                                                 Privacy Policy
                                             </a>
+                                            </pre>
                                             </>
-                                        }
-                                        id="acceptTermsAndPrivacy"
-                                        name="acceptTermsAndPrivacy"
-                                        checked=''
-                                        onChange=''
-                                        />
-                                    </Form.Group> */}
+                                        }</Form.Label>
+                                      </Form.Group>
+                                  </Row>
+                                  )}
 
                                     {formData.tutor && (
                                 <>
@@ -189,6 +223,26 @@ function RegisterScreen() {
                                 <Form.Label className="text-center">Bio</Form.Label>
                                 <Form.Control value={formData.bio} onChange= {(e) =>setFormData({ ...formData, bio: e.target.value })} as="textarea" placeholder="Enter Bio" />
                                 </Form.Group>
+                                <Form.Group controlId="formFileLg" className="mb-3">
+                        
+                        
+                        <Form.Label>Profile Picture</Form.Label>
+                        <Form.Control
+                          type="file"
+                          id="profilePicture"
+                          size="lg"
+                          onChange={handleClickOnProfilePicture}
+                        />
+                        <Row>
+                          <Image
+                            src={handleClickOnProfilePicture}
+                            alt="This is my kingdom cum"
+                            onClick={handleClickOnProfilePicture}
+                            style={{ height: 100, width: 150 }}
+                          />
+                        </Row>
+                      
+                      </Form.Group>
 
 
                                 <Row>
@@ -218,6 +272,27 @@ function RegisterScreen() {
                                       <Form.Label className="text-center">Meeting Link</Form.Label>
                                       <Form.Control value={formData.meeting_link} onChange={(e) =>setFormData({ ...formData, meeting_link: e.target.value })} type="contact" placeholder="Enter Contact" />
                                   </Form.Group>
+                               
+
+                                  <Row> 
+                                <Form.Group className="mb-1 my-3" controlId="formBasicLastName">
+                                      <Form.Label className="text-center">{
+                                            <>
+                                            <pre style={{fontSize: 18, fontFamily: "Calibri", }}>
+                                            By clicking "Sign Up", you agree to TutorPal website{' '}
+                                            <a href="/tutortermsofservice" target="_blank">
+                                                Terms of Service
+                                            </a>{' '}
+                                            &{' '}
+                                            <a href="/tutorprivacypolicy" target="_blank">
+                                                Privacy Policy
+                                            </a>
+                                            </pre>
+                                            </>
+                                        }</Form.Label>
+                                      </Form.Group>
+                                  </Row>
+                               
                                 </>
                                     )}
 

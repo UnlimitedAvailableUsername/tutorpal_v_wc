@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Button, Card, Col, Form, Row } from 'react-bootstrap'
+import { Button, Card, Col, Form, Row, Image } from 'react-bootstrap'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 import { loginUser } from '../../../features/redux/actions/authUserActions';
@@ -8,6 +8,11 @@ import MessageAlert from '../../elements/MessageAlert';
 import LoadingIconBig from '../../elements/Loader/LoadingIconBig';
 
 import HeaderHomePage from '../../elements/HeaderHomePage'
+
+import backgroundImage from  '../../../assets/components/elements/Login/amam.png'
+
+import study from '../../../assets/components/elements/Login/study.png'
+
 
 
 function LoginScreen() {
@@ -34,10 +39,7 @@ function LoginScreen() {
     }
     const handleSubmit = (e) => {
         e.preventDefault()
-        if (!error) {
-            dispatch(loginUser(email, password));
-            navigate(redirect);
-        }
+        dispatch(loginUser(email, password));
     }
 
     useEffect(() => {
@@ -50,14 +52,39 @@ function LoginScreen() {
     
     }, [navigate, userInfo, redirect, redirectadmin]);
 
+
+    const backgroundStyles = {
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center center',
+        // height: '100vh',
+        backgroundAttachment: 'fixed',
+      };
+
+      
+  
     
     return (
-        <div>
+        <div style={backgroundStyles}>
             <HeaderHomePage/>
             
+
+     
+
             <Row className="justify-content-center align-items-center">
-                <Col xl={8} xs={10}>
-                    <Card className="px-4 my-5 shadow">
+                <Col xl={7} xs={10}>
+                
+                    <Card className="px-0 my-5 shadow">
+                        <Row>
+                            <Col>
+                            <Image
+                            src={study}
+                            alt="This is my kingdom cum"
+                            style={{ height: 500, width: 430,  filter: 'brightness(80%)',}}
+                            className="rounded"
+                        />  
+                        </Col>
+                        <Col style={{marginRight: 30}}>
                         <Card.Body>
                             <div className="mb-3 mt-md-4">
                                 <div className='mb-5' >
@@ -90,6 +117,8 @@ function LoginScreen() {
                                 </div>
                             </div>
                         </Card.Body>
+                        </Col>
+                        </Row>
                     </Card>
                 </Col>
             </Row>

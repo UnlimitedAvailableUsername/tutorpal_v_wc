@@ -206,6 +206,7 @@ class Schedule(models.Model):
 class ScheduleOrder(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     schedules = models.ManyToManyField(Schedule, through='ScheduleOrderItem')
+    message = models.TextField(("Message to Tutor"), max_length=250, null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     payment_method = models.CharField(max_length=200, null=True, blank=True)

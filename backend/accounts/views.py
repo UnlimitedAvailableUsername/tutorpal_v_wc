@@ -48,7 +48,7 @@ def subject_list(request):
 def subject_detail(request, id):
     try:
         subject = Subject.objects.get(id=id)
-    except models.Subject.DoesNotExist:
+    except Subject.DoesNotExist:
         return Response({'error': 'Subject does not exist'}, status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
@@ -124,17 +124,31 @@ def users_student_list(request):
     serializer = UserSerializer(users, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
-#######################################
-# THIS WILL CALL THE SPECIFIC USER <id>
+######################################################################
+# THIS WILL CALL, BE ABLE TO UPDATE, AND DELETE THE SPECIFIC USER <id>
 
-@api_view(['GET'])
+@api_view(['GET', 'PUT', 'DELETE'])
 def user_detail(request, id):
     try:
         user = User.objects.get(id=id)
     except User.DoesNotExist:
         return Response({"error": "User does not exist."}, status=status.HTTP_404_NOT_FOUND)
-    serializer = UserSerializer(user, many=False)
-    return Response(serializer.data, status=status.HTTP_200_OK)
+
+    if request.method == 'GET':
+        serializer = UserSerializer(user, many=False)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    elif request.method == 'PUT':
+        serializer = UserSerializer(user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        user.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 ################################################################################
 # THIS WILL LET THE USER LOGIN AND RETURN 'ACCESS' AS 'TOKEN' AND 'REFRESH' KEYS
@@ -143,6 +157,11 @@ def user_detail(request, id):
 def user_login(request):
     email = request.data.get('email', None)
     password = request.data.get('password', None)
+
+    try:
+        user = User.objects.get(email=email)
+    except User.DoesNotExist:
+        return Response({'detail': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
     user = authenticate(email=email, password=password)
 
@@ -160,14 +179,10 @@ def user_login(request):
 #######################################################################
 # THIS WILL LET US CREATE A TEMPORARY DIRECTORY TO STORE THE IMAGE FILE
 
-import os
-import tempfile
+from django.core.files.base import ContentFile
 
 def handle_uploaded_file(f):
-    with tempfile.NamedTemporaryFile(delete=False) as tmpfile:
-        for chunk in f.chunks():
-            tmpfile.write(chunk)
-    return tmpfile.name
+    return ContentFile(f.read())
 
 #######################################################################################
 # THIS WILL LET THE USERS REGISTER AND RETURN AN 'ACCESS' AS 'TOKEN' AND 'REFRESH' KEYS
@@ -176,34 +191,43 @@ def handle_uploaded_file(f):
 
 @api_view(['POST'])
 def user_register(request):
-    data = request.data
+    # Important, because we don't want Django to mutate our data
+    data = request.data.copy()
     subjects_data = data.pop('subjects', [])
     password = data.pop('password')
-    hashed_password = make_password(password)
+    hashed_password = make_password(str(password))
     data['password'] = hashed_password
-
-    # Manually handle subjects data
-    subject_ids = []
-    for subject_id in subjects_data:
-        try:
-            subject = Subject.objects.get(id=subject_id)
-            subject_ids.append(subject.id)
-        except Subject.DoesNotExist:
-            return Response({'subjects': [f"Subject with ID {subject_id} does not exist."]}, status=status.HTTP_400_BAD_REQUEST)
-    data['subjects'] = subject_ids
+    
+    # Validate subject IDs
+    subject_ids = [int(id) for id in subjects_data]
+    invalid_ids = set(subject_ids) - set(Subject.objects.values_list('id', flat=True))
+    if invalid_ids:
+        return Response({'subjects': [f"Subject with ID {id} does not exist." for id in invalid_ids]}, status=status.HTTP_400_BAD_REQUEST)
+    
+    # Set active based on tutor and student fields
+    if data.get('tutor'):
+        data['active'] = False
+    elif data.get('student'):
+        data['active'] = True
 
     serializer = UserSerializer(data=data)
     if serializer.is_valid():
+        user = serializer.save()
         profile_picture = request.FILES.get('profile_picture')
         if profile_picture:
-            image_path = handle_uploaded_file(profile_picture)
-            # Update the user profile with the image file path
-            user.profile_picture = image_path
-        user = serializer.save()
+            user.profile_picture.save(profile_picture.name, profile_picture, save=True)
+            response_data = serializer.data
+            response_data['profile_picture_url'] = request.build_absolute_uri(user.profile_picture.url)
+
+        # Associate subjects with user
+        subjects = Subject.objects.filter(id__in=subjects_data)
+        user.subjects.set(subjects)
+
         serializer_with_token = UserSerializerWithToken(user)
         response_data = serializer_with_token.data
         response_data['token'] = serializer_with_token.get_token(user)
         response_data['refresh'] = serializer_with_token.get_refresh(user)
+
         return Response(response_data, status=status.HTTP_201_CREATED)
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -222,7 +246,7 @@ def user_profile(request):
         data = request.data.copy()
         password = data.pop('password', None)
         if password:
-            data['password'] = make_password(password)
+            data['password'] = make_password(str(password))
         subject_ids = data.pop('subjects', [])
         
         # Exclude empty strings and None values
@@ -567,6 +591,11 @@ def review_create(request):
         rating=rating, 
         comment=comment,
     )
+
+    # Increase the numReviews of the tutor associated with the review created
+    user_tutor.numReviews = user_tutor.reviews_received.count()
+    user_tutor.save()
+
     serializer = ReviewSerializer(review)
     return Response(serializer.data, status=status.HTTP_201_CREATED)
 
@@ -575,7 +604,6 @@ def review_create(request):
 # IT ALSO PERMITS THE ADMINS TO MODIFY IT
 
 @api_view(['GET', 'PUT', 'DELETE'])
-@permission_classes([IsAuthenticated])
 def review_detail(request, id):
     user = request.user
     try:

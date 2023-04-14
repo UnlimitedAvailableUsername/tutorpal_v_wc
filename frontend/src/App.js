@@ -15,6 +15,7 @@ import AboutUsScreen from "./components/screens/AboutUs/AboutUsScreen";
 import ListContact from "./components/screens/ListContactsScreen/ListContact";
 import ContactDetail from "./components/screens/ContactDetailScreen/ContactDetail";
 import { useSelector } from "react-redux";
+import EditSchedule from "./components/screens/EditScheduleScreen/EditSchedule";
 import HeaderStudent from "./components/elements/HeaderStudent";
 import HeaderHomePage from "./components/elements/HeaderHomePage";
 import HeaderTutor from "./components/elements/HeaderTutor";
@@ -59,6 +60,8 @@ function App() {
                     <Route path="/contact-success" element={<SuccessScreen />} exact />
                     <Route path="/contact-details/:contactId" element={<ContactDetail />} exact />
                     <Route path="/concern-list" element={<ListContact />} exact />
+
+                    <Route path="/schedule-details/:scheduleId" element={<EditSchedule />} exact />
 
                     <Route path="/about-us" element={<AboutUsScreen />} exact />
 

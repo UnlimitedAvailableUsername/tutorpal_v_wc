@@ -38,7 +38,7 @@ function MyScheduleScreenTutor() {
       formField.append("count_in_stock", count_in_stock);
 
       await dispatch(createSchedule(formField));
-      navigate("/add-lesson");
+      navigate("/myschedule");
       window.location.reload(); // <-- add this line
     } catch (error) {
       console.log(error);
@@ -75,6 +75,18 @@ function MyScheduleScreenTutor() {
               <tr key={schedule.id}>
                 <td>{schedule.name}</td>
                 <td>{schedule.count_in_stock}</td>
+                <td>
+                <Link to={`/schedule-details/${schedule.id}`}>
+                <button type="button" class="btn btn-warning">
+                    Edit
+                  </button>
+                    </Link>
+                    <Link to={`/schedule-details/${schedule.id}`}>
+                  <button type="button" class="btn btn-danger">
+                    Delete
+                  </button>
+                  </Link>
+                </td>
               </tr>
             ))}
         </tbody>

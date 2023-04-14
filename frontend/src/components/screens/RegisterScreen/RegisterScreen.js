@@ -1,11 +1,15 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { Form, Button, Row, Col, Card, Container } from 'react-bootstrap'
+import { Form, Button, Row, Col, Card, Container, Image } from 'react-bootstrap'
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import HeaderHomePage from '../../elements/HeaderHomePage'
 import { registerUser } from '../../../features/redux/actions/authUserActions';
+import '../../../../src/assets/components/elements/Register/Register.css'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBullseye } from "@fortawesome/free-solid-svg-icons";
+import backgroundImage from  '../../../assets/components/elements/Register/ama.png'
 
-function RegisterScreen() {
+function RegisterScreen({height, imageSrc}) {
 
   const dispatch = useDispatch();
   const location = useLocation();
@@ -13,112 +17,132 @@ function RegisterScreen() {
   const redirect = location.search ? location.search.split('=')[1] : '/profile';
 
 
-  const [confirmPassword, setConfirmPassword] = useState("");
-
-  const [formData, setFormData] = useState({
-    username: '',
-    first_name: "",
-    last_name: "",
-    email: "",
-    password: "",
-    contact: "",
-    bio: "",
-    price_rate_hour: "",
-    meeting_link: "",
-    tutor: false,
-    student: false,
-    subjects: []
-  });
-
-  // const handleInputChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setFormData({ ...formData, [name]: value });
-  // };
-
-  const handleSelectChange = (e) => {
-    const { name, value } = e.target;
-    const isTutor = value === 'tutor';
-    setFormData({ ...formData, tutor: isTutor, student: !isTutor });
-  };
-
-  const handleSubjectsChange = (e) => {
-    const { options } = e.target;
-    const subjects = [];
-    for (let i = 0; i < options.length; i++) {
-      if (options[i].selected) {
-        subjects.push(options[i].value);
+    const [confirmPassword, setConfirmPassword] = useState("");
+  
+    const [formData, setFormData] = useState({
+      username: '',
+      first_name: "",
+      last_name: "",
+      email: "",
+      password: "",
+      contact: "",
+      bio: "",
+      active: "true",
+      price_rate_hour: "",
+      meeting_link: "",
+      tutor: false,
+      student: false,
+      subjects: []
+    });
+  
+    // const handleInputChange = (e) => {
+    //   const { name, value } = e.target;
+    //   setFormData({ ...formData, [name]: value });
+    // };
+  
+    const handleSelectChange = (event) => {
+      const { name, value } = event.target;
+      const isTutor = value === 'tutor';
+      setFormData({ ...formData, tutor: isTutor, student: !isTutor });
+    };
+  
+    const handleSubjectsChange = (e) => {
+      const { options } = e.target;
+      const subjects = [];
+      for (let i = 0; i < options.length; i++) {
+        if (options[i].selected) {
+          subjects.push(options[i].value);
+        }
       }
-    }
-    setFormData({ ...formData, subjects });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Form data:", formData);
-
-    dispatch(registerUser(formData));
-  }
-
-
-
-  const handleSubjectsMouseDown = (event) => {
-    event.preventDefault();
-    const option = event.target;
-    const value = option.value;
-
-    if (option.selected) {
-      setFormData((prevState) => ({
-        ...prevState,
-        subjects: prevState.subjects.filter((v) => v !== value),
-      }));
-    } else {
-      setFormData((prevState) => ({
-        ...prevState,
-        subjects: [...prevState.subjects, value],
-      }));
+      setFormData({ ...formData, subjects });
+    };
+  
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      console.log("Form data:", formData);
+     
+        dispatch(registerUser(formData));
     }
 
-    option.selected = !option.selected;
-  };
 
 
+	const handleSubjectsMouseDown = (event) => {
+		event.preventDefault();
+		const option = event.target;
+		const value = option.value;
+	
+		if (option.selected) {
+		  setFormData((prevState) => ({
+			...prevState,
+			subjects: prevState.subjects.filter((v) => v !== value),
+		  }));
+		} else {
+		  setFormData((prevState) => ({
+			...prevState,
+			subjects: [...prevState.subjects, value],
+		  }));
+		}
+	
+		option.selected = !option.selected;
+	  };
 
-  return (
-    <div>
+    const backgroundStyles = {
+      backgroundImage: `url(${backgroundImage})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center center',
+      // height: '100vh',
+      backgroundAttachment: 'fixed',
+    };
+	
+
+   
+   const handleClickOnProfilePicture = (e) => {
+      document.getElementById("profilePicture").click();
+    }
+
+    return (
+      <div style={backgroundStyles}>
+        <p><FontAwesomeIcon icon={faBullseye} size='2x' /> Choose from many highly qualified and trusted Tutors</p>
+        <p><FontAwesomeIcon icon={faBullseye} size='2x' />100% risk free</p>
+        <p><FontAwesomeIcon icon={faBullseye} size='2x' />24/7 access to the best tutors</p>
+        <p><FontAwesomeIcon icon={faBullseye} size='2x' />Expert help in 10+ subjects</p>
+        <p><FontAwesomeIcon icon={faBullseye} size='2x' />All tutors qualified and background-checked</p>
+
+
       <Row className="justify-content-center align-items-center">
-        <Col xl={7} xs={10}>
-          <Card className="px-5 my-5 shadow p-3 mb-5 rounded">
-            <Card.Body>
-              <div className="mb-4 mt-md-3">
-                <div className='mb-5' >
-                  <h2 className="fw-bold text-uppercase ">SIGN UP</h2>
-
-                </div>
-                <div className="mb-3">
-
-
-                  <Form >
-                    <Row>
-                      <Col>
-                        <Form.Group className="mb-2" controlId="formBasicFirstName">
-                          <Form.Label className="text-center">First Name</Form.Label>
-                          <Form.Control value={formData.first_name} onChange={(e) => setFormData({ ...formData, first_name: e.target.value })} type="name" placeholder="Enter Name" />
-                        </Form.Group>
-                      </Col>
-                      <Col>
-                        <Form.Group className="mb-2" controlId="formBasicLastName">
-                          <Form.Label className="text-center">Last Name</Form.Label>
-                          <Form.Control value={formData.last_name} onChange={(e) => setFormData({ ...formData, last_name: e.target.value })} type="name" placeholder="Enter Name" />
-                        </Form.Group>
-                      </Col>
-
-                      <Row>
-                        <Col>
-                          <Form.Group className="mb-2" controlId="formBasicUsername">
-                            <Form.Label className="text-center">Username</Form.Label>
-                            <Form.Control value={formData.username} onChange={(e) => setFormData({ ...formData, username: e.target.value })} type="username" placeholder="Enter Username" />
-                          </Form.Group>
-                        </Col>
+          <Col xl={7} xs={10}>
+              <Card className="px-5 my-5 shadow p-3 mb-5 rounded">
+                  <Card.Body>
+                      <div className="mb-4 mt-md-3">
+                          <div className='mb-5' >
+                              <h2 className="fw-bold text-uppercase ">SIGN UP</h2>
+                              
+                          </div>
+                          <div className="mb-3">
+                     
+                    
+                              <Form >
+                                <Row>
+                                    <Col>
+                                  <Form.Group className="mb-2" controlId="formBasicFirstName">
+                                      <Form.Label className="text-center">First Name</Form.Label>
+                                      <Form.Control value={formData.first_name} onChange={(e) => setFormData({ ...formData, first_name: e.target.value })} type="name" placeholder="Enter Name" />
+                                  </Form.Group>
+                                  </Col>
+                                  <Col> 
+                                <Form.Group className="mb-2" controlId="formBasicLastName">
+                                      <Form.Label className="text-center">Last Name</Form.Label>
+                                      <Form.Control value={formData.last_name} onChange={(e) => setFormData({ ...formData, last_name: e.target.value })} type="name" placeholder="Enter Name" />
+                                  </Form.Group>
+                                  </Col>
+                                  
+                                  <Row>
+                                  <Col>
+                                  <Form.Group className="mb-2" controlId="formBasicUsername">
+                                      <Form.Label className="text-center">Username</Form.Label>
+                                      <Form.Control value={formData.username} onChange={(e) => setFormData({ ...formData, username: e.target.value })} type="username" placeholder="Enter Username" />
+                                  </Form.Group>
+                                  </Col>
 
                         <Col>
                           <Form.Group className="mb-2 ms-3" controlId="formBasicContact">
@@ -178,11 +202,11 @@ function RegisterScreen() {
                       {formData.tutor && (
                         <>
 
-                          <h1>.....</h1>
-                          <Form.Group className="mb-2 my-4 " controlId="formBasicBio">
-                            <Form.Label className="text-center">Bio</Form.Label>
-                            <Form.Control value={formData.bio} onChange={(e) => setFormData({ ...formData, bio: e.target.value })} as="textarea" placeholder="Enter Bio" />
-                          </Form.Group>
+                                <h1>.....</h1>
+                                 <Form.Group className="mb-2 my-4 " controlId="formBasicBio">
+                                <Form.Label className="text-center">Bio</Form.Label>
+                                <Form.Control value={formData.bio} onChange= {(e) =>setFormData({ ...formData, bio: e.target.value })} as="textarea" placeholder="Enter Bio" />
+                                </Form.Group>
 
 
                           <Row>
@@ -208,12 +232,12 @@ function RegisterScreen() {
                           </Row>
 
 
-                          <Form.Group className="mb-2 " controlId="formBasicLink">
-                            <Form.Label className="text-center">Meeting Link</Form.Label>
-                            <Form.Control value={formData.meeting_link} onChange={(e) => setFormData({ ...formData, meeting_link: e.target.value })} type="contact" placeholder="Enter Contact" />
-                          </Form.Group>
-                        </>
-                      )}
+                                  <Form.Group className="mb-2 " controlId="formBasicLink">
+                                      <Form.Label className="text-center">Meeting Link</Form.Label>
+                                      <Form.Control value={formData.meeting_link} onChange={(e) =>setFormData({ ...formData, meeting_link: e.target.value })} type="contact" placeholder="Enter Contact" />
+                                  </Form.Group>
+                                </>
+                                    )}
 
 
 

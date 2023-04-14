@@ -1,14 +1,35 @@
 import os, uuid
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.core.validators import MaxValueValidator
 from django.utils import timezone
 
 
+from pathlib import Path
+
 def upload_image_path(instance, filename):
     ext = filename.split('.')[-1]
+<<<<<<< HEAD
     filename = "%s.%s" %(uuid.uuid4(), ext)
     destination = os.path.join('profile_pictures/', "%s/%s" %(instance.username, filename))
     return destination 
+=======
+    filename = f"{uuid.uuid4()}.{ext}"
+    destination = Path("profile_pictures") / instance.username / filename
+    return str(destination)
+
+def upload_image_id_path(instance, filename):
+    ext = filename.split('.')[-1]
+    filename = f"{uuid.uuid4()}.{ext}"
+    destination = Path("photo_ids") / instance.username / filename
+    return str(destination)
+
+def upload_image_edu_bg_path(instance, filename):
+    ext = filename.split('.')[-1]
+    filename = f"{uuid.uuid4()}.{ext}"
+    destination = Path("education_background") / instance.username / filename
+    return str(destination)
+>>>>>>> master
 
 
 def update_last_login(sender, user, **kwargs):
@@ -78,35 +99,40 @@ class UserManager(BaseUserManager):
 
         return user
 
-# have other plan for this:
+
 class Subject(models.Model):
     subject_title = models.TextField(max_length=100)
-    _id = models.AutoField(primary_key=True)
 
     def __str__(self):
+        # return f"{self.subject_title} ({self.user.username})"
         return self.subject_title
 
 
 class User(AbstractBaseUser):
-
-    username = models.CharField(("username"), max_length=150, unique=True, help_text=("Required. 150 characters or fewer"), error_messages={"unique": ("A user with that username already exists."),},)
-    email = models.EmailField(("email address"), unique=True, blank=True)
-    password = models.CharField(("password"), max_length=128)
-    first_name = models.CharField(("first name"), max_length=150, blank=True)
-    last_name = models.CharField(("last name"), max_length=150, blank=True)
-    profile_picture = models.ImageField(("User Picture"), null=True, default='profile_pictures/default/tutor.jpg', upload_to=upload_image_path)
-    contact = models.CharField(("contact number"), max_length=50, blank=True)
-    bio = models.TextField(("bio which also houses the lessons"), max_length=999999, blank=True)
-    subject = models.ForeignKey(Subject, on_delete=models.SET_NULL, null=True, blank=True)
-    active = models.BooleanField(("active"), default=True, help_text=("Designates whether this user should be treated as active. Unselect this instead of deleting accounts."),)
-    staff = models.BooleanField(("staff status"), default=False, help_text=("Designates whether the user can log into this admin site."),)
-    student = models.BooleanField(("Student"), default=False, help_text=("Categorizes the user as student"),)
-    tutor = models.BooleanField(("Tutor"), default=False, help_text=("Categorizes the user as tutor"),)
-    date_joined = models.DateTimeField(("date joined"), default=timezone.now)
-    last_login = models.DateTimeField(("last login"), blank=True, null=True)
-    numReviews = models.IntegerField(("reviews"), null=True, blank=True)
+    # Default/Global User Fields:
+    email = models.EmailField(("Email Address"), unique=True, blank=True)
+    username = models.CharField(("Username"), max_length=150, unique=True, help_text=("Required. 150 characters or fewer"), error_messages={"unique": ("A user with that username already exists."),},)
+    first_name = models.CharField(("First Name"), max_length=150, blank=True)
+    last_name = models.CharField(("Last Name"), max_length=150, blank=True)
+    password = models.CharField(("Password (Hashed)"), max_length=128)
+    contact = models.CharField(("Contact Number"), max_length=50, blank=True)
+    profile_picture = models.ImageField(("User Picture"), default='profile_pictures/default/tutor.jpg', upload_to=upload_image_path, null=True)
+    # Login-related:
+    date_joined = models.DateTimeField(("Date joined"), default=timezone.now)
+    last_login = models.DateTimeField(("Last Login"), blank=True, null=True)
+    # Tutor Fields:
     meeting_link = models.TextField(("Zoom Link"), blank=True, null=True)
-    price_rate_hour = models.DecimalField(("Hourly Price Rate"), max_digits=3, decimal_places=0, null=True)
+    bio = models.TextField(("Bio (Contains Introduction, and Lessons)"), max_length=999999, blank=True)
+    subjects = models.ManyToManyField(Subject, related_name='users', blank=True)
+    photo_education_background = models.ImageField(("Education Background"), upload_to=upload_image_edu_bg_path, null=True, blank=True)
+    photo_id = models.ImageField(("Photo ID"), upload_to=upload_image_id_path, null=True, blank=True)
+    price_rate_hour = models.DecimalField(("Hourly Price Rate"), max_digits=3, decimal_places=0, default=0, null=True)
+    numReviews = models.IntegerField(("Reviews"), null=True, default=0)
+    # User Options:
+    active = models.BooleanField(("Active"), default=True, help_text=("Designates whether this user should be treated as active. Unselect this instead of deleting accounts."),)
+    staff = models.BooleanField(("Staff/Administrative Privilages"), default=False, help_text=("Designates whether the user can log into this admin site."),)
+    tutor = models.BooleanField(("Tutor"), default=False, help_text=("Categorizes the user as tutor"),)
+    student = models.BooleanField(("Student"), default=False, help_text=("Categorizes the user as student"),)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
@@ -114,7 +140,16 @@ class User(AbstractBaseUser):
     objects = UserManager()
 
     def __str__(self):
-        return self.email + " (" + self.username + ")"
+        username = self.username if self.username else "No username"
+        return f"{self.email} ({username})"
+    
+    @property
+    def is_tutor(self):
+        return self.tutor
+
+    @property
+    def is_student(self):
+        return self.student
 
     ###########################################################
     #### important bits for logging into Django Admin page ####
@@ -133,72 +168,74 @@ class User(AbstractBaseUser):
         return self.active
     ###########################################################
     ###########################################################
-    
-    @property
-    def is_tutor(self):
-        return self.tutor
-
-    @property
-    def is_student(self):
-        return self.student
-
-
-class Schedule(models.Model):
-    date = models.CharField(("Day to be scheduled"), max_length=50)
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
-    count_in_stock_hour = models.PositiveIntegerField(("How many slots of hours available?"), )
-    price = models.CharField(max_length=255, blank=True, null=True)
-    _id = models.AutoField(primary_key=True)
 
 
 class Review(models.Model):
-    product = models.ForeignKey(User,on_delete=models.SET_NULL,null=True, related_name='reviews_received')
-    user = models.ForeignKey(User,on_delete=models.SET_NULL,null=True, related_name='reviews_made')
-    name = models.CharField(max_length=200,null=True,blank=True)
-    rating =  models.IntegerField(null=True,blank=True,default=0)
-    comment = models.TextField(null=True,blank=True)
-    createdAt = models.DateTimeField(auto_now_add=True)
-    _id =  models.AutoField(primary_key=True,editable=False)
+    user_tutor = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='reviews_received')
+    user_student = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='reviews_made')
+    rating =  models.IntegerField(null=True, blank=True, default=1)
+    comment = models.TextField(null=True, blank=True)
+    created_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return str(self.rating)
-
-
-class CartSchedule(models.Model):
-    user = models.ForeignKey(User,on_delete=models.SET_NULL,null=True)
-    paymentMethod = models.CharField(max_length=200,null=True,blank=True)
-    totalPrice = models.DecimalField(max_digits=12,decimal_places=2,null=True,blank=True)
-    isPaid = models.BooleanField(default=False)
-    paidAt = models.DateTimeField(auto_now_add=False,null=True, blank=True)
-    createdAt = models.DateTimeField(auto_now_add=True,null=True, blank=True)
-    meeting_link = models.TextField(("Zoom Link"), blank=True, null=True)
-    _id =  models.AutoField(primary_key=True,editable=False)
-
-
-    def __str__(self):
-        return str(self.createdAt)
-
-
-class CartScheduleItem(models.Model):
-    product = models.ForeignKey(Schedule,on_delete=models.SET_NULL,null=True, help_text=("Schedule Date"))
-    order  = models.ForeignKey(CartSchedule,on_delete=models.SET_NULL,null=True, help_text=("From the cart"))
-    name = models.CharField(max_length=200,null=True,blank=True, help_text=("Cart Item Name"))
-    qty = models.IntegerField(null=True,blank=True,default=0, help_text=("Quantity of Hour"))
-    price = models.DecimalField(max_digits=12,decimal_places=2,null=True,blank=True, help_text=("Price from the Product"))
-    image = models.CharField(max_length=200,null=True,blank=True, help_text=("Image URL"))
-    _id =  models.AutoField(primary_key=True,editable=False)
-
-    def __str__(self):
-        return str(self.name)
+        return f"{self.rating}/5 by {self.user_student.username} to {self.user_tutor.username}"
     
 
 class Contact(models.Model):
+<<<<<<< HEAD
     email = models.ForeignKey(User, on_delete=models.SET_NULL,null=True, blank=True, related_name='contact_name')
     first_name = models.TextField(max_length=300, null=True, blank=True)
     last_name = models.TextField(max_length=300, null=True, blank=True)
+=======
+    name = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='contact_name')
+>>>>>>> master
     concern = models.TextField(max_length=300, null=True, blank=True)
     comment = models.TextField(max_length=5000, null=True, blank=True)
     done = models.BooleanField( default=False, null=True, blank=True)
 
     def __str__(self):
-        return str(self.email)
+        return f"concern of {self.name.username}"
+    
+
+class Schedule(models.Model):
+    name = models.CharField(max_length=255)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    count_in_stock = models.PositiveIntegerField(default=1, validators=[MaxValueValidator(24)])
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def reduce_stock(self, quantity):
+        self.count_in_stock -= quantity
+        self.save()
+
+    def save(self, *args, **kwargs):
+        if self.owner.price_rate_hour:
+            self.price = self.owner.price_rate_hour
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.name}"
+
+
+class ScheduleOrder(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    schedules = models.ManyToManyField(Schedule, through='ScheduleOrderItem')
+    message = models.TextField(("Message to Tutor"), max_length=250, null=True, blank=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    payment_method = models.CharField(max_length=200, null=True, blank=True)
+    paid_status = models.BooleanField(default=False)
+    paid_date = models.DateTimeField(auto_now_add=False, null=True, blank=True)
+    session_status = models.BooleanField(default=False)
+
+    def __str__(self) -> str:
+        return f"Date: {self.date_created.strftime('%Y-%m-%d')} - Time: {self.date_created.strftime('%H:%M:%S')} - {self.user.username}"
+
+
+class ScheduleOrderItem(models.Model):
+    schedule = models.ForeignKey(Schedule, on_delete=models.CASCADE)
+    schedule_order = models.ForeignKey(ScheduleOrder, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f"{self.schedule.name}"
+    

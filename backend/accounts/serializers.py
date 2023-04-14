@@ -1,10 +1,16 @@
+# DJANGO IMPORTS
+from django.contrib.auth import get_user_model
+from django.contrib.auth.hashers import make_password
+
+# REST FRAMEWORK IMPORTS
 from rest_framework import serializers
-from rest_framework_simplejwt import serializers as jwt_serializers
-from django.contrib.auth import get_user_model, authenticate
+from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
+
+# LOCAL IMPORTS
 from .models import *
-from rest_framework_simplejwt.tokens import RefreshToken
 
 User = get_user_model()
+
 
 class SubjectSerializer(serializers.ModelSerializer):
     
@@ -12,6 +18,7 @@ class SubjectSerializer(serializers.ModelSerializer):
         model = Subject
         fields = '__all__'
 
+<<<<<<< HEAD
 
 # class UserSerializer(serializers.ModelSerializer):
 #     subject = serializers.StringRelatedField()
@@ -89,47 +96,76 @@ class ReviewSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+=======
+>>>>>>> master
 class ScheduleSerializer(serializers.ModelSerializer):
-    reviews = serializers.SerializerMethodField(read_only= True)
     class Meta:
         model = Schedule
         fields = '__all__'
 
-    def get_reviews(self, obj):
-        reviews = obj.review_set.all()
-        serializer = ReviewSerializer(reviews,many=True)
-        return serializer.data
-
-
-
-
-class CartScheduleItemSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CartScheduleItem
-        fields = '__all__'
-
-class CartScheduleSerializer(serializers.ModelSerializer):
-    orderItems = serializers.SerializerMethodField(read_only=True)
-    User = serializers.SerializerMethodField(read_only=True)
+class UserSerializer(serializers.ModelSerializer):
+    schedules = ScheduleSerializer(source='schedule_set', many=True, required=False, read_only=True)
+    subjects = SubjectSerializer(many=True, required=False)
 
     class Meta:
-        model = CartSchedule
+        model = User
+        fields = '__all__'
+        extra_kwargs = {'password': {'write_only': True}}
+
+# NOTE: THIS SERIALIZER MUST ONLY BE USED FOR AUTHENTICATION
+# OR ANY TYPE OF PERSONAL USER MODIFICATION SUCH AS UPDATE
+# PROFILE, DELETE MY PROFILE ETC. THIS IS DUE TO THE FACT THAT
+# THIS RETURNS THE TOKEN AND REFRESH KEYS
+
+class UserSerializerWithToken(serializers.ModelSerializer):
+    schedules = ScheduleSerializer(source='schedule_set', many=True, required=False)
+    subjects = SubjectSerializer(many=True, required=False)
+    token = serializers.SerializerMethodField(read_only=True)
+    refresh = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = User
         fields = '__all__'
 
-    def get_orderItems(self, obj):
-        items = obj.orderitem_set.all()
-        serializer = CartScheduleItemSerializer(items,many=True)
-        return serializer.data
+    def get_token(self, obj):
+        token = AccessToken.for_user(obj)
+        return str(token)
 
-    def get_User(self, obj):
-        items = obj.user
-        serializer = UserSerializer(items,many=False)
-        return serializer.data
+    def get_refresh(self, obj):
+        token = RefreshToken.for_user(obj)
+        return str(token)
 
+
+class ReviewSerializer(serializers.ModelSerializer):
+    user_student = serializers.SerializerMethodField()
+    class Meta:
+        model = Review
+        fields = '__all__'
+
+    def get_user_student(self, obj):
+        return obj.user_student.username
+    
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data['user_student'] = instance.user_student.username
+        return data
 
 class ContactSerializer(serializers.ModelSerializer):
     email = serializers.StringRelatedField()
 
     class Meta:
         model = Contact
+        fields = '__all__'
+
+class ScheduleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Schedule
+        fields = '__all__'
+
+class ScheduleOrderSerializer(serializers.ModelSerializer):
+    schedules = ScheduleSerializer(many=True, read_only=True)
+    payment_method = serializers.CharField(max_length=200)
+
+    class Meta:
+        model = ScheduleOrder
         fields = '__all__'

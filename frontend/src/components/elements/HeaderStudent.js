@@ -46,8 +46,13 @@ function Header() {
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mx-auto">
                         <NavLink as={ Link } to="/lesson-list">Lessons</NavLink>
+<<<<<<< HEAD
                         <NavLink as={ Link } to="/tutor-list">Find Tutor</NavLink>
                         <NavLink as={ Link } to="/about">About Us</NavLink>
+=======
+                        <NavLink as={ Link } to="/tutor">Find Tutor</NavLink>
+                        <NavLink as={ Link } to="/about-us">About Us</NavLink>
+>>>>>>> master
                         <NavLink as={ Link } to="/contact-us">Contact Us</NavLink>
                     </Nav>
                     <Nav className="md-auto">
@@ -63,7 +68,11 @@ function Header() {
                             </NavDropdown>
                         )}
                        
+<<<<<<< HEAD
  
+=======
+
+>>>>>>> master
                         {/* GANTO ANG CONDITION PARA EITHER ALIN SA DALAWANG USERINFO LUMITAW */}
                         {userInfo && (userInfo.user?.tutor || userInfo.tutor) && (
                         <NavDropdown variant="dark" title={userInfo.user?.username || userInfo.username} id="basic-nav-dropdown">
@@ -82,4 +91,8 @@ function Header() {
 }
 
 
+<<<<<<< HEAD
 export default Header;
+=======
+export default Header;
+>>>>>>> master

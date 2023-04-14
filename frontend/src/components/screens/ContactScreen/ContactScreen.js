@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React from "react";
 import "../../../assets/components/screens/ContactScreen/Contact.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -15,24 +16,48 @@ import HeaderHome from '../../elements/HeaderHomePage'
 import HeaderStudent from '../../elements/HeaderStudent'
 import HeaderTutor from '../../elements/HeaderTutor'
  
+=======
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Form, Button, Container } from "react-bootstrap";
+import { addContact } from "../../../features/redux/actions/contactActions";
+import Widgets from "./Widgets";
+import MapWidget from "./MapWidget";
+import { useNavigate,  } from "react-router-dom";
+import HeaderHome from '../../elements/HeaderHomePage'
+import HeaderStudent from '../../elements/HeaderStudent'
+import HeaderTutor from '../../elements/HeaderTutor'
+
+>>>>>>> master
 function ContactScreen() {
-  const [concern, setConcern] = useState("");
-  const [comment, setComment] = useState("");
-
-  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const contactUsFormState = useSelector(state => state.contactUsFormState);
+  const { loading, error } = contactUsFormState;
 
-  const Post = async () => {
-    let formField = new FormData();
+  const userLogin = useSelector((state) => state.userState);
+  const { userInfo } = userLogin;
 
-    formField.append("concern", concern);
-    formField.append("comment", comment);
+  const [formData, setFormData] = useState({
+    concern: '',
+    comment: '',
+  });
 
-    dispatch(AddContact(formField)).then((response) => {
+  useEffect(() => {
+    if (loading === false && error === null) {
+      setFormData({ concern: '', comment: '' });
+    }
+  }, [loading, error]);
+
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(addContact(formData)).then((response) => {
       navigate("/contact-success");
     });
   };
 
+<<<<<<< HEAD
   const userLogin = useSelector((state) => state.userState);
   const { userInfo } = userLogin;
 
@@ -64,71 +89,88 @@ function ContactScreen() {
         <div className="contact-heading">
           <h2>Contact Us</h2>
         </div>
+=======
+  
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
 
-        <div className="container">
-          <div className="row">
-            <div className="column">
-              <div className="contact-widget">
-                <div className="contact-widget-item">
-                  <div className="icon">
-                    <FontAwesomeIcon icon={faLocationDot} />
-                  </div>
-                  <div className="text">
-                    <h5>Address</h5>
-                    <p>
-                      #1 Holy Angel Avenue, Sto. Rosario St. Angeles City 2009
-                    </p>
-                  </div>
-                </div>
+    console.log("formData after handleChange: ", formData);
 
-                <div className="contact-widget-item">
-                  <div className="icon">
-                    <FontAwesomeIcon icon={faPhone} />
-                  </div>
-                  <div className="text">
-                    <h5>Contact Us</h5>
-                    <p>0961-739-2086</p>
-                  </div>
-                </div>
+  };
 
-                <div className="contact-widget-item">
-                  <div className="icon">
-                    <FontAwesomeIcon icon={faEnvelope} />
-                  </div>
-                  <div className="text">
-                    <h5>Mail</h5>
-                    <p>tutorpal@gmail.com</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+  return (
+    <div>
+{userInfo && (userInfo.tutor || userInfo.user?.tutor) && (
+      <HeaderTutor/>
+    ) }
+>>>>>>> master
 
-            <Form>
-              <Form.Group className="mb-3">
-                <Form.Label>Concern</Form.Label>
-                <Form.Control
-                  type="text"
-                  id="concern"
-                  name="concern"
-                  className="form-control"
-                  value={concern}
-                  onChange={(e) => setConcern(e.target.value)}
-                />
-              </Form.Group>
+    {userInfo && (userInfo.student || userInfo.user?.student) && (
+      <HeaderStudent/>
+    ) }
 
-              <Form.Group className="mb-3">
-                <Form.Label>Comment</Form.Label>
-                <Form.Control
-                  as="textarea"
-                  rows={5}
-                  id="comment"
-                  name="comment"
-                  className="text"
-                  value={comment}
-                  onChange={(e) => setComment(e.target.value)}
-                />
-              </Form.Group>
+{!userInfo && <HeaderHome />}
 
+       <br/>
+      <div className="contact-heading">
+        <h2>Contact Us</h2>
+      </div>
+
+      <Widgets />
+
+      <Container>
+        {loading && <p>Loading...</p>}
+        {error && <p>Error: {error}</p>}
+        <Form>
+          <Form.Group className="mb-3">
+            <Form.Label>What is your concern about?</Form.Label>
+            <Form.Control
+              type="text"
+              id="concern"
+              name="concern"
+              className="form-control"
+              value={formData.concern}
+              onChange={handleChange}
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Please give us more details</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={5}
+              id="comment"
+              name="comment"
+              className="text"
+              value={formData.comment}
+              onChange={handleChange}
+            />
+          </Form.Group>
+
+          <Button
+            className="btn btn-warning"
+            onClick={(e) => {
+              if (formData.comment.length < 100) {
+                alert(
+                  "Please enter a comment with at least" +
+                  " 100 characters"
+                );
+              } else {
+                handleSubmit(e);
+              }
+            }}
+          >
+            Submit
+          </Button>
+        </Form>
+      </Container>
+
+      <MapWidget />
+
+<<<<<<< HEAD
 
 
             <div style={{width: 400, margin: 'auto'}}>
@@ -170,6 +212,8 @@ function ContactScreen() {
           </div>
         </div>
       </section>
+=======
+>>>>>>> master
     </div>
   );
 }

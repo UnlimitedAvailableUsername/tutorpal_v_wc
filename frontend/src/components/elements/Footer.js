@@ -1,5 +1,6 @@
 import React from "react";
 import { Row, Col } from 'react-bootstrap'
+import { Link } from "react-router-dom";
 import "../../assets/components/elements/Footer/footer.css";
 
 function Footer() {
@@ -7,6 +8,7 @@ function Footer() {
     <div className="main-footer bg-dark">
       <div className="container">
 
+<<<<<<< HEAD
         <hr />
  
         <Row>
@@ -49,11 +51,16 @@ function Footer() {
           </Col>
         </Row>
         <hr />
+=======
+       
+>>>>>>> master
 
         <div className="row">
+        <hr></hr>
           <p className="col-sm text-uppercase">
             {(new Date().getFullYear())} tutorpal inc © | all rights reserved | terms of service | privacy policy
           </p>
+          <hr></hr>
         </div>
 
       </div>

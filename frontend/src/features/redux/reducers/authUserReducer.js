@@ -1,9 +1,11 @@
-import * as actionType from '../constants/constants';
+import * as actionType from '../constants/authConstants';
 // Pls wag nyo na galawin ito if di niyo gets
 
 import {USER_REGISTER_REQUEST,
     USER_REGISTER_SUCCESS,
     USER_REGISTER_FAIL, USER_LOGOUT,} from "../constants/constants"
+
+
 
 
 const initialState = {
@@ -117,18 +119,30 @@ export const userDetailsReducer = (state = { user: {} }, action) => {
 /* REDUCER USED IN USER REGISTRATION IN RegisterScreen COMPONENT */
 export const userRegisterReducer = (state = {}, action) => {
     switch (action.type) {
+<<<<<<< HEAD
       case USER_REGISTER_REQUEST:
+=======
+      case actionType.USER_REGISTER_REQUEST:
+>>>>>>> master
         return {
           loading: true,
         };
   
+<<<<<<< HEAD
       case USER_REGISTER_SUCCESS:
+=======
+      case actionType.USER_REGISTER_SUCCESS:
+>>>>>>> master
         return {
           loading: false,
           userInfo: action.payload,
         };
   
+<<<<<<< HEAD
       case USER_REGISTER_FAIL:
+=======
+      case actionType.USER_REGISTER_FAIL:
+>>>>>>> master
         return {
           loading: false,
           error: action.payload,

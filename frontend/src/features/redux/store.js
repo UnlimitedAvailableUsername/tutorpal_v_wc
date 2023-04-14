@@ -2,6 +2,7 @@ import { applyMiddleware, combineReducers, createStore } from "redux";
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { userLoginReducer, userDetailsReducer, userUpdateProfileReducer, userRegisterReducer, } from "./reducers/authUserReducer";
+<<<<<<< HEAD
 import { tutorListReducer, tutorDetailsReducer } from "./reducers/tutorReducer";
 import { scheduleListReducer, scheduleDetailsReducer } from './reducers/scheduleReducer';
 import { subjectDetailReducer, subjectsListReducer } from "./reducers/subjectReducer";
@@ -14,6 +15,12 @@ import {
     orderListReducer,
     orderDeliverReducer,
 } from '../redux/reducers/orderReducers'
+=======
+import { tutorListReducer, tutorDetailsReducer, tutorReviewCreateReducer } from "./reducers/tutorReducer";
+import { scheduleListReducer, scheduleDetailsReducer } from './reducers/scheduleReducer';
+import { addContactReducer} from "./reducers/contactReducer";
+import { contactDetailsReducer, contactListReducer } from "./reducers/contactReducer";
+>>>>>>> master
  
 const reducers = combineReducers({
     userState: userLoginReducer,
@@ -22,6 +29,7 @@ const reducers = combineReducers({
     userRegister: userRegisterReducer,
     tutorList: tutorListReducer,
     tutorDetails: tutorDetailsReducer,
+<<<<<<< HEAD
     scheduleList: scheduleListReducer,
     scheduleDetails: scheduleDetailsReducer,
     subjectList: subjectsListReducer,
@@ -32,6 +40,14 @@ const reducers = combineReducers({
     contactDetails: contactDetailsReducer,
     
     
+=======
+    tutorReviewCreate: tutorReviewCreateReducer,
+    scheduleList: scheduleListReducer,
+    scheduleDetails: scheduleDetailsReducer,
+    contactUsFormState: addContactReducer, 
+    contactList:contactListReducer,
+    contactDetails:contactDetailsReducer 
+>>>>>>> master
 });
 
 const userInfoFromStorage = localStorage.getItem('userInfo')

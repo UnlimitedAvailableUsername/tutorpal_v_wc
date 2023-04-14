@@ -5,7 +5,9 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { loginUser } from '../../../features/redux/actions/authUserActions';
 import { useSelector, useDispatch } from 'react-redux'; 
 import MessageAlert from '../../elements/MessageAlert';
-import LoadingIconBig from '../../elements/LoadingIcon';
+import LoadingIconBig from '../../elements/Loader/LoadingIconBig';
+
+import HeaderHomePage from '../../elements/HeaderHomePage'
 
  
 function LoginScreen() {
@@ -14,13 +16,15 @@ function LoginScreen() {
     const [password, setPassword] = useState("");
 
     const userLogin = useSelector( state => state.userState )
-    const { error, loading, userInfo } = userLogin
+    const error = userLogin ? userLogin.error : null;
+    const loading = userLogin ? userLogin.loading : false;
+    const userInfo = userLogin ? userLogin.userInfo : null;
 
     const dispatch = useDispatch();
     const location = useLocation();
     const navigate = useNavigate();
-    const redirect = location.search ? location.search.split('=')[1] : '/profile'
-
+    const redirect = location.search ? location.search.split('=')[1] : '/profile';
+    const redirectadmin = location.search ? location.search.split('=')[1] : '/concern-list';
 
     const handleEmail = e => {
         setEmail(e.target.value);
@@ -30,18 +34,30 @@ function LoginScreen() {
     }
     const handleSubmit = (e) => {
         e.preventDefault()
-        dispatch( loginUser( email, password) )
+        if (!error) {
+            dispatch(loginUser(email, password));
+            navigate(redirect);
+        }
     }
 
+    useEffect(() => {
+        if (userInfo && !userInfo.staff) {
+            navigate(redirect);
+        } 
+        else if (userInfo && userInfo.staff) {
+            navigate (redirectadmin)
+        } 
+    
+    }, [navigate, userInfo, redirect, redirectadmin]);
 
-    useEffect( () => { if(userInfo){ navigate(redirect) } }, [ navigate, userInfo, redirect ] )
- 
     
     return (
         <div>
+            <HeaderHomePage/>
+            
             <Row className="justify-content-center align-items-center">
                 <Col xl={8} xs={10}>
-                    <Card className="px-4 my-5">
+                    <Card className="px-4 my-5 shadow">
                         <Card.Body>
                             <div className="mb-3 mt-md-4">
                                 <div className='mb-5' >
@@ -59,7 +75,7 @@ function LoginScreen() {
                                             <Form.Label>Password</Form.Label>
                                             <Form.Control value={ password } onChange={ handlePassword } type="password" placeholder="Enter Password" />
                                         </Form.Group>
-                                        <div className="d-grid my-5">
+                                        <div className="d-grid my-5" style={{width: 300, margin: 'auto'}}>
                                             <Button variant="warning" disabled={ !email || !password } onChange={ handleSubmit } type="submit">Continue</Button>
                                         </div>
                                     </Form>

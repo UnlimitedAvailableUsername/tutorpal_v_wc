@@ -1,8 +1,14 @@
 import React from 'react'
 
 function ChooseScheduleScreen() {
+
+  
+
   return (
-    <div>ChooseScheduleScreen</div>
+    <div>
+      <h1>Choose your desired schedules:</h1>
+
+    </div>
   )
 }
 

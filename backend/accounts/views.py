@@ -48,7 +48,7 @@ def subject_list(request):
 def subject_detail(request, id):
     try:
         subject = Subject.objects.get(id=id)
-    except models.Subject.DoesNotExist:
+    except Subject.DoesNotExist:
         return Response({'error': 'Subject does not exist'}, status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
@@ -124,17 +124,31 @@ def users_student_list(request):
     serializer = UserSerializer(users, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
-#######################################
-# THIS WILL CALL THE SPECIFIC USER <id>
+######################################################################
+# THIS WILL CALL, BE ABLE TO UPDATE, AND DELETE THE SPECIFIC USER <id>
 
-@api_view(['GET'])
+@api_view(['GET', 'PUT', 'DELETE'])
 def user_detail(request, id):
     try:
         user = User.objects.get(id=id)
     except User.DoesNotExist:
         return Response({"error": "User does not exist."}, status=status.HTTP_404_NOT_FOUND)
-    serializer = UserSerializer(user, many=False)
-    return Response(serializer.data, status=status.HTTP_200_OK)
+
+    if request.method == 'GET':
+        serializer = UserSerializer(user, many=False)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    elif request.method == 'PUT':
+        serializer = UserSerializer(user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        user.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 ################################################################################
 # THIS WILL LET THE USER LOGIN AND RETURN 'ACCESS' AS 'TOKEN' AND 'REFRESH' KEYS

@@ -5,11 +5,25 @@ from django.core.validators import MaxValueValidator
 from django.utils import timezone
 
 
+from pathlib import Path
+
 def upload_image_path(instance, filename):
     ext = filename.split('.')[-1]
-    filename = "%s.%s" %(uuid.uuid4(), ext)
-    destination = os.path.join('profile_pictures/', "%s/%s" %(instance.username, filename))
-    return destination
+    filename = f"{uuid.uuid4()}.{ext}"
+    destination = Path("profile_pictures") / instance.username / filename
+    return str(destination)
+
+def upload_image_id_path(instance, filename):
+    ext = filename.split('.')[-1]
+    filename = f"{uuid.uuid4()}.{ext}"
+    destination = Path("photo_ids") / instance.username / filename
+    return str(destination)
+
+def upload_image_edu_bg_path(instance, filename):
+    ext = filename.split('.')[-1]
+    filename = f"{uuid.uuid4()}.{ext}"
+    destination = Path("education_background") / instance.username / filename
+    return str(destination)
 
 
 def update_last_login(sender, user, **kwargs):
@@ -80,7 +94,6 @@ class UserManager(BaseUserManager):
         return user
 
 
-# have other plan for this:
 class Subject(models.Model):
     subject_title = models.TextField(max_length=100)
 
@@ -90,25 +103,30 @@ class Subject(models.Model):
 
 
 class User(AbstractBaseUser):
-
-    username = models.CharField(("username"), max_length=150, unique=True, help_text=("Required. 150 characters or fewer"), error_messages={"unique": ("A user with that username already exists."),},)
-    email = models.EmailField(("email address"), unique=True, blank=True)
-    password = models.CharField(("password"), max_length=128)
-    first_name = models.CharField(("first name"), max_length=150, blank=True)
-    last_name = models.CharField(("last name"), max_length=150, blank=True)
-    profile_picture = models.ImageField(("User Picture"), null=True, default='profile_pictures/default/tutor.jpg', upload_to=upload_image_path)
-    contact = models.CharField(("contact number"), max_length=50, blank=True)
-    bio = models.TextField(("bio which also houses the lessons"), max_length=999999, blank=True)
-    active = models.BooleanField(("active"), default=True, help_text=("Designates whether this user should be treated as active. Unselect this instead of deleting accounts."),)
-    staff = models.BooleanField(("staff status"), default=False, help_text=("Designates whether the user can log into this admin site."),)
-    student = models.BooleanField(("Student"), default=False, help_text=("Categorizes the user as student"),)
-    tutor = models.BooleanField(("Tutor"), default=False, help_text=("Categorizes the user as tutor"),)
-    subjects = models.ManyToManyField(Subject, related_name='users', blank=True)
-    date_joined = models.DateTimeField(("date joined"), default=timezone.now)
-    last_login = models.DateTimeField(("last login"), blank=True, null=True)
-    numReviews = models.IntegerField(("reviews"), null=True, blank=True)
+    # Default/Global User Fields:
+    email = models.EmailField(("Email Address"), unique=True, blank=True)
+    username = models.CharField(("Username"), max_length=150, unique=True, help_text=("Required. 150 characters or fewer"), error_messages={"unique": ("A user with that username already exists."),},)
+    first_name = models.CharField(("First Name"), max_length=150, blank=True)
+    last_name = models.CharField(("Last Name"), max_length=150, blank=True)
+    password = models.CharField(("Password (Hashed)"), max_length=128)
+    contact = models.CharField(("Contact Number"), max_length=50, blank=True)
+    profile_picture = models.ImageField(("User Picture"), default='profile_pictures/default/tutor.jpg', upload_to=upload_image_path, null=True)
+    # Login-related:
+    date_joined = models.DateTimeField(("Date joined"), default=timezone.now)
+    last_login = models.DateTimeField(("Last Login"), blank=True, null=True)
+    # Tutor Fields:
     meeting_link = models.TextField(("Zoom Link"), blank=True, null=True)
+    bio = models.TextField(("Bio (Contains Introduction, and Lessons)"), max_length=999999, blank=True)
+    subjects = models.ManyToManyField(Subject, related_name='users', blank=True)
+    photo_education_background = models.ImageField(("Education Background"), upload_to=upload_image_edu_bg_path, null=True, blank=True)
+    photo_id = models.ImageField(("Photo ID"), upload_to=upload_image_id_path, null=True, blank=True)
     price_rate_hour = models.DecimalField(("Hourly Price Rate"), max_digits=3, decimal_places=0, default=0, null=True)
+    numReviews = models.IntegerField(("Reviews"), null=True, default=0)
+    # User Options:
+    active = models.BooleanField(("Active"), default=True, help_text=("Designates whether this user should be treated as active. Unselect this instead of deleting accounts."),)
+    staff = models.BooleanField(("Staff/Administrative Privilages"), default=False, help_text=("Designates whether the user can log into this admin site."),)
+    tutor = models.BooleanField(("Tutor"), default=False, help_text=("Categorizes the user as tutor"),)
+    student = models.BooleanField(("Student"), default=False, help_text=("Categorizes the user as student"),)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
@@ -118,6 +136,14 @@ class User(AbstractBaseUser):
     def __str__(self):
         username = self.username if self.username else "No username"
         return f"{self.email} ({username})"
+    
+    @property
+    def is_tutor(self):
+        return self.tutor
+
+    @property
+    def is_student(self):
+        return self.student
 
     ###########################################################
     #### important bits for logging into Django Admin page ####
@@ -136,14 +162,6 @@ class User(AbstractBaseUser):
         return self.active
     ###########################################################
     ###########################################################
-    
-    @property
-    def is_tutor(self):
-        return self.tutor
-
-    @property
-    def is_student(self):
-        return self.student
 
 
 class Review(models.Model):
@@ -154,7 +172,7 @@ class Review(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.rating} {self.user_student.username} to {self.user_tutor.username}"
+        return f"{self.rating}/5 by {self.user_student.username} to {self.user_tutor.username}"
     
 
 class Contact(models.Model):
@@ -193,6 +211,7 @@ class ScheduleOrder(models.Model):
     payment_method = models.CharField(max_length=200, null=True, blank=True)
     paid_status = models.BooleanField(default=False)
     paid_date = models.DateTimeField(auto_now_add=False, null=True, blank=True)
+    session_status = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return f"Date: {self.date_created.strftime('%Y-%m-%d')} - Time: {self.date_created.strftime('%H:%M:%S')} - {self.user.username}"
@@ -206,4 +225,3 @@ class ScheduleOrderItem(models.Model):
     def __str__(self):
         return f"{self.schedule.name}"
     
-

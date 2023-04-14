@@ -226,7 +226,7 @@ function RegisterScreen({height, imageSrc}) {
                                 <Form.Group controlId="formFileLg" className="mb-3">
                         
                         
-                        <Form.Label>Profile Picture</Form.Label>
+                        <Form.Label>Valid Id</Form.Label>
                         <Form.Control
                           type="file"
                           id="profilePicture"
@@ -241,6 +241,23 @@ function RegisterScreen({height, imageSrc}) {
                             style={{ height: 100, width: 150 }}
                           />
                         </Row>
+
+                        <Form.Label>Education Photo</Form.Label>
+                        <Form.Control
+                          type="file"
+                          id="profilePicture"
+                          size="lg"
+                          onChange={handleClickOnProfilePicture}
+                        />
+                        <Row>
+                          <Image
+                            src={handleClickOnProfilePicture}
+                            alt="This is my kingdom cum"
+                            onClick={handleClickOnProfilePicture}
+                            style={{ height: 100, width: 150 }}
+                          />
+                        </Row>
+                      
                       
                       </Form.Group>
 

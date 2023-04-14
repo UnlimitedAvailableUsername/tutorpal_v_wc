@@ -87,3 +87,79 @@ export const listSchedules = () => async (dispatch, getState) => {
 
   }
 };
+
+export const updateSchedule = (schedule, scheduleId) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: actionType.SCHEDULE_UPDATE_REQUEST, });
+
+   
+    const { userState: { userInfo }, } = getState();
+
+   
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${userInfo.token}` ,
+      },
+    };
+
+    
+    const { data } = await axios.put(`${BASE_URL}/api/accounts/schedules/${scheduleId}`, schedule, config);
+
+  
+    dispatch({
+      type: actionType.SCHEDULE_UPDATE_SUCCESS,
+      payload: data,
+    });
+
+
+  } catch (error) {
+
+    dispatch({
+      type: actionType.SCHEDULE_UPDATE_FAIL,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+
+
+  };
+};
+
+ 
+
+export const listScheduleDetails = (scheduleId) => async (dispatch, getState) => {
+  try {
+      dispatch({
+          type: actionType.SCHEDULE_DETAILS_REQUEST,
+      });
+
+      const {
+        userState: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const {data} = await axios.get(`${BASE_URL}/api/accounts/schedules/${scheduleId}/`, config) //fetch the products from rest api
+
+      dispatch({
+          type: actionType.SCHEDULE_DETAILS_SUCCESS,
+          payload: data,
+      });
+  }
+  catch (error) {
+      dispatch({
+          type: actionType.SCHEDULE_DETAILS_FAIL,
+          payload:
+              error.response && error.response.data.message
+              ? error.response.data.message
+              : error.message,
+      });
+  }
+}

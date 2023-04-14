@@ -93,7 +93,7 @@ export const scheduleDetailsReducer = (
 			return {
 				...state,
 				loading: false,
-				product: action.payload,
+				schedule: action.payload,
 			};
 
 		case actionType.SCHEDULE_DETAILS_FAIL:

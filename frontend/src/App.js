@@ -14,6 +14,7 @@ import RegisterScreen from "./components/screens/RegisterScreen/RegisterScreen";
 import AboutUsScreen from "./components/screens/AboutUs/AboutUsScreen";
 import ListContact from "./components/screens/ListContactsScreen/ListContact";
 import ContactDetail from "./components/screens/ContactDetailScreen/ContactDetail";
+import EditSchedule from "./components/screens/EditScheduleScreen/EditSchedule";
 function App() {
   return (
     <div className="bg-dark">
@@ -39,6 +40,8 @@ function App() {
           <Route path="/contact-success" element={ <SuccessScreen/> } exact />
           <Route path="/contact-details/:contactId" element={ <ContactDetail/> } exact />
           <Route path="/concern-list" element={ <ListContact /> } exact />
+
+          <Route path="/schedule-details/:scheduleId" element={ <EditSchedule/> } exact />
 
           <Route path="/about-us" element={ <AboutUsScreen/> } exact />
 

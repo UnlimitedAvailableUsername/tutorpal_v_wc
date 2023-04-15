@@ -1,6 +1,6 @@
 import * as actionType from "../constants/scheduleConstants";
 
-/* REDUCER USED IN SCHEDULEListScreen COMPONENT */
+
 export const scheduleCreateReducer = (state = {}, action) => {
 	switch (action.type) {
 		case actionType.SCHEDULE_CREATE_REQUEST:
@@ -29,25 +29,25 @@ export const scheduleCreateReducer = (state = {}, action) => {
 	}
 };
 
+
 const scheduleListInitialState = {
 	loading: false,
 	success: null,
-	schedules: null,
 	error: null,
+	schedules: null,
 };
 
-export const scheduleListReducer = (
-	state = scheduleListInitialState,
-	action
-) => {
+export const scheduleListReducer = (state = scheduleListInitialState, action) => {
 	switch (action.type) {
-		case actionType.SCHEDULE_LIST_REQUEST:
+		case actionType.SCHEDULE_LIST_MINE_REQUEST:
+    case actionType.SCHEDULE_LIST_REQUEST:
 			return {
-				...state,
+				...scheduleListInitialState,
 				loading: true,
 			};
 
-		case actionType.SCHEDULE_LIST_SUCCESS:
+		case actionType.SCHEDULE_LIST_MINE_SUCCESS:
+    case actionType.SCHEDULE_LIST_SUCCESS:
 			return {
 				...state,
 				loading: false,
@@ -55,6 +55,7 @@ export const scheduleListReducer = (
 				schedules: action.payload,
 			};
 
+		case actionType.SCHEDULE_LIST_MINE_FAIL:
 		case actionType.SCHEDULE_LIST_FAIL:
 			return {
 				...state,
@@ -63,13 +64,17 @@ export const scheduleListReducer = (
 				error: action.payload,
 			};
 
+		case actionType.SCHEDULE_LIST_MINE_RESET:
 		case actionType.SCHEDULE_LIST_RESET:
-			return scheduleListInitialState;
+			return {
+        ...scheduleListInitialState,
+      };
 
 		default:
 			return state;
 	}
 };
+
 
 const scheduleDetailsInitialState = {
 	loading: false,
@@ -78,10 +83,7 @@ const scheduleDetailsInitialState = {
 };
 
 /* REDUCER USED IN ProductScreen COMPONENT */
-export const scheduleDetailsReducer = (
-	state = scheduleDetailsInitialState,
-	action
-) => {
+export const scheduleDetailsReducer = ( state = scheduleDetailsInitialState, action ) => {
 	switch (action.type) {
 		case actionType.SCHEDULE_DETAILS_REQUEST:
 			return {
@@ -105,5 +107,7 @@ export const scheduleDetailsReducer = (
 
 		default:
 			return state;
-	}
+	};
 };
+
+

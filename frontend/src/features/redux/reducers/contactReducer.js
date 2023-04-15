@@ -22,19 +22,6 @@ export const addContactReducer = (state = initialState, action) => {
     }
 };
 
-// export const contactListReducer = (state = initialState, action) => {
-//   switch (action.type) {
-//     case actionType.CONTACT_LIST_REQUEST:
-//           return {loading:true, contacts: []};
-//     case actionType.CONTACT_LIST_SUCCESS:
-//           return {loading:false, contacts: action.payload};
-//     case actionType.CONTACT_LIST_FAIL:
-//           return {loading:false, error: action.payload};
-      
-//       default:
-//           return state;
-//   }
-// };
 
 export const contactListReducer = (state = initialState, action) => {
   switch (action.type) {

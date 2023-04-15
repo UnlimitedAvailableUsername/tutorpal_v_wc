@@ -1,13 +1,12 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { Form, Button, Row, Col, Card, Container, Image } from 'react-bootstrap'
+import { Form, Button, Row, Col, Card, } from 'react-bootstrap'
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
-import HeaderHomePage from '../../elements/HeaderHomePage'
 import { registerUser } from '../../../features/redux/actions/authUserActions';
-import '../../../../src/assets/components/elements/Register/Register.css'
+import '../../../../src/assets/components/screens/RegisterScreen/Register.css'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBullseye } from "@fortawesome/free-solid-svg-icons";
-import backgroundImage from  '../../../assets/components/elements/Register/ama.png'
+import backgroundImage from  '../../../assets/components/screens/RegisterScreen/ama.png'
 
 function RegisterScreen({height, imageSrc}) {
 
@@ -93,12 +92,6 @@ function RegisterScreen({height, imageSrc}) {
       // height: '100vh',
       backgroundAttachment: 'fixed',
     };
-	
-
-   
-   const handleClickOnProfilePicture = (e) => {
-      document.getElementById("profilePicture").click();
-    }
 
     return (
       <div style={backgroundStyles}>
@@ -185,12 +178,7 @@ function RegisterScreen({height, imageSrc}) {
                             <>
                               I accept the{' '}
                               <Link to="/terms-and-condition">
-                                Terms of Service
-                              </Link>
-                              {' '}
-                              &{' '}
-                              <Link to="/privacypolicy">
-                                Privacy Policy
+                                Terms of Service and Conditions
                               </Link>
                             </>
                           }
@@ -253,8 +241,8 @@ function RegisterScreen({height, imageSrc}) {
                   </Form>
                   <div className="mt-3">
                     <p className="mb-0  text-center">
-                      Don't have an account?{' '}
-                      <Link to='#register' className="text-primary fw-bold">
+                      Already have an account?{' '}
+                      <Link to='/login' className="text-primary fw-bold">
                         Login
                       </Link>
                     </p>

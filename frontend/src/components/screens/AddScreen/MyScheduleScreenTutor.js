@@ -3,7 +3,7 @@ import { Container, Form, Button, Row, Table } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { createSchedule } from "../../../features/redux/actions/scheduleAction";
-import { listSchedules } from "../../../features/redux/actions/scheduleAction";
+import { listMySchedules } from "../../../features/redux/actions/scheduleAction";
 
 
 function MyScheduleScreenTutor() {
@@ -14,14 +14,11 @@ function MyScheduleScreenTutor() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const userLogin = useSelector((state) => state.userState);
-  const { userInfo } = userLogin;
-
   const scheduleList = useSelector((state) => state.scheduleList);
   const { schedules } = scheduleList;
 
   useEffect(() => {
-    dispatch(listSchedules());
+    dispatch(listMySchedules());
   }, [dispatch]);
 
   const handleSubmit = async (e) => {

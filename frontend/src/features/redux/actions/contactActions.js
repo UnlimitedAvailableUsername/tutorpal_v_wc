@@ -51,63 +51,61 @@ export const addContact = (formData) => async (dispatch, getState) => {
 };
 
 export const listContacts = () => async (dispatch, getState) => {
-    try {
-        dispatch({ type: actionType.CONTACT_LIST_REQUEST });
-  
-        const {
-          userState: { userInfo },
-        } = getState();
-  
-        const config = {
-          headers: {
-            "Content-type": "application/json",
-            Authorization: `Bearer ${userInfo.token}`,
-          },
-        };
+  try {
+    dispatch({ type: actionType.CONTACT_LIST_REQUEST });
 
-        const { data } = await axios.get(
-          `${BASE_URL}/api/accounts/contacts/`,
-          config
-        ); //fetch the products from rest api
-  
-        dispatch({
-          type: actionType.CONTACT_LIST_SUCCESS,
-          payload: data,
-        });
+    const {
+      userState: { userInfo },
+    } = getState();
 
-    } catch (error) {
-        dispatch({
-            type: actionType.CONTACT_LIST_FAIL,
-            payload:
-                error.response && error.response.data.message
-                ? error.response.data.message
-                : error.message,
-        });
-    }
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(
+      `${BASE_URL}/api/accounts/contacts/`,
+      config
+    ); //fetch the products from rest api
+
+    dispatch({
+      type: actionType.CONTACT_LIST_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: actionType.CONTACT_LIST_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
 };
-
-  
 
 export const listContactDetails = (contactId) => async (dispatch) => {
   try {
-      dispatch({
-          type: actionType.CONTACT_DETAILS_REQUEST,
-      });
+    dispatch({
+      type: actionType.CONTACT_DETAILS_REQUEST,
+    });
 
-      const {data} = await axios.get(`${BASE_URL}/api/accounts/contacts/${contactId}`); //fetch the products from rest api
+    const { data } = await axios.get(
+      `${BASE_URL}/api/accounts/contacts/${contactId}`
+    ); //fetch the products from rest api
 
-      dispatch({
-          type: actionType.CONTACT_DETAILS_SUCCESS,
-          payload: data,
-      });
+    dispatch({
+      type: actionType.CONTACT_DETAILS_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: actionType.CONTACT_DETAILS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
   }
-  catch (error) {
-      dispatch({
-          type: actionType.CONTACT_DETAILS_FAIL,
-          payload:
-              error.response && error.response.data.message
-              ? error.response.data.message
-              : error.message,
-      });
-  }
-}
+};

@@ -6,7 +6,6 @@ import LoginScreen from "./components/screens/LoginScreen/LoginScreen";
 import ContactScreen from "./components/screens/ContactScreen/ContactScreen";
 import TutorDetailScreen from "./components/screens/TutorDetailScreen/TutorDetailScreen";
 import AddScreen from "./components/screens/AddScreen/MyScheduleScreenTutor";
-import OrderScreen from "./components/screens/ChooseScheduleScreen/ChooseScheduleScreen";
 import ProfileScreen from "./components/screens/ProfileScreen/ProfileScreen";
 import SuccessScreen from "./components/screens/ContactScreen/Success";
 import DoesNotExistScreen from "./components/screens/DoesNotExistScreen/DoesNotExistScreen";
@@ -20,6 +19,7 @@ import HeaderStudent from "./components/elements/HeaderStudent";
 import HeaderHomePage from "./components/elements/HeaderHomePage";
 import HeaderTutor from "./components/elements/HeaderTutor";
 import TermsAndConditionScreen from "./components/screens/RegisterScreen/TermsAndConditionScreen";
+import ChooseScheduleScreen from "./components/screens/ChooseScheduleScreen/ChooseScheduleScreen";
 
 
 function App() {
@@ -44,7 +44,7 @@ function App() {
                 <Routes>
                     <Route path="/" element={<HomeScreen />} exact />
 
-                    <Route path="/tutor/:tutorId/schedules/:scheduleId" />
+                    <Route path="/tutor/:tutorId/schedules" element={<ChooseScheduleScreen />} />
 
                     <Route path="/tutor" element={<TutorListScreen />} exact />
                     <Route path="/tutor/:tutorId" element={<TutorDetailScreen />} exact />

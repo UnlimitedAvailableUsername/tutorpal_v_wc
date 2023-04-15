@@ -82,7 +82,7 @@ function ContactDetail() {
             <ListGroup variant="flush">
               <ListGroup.Item style={{ backgroundColor: "#404040" }}>
                 <Row>
-                  <Col md={{ span: 2 }}> Contact Subject:</Col>
+                  <Col md={{ span: 2 }}> Issue:</Col>
                   <Col style={{ maxWidth: "80vw", overflowWrap: "break-word" }}>
                     {contact && contact.concern}
                   </Col>
@@ -94,6 +94,15 @@ function ContactDetail() {
                   <Col md={{ span: 2 }}> Details:</Col>
                   <Col style={{ maxWidth: "80vw", overflowWrap: "break-word" }}>
                     {contact && contact.comment}
+                  </Col>
+                </Row>
+              </ListGroup.Item>
+
+              <ListGroup.Item style={{ backgroundColor: "#404040" }}>
+                <Row>
+                  <Col md={{ span: 2 }}> Date:</Col>
+                  <Col style={{ maxWidth: "80vw", overflowWrap: "break-word" }}>
+                    {contact && contact.created_date}
                   </Col>
                 </Row>
               </ListGroup.Item>

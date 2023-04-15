@@ -74,6 +74,7 @@ class ReviewSerializer(serializers.ModelSerializer):
         return data
 
 class ContactSerializer(serializers.ModelSerializer):
+    name = serializers.StringRelatedField()
     class Meta:
         model = Contact
         fields = '__all__'

@@ -18,18 +18,23 @@ function ContactDetail() {
 
   return (
     <div>
-
       <Container>
-        <Link to="/concern-list" className="btn btn-warning btn-outline-dark py-3 my-5" >Back to Concern List</Link>
+        <Link
+          to="/concern-list"
+          className="btn btn-warning btn-outline-dark py-3 my-5"
+        >
+          Back to Concern List
+        </Link>
         <Row>
           <Col md={{ span: 3 }} style={{ position: "relative" }}>
             <ListGroup variant="flush">
               <ListGroup.Item style={{ backgroundColor: "#404040" }}>
-                <h5> Name: <br></br>
-                {contact && contact.name}
+                <h5>
+                  {" "}
+                  Name: <br></br>
+                  {contact && contact.name}
                 </h5>
               </ListGroup.Item>
-
             </ListGroup>
           </Col>
 
@@ -37,7 +42,7 @@ function ContactDetail() {
             <ListGroup variant="flush">
               <ListGroup.Item style={{ backgroundColor: "#404040" }}>
                 <Row>
-                  <Col md={{ span: 2 }}> Concern:</Col>
+                  <Col md={{ span: 2 }}> Contact Subject:</Col>
                   <Col style={{ maxWidth: "80vw", overflowWrap: "break-word" }}>
                   {contact && contact.concern}
                   </Col>
@@ -48,11 +53,10 @@ function ContactDetail() {
                 <Row>
                   <Col md={{ span: 2 }}> Details:</Col>
                   <Col style={{ maxWidth: "80vw", overflowWrap: "break-word" }}>
-                  {contact.comment}
+                  {contact && contact.comment}
                   </Col>
                 </Row>
               </ListGroup.Item>
-
             </ListGroup>
           </Col>
         </Row>

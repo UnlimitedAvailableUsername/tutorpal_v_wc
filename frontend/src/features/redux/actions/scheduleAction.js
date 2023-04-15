@@ -8,6 +8,10 @@ export const createSchedule = (formData) => async (dispatch, getState) => {
     dispatch({
       type: actionType.SCHEDULE_CREATE_REQUEST,
     });
+  try {
+    dispatch({
+      type: actionType.SCHEDULE_CREATE_REQUEST,
+    });
 
     const {
       userState: { userInfo },
@@ -116,20 +120,23 @@ export const updateSchedule =
   (schedule, scheduleId) => async (dispatch, getState) => {
     try {
       dispatch({ type: actionType.SCHEDULE_UPDATE_REQUEST });
+export const updateSchedule =
+  (scheduleId, schedule) => async (dispatch, getState) => {
+    try {
+      dispatch({ type: actionType.SCHEDULE_UPDATE_REQUEST });
 
-      const {
-        userState: { userInfo },
-      } = getState();
+   
+    const { userState: { userInfo }, } = getState();
 
       const config = {
         headers: {
-          "Content-type": "application/json",
+          "Content-type": "multipart/form-data",
           Authorization: `Bearer ${userInfo.token}`,
         },
       };
 
       const { data } = await axios.put(
-        `${BASE_URL}/api/accounts/schedules/${scheduleId}`,
+        `${BASE_URL}/api/accounts/schedules/${scheduleId}/`,
         schedule,
         config
       );
@@ -186,3 +193,43 @@ export const listScheduleDetails =
       });
     }
   };
+
+
+  export const deleteSchedule =
+  (scheduleId) => async (dispatch, getState) => {
+    try {
+      dispatch({ type: actionType.SCHEDULE_DELETE_REQUEST });
+
+      const {
+        userState: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+        data: {
+          // Optionally, you can include additional data to be sent along with the delete request
+        }
+      };
+
+      const { data } = await axios.delete(
+        `${BASE_URL}/api/accounts/schedules/${scheduleId}/`,
+        config
+      );
+
+      dispatch({
+        type: actionType.SCHEDULE_DELETE_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: actionType.SCHEDULE_DELETE_FAIL,
+        payload:
+          error.response && error.response.data.detail
+            ? error.response.data.detail
+            : error.message,
+      });
+    }
+  };
+

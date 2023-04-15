@@ -108,4 +108,41 @@ export const listContactDetails = (contactId) => async (dispatch) => {
           : error.message,
     });
   }
-};
+}
+
+export const updateContact =
+  (contactId, contact) => async (dispatch, getState) => {
+    try {
+      dispatch({ type: actionType.CONTACT_UPDATE_REQUEST });
+
+      const {
+        userState: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          "Content-type": "multipart/form-data",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.put(
+        `${BASE_URL}/api/accounts/contacts/edit/${contactId}/`,
+        contact,
+        config
+      );
+
+      dispatch({
+        type: actionType.CONTACT_UPDATE_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: actionType.CONTACT_UPDATE_FAIL,
+        payload:
+          error.response && error.response.data.detail
+            ? error.response.data.detail
+            : error.message,
+      });
+    }
+  };

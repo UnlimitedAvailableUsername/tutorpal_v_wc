@@ -9,6 +9,10 @@ import LoadingIconBig from '../../elements/Loader/LoadingIconBig';
 import backgroundImage from '../../../assets/components/screens/LoginScreen/amam.png'
 import study from '../../../assets/components/screens/LoginScreen/study.png'
 
+import HeaderHomePage from '../../elements/HeaderHomePage'
+
+import backgroundImage from  '../../../assets/components/elements/Login/amam.png'
+
 
 
 function LoginScreen() {

@@ -20,6 +20,8 @@ import HeaderHomePage from "./components/elements/HeaderHomePage";
 import HeaderTutor from "./components/elements/HeaderTutor";
 import TermsAndConditionScreen from "./components/screens/RegisterScreen/TermsAndConditionScreen";
 import ChooseScheduleScreen from "./components/screens/ChooseScheduleScreen/ChooseScheduleScreen";
+import AdminTutor from "./components/screens/AdminTutorScreen/AdminTutor";
+import ListContactdone from "./components/screens/ListContactsScreen/ListContactdone";
 
 
 function App() {
@@ -30,7 +32,7 @@ function App() {
     return (
         <div className="bg-dark">
 
-            {userInfo && (userInfo.tutor || userInfo.user?.tutor) && (
+            {userInfo && (userInfo.tutor || userInfo.user?.tutor || userInfo.staff || userInfo.user?.staff) && (
                 <HeaderTutor />
             )}
             {userInfo && (userInfo.student || userInfo.user?.student) && (
@@ -46,6 +48,10 @@ function App() {
 
                     <Route path="/tutor/:tutorId/schedules" element={<ChooseScheduleScreen />} />
 
+                    <Route path="/tutorAdmin" element={<AdminTutor />} exact />
+
+                    <Route path="/tutorAdmin" element={<AdminTutor />} exact />
+
                     <Route path="/tutor" element={<TutorListScreen />} exact />
                     <Route path="/tutor/:tutorId" element={<TutorDetailScreen />} exact />
 
@@ -60,6 +66,7 @@ function App() {
                     <Route path="/contact-success" element={<SuccessScreen />} exact />
                     <Route path="/contact-details/:contactId" element={<ContactDetail />} exact />
                     <Route path="/concern-list" element={<ListContact />} exact />
+                    <Route path="/concern-list/done" element={<ListContactdone />} exact />
 
                     <Route path="/schedule-details/:scheduleId" element={<EditSchedule />} exact />
 

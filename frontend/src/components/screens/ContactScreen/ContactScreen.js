@@ -6,6 +6,7 @@ import Widgets from "./Widgets";
 import MapWidget from "./MapWidget";
 import { useNavigate } from "react-router-dom";
 
+
 function ContactScreen() {
   const dispatch = useDispatch();
   const navigate = useNavigate();

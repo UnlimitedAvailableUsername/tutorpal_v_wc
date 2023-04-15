@@ -18,9 +18,13 @@ class SubjectSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ScheduleSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(required=True)
+    count_in_stock = serializers.IntegerField(required=True)
+
     class Meta:
         model = Schedule
         fields = '__all__'
+
 
 class UserSerializer(serializers.ModelSerializer):
     schedules = ScheduleSerializer(source='schedule_set', many=True, required=False, read_only=True)
@@ -70,13 +74,9 @@ class ReviewSerializer(serializers.ModelSerializer):
         return data
 
 class ContactSerializer(serializers.ModelSerializer):
+    name = serializers.StringRelatedField()
     class Meta:
         model = Contact
-        fields = '__all__'
-
-class ScheduleSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Schedule
         fields = '__all__'
 
 class ScheduleOrderSerializer(serializers.ModelSerializer):

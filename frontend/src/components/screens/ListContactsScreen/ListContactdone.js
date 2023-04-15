@@ -72,7 +72,7 @@ function ListContact() {
 
       <p>
         Total concerns:{" "}
-        {contacts && contacts.filter((contact) => !contact.done).length}
+        {contacts && contacts.filter((contact) => contact.done).length}
       </p>
       <div
         style={{
@@ -94,13 +94,13 @@ function ListContact() {
           </Dropdown.Menu>
         </Dropdown>
 
-        <Link to={`/concern-list/done`}>
+        <Link to={`/concern-list`}>
           <Button
             variant="warning"
             style={{ fontSize: "0.8rem", padding: "0.2rem 0.5rem" }}
             className="btn-outline-dark py-2 px-3 my-5"
           >
-            Done Concerns
+            unDone Concerns
           </Button>
         </Link>
       </div>
@@ -125,7 +125,7 @@ function ListContact() {
                       contact.name.toUpperCase().includes(search) ||
                       contact.concern.toUpperCase().includes(search);
               })
-              .filter((contact) => !contact.done)
+              .filter((contact) => contact.done)
               .map((contact) => (
                 <tr key={contact.id}>
                   <td>

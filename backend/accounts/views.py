@@ -361,6 +361,8 @@ def schedule_detail(request, id):
 
     elif request.method == 'PUT':
         serializer = ScheduleSerializer(schedule, data=request.data)
+        serializer.fields['price'].required = False
+        serializer.fields['owner'].required = False
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)

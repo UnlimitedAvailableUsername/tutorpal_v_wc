@@ -6,13 +6,9 @@ import { loginUser } from '../../../features/redux/actions/authUserActions';
 import { useSelector, useDispatch } from 'react-redux';
 import MessageAlert from '../../elements/MessageAlert';
 import LoadingIconBig from '../../elements/Loader/LoadingIconBig';
-import backgroundImage from '../../../assets/components/screens/LoginScreen/amam.png'
 import study from '../../../assets/components/screens/LoginScreen/study.png'
 
-import HeaderHomePage from '../../elements/HeaderHomePage'
-
-import backgroundImage from  '../../../assets/components/elements/Login/amam.png'
-
+import backgroundImageUrl from  '../../../assets/components/screens/LoginScreen/amam.png'
 
 
 function LoginScreen() {
@@ -54,7 +50,7 @@ function LoginScreen() {
 
 
   const backgroundStyles = {
-    backgroundImage: `url(${backgroundImage})`,
+    backgroundImage: `url(${backgroundImageUrl})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center center',
     backgroundAttachment: 'fixed',

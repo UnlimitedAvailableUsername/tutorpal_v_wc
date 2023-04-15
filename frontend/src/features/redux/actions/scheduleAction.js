@@ -8,10 +8,6 @@ export const createSchedule = (formData) => async (dispatch, getState) => {
     dispatch({
       type: actionType.SCHEDULE_CREATE_REQUEST,
     });
-  try {
-    dispatch({
-      type: actionType.SCHEDULE_CREATE_REQUEST,
-    });
 
     const {
       userState: { userInfo },
@@ -116,10 +112,7 @@ export const listMySchedules = () => async (dispatch, getState) => {
   }
 };
 
-export const updateSchedule =
-  (schedule, scheduleId) => async (dispatch, getState) => {
-    try {
-      dispatch({ type: actionType.SCHEDULE_UPDATE_REQUEST });
+
 export const updateSchedule =
   (scheduleId, schedule) => async (dispatch, getState) => {
     try {

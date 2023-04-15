@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Container, Form, Button, Row, Table } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { createSchedule, deleteSchedule, listSchedules } from "../../../features/redux/actions/scheduleAction";
+import { createSchedule, deleteSchedule, listMySchedules } from "../../../features/redux/actions/scheduleAction";
 
 function MyScheduleScreenTutor() {
   const [name, setName] = useState("");

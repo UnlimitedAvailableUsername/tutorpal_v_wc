@@ -2,9 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Container, Form, Button, Row, Table } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { createSchedule } from "../../../features/redux/actions/scheduleAction";
-import { listSchedules } from "../../../features/redux/actions/scheduleAction";
-
+import { createSchedule, deleteSchedule, listSchedules } from "../../../features/redux/actions/scheduleAction";
 
 function MyScheduleScreenTutor() {
   const [name, setName] = useState("");
@@ -54,9 +52,22 @@ function MyScheduleScreenTutor() {
     setShowForm(false);
   };
 
+  const handleDelete = async (scheduleId) => {
+    if (window.confirm("Are you sure you want to delete this schedule?")) {
+      try {
+        const schedule = schedules.find((schedule) => schedule.id === scheduleId);
+        await dispatch(deleteSchedule(scheduleId, schedule));
+        navigate("/myschedule");
+        window.location.reload(); // <-- add this line
+      } catch (error) {
+        console.log(error);
+        // handle error
+      }
+    }
+  };
+
   return (
     <div>
-
       <div className="text" variant="light">
         <h5>My Schedules:</h5>
       </div>
@@ -76,16 +87,18 @@ function MyScheduleScreenTutor() {
                 <td>{schedule.name}</td>
                 <td>{schedule.count_in_stock}</td>
                 <td>
-                <Link to={`/schedule-details/${schedule.id}`}>
-                <button type="button" class="btn btn-warning">
-                    Edit
-                  </button>
-                    </Link>
-                    <Link to={`/schedule-details/${schedule.id}`}>
-                  <button type="button" class="btn btn-danger">
+                  <Link to={`/schedule-details/${schedule.id}`}>
+                    <button type="button" className="btn btn-warning">
+                      Edit
+                    </button>
+                  </Link>
+                  <button
+                    type="button"
+                    className="btn btn-danger"
+                    onClick={() => handleDelete(schedule.id)}
+                  >
                     Delete
                   </button>
-                  </Link>
                 </td>
               </tr>
             ))}

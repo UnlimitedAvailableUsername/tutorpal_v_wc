@@ -9,6 +9,10 @@ import LoadingIconBig from '../../elements/Loader/LoadingIconBig';
 
 import study from '../../../assets/components/elements/Login/study.png'
 
+import HeaderHomePage from '../../elements/HeaderHomePage'
+
+import backgroundImage from  '../../../assets/components/elements/Login/amam.png'
+
 
 
 function LoginScreen() {
@@ -62,7 +66,6 @@ function LoginScreen() {
     
     return (
         <div>
-            <HeaderHomePage/>
             
             <Row className="justify-content-center align-items-center">
                 <Col xl={7} xs={10}>

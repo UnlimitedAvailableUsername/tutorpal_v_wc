@@ -3,12 +3,11 @@ import { BASE_URL } from "../../../config";
 import * as actionType from "../constants/scheduleConstants";
 import * as userActionType from "../constants/authConstants";
 
-
-
 export const createSchedule = (formData) => async (dispatch, getState) => {
-  try {dispatch({
-          type: actionType.SCHEDULE_CREATE_REQUEST,
-        });
+  try {
+    dispatch({
+      type: actionType.SCHEDULE_CREATE_REQUEST,
+    });
 
     const {
       userState: { userInfo },
@@ -67,72 +66,68 @@ export const listSchedules = () => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
-  
-    const { data } = await axios.get(`${BASE_URL}/api/accounts/users/tutors/${userInfo.id}/schedules/`);
-    
+
+    const { data } = await axios.get(
+      `${BASE_URL}/api/accounts/users/tutors/${userInfo.id}/schedules/`
+    );
+
     dispatch({
       type: actionType.SCHEDULE_LIST_SUCCESS,
       payload: data,
     });
-
   } catch (error) {
-
     dispatch({
-			type: actionType.SCHEDULE_LIST_FAIL,
-			payload:
-				error.response && error.response.data.detail
-					? error.response.data.detail
-					: error.message,
-		});
-
-  }
-};
-
-export const updateSchedule = (schedule, scheduleId) => async (dispatch, getState) => {
-  try {
-    dispatch({ type: actionType.SCHEDULE_UPDATE_REQUEST, });
-
-   
-    const { userState: { userInfo }, } = getState();
-
-   
-    const config = {
-      headers: {
-        "Content-type": "application/json",
-        Authorization: `Bearer ${userInfo.token}` ,
-      },
-    };
-
-    
-    const { data } = await axios.put(`${BASE_URL}/api/accounts/schedules/${scheduleId}`, schedule, config);
-
-  
-    dispatch({
-      type: actionType.SCHEDULE_UPDATE_SUCCESS,
-      payload: data,
-    });
-
-
-  } catch (error) {
-
-    dispatch({
-      type: actionType.SCHEDULE_UPDATE_FAIL,
+      type: actionType.SCHEDULE_LIST_FAIL,
       payload:
         error.response && error.response.data.detail
           ? error.response.data.detail
           : error.message,
     });
-
-
-  };
+  }
 };
 
- 
+export const updateSchedule =
+  (scheduleId, schedule) => async (dispatch, getState) => {
+    try {
+      dispatch({ type: actionType.SCHEDULE_UPDATE_REQUEST });
 
-export const listScheduleDetails = (scheduleId) => async (dispatch, getState) => {
-  try {
+      const {
+        userState: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          "Content-type": "multipart/form-data",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.put(
+        `${BASE_URL}/api/accounts/schedules/${scheduleId}/`,
+        schedule,
+        config
+      );
+
       dispatch({
-          type: actionType.SCHEDULE_DETAILS_REQUEST,
+        type: actionType.SCHEDULE_UPDATE_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: actionType.SCHEDULE_UPDATE_FAIL,
+        payload:
+          error.response && error.response.data.detail
+            ? error.response.data.detail
+            : error.message,
+      });
+    }
+  };
+
+export const listScheduleDetails =
+  (scheduleId) => async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: actionType.SCHEDULE_DETAILS_REQUEST,
       });
 
       const {
@@ -146,20 +141,62 @@ export const listScheduleDetails = (scheduleId) => async (dispatch, getState) =>
         },
       };
 
-      const {data} = await axios.get(`${BASE_URL}/api/accounts/schedules/${scheduleId}/`, config) //fetch the products from rest api
+      const { data } = await axios.get(
+        `${BASE_URL}/api/accounts/schedules/${scheduleId}/`,
+        config
+      ); //fetch the products from rest api
 
       dispatch({
-          type: actionType.SCHEDULE_DETAILS_SUCCESS,
-          payload: data,
+        type: actionType.SCHEDULE_DETAILS_SUCCESS,
+        payload: data,
       });
-  }
-  catch (error) {
+    } catch (error) {
       dispatch({
-          type: actionType.SCHEDULE_DETAILS_FAIL,
-          payload:
-              error.response && error.response.data.message
-              ? error.response.data.message
-              : error.message,
+        type: actionType.SCHEDULE_DETAILS_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
       });
-  }
-}
+    }
+  };
+
+
+  export const deleteSchedule =
+  (scheduleId) => async (dispatch, getState) => {
+    try {
+      dispatch({ type: actionType.SCHEDULE_DELETE_REQUEST });
+
+      const {
+        userState: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+        data: {
+          // Optionally, you can include additional data to be sent along with the delete request
+        }
+      };
+
+      const { data } = await axios.delete(
+        `${BASE_URL}/api/accounts/schedules/${scheduleId}/`,
+        config
+      );
+
+      dispatch({
+        type: actionType.SCHEDULE_DELETE_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: actionType.SCHEDULE_DELETE_FAIL,
+        payload:
+          error.response && error.response.data.detail
+            ? error.response.data.detail
+            : error.message,
+      });
+    }
+  };
+

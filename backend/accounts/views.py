@@ -343,6 +343,8 @@ def schedule_create(request):
     serializer = ScheduleSerializer(schedule)
     return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+
+
 @api_view(['GET', 'PUT', 'DELETE'])
 @permission_classes([IsAuthenticated])
 def schedule_detail(request, id):
@@ -351,13 +353,13 @@ def schedule_detail(request, id):
     except Schedule.DoesNotExist:
         return Response({"error": "Schedule does not exist"}, status=status.HTTP_404_NOT_FOUND)
 
-    # Only allow the owner or admin user to modify the schedule
+    # Only allow the owner or admin user to modify or delete the schedule
     if not request.user.is_staff and schedule.owner != request.user:
-        return Response({"error": "You do not have permission to modify this schedule"}, status=status.HTTP_403_FORBIDDEN)
+        return Response({"error": "You do not have permission to modify or delete this schedule"}, status=status.HTTP_403_FORBIDDEN)
 
     if request.method == 'GET':
         serializer = ScheduleSerializer(schedule)
-        return Response(serializer.data)
+        return Response(serializer.data)   
 
     elif request.method == 'PUT':
         serializer = ScheduleSerializer(schedule, data=request.data)
@@ -368,9 +370,11 @@ def schedule_detail(request, id):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
     elif request.method == 'DELETE':
         schedule.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 ####    END SCHEDULES    ####
 #############################

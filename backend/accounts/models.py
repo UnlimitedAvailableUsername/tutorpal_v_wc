@@ -179,6 +179,8 @@ class Contact(models.Model):
     name = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='contact_name')
     concern = models.TextField(max_length=300, null=True, blank=True)
     comment = models.TextField(max_length=5000, null=True, blank=True)
+    created_date = models.DateTimeField(auto_now_add=True)
+    done = models.BooleanField(default=False)
 
     def __str__(self):
         return f"concern of {self.name.username}"

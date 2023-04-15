@@ -546,6 +546,23 @@ def contact_detail(request, id):
     serializer = ContactSerializer(contact, many=False)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+
+@api_view(['PUT'])
+@permission_classes([IsAdminUser])
+def contact_edit(request, id):
+    try:
+        contact = Contact.objects.get(id=id)
+    except Contact.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    serializer = ContactSerializer(contact, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
 ####    END CONTACT US      ####
 ################################
 

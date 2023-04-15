@@ -4,7 +4,8 @@ import { listContacts } from "../../../features/redux/actions/contactActions";
 import { Button, Col, Container, Form, Row, Table } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import HeaderTutor from "../../elements/HeaderTutor";
-function ListContact() {
+
+function ListContactdone() {
   const [search, setSearch] = useState("");
   const [expandedComments, setExpandedComments] = useState([]);
   const dispatch = useDispatch();
@@ -53,7 +54,7 @@ function ListContact() {
         </Row>
       </Form>
 
-      <p>Total concerns: {contacts && contacts.filter(contact => !contact.done).length}</p>
+      <p>Total concerns: {contacts && contacts.filter(contact => contact.done).length}</p>
 
       <Table striped responsive className="table-m-2">
         <thead>
@@ -75,7 +76,7 @@ function ListContact() {
                       contact.name.toUpperCase().includes(search) ||
                       contact.concern.toUpperCase().includes(search);
               })
-              .filter((contact) => !contact.done)
+              .filter((contact) => contact.done)
               .map((contact) => (
                 <tr key={contact.id}>
                   <td>{contact.name}</td>
@@ -131,4 +132,4 @@ function ListContact() {
   );
 }
 
-export default ListContact;
+export default ListContactdone;

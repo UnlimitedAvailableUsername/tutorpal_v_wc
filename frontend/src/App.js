@@ -15,13 +15,11 @@ import ListContact from "./components/screens/ListContactsScreen/ListContact";
 import ContactDetail from "./components/screens/ContactDetailScreen/ContactDetail";
 import { useSelector } from "react-redux";
 import EditSchedule from "./components/screens/EditScheduleScreen/EditSchedule";
-import HeaderStudent from "./components/elements/HeaderStudent";
-import HeaderHomePage from "./components/elements/HeaderHomePage";
-import HeaderTutor from "./components/elements/HeaderTutor";
 import TermsAndConditionScreen from "./components/screens/RegisterScreen/TermsAndConditionScreen";
 import ChooseScheduleScreen from "./components/screens/ChooseScheduleScreen/ChooseScheduleScreen";
 import AdminTutor from "./components/screens/AdminTutorScreen/AdminTutor";
 import ListContactdone from "./components/screens/ListContactsScreen/ListContactdone";
+import Header from "./components/elements/Header";
 
 
 function App() {
@@ -32,15 +30,7 @@ function App() {
     return (
         <div className="bg-dark">
 
-            {userInfo && (userInfo.tutor || userInfo.user?.tutor || userInfo.staff || userInfo.user?.staff) && (
-                <HeaderTutor />
-            )}
-            {userInfo && (userInfo.student || userInfo.user?.student) && (
-                <HeaderStudent />
-            )}
-            {!userInfo && (
-                <HeaderHomePage />
-            )}
+            <Header />
 
             <div className="screen" style={{ overflowX: "hidden" }} >
                 <Routes>

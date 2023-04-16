@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { createOrderSchedule } from '../../../features/redux/actions/scheduleOrderActions';
 import { listSchedules } from '../../../features/redux/actions/scheduleAction';
-import { Container } from 'react-bootstrap';
+import { Button, Container, Form, FormControl, InputGroup, Spinner, Table } from 'react-bootstrap';
 import LoadingIconBig from '../../elements/Loader/LoadingIconBig';
+import NumericInput from 'react-numeric-input';
+import MessageAlert from '../../elements/MessageAlert';
+
 
 function ChooseScheduleScreen() {
   const [formData, setFormData] = useState({
@@ -13,21 +16,29 @@ function ChooseScheduleScreen() {
   });
 
   const { tutorId } = useParams();
-
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   useEffect(() => {
     dispatch(listSchedules(tutorId));
   }, [dispatch, tutorId]);
 
+  const { loading: schedulesLoading, error: schedulesError, schedules } = useSelector((state) => state.scheduleList);
+  const { loading: orderLoading, error: orderError, scheduleOrder } = useSelector((state) => state.scheduleOrderState);
+  useEffect(() => {
+    if (scheduleOrder) {
+      const scheduleId = scheduleOrder.id;
+      navigate(`/scheduleOrders/${scheduleId}`);
+    }
+  }, [scheduleOrder, navigate]);
 
-  const { loading, error, success, schedules } = useSelector( (state) => state.scheduleList );
 
   const handleInputChange = (e, schedule) => {
     const { name, value, checked } = e.target;
-  
+
     const items = [...formData.items];
     const itemIndex = items.findIndex((item) => item.schedule === schedule.id);
-  
+
     if (name.startsWith('schedule_')) {
       if (!checked && itemIndex !== -1) {
         items.splice(itemIndex, 1);
@@ -66,11 +77,27 @@ function ChooseScheduleScreen() {
         }
       }
     }
-  
+
     setFormData({
       ...formData,
       items,
     });
+  };
+
+  const handleIncrement = (schedule) => {
+    const quantityInput = document.getElementsByName(`quantity_${schedule.id}`)[0];
+    const currentValue = parseInt(quantityInput.value) || 0;
+    const newValue = currentValue + 1;
+    quantityInput.value = newValue.toString();
+    handleInputChange({target: quantityInput}, schedule);
+  };
+  
+  const handleDecrement = (schedule) => {
+    const quantityInput = document.getElementsByName(`quantity_${schedule.id}`)[0];
+    const currentValue = parseInt(quantityInput.value) || 0;
+    const newValue = currentValue > 0 ? currentValue - 1 : 0;
+    quantityInput.value = newValue.toString();
+    handleInputChange({target: quantityInput}, schedule);
   };
 
   const handlePaymentMethodChange = (e) => {
@@ -96,58 +123,92 @@ function ChooseScheduleScreen() {
   };
 
   return (
-    <div>
-      <Container>
-        <h1>Choose among the schedules:</h1>
-        {loading ? (
-            <LoadingIconBig />
-        ) : error ? (
-          <div>{error}</div>
-        ) : (
-          <form onSubmit={handleSubmit}>
-            {schedules && schedules.map((schedule) => (
-              <div key={schedule.id}>
-                <label>
-                  <input
-                    type="checkbox"
-                    name={`schedule_${schedule.id}`}
-                    onChange={(e) => handleInputChange(e, schedule)}
-                  />
-                  {schedule.name} - ${schedule.price} ({schedule.count_in_stock}{' '}
-                  available)
-                </label>
-                <input
-                  type="number"
-                  name={`quantity_${schedule.id}`}
-                  min={0}
-                  max={schedule.count_in_stock}
-                  disabled={!formData.items.some((item) => item.schedule === schedule.id) && !formData.items.find((item) => item.schedule === schedule.id)?.quantity}
-                  defaultValue={formData.items.find((item) => item.schedule === schedule.id)?.quantity ?? (formData.items.some((item) => item.schedule === schedule.id) ? 1 : '')}
-                  onChange={(e) => handleInputChange(e, schedule)}
-                />
-              </div>
-            ))}
-            <div>
-              <label>
-                <input
-                  type="radio"
-                  name="payment_method"
-                  value="PayPal"
-                  checked={formData.payment_method === 'PayPal'}
-                  onChange={handlePaymentMethodChange}
-                />
-                PayPal
-              </label>
-            </div>
-            <div>
-              <button type="submit" disabled={!formData.items.length}>
-                Place Order - Total Price: ${calculateTotalPrice()}
-              </button>
-            </div>
-          </form>
-        )}
-      </Container>
-    </div>
+    <Container>
+      <h1>Choose among the schedules:</h1>
+      {schedulesLoading ? (
+        <LoadingIconBig />
+      ) : schedulesError ? (
+        <div>{schedulesError}</div>
+      ) : (
+        <Form onSubmit={handleSubmit}>
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>Schedule Date</th>
+                <th>Available Hours</th>
+                <th>How many hours?</th>
+                <th>Select</th>
+              </tr>
+            </thead>
+            <tbody>
+              {schedules &&
+                schedules.map((schedule) => (
+                  <tr key={schedule.id}>
+                    <td>{schedule.name} - ${schedule.price}</td>
+                    <td>({schedule.count_in_stock} available)</td>
+                    <td>
+                    <InputGroup>
+                        <FormControl
+                          type="number"
+                          inputMode="numeric"
+                          name={`quantity_${schedule.id}`}
+                          style={{ flex: "1", width: "0.25em", borderRadius: '8px' }}
+                          min={0}
+                          max={schedule.count_in_stock}
+                          disabled={
+                            !formData.items.some((item) => item.schedule === schedule.id) && !formData.items.find((item) => item.schedule === schedule.id)?.quantity
+                          }
+                          defaultValue={
+                            formData.items.find((item) => item.schedule === schedule.id)?.quantity ?? (formData.items.some((item) => item.schedule === schedule.id) ? 1 : '')
+                          }
+                          onChange={(e) => handleInputChange(e, schedule)}
+                        />
+                        <div style={{ display: 'flex' }}>
+                          <Button variant="outline-secondary" onClick={() => handleDecrement(schedule)} >-</Button>
+                          <Button variant="outline-secondary" onClick={() => handleIncrement(schedule)}>+</Button>
+                        </div>
+                      </InputGroup>
+                    </td>
+                    <td>
+                      <Form.Check
+                        type="checkbox"
+                        label=""
+                        name={`schedule_${schedule.id}`}
+                        onChange={(e) => handleInputChange(e, schedule)}
+                      />
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </Table>
+          <Form.Group>
+            <Form.Check
+              type="radio"
+              label="PayPal"
+              name="payment_method"
+              value="PayPal"
+              checked={formData.payment_method === 'PayPal'}
+              onChange={handlePaymentMethodChange}
+            />
+          </Form.Group>
+          <Form.Group>
+            <Form.Label htmlFor="message">Leave your message here:</Form.Label>
+            <Form.Control
+              id="message"
+              as="textarea"
+              name="message"
+              style={{ resize: 'vertical' }}
+              value={formData.message}
+              onChange={handleInputChange}
+            />
+          </Form.Group>
+          {orderError && !orderLoading && <MessageAlert variant='danger'>{orderError}</MessageAlert>}
+          <Button variant="primary" type="submit" disabled={!formData.items.length} >
+            {orderLoading ? <Spinner animation="border" size="sm" /> : 'Place Order - Total Price: $' + calculateTotalPrice()}
+          </Button>
+        </Form>
+      )}
+    </Container>
   );
 }
 

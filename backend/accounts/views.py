@@ -400,11 +400,13 @@ def schedule_order_create(request):
         schedule.reduce_stock(quantity)
     paid_status = request.data.get('paid_status', False)
     payment_method = request.data.get('payment_method', None)
+    message = request.data.get('message', None)
     schedule_order = ScheduleOrder.objects.create(
         user=request.user, 
         total_amount=total_amount, 
         paid_status=paid_status,
         payment_method=payment_method,
+        message=message,
         )
     for item_data in items_data:
         schedule = Schedule.objects.get(id=item_data['schedule'])

@@ -92,6 +92,7 @@ const scheduleOrderDetailsInitialState = {
 
 export const scheduleOrderDetailsReducer = (state = scheduleOrderDetailsInitialState, action) => {
     switch (action.type) {
+        case actionType.SCHEDULE_ORDER_CREATE_REQUEST:
         case actionType.SCHEDULE_ORDER_DETAILS_REQUEST:
             return {
                 ...state,
@@ -100,7 +101,8 @@ export const scheduleOrderDetailsReducer = (state = scheduleOrderDetailsInitialS
                 success: null,
             };
 
-        case actionType.SCHEDULE_ORDER_DETAILS_SUCCESS:
+            case actionType.SCHEDULE_ORDER_CREATE_SUCCESS:
+            case actionType.SCHEDULE_ORDER_DETAILS_SUCCESS:
             return {
                 ...state,
                 loading: false,
@@ -108,6 +110,7 @@ export const scheduleOrderDetailsReducer = (state = scheduleOrderDetailsInitialS
                 scheduleOrder: action.payload,
             };
 
+        case actionType.SCHEDULE_ORDER_CREATE_FAIL:
         case actionType.SCHEDULE_ORDER_DETAILS_FAIL:
             return {
                 loading: false,

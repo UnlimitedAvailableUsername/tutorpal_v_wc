@@ -13,6 +13,7 @@ function AdminTutorDetail() {
   const location = useLocation();
   const navigate = useNavigate();
   const [active, setActive] = useState(false);
+  const [inactive, setInActive] = useState(false);
 
   const userLoginState = useSelector((state) => state.userState);
   const { userInfo } = userLoginState;
@@ -177,6 +178,26 @@ function AdminTutorDetail() {
                         label="Actived"
                         checked={active}
                         onChange={(e) => setActive(e.target.checked)}
+                      />
+                    </Form.Group>
+
+                    <Button type="submit" className="btn btn-warning">
+                      Mark as Active
+                    </Button>
+                  </Form>
+                </ListGroup>
+
+                <ListGroup variant="flush">
+                  <Form onSubmit={handleEditTutor}>
+                    <Form.Group className="mb-3">
+                      <Form.Check
+                        type="checkbox"
+                        id="deactive"
+                        name="deactivate"
+                        className="form-check-input"
+                        label="Deactivate"
+                        checked={inactive}
+                        onChange={(e) => setInActive(e.target.checked)}
                       />
                     </Form.Group>
 

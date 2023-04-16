@@ -403,6 +403,12 @@ def schedule_detail(request, id):
 
 @api_view(['POST'])
 def schedule_order_create(request):
+    tutor_id = request.data.get('tutor')
+    try:
+        tutor = User.objects.get(id=tutor_id)
+    except User.DoesNotExist:
+        message = {"detail": "Tutor does not exist"}
+        return Response(message, status=status.HTTP_404_NOT_FOUND)
     items_data = request.data.get('items', [])
     total_amount = 0
     for item_data in items_data:
@@ -421,6 +427,7 @@ def schedule_order_create(request):
         paid_status=paid_status,
         payment_method=payment_method,
         message=message,
+        tutor=tutor,
         )
     for item_data in items_data:
         schedule = Schedule.objects.get(id=item_data['schedule'])
@@ -430,7 +437,9 @@ def schedule_order_create(request):
             schedule=schedule, 
             quantity=quantity
             )
-    return Response(ScheduleOrderSerializer(schedule_order).data, status=201)
+    data = ScheduleOrderSerializer(schedule_order).data
+    data['tutor'] = f"{tutor.first_name} {tutor.last_name}"
+    return Response(data, status=status.HTTP_201_CREATED)
 
 ################################################
 # THIS WILL LIST THE DETAILS SPECIFIC ORDER <id>
@@ -443,8 +452,11 @@ def schedule_order_detail(request, id):
     except ScheduleOrder.DoesNotExist:
         return Response({'error': 'Schedule Order not found'}, status=status.HTTP_404_NOT_FOUND)
 
-    serializer = ScheduleOrderSerializer(order)
-    return Response(serializer.data)
+    data = ScheduleOrderSerializer(order).data
+    tutor = order.tutor
+    if tutor:
+        data['tutor'] = f"{tutor.first_name} {tutor.last_name}"
+    return Response(data)
 
 ############################################################
 # THIS WILL LET THE CURRENT USER UPDATE HIS/HER ORDER STATUS

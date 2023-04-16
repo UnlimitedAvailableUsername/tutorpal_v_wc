@@ -206,7 +206,8 @@ class Schedule(models.Model):
 
 
 class ScheduleOrder(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_schedule_order_creator")
+    tutor = models.ForeignKey(User, on_delete=models.CASCADE, related_name="tutor_schedule_order", null=True)
     schedules = models.ManyToManyField(Schedule, through='ScheduleOrderItem')
     message = models.TextField(("Message to Tutor"), max_length=250, null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)

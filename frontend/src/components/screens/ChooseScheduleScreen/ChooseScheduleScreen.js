@@ -109,8 +109,12 @@ function ChooseScheduleScreen() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
-    dispatch(createOrderSchedule(formData))
+    const updatedFormData = {
+      ...formData,
+      tutor: parseInt(tutorId)
+    };
+    console.log(updatedFormData);
+    // dispatch(createOrderSchedule(updatedFormData))
   };
 
   const calculateTotalPrice = () => {

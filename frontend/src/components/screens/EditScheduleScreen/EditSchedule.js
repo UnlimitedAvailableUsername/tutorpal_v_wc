@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Image, ListGroup, Button, Container, Form, } from "react-bootstrap";
+import { Row, Col, ListGroup, Container, } from "react-bootstrap";
 import { Link, useParams, useNavigate} from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { listScheduleDetails, updateSchedule, } from "../../../features/redux/actions/scheduleAction";
 
 function EditSchedule() {
   const { scheduleId } = useParams();
+  const [name, setName] = useState("");
+  const [count_in_stock, setCountInStock] = useState("");
 
   const dispatch = useDispatch();
   const scheduleDetails = useSelector((state) => state.scheduleDetails);
@@ -15,16 +17,13 @@ function EditSchedule() {
     dispatch(listScheduleDetails(scheduleId));
   }, [dispatch, scheduleId]);
 
-  const EditSchedule = async () =>
-  {
-  let formField = new FormData();
+  const EditSchedule = async () => {
+    let formField = new FormData();
 
     formField.append("name", name);
     formField.append("count_in_stock", count_in_stock);
 
     dispatch(EditSchedule({ scheduleId: parseInt(scheduleId), ...(name && {name}), ... (count_in_stock && {count_in_stock}) }))
-
-
   };
   return (
     <div>

@@ -21,7 +21,7 @@ import AdminTutor from "./components/screens/AdminTutorScreen/AdminTutor";
 import ListContactdone from "./components/screens/ListContactsScreen/ListContactdone";
 import Header from "./components/elements/Header";
 import ScheduleOrderDetails from "./components/screens/ScheduleOrderDetails/ScheduleOrderDetails";
-
+import AdminTutorDetail from "./components/screens/AdminTutorScreen/AdminTutorDetail";
 
 function App() {
 
@@ -39,7 +39,7 @@ function App() {
 
                     <Route path="/tutor/:tutorId/schedules" element={<ChooseScheduleScreen />} />
 
-                    <Route path="/tutorAdmin" element={<AdminTutor />} exact />
+        
 
                     <Route path="/tutor" element={<TutorListScreen />} exact />
                     <Route path="/tutor/:tutorId" element={<TutorDetailScreen />} exact />
@@ -59,6 +59,8 @@ function App() {
                             <Route path="/contact-details/:contactId" element={<ContactDetail />} exact />
                             <Route path="/concern-list/done" element={<ListContactdone />} exact />
                             <Route path="/schedule-details/:scheduleId" element={<EditSchedule />} exact />
+                            <Route path="/tutors-admit" element={<AdminTutor />} exact />
+                            <Route path="/tutors-admit/details/:tutorId" element={<AdminTutorDetail />} exact />
                         </>
                     ) : (
                         null

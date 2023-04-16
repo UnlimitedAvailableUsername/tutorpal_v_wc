@@ -3,7 +3,7 @@ import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 
 import { userLoginReducer, userDetailsReducer, userUpdateProfileReducer, userRegisterReducer, } from "./reducers/authUserReducer";
-import { tutorListReducer, tutorDetailsReducer } from "./reducers/tutorReducer";
+import { tutorListReducer, tutorDetailsReducer, admintutorListReducer } from "./reducers/tutorReducer";
 import { scheduleListReducer, scheduleDetailsReducer, } from "./reducers/scheduleReducer";
 import { addContactReducer } from "./reducers/contactReducer";
 import { contactDetailsReducer, contactListReducer, } from "./reducers/contactReducer";
@@ -33,6 +33,8 @@ const reducers = combineReducers({
   scheduleOrderPayState: scheduleOrderPayReducer,
   scheduleOrderListMineState: scheduleOrderListMineReducer,
   scheduleOrderListWithMeState: scheduleOrderListWithMeReducer,
+
+  adminlistTutors: admintutorListReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

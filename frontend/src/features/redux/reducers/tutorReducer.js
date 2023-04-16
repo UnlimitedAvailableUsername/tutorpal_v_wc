@@ -36,6 +36,42 @@ export const tutorListReducer = (state = tutorListInitialState, action) => {
     }
 };
 
+const admintutorListInitialState = {
+    loading: false,
+    users: null,
+    error: null,
+}
+
+export const admintutorListReducer = (state = admintutorListInitialState, action) => {
+    switch (action.type) {
+
+        case actionType.ADMIN_LIST_REQUEST:
+            return {
+                ...state, 
+                loading:true
+            };
+
+        case actionType.ADMIN_LIST_SUCCESS:
+            return {
+                ...state, 
+                loading:false, 
+                users: action.payload
+            };
+
+        case actionType.ADMIN_LIST_FAIL:
+            return {
+                ...state, 
+                loading:false, 
+                error: action.payload
+            };
+        
+        default:
+            return state;
+
+    }
+};
+
+
 const tutorDetailsInitialState = {
     loading: false,
     user: null,

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import { useDispatch, useSelector } from "react-redux";
-import { listTutors } from "../../../features/redux/actions/tutorActions";
-import { Row, Col, Container } from "react-bootstrap";
-import Tutor from "../../elements/TutorOnCard";
+import { listTutorsAdmin } from "../../../features/redux/actions/tutorActions";
+import { Button, Col, Container, Row, Table } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
 import "../../../assets/components/screens/TutorListScreen/tutorlist.css";
 
@@ -34,42 +34,13 @@ function AdminTutor() {
   const loginUser = useSelector((state) => state.userState);
   const { userInfo } = loginUser;
 
-  const tutorList = useSelector((state) => state.tutorList);
-  const { users } = tutorList;
+  const adminlistTutors = useSelector((state) => state.adminlistTutors);
+  const { users } = adminlistTutors;
 
   useEffect(() => {
-    dispatch(listTutors());
+    dispatch(listTutorsAdmin());
   }, [dispatch]);
 
-  //FUNCTION PARA MAG-HIGHLIGHT NG WHITE YUNG TERMS NA SINESEARCH
-  const highlightSearch = (text) => {
-    if (search.trim() === "") {
-      return text;
-    }
-    const regex = new RegExp(search, "gi");
-    const parts = text.split(regex);
-    return (
-      <span>
-        {parts.map((part, i) => (
-          <span
-            key={i}
-            style={
-              part.toLowerCase() === search.toLowerCase()
-                ? { fontWeight: "bold", color: "white" }
-                : null
-            }
-          >
-            {part}
-            {i < parts.length - 1 && (
-              <strong style={{ fontWeight: "bold", color: "white" }}>
-                {search}
-              </strong>
-            )}
-          </span>
-        ))}
-      </span>
-    );
-  };
   return (
     <div>
       <div className="tutor-bg"></div>
@@ -107,45 +78,75 @@ function AdminTutor() {
           </Dropdown.Menu>
         </Dropdown>
         <br></br>
-
-        <Row>
-          {users &&
-            sortUsersByPrice(users)
-              .filter(
-                (user) =>
-                  user.tutor &&
-                  user.active === false && // filter only inactive tutors
-                  (!search ||
-                    user.last_name
-                      .toLowerCase()
-                      .includes(search.toLowerCase()) ||
-                    user.last_name
-                      .toUpperCase()
-                      .includes(search.toUpperCase()) ||
-                    // user.subject.toUpperCase().includes(search.toUpperCase()) ||
-                    // user.subject.toLowerCase().includes(search.toLowerCase()) ||
-                    user.bio.toLowerCase().includes(search.toLowerCase()) ||
-                    user.bio.toUpperCase().includes(search.toUpperCase()) ||
-                    user.first_name
-                      .toUpperCase()
-                      .includes(search.toUpperCase()) ||
-                    user.first_name
-                      .toLowerCase()
-                      .includes(search.toLowerCase()))
-              )
-              .map((user) => (
-                <Col key={user.id} sm={12} md={6} lg={4} xl={12}>
-                  <Tutor
-                    user={{
-                      ...user,
-                      first_name: highlightSearch(user.first_name),
-                      last_name: highlightSearch(user.last_name),
-                      bio: highlightSearch(user.bio),
-                    }}
-                  />
-                </Col>
-              ))}
-        </Row>
+        <Table striped responsive className="table-m-2">
+          <thead>
+            <tr>
+              <th>Name and Date</th>
+              <th>Concern</th>
+              <th>Is Active</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {users &&
+              sortUsersByPrice(users)
+                .filter(
+                  (user) =>
+                    user.tutor &&
+                    user.active === false && // filter only inactive tutors
+                    (!search ||
+                      user.last_name
+                        .toLowerCase()
+                        .includes(search.toLowerCase()) ||
+                      user.last_name
+                        .toUpperCase()
+                        .includes(search.toUpperCase()) ||
+                      // user.subject.toUpperCase().includes(search.toUpperCase()) ||
+                      // user.subject.toLowerCase().includes(search.toLowerCase()) ||
+                      user.bio.toLowerCase().includes(search.toLowerCase()) ||
+                      user.bio.toUpperCase().includes(search.toUpperCase()) ||
+                      user.first_name
+                        .toUpperCase()
+                        .includes(search.toUpperCase()) ||
+                      user.first_name
+                        .toLowerCase()
+                        .includes(search.toLowerCase()))
+                )
+                .map((user) => (
+                  <tr key={user.id}>
+                    <td>
+                      {user.first_name} {user.last_name} <br />
+                      {user.email} <br />
+                      {user.date_joined}
+                    </td>
+                    <td>
+                      {user.profile_picture && (
+                        <img
+                          src={`${user.profile_picture}`}
+                          alt="User Profile"
+                          style={{ maxWidth: "100px", maxHeight: "100px" }}
+                        />
+                      )}
+                    </td>
+                    <td>{user.active ? "true" : "false"}</td>
+                    <td>
+                      <Link to={`/tutors-admit/details/${user.id}`}>
+                        <Button
+                          variant="warning"
+                          style={{
+                            fontSize: "0.8rem",
+                            padding: "0.2rem 0.5rem",
+                          }}
+                          className="btn-outline-dark py-2 px-3 my-5"
+                        >
+                          Details
+                        </Button>
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+          </tbody>
+        </Table>
       </Container>
     </div>
   );

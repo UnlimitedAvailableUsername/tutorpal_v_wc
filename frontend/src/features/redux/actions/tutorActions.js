@@ -27,6 +27,42 @@ export const listTutors = () => async (dispatch) => {
   }
 };
 
+// FOR LISTING THE  TUTORS THAT IS NOT ACTIVE YET FOR ADMIN
+
+export const listTutorsAdmin = () => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: actionType.ADMIN_LIST_REQUEST,
+    });
+
+    const {
+      userState: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(`${BASE_URL}/api/accounts/users/`, config); //fetch the products from rest api
+
+    dispatch({
+      type: actionType.ADMIN_LIST_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: actionType.ADMIN_LIST_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
 // FOR LISTING THE SPECIFIC TUTOR USER DETAILS
 
 export const listTutorDetails = (tutorId) => async (dispatch) => {
@@ -92,3 +128,41 @@ export const createTutorReview =
       });
     }
   };
+
+  
+export const updateTutor =
+(tutorId, tutor) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: actionType.TUTOR_UPDATE_REQUEST });
+
+    const {
+      userState: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-type": "multipart/form-data",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.put(
+      `${BASE_URL}/api/accounts/users/${tutorId}/`,
+      tutor,
+      config
+    );
+
+    dispatch({
+      type: actionType.TUTOR_UPDATE_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: actionType.TUTOR_UPDATE_FAIL,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};

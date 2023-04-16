@@ -87,7 +87,7 @@ const scheduleOrderDetailsInitialState = {
     loading: false,
     error: null,
     success: null,
-    orderScheduleItems: [],
+    scheduleOrder: null,
 }
 
 export const scheduleOrderDetailsReducer = (state = scheduleOrderDetailsInitialState, action) => {

@@ -301,6 +301,7 @@ def user_profile(request):
 @api_view(['GET'])
 def schedule_list_of_tutor(request, id):
     try:
+        user = User.objects.get(pk=id)
         schedule = Schedule.objects.filter(owner__pk=id)
 
     except Schedule.DoesNotExist:
@@ -308,7 +309,20 @@ def schedule_list_of_tutor(request, id):
         return Response(message, status=status.HTTP_404_NOT_FOUND)
     
     serializer = ScheduleSerializer(schedule, many=True)
-    return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    # Create a dictionary with the user's full name and price rate per hour
+    user_data = {
+        'user': f"{user.first_name} {user.last_name}",
+        "price_rate_hour": user.price_rate_hour,
+    }
+
+    # Include the user data in the response
+    response_data = {
+        **user_data,
+        "schedules": serializer.data
+    }
+
+    return Response(response_data, status=status.HTTP_200_OK)
 
 #################################
 # THIS WILL DISPLAY ALL SCHEDULES

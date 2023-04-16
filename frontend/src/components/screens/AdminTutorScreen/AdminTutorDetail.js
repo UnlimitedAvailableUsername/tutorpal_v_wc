@@ -202,7 +202,7 @@ function AdminTutorDetail() {
                     </Form.Group>
 
                     <Button type="submit" className="btn btn-warning">
-                      Mark as Active
+                      Deactive
                     </Button>
                   </Form>
                 </ListGroup>

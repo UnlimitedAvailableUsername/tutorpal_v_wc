@@ -112,41 +112,40 @@ export const listHasMeScheduleOrders = () => async (dispatch, getState) => {
   }
 };
 
-export const getOrderScheduleDetails =
-  (orderId) => async (dispatch, getState) => {
-    try {
-      dispatch({ type: actionType.SCHEDULE_ORDER_DETAILS_REQUEST });
+export const getOrderScheduleDetails = (scheduleOrderId) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: actionType.SCHEDULE_ORDER_DETAILS_REQUEST });
 
-      const {
-        userState: { userInfo },
-      } = getState();
+    const {
+      userState: { userInfo },
+    } = getState();
 
-      const config = {
-        headers: {
-          "Content-type": "application/json",
-          Authorization: `Bearer ${userInfo.token}`,
-        },
-      };
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
 
-      const { data } = await axios.get(
-        `${BASE_URL}/api/orders/${orderId}/`,
-        config
-      );
+    const { data } = await axios.get(
+      `${BASE_URL}/api/accounts/schedule_orders/${scheduleOrderId}/`,
+      config
+    );
 
-      dispatch({
-        type: actionType.SCHEDULE_ORDER_DETAILS_SUCCESS,
-        payload: data,
-      });
-    } catch (error) {
-      dispatch({
-        type: actionType.SCHEDULE_ORDER_DETAILS_FAIL,
-        payload:
-          error.response && error.response.data.detail
-            ? error.response.data.detail
-            : error.message,
-      });
-    }
-  };
+    dispatch({
+      type: actionType.SCHEDULE_ORDER_DETAILS_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: actionType.SCHEDULE_ORDER_DETAILS_FAIL,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
 
 export const payScheduleOrder =
   (orderId, paymentResult) => async (dispatch, getState) => {

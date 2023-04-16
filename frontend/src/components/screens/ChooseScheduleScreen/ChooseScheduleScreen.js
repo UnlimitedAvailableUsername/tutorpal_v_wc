@@ -27,8 +27,8 @@ function ChooseScheduleScreen() {
   const { loading: orderLoading, error: orderError, scheduleOrder } = useSelector((state) => state.scheduleOrderState);
   useEffect(() => {
     if (scheduleOrder) {
-      const scheduleId = scheduleOrder.id;
-      navigate(`/scheduleOrders/${scheduleId}`);
+      const scheduleOrderId = scheduleOrder.id;
+      navigate(`/my-schedule-orders/${scheduleOrderId}`);
     }
   }, [scheduleOrder, navigate]);
 
@@ -114,7 +114,7 @@ function ChooseScheduleScreen() {
       tutor: parseInt(tutorId)
     };
     console.log(updatedFormData);
-    // dispatch(createOrderSchedule(updatedFormData))
+    dispatch(createOrderSchedule(updatedFormData))
   };
 
   const calculateTotalPrice = () => {

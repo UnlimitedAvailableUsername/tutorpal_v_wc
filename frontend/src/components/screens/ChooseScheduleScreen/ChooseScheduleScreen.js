@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { createOrderSchedule } from '../../../features/redux/actions/scheduleOrderActions';
 import { listSchedules } from '../../../features/redux/actions/scheduleAction';
 import { Button, Container, Form, FormControl, InputGroup, Spinner, Table } from 'react-bootstrap';
@@ -89,15 +89,15 @@ function ChooseScheduleScreen() {
     const currentValue = parseInt(quantityInput.value) || 0;
     const newValue = currentValue + 1;
     quantityInput.value = newValue.toString();
-    handleInputChange({target: quantityInput}, schedule);
+    handleInputChange({ target: quantityInput }, schedule);
   };
-  
+
   const handleDecrement = (schedule) => {
     const quantityInput = document.getElementsByName(`quantity_${schedule.id}`)[0];
     const currentValue = parseInt(quantityInput.value) || 0;
     const newValue = currentValue > 0 ? currentValue - 1 : 0;
     quantityInput.value = newValue.toString();
-    handleInputChange({target: quantityInput}, schedule);
+    handleInputChange({ target: quantityInput }, schedule);
   };
 
   const handlePaymentMethodChange = (e) => {
@@ -116,7 +116,7 @@ function ChooseScheduleScreen() {
   const calculateTotalPrice = () => {
     return formData.items.reduce((total, item) => {
       const { schedule } = item;
-      const selectedSchedule = schedules.find((s) => s.id === schedule);
+      const selectedSchedule = schedules.schedules.find((s) => s.id === schedule);
       const quantity = item.quantity; // default to 1 if quantity is not set
       return total + parseFloat(selectedSchedule.price) * quantity;
     }, 0);
@@ -124,89 +124,101 @@ function ChooseScheduleScreen() {
 
   return (
     <Container>
-      <h1>Choose among the schedules:</h1>
+      <Button as={Link} to={`/tutor/${tutorId}`} variant="warning" className="btn-outline-dark py-3 my-5" >&lt; Go back to tutor details</Button>
       {schedulesLoading ? (
         <LoadingIconBig />
       ) : schedulesError ? (
-        <div>{schedulesError}</div>
-      ) : (
-        <Form onSubmit={handleSubmit}>
-          <Table striped bordered hover>
-            <thead>
-              <tr>
-                <th>Schedule Date</th>
-                <th>Available Hours</th>
-                <th>How many hours?</th>
-                <th>Select</th>
-              </tr>
-            </thead>
-            <tbody>
-              {schedules &&
-                schedules.map((schedule) => (
-                  <tr key={schedule.id}>
-                    <td>{schedule.name} - ${schedule.price}</td>
-                    <td>({schedule.count_in_stock} available)</td>
-                    <td>
-                    <InputGroup>
-                        <FormControl
-                          type="number"
-                          inputMode="numeric"
-                          name={`quantity_${schedule.id}`}
-                          style={{ flex: "1", width: "0.25em", borderRadius: '8px' }}
-                          min={0}
-                          max={schedule.count_in_stock}
-                          disabled={
-                            !formData.items.some((item) => item.schedule === schedule.id) && !formData.items.find((item) => item.schedule === schedule.id)?.quantity
-                          }
-                          defaultValue={
-                            formData.items.find((item) => item.schedule === schedule.id)?.quantity ?? (formData.items.some((item) => item.schedule === schedule.id) ? 1 : '')
-                          }
+        <MessageAlert variant='danger'>{schedulesError}</MessageAlert>
+      ) : schedules && (
+        <>
+          <h1>Choose among the schedules of:</h1>
+          <h3>{schedules.user}</h3>
+          <h3>Hourly rate of <b>{schedules.price_rate_hour} Php</b></h3>
+          <Form onSubmit={handleSubmit}>
+            <Table striped bordered hover>
+              <thead>
+                <tr>
+                  <th>Schedule Date</th>
+                  <th>Available Hours</th>
+                  <th>How many hours?</th>
+                  <th>Select</th>
+                </tr>
+              </thead>
+              <tbody>
+                {schedules &&
+                  schedules.schedules.map((schedule) => (
+                    <tr key={schedule.id}>
+                      <td>{schedule.name}</td>
+                      <td><b>{schedule.count_in_stock}</b></td>
+                      <td>
+                        <InputGroup>
+                          <FormControl
+                            type="number"
+                            inputMode="numeric"
+                            name={`quantity_${schedule.id}`}
+                            style={{ flex: "1", width: "0.25em", borderRadius: '8px' }}
+                            min={0}
+                            max={schedule.count_in_stock}
+                            disabled={
+                              !formData.items.some((item) => item.schedule === schedule.id) && !formData.items.find((item) => item.schedule === schedule.id)?.quantity
+                            }
+                            defaultValue={
+                              formData.items.find((item) => item.schedule === schedule.id)?.quantity ?? (formData.items.some((item) => item.schedule === schedule.id) ? 1 : '')
+                            }
+                            onChange={(e) => handleInputChange(e, schedule)}
+                          />
+                          <div style={{ display: 'flex' }}>
+                            <Button variant="outline-secondary" onClick={() => handleDecrement(schedule)} >-</Button>
+                            <Button variant="outline-secondary" onClick={() => handleIncrement(schedule)}>+</Button>
+                          </div>
+                        </InputGroup>
+                      </td>
+                      <td>
+                        <Form.Check
+                          type="checkbox"
+                          label=""
+                          name={`schedule_${schedule.id}`}
                           onChange={(e) => handleInputChange(e, schedule)}
                         />
-                        <div style={{ display: 'flex' }}>
-                          <Button variant="outline-secondary" onClick={() => handleDecrement(schedule)} >-</Button>
-                          <Button variant="outline-secondary" onClick={() => handleIncrement(schedule)}>+</Button>
-                        </div>
-                      </InputGroup>
-                    </td>
-                    <td>
-                      <Form.Check
-                        type="checkbox"
-                        label=""
-                        name={`schedule_${schedule.id}`}
-                        onChange={(e) => handleInputChange(e, schedule)}
-                      />
-                    </td>
-                  </tr>
-                ))}
-            </tbody>
-          </Table>
-          <Form.Group>
-            <Form.Check
-              type="radio"
-              label="PayPal"
-              name="payment_method"
-              value="PayPal"
-              checked={formData.payment_method === 'PayPal'}
-              onChange={handlePaymentMethodChange}
-            />
-          </Form.Group>
-          <Form.Group>
-            <Form.Label htmlFor="message">Leave your message here:</Form.Label>
-            <Form.Control
-              id="message"
-              as="textarea"
-              name="message"
-              style={{ resize: 'vertical' }}
-              value={formData.message}
-              onChange={handleInputChange}
-            />
-          </Form.Group>
-          {orderError && !orderLoading && <MessageAlert variant='danger'>{orderError}</MessageAlert>}
-          <Button variant="primary" type="submit" disabled={!formData.items.length} >
-            {orderLoading ? <Spinner animation="border" size="sm" /> : 'Place Order - Total Price: $' + calculateTotalPrice()}
-          </Button>
-        </Form>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </Table>
+            <h3>Payment Method:</h3>
+            <Form.Group>
+              <Form.Check
+                type="radio"
+                label="PayPal"
+                name="payment_method"
+                value="PayPal"
+                checked={formData.payment_method === 'PayPal'}
+                onChange={handlePaymentMethodChange}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label htmlFor="message">Do you have additional notes for the tutor?</Form.Label>
+              <Form.Control
+                id="message"
+                as="textarea"
+                name="message"
+                style={{ resize: 'vertical' }}
+                value={formData.message}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
+            {orderError && !orderLoading && <MessageAlert variant='danger'>{orderError}</MessageAlert>}
+            <Button variant="warning" type="submit" disabled={!formData.items.length}>
+              {orderLoading ? (
+                <span>
+                  <Spinner animation="border" size="sm" /> Placing Order...
+                </span>
+              ) : (
+                'Place Order - Total Price: $' + calculateTotalPrice()
+              )}
+            </Button>
+          </Form>
+        </>
       )}
     </Container>
   );

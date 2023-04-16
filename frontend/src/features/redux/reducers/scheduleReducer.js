@@ -110,4 +110,3 @@ export const scheduleDetailsReducer = ( state = scheduleDetailsInitialState, act
 	};
 };
 
-

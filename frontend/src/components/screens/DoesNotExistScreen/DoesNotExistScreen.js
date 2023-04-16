@@ -11,6 +11,7 @@ function DoesNotExistScreen() {
       backgroundSize: 'cover',
       minHeight: 'calc(100vh - 16em)',
       padding: '8em 0em 8em 0em',
+      position: 'relative',
     }}>
       <Container className="d-flex flex-column justify-content-center align-items-center">
         <h1>404 - Not Found!</h1>

@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import Footer from "./components/elements/Footer";
 import HomeScreen from "./components/screens/HomeScreen/HomeScreen";
 import TutorListScreen from "./components/screens/TutorListScreen/TutorListScreen";
@@ -20,6 +20,7 @@ import ChooseScheduleScreen from "./components/screens/ChooseScheduleScreen/Choo
 import AdminTutor from "./components/screens/AdminTutorScreen/AdminTutor";
 import ListContactdone from "./components/screens/ListContactsScreen/ListContactdone";
 import Header from "./components/elements/Header";
+import ScheduleOrderDetails from "./components/screens/ScheduleOrderDetails/ScheduleOrderDetails";
 
 
 function App() {
@@ -40,8 +41,6 @@ function App() {
 
                     <Route path="/tutorAdmin" element={<AdminTutor />} exact />
 
-                    <Route path="/tutorAdmin" element={<AdminTutor />} exact />
-
                     <Route path="/tutor" element={<TutorListScreen />} exact />
                     <Route path="/tutor/:tutorId" element={<TutorDetailScreen />} exact />
 
@@ -54,16 +53,21 @@ function App() {
 
                     <Route path="/contact-us" element={<ContactScreen />} exact />
                     <Route path="/contact-success" element={<SuccessScreen />} exact />
-                    <Route path="/contact-details/:contactId" element={<ContactDetail />} exact />
-                    <Route path="/concern-list" element={<ListContact />} exact />
-                    <Route path="/concern-list/done" element={<ListContactdone />} exact />
+                    {userInfo && userInfo.staff ? (
+                        <>
+                            <Route path="/concern-list" element={<ListContact />} exact />
+                            <Route path="/contact-details/:contactId" element={<ContactDetail />} exact />
+                            <Route path="/concern-list/done" element={<ListContactdone />} exact />
+                            <Route path="/schedule-details/:scheduleId" element={<EditSchedule />} exact />
+                        </>
+                    ) : (
+                        null
+                    )}
 
-                    <Route path="/schedule-details/:scheduleId" element={<EditSchedule />} exact />
+                    <Route path="/my-schedule-orders/:scheduleOrderId/" element={<ScheduleOrderDetails />} exact />
 
                     <Route path="/about-us" element={<AboutUsScreen />} exact />
-
                     <Route path="*" element={<DoesNotExistScreen />} />
-
                 </Routes>
             </div>
 

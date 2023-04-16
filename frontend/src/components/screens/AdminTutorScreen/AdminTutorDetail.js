@@ -175,7 +175,7 @@ function AdminTutorDetail() {
                         id="active"
                         name="active"
                         className="form-check-input"
-                        label="Actived"
+                        label="Active"
                         checked={active}
                         onChange={(e) => setActive(e.target.checked)}
                       />

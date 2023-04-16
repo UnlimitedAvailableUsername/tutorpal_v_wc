@@ -29,26 +29,20 @@ function ScheduleOrderDetails() {
         <MessageAlert variant="danger">{error}</MessageAlert>
       ) : scheduleOrder && (
         <>
-          <div>Schedule Order Id: {scheduleOrder.id}</div>
+          <div>
+            <h2>Schedule Order Id: {scheduleOrder.id}</h2>
+          </div>
           <Row>
             <Col md={8}>
               <ListGroup variant='flush'>
                 <ListGroup.Item>
-                  <h2>Payment</h2>
+                  <h2>Tutor</h2>
                   <p>
-                    <strong>Payment Method: </strong>
-                    {scheduleOrder.payment_method}
+                    <strong>{scheduleOrder.tutor}</strong>
                   </p>
-                  { scheduleOrder.paid_status ? (
-                    <MessageAlert variant='success'>
-                      Paid on {scheduleOrder.paid_date ? scheduleOrder.paid_date.substring(0, 10) : null}
-                    </MessageAlert>
-                  ) : (
-                    <MessageAlert variant="warning">Not yet paid</MessageAlert>
-                  )}
                 </ListGroup.Item>
                 <ListGroup.Item>
-                  <h2>Schedules</h2>
+                  <h2>Schedules Booked</h2>
                   { scheduleOrder.schedules.length === 0 ? (
                     <MessageAlert variant='secondary'>No schedules selected.</MessageAlert>
                   ) : (
@@ -66,6 +60,30 @@ function ScheduleOrderDetails() {
                         </ListGroup.Item>
                       ))}
                     </ListGroup>
+                  )}
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  <h2>Payment</h2>
+                  <p>
+                    <strong>Payment Method: </strong>
+                    {scheduleOrder.payment_method}
+                  </p>
+                  { scheduleOrder.paid_status ? (
+                    <MessageAlert variant='success'>
+                      Paid on {scheduleOrder.paid_date ? scheduleOrder.paid_date.substring(0, 10) : null}
+                    </MessageAlert>
+                  ) : (
+                    <MessageAlert variant="secondary">Not yet paid</MessageAlert>
+                  )}
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  <h2>Meeting Session</h2>
+                  { scheduleOrder.paid_status ? (
+                    <MessageAlert variant='success'>
+                      Paid on {scheduleOrder.session_status ? scheduleOrder.paid_date.substring(0, 10) : null}
+                    </MessageAlert>
+                  ) : (
+                    <MessageAlert variant="info">Meeting not yet initialized</MessageAlert>
                   )}
                 </ListGroup.Item>
               </ListGroup>
@@ -90,7 +108,7 @@ function ScheduleOrderDetails() {
                 </ListGroup>
                 {userInfo && (userInfo.tutor || userInfo.staff) && (
                   <ListGroup.Item>
-                    <Button>Done Session</Button>
+                    <Button variant="warning" >Mark as Done</Button>
                   </ListGroup.Item>
                 )}
               </Card>

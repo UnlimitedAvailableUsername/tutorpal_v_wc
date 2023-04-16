@@ -5,7 +5,7 @@ import "../../assets/components/elements/Footer/footer.css";
 
 function Footer() {
   return (
-    <div className="main-footer bg-dark">
+    <div className="main-footer">
       <div className="container">
 
        

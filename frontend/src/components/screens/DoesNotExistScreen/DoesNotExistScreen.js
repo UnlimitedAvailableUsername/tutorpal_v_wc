@@ -9,13 +9,13 @@ function DoesNotExistScreen() {
       backgroundRepeat: 'no-repeat',
       backgroundPosition: 'center center',
       backgroundSize: 'cover',
-      minHeight: '100vh',
+      minHeight: 'calc(100vh - 16em)',
       padding: '8em 0em 8em 0em',
     }}>
       <Container className="d-flex flex-column justify-content-center align-items-center">
         <h1>404 - Not Found!</h1>
         <p>Sorry, the page you are looking for does not exist.</p>
-        <img alt="404" style={{ height: "18em", width: "18em" }} src={logo} />
+        <img alt="404" style={{ height: "18em", width: "36em", position: 'absolute', bottom: '0'  }} src={logo} />
       </Container>
     </div>
   );

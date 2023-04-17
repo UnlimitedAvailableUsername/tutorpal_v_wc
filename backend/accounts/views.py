@@ -1,6 +1,7 @@
 ## FROM DJANGO
 from django.contrib.auth import get_user_model, authenticate
 from django.contrib.auth.hashers import make_password
+from django.db.models import Q
 
 ## FROM REST FRAMEWORK IMPORTS
 from rest_framework.response import Response
@@ -531,6 +532,27 @@ def schedule_order_delete(request, id):
 def schedule_order_list(request):
     schedule_orders = ScheduleOrder.objects.all()
     serializer = ScheduleOrderSerializer(schedule_orders, many=True)
+    return Response(serializer.data)
+
+##################################################################
+# THIS WILL LIST THE STUDENT LIST OF TUTOR BASED ON SCHEDULE ORDER
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def my_students_list_view(request):
+    # Get the authenticated user
+    user = request.user
+
+    # Get all the schedule orders that belong to the user as a tutor
+    schedule_orders = ScheduleOrder.objects.filter(tutor=user)
+
+    # Get the unique set of users that have created those schedule orders
+    student_users = User.objects.filter(
+        Q(scheduleorder__in=schedule_orders) & Q(scheduleorder__schedules__owner=user)
+    ).distinct()
+
+    # Serialize the student users and return the response
+    serializer = UserSerializer(student_users, many=True)
     return Response(serializer.data)
 
 ########################################################################

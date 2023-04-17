@@ -50,7 +50,7 @@ function ScheduleOrderDetails() {
                       { scheduleOrder.schedules.map(schedule => (
                         <ListGroup.Item key={schedule.id}>
                           <Row>
-                            <Col md={1}>
+                            <Col md={4}>
                               {schedule.name}
                             </Col>
                             <Col md={4}>

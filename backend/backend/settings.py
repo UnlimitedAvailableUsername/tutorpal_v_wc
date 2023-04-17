@@ -17,7 +17,7 @@ SECRET_KEY = 'django-insecure-f-g(1u4+86=)q^efptakq@=ez!rj+(s4o@6c=&%-(ay2$uma#7
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['tutorpal.pythonanywhere.com']
 
 
 # Application definition

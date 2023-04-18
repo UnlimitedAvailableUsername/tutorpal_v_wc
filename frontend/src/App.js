@@ -22,6 +22,7 @@ import ListContactdone from "./components/screens/ListContactsScreen/ListContact
 import Header from "./components/elements/Header";
 import ScheduleOrderDetails from "./components/screens/ScheduleOrderDetails/ScheduleOrderDetails";
 import AdminTutorDetail from "./components/screens/AdminTutorScreen/AdminTutorDetail";
+import AddSubject from "./components/screens/AdminTutorScreen/AddSubject";
 
 function App() {
 
@@ -61,6 +62,7 @@ function App() {
                             <Route path="/schedule-details/:scheduleId" element={<EditSchedule />} exact />
                             <Route path="/tutors-admit" element={<AdminTutor />} exact />
                             <Route path="/tutors-admit/details/:tutorId" element={<AdminTutorDetail />} exact />
+                            <Route path="/add-subject" element={<AddSubject />} exact />
                         </>
                     ) : (
                         null

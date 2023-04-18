@@ -5,7 +5,7 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import { userLoginReducer, userDetailsReducer, userUpdateProfileReducer, userRegisterReducer, } from "./reducers/authUserReducer";
 import { tutorListReducer, tutorDetailsReducer, admintutorListReducer } from "./reducers/tutorReducer";
 import { scheduleListReducer, scheduleDetailsReducer, } from "./reducers/scheduleReducer";
-import { addContactReducer } from "./reducers/contactReducer";
+import { addContactReducer, addSubjectReducer } from "./reducers/contactReducer";
 import { contactDetailsReducer, contactListReducer, } from "./reducers/contactReducer";
 import { listReviewsReducer, reviewReducer } from "./reducers/reviewsReducer";
 import { scheduleOrderDetailsReducer, scheduleOrderListMineReducer, scheduleOrderListWithMeReducer, scheduleOrderPayReducer } from "./reducers/scheduleOrderReducer";
@@ -35,6 +35,7 @@ const reducers = combineReducers({
   scheduleOrderListWithMeState: scheduleOrderListWithMeReducer,
 
   adminlistTutors: admintutorListReducer,
+  addSubject : addSubjectReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

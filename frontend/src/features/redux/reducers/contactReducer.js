@@ -22,6 +22,21 @@ export const addContactReducer = (state = initialState, action) => {
     }
 };
 
+export const addSubjectReducer = (state = initialState, action) => {
+    switch (action.type) {
+      case actionType.SUBJECT_ADD_REQUEST:
+        return { ...state, loading: true };
+        
+      case actionType.SUBJECT_ADD_SUCCESS:
+        return { ...state, loading: false, data: action.payload };
+
+      case actionType.SUBJECT_ADD_FAIL:
+        return { ...state, loading: false, error: action.payload };
+
+      default:
+        return state;
+    }
+};
 
 export const contactListReducer = (state = initialState, action) => {
   switch (action.type) {

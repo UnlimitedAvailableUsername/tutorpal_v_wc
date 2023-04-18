@@ -13,7 +13,6 @@ function AdminTutorDetail() {
   const location = useLocation();
   const navigate = useNavigate();
   const [active, setActive] = useState(false);
-  const [inactive, setInActive] = useState(false);
 
   const userLoginState = useSelector((state) => state.userState);
   const { userInfo } = userLoginState;
@@ -25,7 +24,11 @@ function AdminTutorDetail() {
     dispatch(listTutorDetails(tutorId));
   }, [dispatch, tutorId]);
 
-  const handleEditTutor = async (e) => {
+  useEffect(() => {
+    setActive(user?.active);
+  }, [user]);
+
+  const handleActivateTutor = async (e) => {
     e.preventDefault();
 
     if (!tutorId) {
@@ -33,7 +36,27 @@ function AdminTutorDetail() {
     }
 
     const tutorData = {
-      active,
+      active: true,
+    };
+
+    try {
+      await dispatch(updateTutor(tutorId, tutorData));
+      window.location.reload(); // Reload page after successful submission
+    } catch (error) {
+      console.log(error);
+      // handle error
+    }
+  };
+
+  const handleDeactivateTutor = async (e) => {
+    e.preventDefault();
+
+    if (!tutorId) {
+      return;
+    }
+
+    const tutorData = {
+      active: false,
     };
 
     try {
@@ -45,22 +68,50 @@ function AdminTutorDetail() {
     }
   };
 
-  if (loading) {
-    return (
-      <Container>
-        <LoadingIconBig />
-      </Container>
-    );
-  }
+  const renderActiveForm = () => {
+    if (user?.active) {
+      return (
+        <Form onSubmit={handleDeactivateTutor}>
+          <Form.Group className="mb-3">
+            <Form.Check
+              type="checkbox"
+              id="deactivate"
+              name="deactivate"
+              className="form-check-input"
+              label="Deactivate"
+              checked={!active}
+              onChange={(e) => setActive(!e.target.checked)}
+            />
+          </Form.Group>
 
-  if (error) {
-    return (
-      <Container>
-        <MessageAlert variant="danger">{error}</MessageAlert>
-      </Container>
-    );
-  }
+          <Button type="submit" className="btn btn-warning">
+            Deactivate
+          </Button>
+        </Form>
+      );
+    } else {
+      return (
+        <Form onSubmit={handleActivateTutor}>
+          <Form.Group className="mb-3">
+            <Form.Check
+              type="checkbox"
+              id="activate"
+              name="activate"
+              className="form-check-input"
+              label="Activate"
+              checked={active}
+              onChange={(e) => setActive(e.target.checked)}
+            />
+          </Form.Group>
 
+          <Button type="submit" className="btn btn-warning">
+            Activate
+          </Button>
+        </Form>
+      );
+    }
+  };
+    
   return (
     <div>
       {user && (
@@ -168,44 +219,8 @@ function AdminTutorDetail() {
                   )}
                 </ListGroup.Item>
                 <ListGroup variant="flush">
-                  <Form onSubmit={handleEditTutor}>
-                    <Form.Group className="mb-3">
-                      <Form.Check
-                        type="checkbox"
-                        id="active"
-                        name="active"
-                        className="form-check-input"
-                        label="Active"
-                        checked={active}
-                        onChange={(e) => setActive(e.target.checked)}
-                      />
-                    </Form.Group>
-
-                    <Button type="submit" className="btn btn-warning">
-                      Mark as Active
-                    </Button>
-                  </Form>
-                </ListGroup>
-
-                <ListGroup variant="flush">
-                  <Form onSubmit={handleEditTutor}>
-                    <Form.Group className="mb-3">
-                      <Form.Check
-                        type="checkbox"
-                        id="deactive"
-                        name="deactivate"
-                        className="form-check-input"
-                        label="Deactivate"
-                        checked={inactive}
-                        onChange={(e) => setInActive(e.target.checked)}
-                      />
-                    </Form.Group>
-
-                    <Button type="submit" className="btn btn-warning">
-                      Deactive
-                    </Button>
-                  </Form>
-                </ListGroup>
+        {renderActiveForm()}
+      </ListGroup>
               </ListGroup>
             </Col>
           </Row>

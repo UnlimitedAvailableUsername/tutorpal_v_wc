@@ -146,3 +146,52 @@ export const updateContact =
       });
     }
   };
+
+
+  
+export const addSubject = (formData) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: actionType.SUBJECT_ADD_REQUEST });
+
+    const {
+      userState: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.post(
+      `${BASE_URL}/api/accounts/subjects/`,
+      formData,
+      config
+    );
+
+    console.log("I happened before the dispatch SUBJECT_ADD_SUCCESS");
+
+    dispatch({
+      type: actionType.SUBJECT_ADD_SUCCESS,
+      payload: data,
+    });
+
+    console.log("I happened after the dispatch SUBJECT_ADD_SUCCESS");
+  } catch (error) {
+    if (error.response && error.response.status === 401) {
+      dispatch({ type: userActionType.USER_LOGIN_FAIL });
+      return;
+    }
+
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+
+    dispatch({
+      type: actionType.SUBJECT_ADD_FAIL,
+      payload: message,
+    });
+  }
+};

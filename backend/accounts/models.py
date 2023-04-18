@@ -163,6 +163,13 @@ class User(AbstractBaseUser):
     ###########################################################
     ###########################################################
 
+    def save(self, *args, **kwargs):
+        # Hash the password if it is set
+        if self.password:
+            self.set_password(self.password)
+
+        super().save(*args, **kwargs)
+
 
 class Review(models.Model):
     user_tutor = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='reviews_received')

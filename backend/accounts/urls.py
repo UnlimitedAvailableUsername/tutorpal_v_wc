@@ -10,7 +10,9 @@ urlpatterns = [
 
     path('users/tutors/', views.users_tutor_list, name="tutors"),
     path('users/tutors/<int:id>/schedules/', views.schedule_list_of_tutor, name='schedules_of_tutor'),
-    path('users/tutor/students/', views.my_students_list_view, name="student_list_of_tutor"),
+    
+    path('users/tutors/students/', views.my_students_list_view, name="student_list_for_tutor"),
+    path('users/tutors/students/<int:id>/', views.get_student_details_and_orders, name="student_details_for_tutor"),
 
     path('users/students/', views.users_student_list, name="students"),
 

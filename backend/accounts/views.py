@@ -543,17 +543,51 @@ def my_students_list_view(request):
     # Get the authenticated user
     user = request.user
 
-    # Get all the schedule orders that belong to the user as a tutor
-    schedule_orders = ScheduleOrder.objects.filter(tutor=user)
+    # Get all the schedules that the user owns
+    schedules = user.schedule_set.all()
 
-    # Get the unique set of users that have created those schedule orders
-    student_users = User.objects.filter(
-        Q(scheduleorder__in=schedule_orders) & Q(scheduleorder__schedules__owner=user)
-    ).distinct()
+    # Get all the schedule orders that contain those schedules and their respective users
+    users = []
+    for schedule in schedules:
+        for schedule_order_item in schedule.scheduleorderitem_set.all():
+            schedule_order = schedule_order_item.schedule_order
+            if schedule_order.user.id not in [u['id'] for u in users]:
+                user_dict = UserSerializer(schedule_order.user).data
+                # Get ScheduleOrders for this user
+                user_orders = ScheduleOrder.objects.filter(user=schedule_order.user, schedules__owner=user)
+                # Serialize the ScheduleOrders and add them to the user_dict
+                user_orders_data = ScheduleOrderSerializer(user_orders, many=True).data
+                user_dict['orders'] = user_orders_data
+                users.append(user_dict)
 
-    # Serialize the student users and return the response
-    serializer = UserSerializer(student_users, many=True)
-    return Response(serializer.data)
+    return Response(users)
+
+#################################################################
+# THIS WILL DISPLAY THE STUDENT OF TUTOR BASED ON SCHEDULE ORDERS
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_student_details_and_orders(request, id):
+    try:
+        # Get the user with the given id
+        user = User.objects.get(id=id)
+    except User.DoesNotExist:
+        # If the user does not exist, return an error response
+        return Response({'error': f'User with id {id} does not exist'}, status=status.HTTP_404_NOT_FOUND)
+
+    # Get all the schedule orders that contain the requested user's ID and the authenticated user's owned schedules
+    schedule_orders = ScheduleOrder.objects.filter(user=user, schedules__owner=request.user)
+
+    # Serialize the schedule orders and add them to the user_dict
+    user_dict = UserSerializer(user).data
+    user_orders_data = ScheduleOrderSerializer(schedule_orders, many=True).data
+    user_dict['orders'] = user_orders_data
+
+    # If no matching schedule orders were found, return an error response
+    if not user_orders_data:
+        return Response({'error': f'User with id {id} does not have any ordered schedules'}, status=status.HTTP_404_NOT_FOUND)
+
+    return Response(user_dict)
 
 ########################################################################
 # THIS VIEW IS FOR THE CURRENT USER TUTOR LOGGED IN

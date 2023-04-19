@@ -64,7 +64,7 @@ function App() {
                     <Route path="/tutors-admit" element={ userInfo && userInfo.staff ? <AdminTutor /> : <Navigate to="/" />} exact />
                     <Route path="/tutors-admit/details/:tutorId" element={ userInfo && userInfo.staff ? <AdminTutorDetail /> : <Navigate to="/" />} exact />
                     <Route path="/subject-admin" element={ userInfo && userInfo.staff ? <AddSubject /> : <Navigate to="/" />} exact />
-                    <Route path="/subject-edit/:subectId" element={ userInfo && userInfo.staff ? <EditSubject /> : <Navigate to="/" />} exact />
+                    <Route path="/subject-edit/:subjectId" element={ userInfo && userInfo.staff ? <EditSubject /> : <Navigate to="/" />} exact />
 
                     <Route path="/my-schedule-orders/" element={ userInfo && userInfo.student ? <ScheduleOrderListScreen /> : <Navigate to ="/login"/>} exact />
                     <Route path="/my-schedule-orders/:scheduleOrderId/" element={ userInfo && userInfo.student ? <ScheduleOrderDetailsScreen /> : <Navigate to ="/login"/>} exact />

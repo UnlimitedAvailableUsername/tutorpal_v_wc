@@ -9,7 +9,7 @@ import { addContactReducer, addSubjectReducer, subjectDetailsReducer, subjectLis
 import { contactDetailsReducer, contactListReducer, } from "./reducers/contactReducer";
 import { listReviewsReducer, reviewReducer } from "./reducers/reviewsReducer";
 import { scheduleOrderDetailsReducer, scheduleOrderListReducer, scheduleOrderPayReducer } from "./reducers/scheduleOrderReducer";
-import { studentsListReducer } from "./reducers/studentsReducer"
+import { studentsListReducer, studentDetailsReducer } from "./reducers/studentsReducer"
 
 const reducers = combineReducers({
   userState: userLoginReducer,
@@ -18,6 +18,7 @@ const reducers = combineReducers({
   userRegister: userRegisterReducer,
 
   studentsListState: studentsListReducer,
+  studentDetailsState: studentDetailsReducer,
   
   tutorList: tutorListReducer,
   tutorDetails: tutorDetailsReducer,

@@ -21,6 +21,8 @@ import AdminTutor from "./components/screens/AdminTutorScreen/AdminTutor";
 import ListContactdone from "./components/screens/ListContactsScreen/ListContactdone";
 import Header from "./components/elements/Header";
 import AdminTutorDetail from "./components/screens/AdminTutorScreen/AdminTutorDetail";
+import AddSubject from "./components/screens/AdminTutorScreen/AddSubject";
+import EditSubject from "./components/screens/AdminTutorScreen/EditSubject";import ScheduleOrderDetailsScreen from "./components/screens/ScheduleOrderDetailsScreen/ScheduleOrderDetailsScreen";
 import ScheduleOrderDetailsScreen from "./components/screens/ScheduleOrderDetailsScreen/ScheduleOrderDetailsScreen";
 import ScheduleOrderListScreen from "./components/screens/ScheduleOrderListScreen/ScheduleOrderListScreen";
 
@@ -61,6 +63,8 @@ function App() {
                     <Route path="/schedule-details/:scheduleId" element={ userInfo && userInfo.staff ? <EditSchedule /> : <Navigate to="/" />} exact />
                     <Route path="/tutors-admit" element={ userInfo && userInfo.staff ? <AdminTutor /> : <Navigate to="/" />} exact />
                     <Route path="/tutors-admit/details/:tutorId" element={ userInfo && userInfo.staff ? <AdminTutorDetail /> : <Navigate to="/" />} exact />
+                    <Route path="/subject-admin" element={ userInfo && userInfo.staff ? <AddSubject /> : <Navigate to="/" />} exact />
+                    <Route path="/subject-edit/:subectId" element={ userInfo && userInfo.staff ? <EditSubject /> : <Navigate to="/" />} exact />
 
                     <Route path="/my-schedule-orders/" element={ userInfo && userInfo.student ? <ScheduleOrderListScreen /> : <Navigate to ="/login"/>} exact />
                     <Route path="/my-schedule-orders/:scheduleOrderId/" element={ userInfo && userInfo.student ? <ScheduleOrderDetailsScreen /> : <Navigate to ="/login"/>} exact />

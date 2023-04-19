@@ -25,6 +25,7 @@ import AddSubject from "./components/screens/AdminTutorScreen/AddSubject";
 import EditSubject from "./components/screens/AdminTutorScreen/EditSubject";
 import ScheduleOrderDetailsScreen from "./components/screens/ScheduleOrderDetailsScreen/ScheduleOrderDetailsScreen";
 import ScheduleOrderListScreen from "./components/screens/ScheduleOrderListScreen/ScheduleOrderListScreen";
+import AdminUserList from "./components/screens/AdminTutorScreen/AdminUserList";
 
 function App() {
 
@@ -65,6 +66,7 @@ function App() {
                     <Route path="/tutors-admit/details/:tutorId" element={ userInfo && userInfo.staff ? <AdminTutorDetail /> : <Navigate to="/" />} exact />
                     <Route path="/subject-admin" element={ userInfo && userInfo.staff ? <AddSubject /> : <Navigate to="/" />} exact />
                     <Route path="/subject-edit/:subjectId" element={ userInfo && userInfo.staff ? <EditSubject /> : <Navigate to="/" />} exact />
+                    <Route path="/user-list" element={ userInfo && userInfo.staff ? <AdminUserList /> : <Navigate to="/" />} exact />
 
                     <Route path="/my-schedule-orders/" element={ userInfo && userInfo.student ? <ScheduleOrderListScreen /> : <Navigate to ="/login"/>} exact />
                     <Route path="/my-schedule-orders/:scheduleOrderId/" element={ userInfo && userInfo.student ? <ScheduleOrderDetailsScreen /> : <Navigate to ="/login"/>} exact />

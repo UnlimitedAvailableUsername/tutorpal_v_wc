@@ -74,7 +74,7 @@ function AddSubject() {
                 </td>
                                 
                 <td>
-                  <Link to={`/schedule-details/${subject.id}`}>
+                  <Link to={`/subject-edit/${subject.id}`}>
                     <button type="button" className="btn btn-warning">
                       Edit
                     </button>

@@ -37,7 +37,7 @@ const reducers = combineReducers({
   adminlistTutors: admintutorListReducer,
   addSubject : addSubjectReducer,
   subjectList : subjectListReducer,
-  subjectDetails : subjectDetailsReducer,
+  subjectDetails: subjectDetailsReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

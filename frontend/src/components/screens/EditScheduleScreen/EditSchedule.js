@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, ListGroup, Container, } from "react-bootstrap";
-import { Link, useParams, useNavigate} from "react-router-dom";
+import { Row, Col, ListGroup, Container } from "react-bootstrap";
+import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { listScheduleDetails, updateSchedule, } from "../../../features/redux/actions/scheduleAction";
+import {
+  listScheduleDetails,
+  updateSchedule,
+} from "../../../features/redux/actions/scheduleAction";
 
 function EditSchedule() {
   const { scheduleId } = useParams();
   const [name, setName] = useState("");
-  const [count_in_stock, setCountInStock] = useState("");
+  const [countInStock, setCountInStock] = useState("");
 
   const dispatch = useDispatch();
   const scheduleDetails = useSelector((state) => state.scheduleDetails);
@@ -17,36 +20,49 @@ function EditSchedule() {
     dispatch(listScheduleDetails(scheduleId));
   }, [dispatch, scheduleId]);
 
-  const EditSchedule = async () => {
-    let formField = new FormData();
+  const handleUpdate = async () => {
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("count_in_stock", countInStock);
 
-    formField.append("name", name);
-    formField.append("count_in_stock", count_in_stock);
-
-    dispatch(EditSchedule({ scheduleId: parseInt(scheduleId), ...(name && {name}), ... (count_in_stock && {count_in_stock}) }))
+    dispatch(
+      updateSchedule(parseInt(scheduleId), {
+        ...(name && { name }),
+        ...(countInStock && { count_in_stock: countInStock }),
+      })
+    );
+    
+    window.location.reload(); // reload the page
+    
   };
+
   return (
     <div>
-      
-
       <Container>
-        <Link to="/myschedule" className="btn btn-warning btn-outline-dark py-3 my-5"  >My schedules</Link>
+        <Link
+          to="/myschedule"
+          className="btn btn-warning btn-outline-dark py-3 my-5"
+        >
+          My schedules
+        </Link>
         <Row>
-
-        <Col md={{ span: 3 }} style={{ position: "relative" }}>
+          <Col md={{ span: 3 }} style={{ position: "relative" }}>
             <ListGroup variant="flush">
               <ListGroup.Item style={{ backgroundColor: "#404040" }}>
-                <h6> Date: <br></br>
-                {schedule && schedule.name}
+                <h6>
+                  {" "}
+                  Date: <br></br>
+                  {schedule && schedule.name}
                 </h6>
               </ListGroup.Item>
 
               <ListGroup.Item style={{ backgroundColor: "#404040" }}>
-                <h6> Date: <br></br>
-                {schedule && schedule.count_in_stock}
+                <h6>
+                  {" "}
+                  Date: <br></br>
+                  {schedule && schedule.count_in_stock}
                 </h6>
               </ListGroup.Item>
-
             </ListGroup>
           </Col>
 
@@ -54,20 +70,29 @@ function EditSchedule() {
             <ListGroup variant="flush">
               <ListGroup.Item style={{ backgroundColor: "#404040" }}>
                 <Row>
-                  <Col md={{ span: 2 }}> Name:</Col>
+                  <Col md={{ span: 2 }}>Update:</Col>
                   <Col style={{ maxWidth: "90vw", overflowWrap: "break-word" }}>
-                  {schedule && schedule.name}
-                  </Col>
-                </Row>
-
-                <Row>
-                  <Col md={{ span: 2 }}> Hours Remaining:</Col>
-                  <Col style={{ maxWidth: "90vw", overflowWrap: "break-word" }}>
-                  {schedule && schedule.count_in_stock}
+                    <input
+                      type="text"
+                      placeholder="Name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                    />
+                    <input
+                      type="text"
+                      placeholder="Count in Stock"
+                      value={countInStock}
+                      onChange={(e) => setCountInStock(e.target.value)}
+                    />   
+                    <button
+                      className="btn btn-warning btn-sm"
+                      onClick={handleUpdate}
+                    > 
+                      Update
+                    </button>{" "}
                   </Col>
                 </Row>
               </ListGroup.Item>
-
             </ListGroup>
           </Col>
         </Row>

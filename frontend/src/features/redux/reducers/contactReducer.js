@@ -131,31 +131,36 @@ export const subjectListReducer = (state = initialState, action) => {
 };
 
 
-export const subjectDetailsReducer = (state = initialState, action) => {
-  switch (action.type) {
+const subjectDetailsInitialState = {
+	loading: false,
+	schedule: null,
+	error: null,
+};
 
-      case actionType.SUBJECT_DETAILS_REQUEST:
-          return {
-              ...state, 
-              loading:true
-          };
+/* REDUCER USED IN ProductScreen COMPONENT */
+export const subjectDetailsReducer = ( state = subjectDetailsInitialState, action ) => {
+	switch (action.type) {
+		case actionType.SUBJECT_DETAILS_REQUEST:
+			return {
+				...state,
+				loading: true,
+			};
 
-      case actionType.SUBJECT_DETAILS_SUCCESS:
-          return {
-              ...state, 
-              loading:false, 
-              subject: action.payload
-          };
+		case actionType.SUBJECT_DETAILS_SUCCESS:
+			return {
+				...state,
+				loading: false,
+				subject: action.payload,
+			};
 
-      case actionType.SUBJECT_DETAILS_FAIL:
-          return {
-              ...state, 
-              loading:false, 
-              error: action.payload
-          };
-      
-      default:
-          return state;
+		case actionType.SUBJECT_DETAILS_FAIL:
+			return {
+				...state,
+				loading: false,
+				error: action.payload,
+			};
 
-  }
+		default:
+			return state;
+	};
 };

@@ -23,7 +23,7 @@ import Header from "./components/elements/Header";
 import ScheduleOrderDetails from "./components/screens/ScheduleOrderDetails/ScheduleOrderDetails";
 import AdminTutorDetail from "./components/screens/AdminTutorScreen/AdminTutorDetail";
 import AddSubject from "./components/screens/AdminTutorScreen/AddSubject";
-
+import EditSubject from "./components/screens/AdminTutorScreen/EditSubject";
 function App() {
 
     const userLogin = useSelector((state) => state.userState);
@@ -63,6 +63,7 @@ function App() {
                             <Route path="/tutors-admit" element={<AdminTutor />} exact />
                             <Route path="/tutors-admit/details/:tutorId" element={<AdminTutorDetail />} exact />
                             <Route path="/subject-admin" element={<AddSubject />} exact />
+                            <Route path="/subject-edit/:subectId" element={<EditSubject />} exact />
                         </>
                     ) : (
                         null

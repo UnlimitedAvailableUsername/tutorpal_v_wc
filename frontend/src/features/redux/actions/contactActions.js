@@ -233,33 +233,48 @@ export const listSubjects = () => async (dispatch, getState) => {
   }
 };
 
-export const listSubjectDetails = (subjectId) => async (dispatch) => {
-  try {
-    dispatch({
-      type: actionType.SUBJECT_DETAILS_REQUEST,
-    });
 
-    const { data } = await axios.get(
-      `${BASE_URL}/api/accounts/subjects/${subjectId}`
-    ); //fetch the products from rest api
+export const listSubjectDetails =
+  (subjectId) => async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: actionType.SUBJECT_DETAILS_REQUEST,
+      });
 
-    dispatch({
-      type: actionType.SUBJECT_DETAILS_SUCCESS,
-      payload: data,
-    });
-  } catch (error) {
-    dispatch({
-      type: actionType.SUBJECT_DETAILS_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    });
-  }
-}
+      const {
+        userState: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.get(
+        `${BASE_URL}/api/accounts/subjects/${subjectId}/`,
+        config
+      ); //fetch the products from rest api
+
+      dispatch({
+        type: actionType.SUBJECT_DETAILS_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: actionType.SUBJECT_DETAILS_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+
 
 export const updateSubject =
-  (subjectId, contact) => async (dispatch, getState) => {
+  (subjectId, subject) => async (dispatch, getState) => {
     try {
       dispatch({ type: actionType.SUBJECT_UPDATE_REQUEST });
 
@@ -275,8 +290,8 @@ export const updateSubject =
       };
 
       const { data } = await axios.put(
-        `${BASE_URL}/api/accounts/subjects/${subjectId}`,
-        contact,
+        `${BASE_URL}/api/accounts/subjects/${subjectId}/`,
+        subject,
         config
       );
 

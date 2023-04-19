@@ -3,10 +3,13 @@ import { Button, Card, Col, Container, ListGroup, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux'
 import LoadingIconBig from '../../elements/Loader/LoadingIconBig';
 import MessageAlert from '../../elements/MessageAlert';
-import { getOrderScheduleDetails } from '../../../features/redux/actions/scheduleOrderActions';
+import { getOrderScheduleDetails, payScheduleOrder } from '../../../features/redux/actions/scheduleOrderActions';
 import { useParams } from 'react-router';
 import * as actionType from '../../../features/redux/constants/scheduleOrderConstants'
 import { Link } from 'react-router-dom';
+import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
+import { PAYPAL_CLIENT_ID } from '../../../config';
+
 
 function ScheduleOrderDetailsScreen() {
 
@@ -26,6 +29,11 @@ function ScheduleOrderDetailsScreen() {
 
   const userState = useSelector((state) => state.userState);
   const { userInfo } = userState;
+
+  const initialOptions = {
+    "client-id": `${PAYPAL_CLIENT_ID}`,
+    currency: "PHP",
+  };
 
   return (
     <Container className='my-5'>
@@ -99,9 +107,9 @@ function ScheduleOrderDetailsScreen() {
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <h2>Meeting Session</h2>
-                  { scheduleOrder.paid_status ? (
+                  { scheduleOrder.session_status ? (
                     <MessageAlert variant='success'>
-                      Paid on {scheduleOrder.session_status ? scheduleOrder.paid_date.substring(0, 10) : null}
+                      {scheduleOrder.session_status}
                     </MessageAlert>
                   ) : (
                     <MessageAlert variant="info">Meeting not yet initialized</MessageAlert>
@@ -121,11 +129,35 @@ function ScheduleOrderDetailsScreen() {
                         Total Price:
                       </Col>
                       <Col>
-                        {scheduleOrder.total_amount}
+                        {scheduleOrder.total_amount}&nbsp;&nbsp;Php
                       </Col>
                     </Row>
                   </ListGroup.Item>
-
+                    <ListGroup.Item>
+                      {!scheduleOrder.paid_status && (
+                        <PayPalScriptProvider options={initialOptions} >
+                          <PayPalButtons
+                            style={{ backgroundColor: 'transparent' }}
+                            createOrder={(data, actions) => {
+                              return actions.order.create({
+                                purchase_units: [{
+                                  amount: {
+                                    value: `${scheduleOrder.total_amount}`,
+                                  },
+                                }]
+                              })
+                            }}
+                            onApprove={(data, actions) => {
+                              return actions.order.capture().then(function(details) {
+                                dispatch(payScheduleOrder(scheduleOrderId, details)).then(() => {
+                                  window.location.reload();
+                                });
+                              });
+                            }}
+                          />
+                        </PayPalScriptProvider>
+                      )}
+                    </ListGroup.Item>
                 </ListGroup>
                 {userInfo && (userInfo.tutor || userInfo.staff) && (
                   <ListGroup.Item>

@@ -148,7 +148,7 @@ export const getOrderScheduleDetails = (scheduleOrderId) => async (dispatch, get
 };
 
 
-export const payScheduleOrder = (orderId, paymentResult) => async (dispatch, getState) => {
+export const payScheduleOrder = (scheduleOrderId, details) => async (dispatch, getState) => {
   try {
     dispatch({ type: actionType.SCHEDULE_ORDER_PAY_REQUEST });
 
@@ -164,8 +164,8 @@ export const payScheduleOrder = (orderId, paymentResult) => async (dispatch, get
     };
 
     const { data } = await axios.put(
-      `${BASE_URL}/api/accounts/schedule_orders/${orderId}/mark_as_paid/`,
-      paymentResult,
+      `${BASE_URL}/api/accounts/schedule_orders/${scheduleOrderId}/mark_as_paid/`,
+      details,
       config
     );
 

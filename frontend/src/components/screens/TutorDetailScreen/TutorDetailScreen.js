@@ -106,12 +106,7 @@ function TutorDetailScreen() {
 
                 <ListGroup.Item style={{ backgroundColor: "#404040" }}>
                   <Row className="p-3">
-                    <Button
-                      variant="warning"
-                      className="btn-outline-dark"
-                      disabled={isDisabled}
-                      onClick={handleEnroll}
-                    >
+                    <Button variant="warning" className="btn-outline-dark" disabled={isDisabled} onClick={handleEnroll} >
                       <strong>Enroll Now</strong>
                     </Button>
                   </Row>
@@ -127,7 +122,6 @@ function TutorDetailScreen() {
                     <Col >
                       <p >{user.bio}</p>
                       <br />
-                      <br />
                     </Col>
                   </Row>
                 </ListGroup.Item>
@@ -135,43 +129,29 @@ function TutorDetailScreen() {
                 <ListGroup.Item style={{ backgroundColor: "#404040" }}>
                   <Row>
                     <Col md={{ span: 2 }}> Subjects</Col>
-                    {user.subjects.map((subject) => (
-                      <li key={subject.id}>{subject.subject_title}</li>
-                    ))}
+                    <Col>
+                      {user.subjects.map((subject) => (
+                        <li key={subject.id}>{subject.subject_title}</li>
+                      ))}
+                    </Col>
                     <Col>
                     </Col>
                   </Row>
                 </ListGroup.Item>
 
                 <ListGroup.Item style={{ backgroundColor: "#404040" }}>
-                  <Row>
-                    <Col md={{ span: 2 }}> Policies</Col>
-                    <Col>
-                      {user.policies}
-                      <br />
-                      <br />
-                    </Col>
-                  </Row>
-                </ListGroup.Item>
-
-                <ListGroup.Item style={{ backgroundColor: "#404040" }}>
-                  {user.schedules && user.schedules.length > 0 ? (
-                    <div>
-                      <div>Schedule:</div>
-                      <div>
-                        {user.schedules.map((schedule, index) => (
-                          <React.Fragment key={schedule._id}>
-                            {index > 0 && ", "}
-                            {schedule.name}
-                            {schedule.price}
-
-                          </React.Fragment>
-                        ))}
-                      </div>
-                    </div>
-                  ) : (
-                    <div>No schedules available at the moment</div>
-                  )}
+                    <Row>
+                      <Col md={{ span: 2 }}>Schedule:</Col>
+                      {user.schedules && user.schedules.length > 0 ? (
+                        <Col>
+                          {user.schedules.map((schedule, index) => (
+                            <li key={schedule._id}>{schedule.name}</li>
+                          ))}
+                        </Col>
+                      ) : (
+                        <Col>No schedules available at the moment</Col>
+                      )}
+                    </Row>
                 </ListGroup.Item>
               </ListGroup>
             </Col>

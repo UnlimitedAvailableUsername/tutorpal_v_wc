@@ -5,14 +5,20 @@ import LoadingIconBig from '../../elements/Loader/LoadingIconBig';
 import MessageAlert from '../../elements/MessageAlert';
 import { getOrderScheduleDetails } from '../../../features/redux/actions/scheduleOrderActions';
 import { useParams } from 'react-router';
+import * as actionType from '../../../features/redux/constants/scheduleOrderConstants'
+import { Link } from 'react-router-dom';
 
-function ScheduleOrderDetails() {
+function ScheduleOrderDetailsScreen() {
 
   const { scheduleOrderId } = useParams();
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getOrderScheduleDetails(scheduleOrderId));
+     // Cleanup function
+    return () => {
+      dispatch({ type: actionType.SCHEDULE_ORDER_DETAILS_RESET });
+    };
   }, [dispatch, scheduleOrderId]);
 
   const scheduleOrderState = useSelector((state) => state.scheduleOrderState);
@@ -22,7 +28,10 @@ function ScheduleOrderDetails() {
   const { userInfo } = userState;
 
   return (
-    <Container>
+    <Container className='my-5'>
+      <Link to="/my-schedule-orders">
+        <Button variant="warning" className='p-3 mb-3'>Back to my list</Button>
+      </Link>
       { loading ? (
         <LoadingIconBig />
       ) : error ? (
@@ -53,14 +62,26 @@ function ScheduleOrderDetails() {
                             <Col md={4}>
                               {schedule.name}
                             </Col>
-                            <Col md={4}>
-                              {schedule.quantity} x {schedule.price}
+                            <Col md={4} >
+                              {schedule.quantity}&nbsp;hours&nbsp;&nbsp;&nbsp;&nbsp;x&nbsp;&nbsp;&nbsp;&nbsp;{schedule.price.toFixed(2)}&nbsp;Php
                             </Col>
                           </Row>
                         </ListGroup.Item>
                       ))}
                     </ListGroup>
                   )}
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  <h2>Student's Message</h2>
+                  <Row>
+                    <Col>
+                      {scheduleOrder.message ? (
+                        scheduleOrder.message
+                      ) : (
+                        <span>No message</span>
+                      )}
+                    </Col>
+                  </Row>
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <h2>Payment</h2>
@@ -120,4 +141,4 @@ function ScheduleOrderDetails() {
   )
 }
 
-export default ScheduleOrderDetails
+export default ScheduleOrderDetailsScreen;

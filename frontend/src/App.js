@@ -1,4 +1,4 @@
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import Footer from "./components/elements/Footer";
 import HomeScreen from "./components/screens/HomeScreen/HomeScreen";
 import TutorListScreen from "./components/screens/TutorListScreen/TutorListScreen";
@@ -20,8 +20,9 @@ import ChooseScheduleScreen from "./components/screens/ChooseScheduleScreen/Choo
 import AdminTutor from "./components/screens/AdminTutorScreen/AdminTutor";
 import ListContactdone from "./components/screens/ListContactsScreen/ListContactdone";
 import Header from "./components/elements/Header";
-import ScheduleOrderDetails from "./components/screens/ScheduleOrderDetails/ScheduleOrderDetails";
 import AdminTutorDetail from "./components/screens/AdminTutorScreen/AdminTutorDetail";
+import ScheduleOrderDetailsScreen from "./components/screens/ScheduleOrderDetailsScreen/ScheduleOrderDetailsScreen";
+import ScheduleOrderListScreen from "./components/screens/ScheduleOrderListScreen/ScheduleOrderListScreen";
 
 function App() {
 
@@ -53,20 +54,16 @@ function App() {
 
                     <Route path="/contact-us" element={<ContactScreen />} exact />
                     <Route path="/contact-success" element={<SuccessScreen />} exact />
-                    {userInfo && userInfo.staff ? (
-                        <>
-                            <Route path="/concern-list" element={<ListContact />} exact />
-                            <Route path="/contact-details/:contactId" element={<ContactDetail />} exact />
-                            <Route path="/concern-list/done" element={<ListContactdone />} exact />
-                            <Route path="/schedule-details/:scheduleId" element={<EditSchedule />} exact />
-                            <Route path="/tutors-admit" element={<AdminTutor />} exact />
-                            <Route path="/tutors-admit/details/:tutorId" element={<AdminTutorDetail />} exact />
-                        </>
-                    ) : (
-                        null
-                    )}
 
-                    <Route path="/my-schedule-orders/:scheduleOrderId/" element={<ScheduleOrderDetails />} exact />
+                    <Route path="/concern-list" element={ userInfo && userInfo.staff ? <ListContact /> : <Navigate to="/" /> } exact />
+                    <Route path="/contact-details/:contactId" element={ userInfo && userInfo.staff ? <ContactDetail /> : <Navigate to="/" />} exact />
+                    <Route path="/concern-list/done" element={ userInfo && userInfo.staff ? <ListContactdone /> : <Navigate to="/" />} exact />
+                    <Route path="/schedule-details/:scheduleId" element={ userInfo && userInfo.staff ? <EditSchedule /> : <Navigate to="/" />} exact />
+                    <Route path="/tutors-admit" element={ userInfo && userInfo.staff ? <AdminTutor /> : <Navigate to="/" />} exact />
+                    <Route path="/tutors-admit/details/:tutorId" element={ userInfo && userInfo.staff ? <AdminTutorDetail /> : <Navigate to="/" />} exact />
+
+                    <Route path="/my-schedule-orders/" element={ userInfo && userInfo.student ? <ScheduleOrderListScreen /> : <Navigate to ="/login"/>} exact />
+                    <Route path="/my-schedule-orders/:scheduleOrderId/" element={ userInfo && userInfo.student ? <ScheduleOrderDetailsScreen /> : <Navigate to ="/login"/>} exact />
 
                     <Route path="/about-us" element={<AboutUsScreen />} exact />
                     <Route path="*" element={<DoesNotExistScreen />} />

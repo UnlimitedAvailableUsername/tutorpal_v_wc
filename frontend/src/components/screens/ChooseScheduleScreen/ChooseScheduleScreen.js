@@ -5,8 +5,8 @@ import { createOrderSchedule } from '../../../features/redux/actions/scheduleOrd
 import { listSchedules } from '../../../features/redux/actions/scheduleAction';
 import { Button, Container, Form, FormControl, InputGroup, Spinner, Table } from 'react-bootstrap';
 import LoadingIconBig from '../../elements/Loader/LoadingIconBig';
-import NumericInput from 'react-numeric-input';
 import MessageAlert from '../../elements/MessageAlert';
+import * as actionType from '../../../features/redux/constants/scheduleOrderConstants'
 
 
 function ChooseScheduleScreen() {
@@ -19,14 +19,21 @@ function ChooseScheduleScreen() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  
+  useEffect(() => {
+    dispatch({ type: actionType.SCHEDULE_ORDER_CREATE_RESET });
+  }, [dispatch]);
+
   useEffect(() => {
     dispatch(listSchedules(tutorId));
   }, [dispatch, tutorId]);
-
+  
   const { loading: schedulesLoading, error: schedulesError, schedules } = useSelector((state) => state.scheduleList);
   const { loading: orderLoading, error: orderError, scheduleOrder } = useSelector((state) => state.scheduleOrderState);
+
+
   useEffect(() => {
-    if (scheduleOrder) {
+    if (scheduleOrder && Object.keys(scheduleOrder).length > 0) {
       const scheduleOrderId = scheduleOrder.id;
       navigate(`/my-schedule-orders/${scheduleOrderId}`);
     }
@@ -107,6 +114,14 @@ function ChooseScheduleScreen() {
     });
   };
 
+  const handleMessageChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const updatedFormData = {
@@ -114,7 +129,7 @@ function ChooseScheduleScreen() {
       tutor: parseInt(tutorId)
     };
     console.log(updatedFormData);
-    dispatch(createOrderSchedule(updatedFormData))
+    dispatch(createOrderSchedule(updatedFormData));
   };
 
   const calculateTotalPrice = () => {
@@ -208,7 +223,7 @@ function ChooseScheduleScreen() {
                 name="message"
                 style={{ resize: 'vertical' }}
                 value={formData.message}
-                onChange={handleInputChange}
+                onChange={handleMessageChange}
               />
             </Form.Group>
             {orderError && !orderLoading && <MessageAlert variant='danger'>{orderError}</MessageAlert>}

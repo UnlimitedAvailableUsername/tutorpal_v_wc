@@ -1,15 +1,17 @@
 import * as actionType from '../constants/scheduleOrderConstants'
 
 
-const scheduleOrderListMineInitialState = {
+const scheduleOrderListInitialState = {
     loading: false,
     error: null,
+    success: null,
     scheduleOrders: [],
 }
 
-export const scheduleOrderListMineReducer = (state = scheduleOrderListMineInitialState, action) => {
+export const scheduleOrderListReducer = (state = scheduleOrderListInitialState, action) => {
     switch (action.type) {
       case actionType.SCHEDULE_ORDER_MY_LIST_REQUEST:
+      case actionType.SCHEDULE_ORDER_ME_ON_LIST_REQUEST:
         return {
             ...state,
           loading: true,
@@ -17,70 +19,34 @@ export const scheduleOrderListMineReducer = (state = scheduleOrderListMineInitia
         };
   
       case actionType.SCHEDULE_ORDER_MY_LIST_SUCCESS:
+      case actionType.SCHEDULE_ORDER_ME_ON_LIST_SUCCESS:
         return {
             ...state,
           loading: false,
+          success: true,
           scheduleOrders: action.payload,
         };
   
       case actionType.SCHEDULE_ORDER_MY_LIST_FAIL:
+      case actionType.SCHEDULE_ORDER_ME_ON_LIST_FAIL:
         return {
             ...state,
           loading: false,
+          success: false,
           error: action.payload,
         };
   
       // WHEN USER LOGS OUT WE WANT ALL DATA REGARDING ORDERS TO BE RESET AS WELL
       case actionType.SCHEDULE_ORDER_MY_LIST_RESET:
+      case actionType.SCHEDULE_ORDER_ME_ON_LIST_RESET:
         return { 
-            ...scheduleOrderListMineInitialState,
+            ...scheduleOrderListInitialState,
          };
   
       default:
         return state;
     };
 };
-
-
-const scheduleOrderListWithMeInitialState = {
-    loading: false,
-    error: null,
-    scheduleOrdersWithMe: []
-};
-
-export const scheduleOrderListWithMeReducer = (state = scheduleOrderListWithMeInitialState, action) => {
-    switch (action.type) {
-        case actionType.SCHEDULE_ORDER_ME_ON_LIST_REQUEST:
-          return {
-              ...state,
-            loading: true,
-            error: false,
-          };
-    
-        case actionType.SCHEDULE_ORDER_ME_ON_LIST_SUCCESS:
-          return {
-              ...state,
-            loading: false,
-            scheduleOrders: action.payload,
-          };
-    
-        case actionType.SCHEDULE_ORDER_ME_ON_LIST_FAIL:
-          return {
-              ...state,
-            loading: false,
-            error: action.payload,
-          };
-    
-        // WHEN USER LOGS OUT WE WANT ALL DATA REGARDING ORDERS TO BE RESET AS WELL
-        case actionType.SCHEDULE_ORDER_ME_ON_LIST_RESET:
-          return { 
-              ...scheduleOrderListMineInitialState,
-           };
-    
-        default:
-          return state;
-    };
-}
 
 
 const scheduleOrderDetailsInitialState = {
@@ -116,6 +82,12 @@ export const scheduleOrderDetailsReducer = (state = scheduleOrderDetailsInitialS
                 loading: false,
                 error: action.payload,
             };
+
+        case actionType.SCHEDULE_ORDER_CREATE_RESET:
+        case actionType.SCHEDULE_ORDER_DETAILS_RESET:
+            return {
+                ...scheduleOrderDetailsInitialState,
+            }
 
         default:
             return state

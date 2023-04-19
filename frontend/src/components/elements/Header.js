@@ -60,7 +60,7 @@ function Header() {
               </>
             ) : userInfo && userInfo.student ? (
               <>
-                <NavLink as={Link} to="/myscheduleorders">Booked Schedules</NavLink>
+                <NavLink as={Link} to="/my-schedule-orders">Booked Schedules</NavLink>
               </>
             ) : null}
           </Nav>

@@ -58,7 +58,7 @@ export const listMyScheduleOrders = () => async (dispatch, getState) => {
     };
 
     const { data } = await axios.get(
-      `${BASE_URL}/api/schedule_orders/my_list/`,
+      `${BASE_URL}/api/accounts/schedule_orders/my_list/`,
       config
     );
 

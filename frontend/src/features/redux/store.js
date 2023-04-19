@@ -8,7 +8,7 @@ import { scheduleListReducer, scheduleDetailsReducer, } from "./reducers/schedul
 import { addContactReducer } from "./reducers/contactReducer";
 import { contactDetailsReducer, contactListReducer, } from "./reducers/contactReducer";
 import { listReviewsReducer, reviewReducer } from "./reducers/reviewsReducer";
-import { scheduleOrderDetailsReducer, scheduleOrderListMineReducer, scheduleOrderListWithMeReducer, scheduleOrderPayReducer } from "./reducers/scheduleOrderReducer";
+import { scheduleOrderDetailsReducer, scheduleOrderListReducer, scheduleOrderPayReducer } from "./reducers/scheduleOrderReducer";
 
 const reducers = combineReducers({
   userState: userLoginReducer,
@@ -31,8 +31,7 @@ const reducers = combineReducers({
 
   scheduleOrderState: scheduleOrderDetailsReducer,
   scheduleOrderPayState: scheduleOrderPayReducer,
-  scheduleOrderListMineState: scheduleOrderListMineReducer,
-  scheduleOrderListWithMeState: scheduleOrderListWithMeReducer,
+  scheduleOrderListState: scheduleOrderListReducer,
 
   adminlistTutors: admintutorListReducer,
 });

@@ -29,8 +29,8 @@ function AddSubject() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(addSubject(formData)).then((response) => {
-      navigate('/');
+    dispatch(addSubject(formData)).then(() => {
+      window.location.reload();
     });
   };
 
@@ -42,18 +42,18 @@ function AddSubject() {
   };
 
   const handleDelete = async (subjectId) => {
-    if (window.confirm("Are you sure you want to delete this schedule?")) {
+    if (window.confirm("Are you sure you want to delete this subject?")) {
       try {
         const subject = subjects.find((subject) => subject.id === subjectId);
         await dispatch(deleteSubject(subjectId, subject));
-        navigate("/subject-admin");
-        window.location.reload(); // <-- add this line
+        window.location.reload(); // <-- modified line, removes navigate("/") call
       } catch (error) {
         console.log(error);
         // handle error
       }
     }
   };
+
 
   return (
     <div style={{ textAlign: 'center' }}>

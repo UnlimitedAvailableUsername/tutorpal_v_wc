@@ -252,6 +252,7 @@ export const listSubjectDetails =
         },
       };
 
+
       const { data } = await axios.get(
         `${BASE_URL}/api/accounts/subjects/${subjectId}/`,
         config
@@ -271,6 +272,7 @@ export const listSubjectDetails =
       });
     }
   };
+
 
 
 export const updateSubject =

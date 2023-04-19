@@ -147,7 +147,7 @@ export const updateContact =
     }
   };
 
-
+//Subjects Part
   
 export const addSubject = (formData) => async (dispatch, getState) => {
   try {
@@ -195,3 +195,145 @@ export const addSubject = (formData) => async (dispatch, getState) => {
     });
   }
 };
+
+
+
+export const listSubjects = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: actionType.SUBJECT_LIST_REQUEST });
+
+    const {
+      userState: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(
+      `${BASE_URL}/api/accounts/subjects/`,
+      config
+    ); //fetch the products from rest api
+
+    dispatch({
+      type: actionType.SUBJECT_LIST_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: actionType.SUBJECT_LIST_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const listSubjectDetails = (subjectId) => async (dispatch) => {
+  try {
+    dispatch({
+      type: actionType.SUBJECT_DETAILS_REQUEST,
+    });
+
+    const { data } = await axios.get(
+      `${BASE_URL}/api/accounts/subjects/${subjectId}`
+    ); //fetch the products from rest api
+
+    dispatch({
+      type: actionType.SUBJECT_DETAILS_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: actionType.SUBJECT_DETAILS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+}
+
+export const updateSubject =
+  (subjectId, contact) => async (dispatch, getState) => {
+    try {
+      dispatch({ type: actionType.SUBJECT_UPDATE_REQUEST });
+
+      const {
+        userState: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          "Content-type": "multipart/form-data",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.put(
+        `${BASE_URL}/api/accounts/subjects/${subjectId}`,
+        contact,
+        config
+      );
+
+      dispatch({
+        type: actionType.SUBJECT_UPDATE_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: actionType.SUBJECT_UPDATE_FAIL,
+        payload:
+          error.response && error.response.data.detail
+            ? error.response.data.detail
+            : error.message,
+      });
+    }
+  };
+
+
+  
+
+  export const deleteSubject =
+  (subjectId) => async (dispatch, getState) => {
+    try {
+      dispatch({ type: actionType.SUBJECT_DELETE_REQUEST });
+
+      const {
+        userState: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+        data: {
+          // Optionally, you can include additional data to be sent along with the delete request
+        }
+      };
+
+      const { data } = await axios.delete(
+        `${BASE_URL}/api/accounts/subjects/${subjectId}/`,
+        config
+      );
+
+      dispatch({
+        type: actionType.SUBJECT_DELETE_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: actionType.SUBJECT_DELETE_FAIL,
+        payload:
+          error.response && error.response.data.detail
+            ? error.response.data.detail
+            : error.message,
+      });
+    }
+  };
+
+

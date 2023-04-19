@@ -147,39 +147,40 @@ export const getOrderScheduleDetails = (scheduleOrderId) => async (dispatch, get
   }
 };
 
-export const payScheduleOrder =
-  (orderId, paymentResult) => async (dispatch, getState) => {
-    try {
-      dispatch({ type: actionType.SCHEDULE_ORDER_PAY_REQUEST });
 
-      const {
-        userState: { userInfo },
-      } = getState();
+export const payScheduleOrder = (orderId, paymentResult) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: actionType.SCHEDULE_ORDER_PAY_REQUEST });
 
-      const config = {
-        headers: {
-          "Content-type": "application/json",
-          Authorization: `Bearer ${userInfo.token}`,
-        },
-      };
+    const {
+      userState: { userInfo },
+    } = getState();
 
-      const { data } = await axios.put(
-        `${BASE_URL}/api/accounts/schedule_orders/${orderId}/mark_as_paid/`,
-        paymentResult,
-        config
-      );
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
 
-      dispatch({
-        type: actionType.SCHEDULE_ORDER_PAY_SUCCESS,
-        payload: data,
-      });
-    } catch (error) {
-      dispatch({
-        type: actionType.SCHEDULE_ORDER_PAY_FAIL,
-        payload:
-          error.response && error.response.data.detail
-            ? error.response.data.detail
-            : error.message,
-      });
-    }
-  };
+    const { data } = await axios.put(
+      `${BASE_URL}/api/accounts/schedule_orders/${orderId}/mark_as_paid/`,
+      paymentResult,
+      config
+    );
+
+    dispatch({
+      type: actionType.SCHEDULE_ORDER_PAY_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: actionType.SCHEDULE_ORDER_PAY_FAIL,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
+

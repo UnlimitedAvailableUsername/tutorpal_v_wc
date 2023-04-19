@@ -8,7 +8,7 @@ function EditSubject() {
   const { subjectId } = useParams();
   const [subject_title, setSubject_title] = useState("");
   const dispatch = useDispatch();
-  const subjectDetails = useSelector((state) => state.contact.subjectDetails);
+  const subjectDetails = useSelector((state) => state.subjectDetails);
   const { subject } = subjectDetails || {};
   
 

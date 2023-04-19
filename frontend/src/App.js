@@ -62,7 +62,7 @@ function App() {
                             <Route path="/schedule-details/:scheduleId" element={<EditSchedule />} exact />
                             <Route path="/tutors-admit" element={<AdminTutor />} exact />
                             <Route path="/tutors-admit/details/:tutorId" element={<AdminTutorDetail />} exact />
-                            <Route path="/add-subject" element={<AddSubject />} exact />
+                            <Route path="/subject-admin" element={<AddSubject />} exact />
                         </>
                     ) : (
                         null

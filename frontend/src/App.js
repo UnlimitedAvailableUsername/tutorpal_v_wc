@@ -22,7 +22,7 @@ import ListContactdone from "./components/screens/ListContactsScreen/ListContact
 import Header from "./components/elements/Header";
 import AdminTutorDetail from "./components/screens/AdminTutorScreen/AdminTutorDetail";
 import AddSubject from "./components/screens/AdminTutorScreen/AddSubject";
-import EditSubject from "./components/screens/AdminTutorScreen/EditSubject";import ScheduleOrderDetailsScreen from "./components/screens/ScheduleOrderDetailsScreen/ScheduleOrderDetailsScreen";
+import EditSubject from "./components/screens/AdminTutorScreen/EditSubject";
 import ScheduleOrderDetailsScreen from "./components/screens/ScheduleOrderDetailsScreen/ScheduleOrderDetailsScreen";
 import ScheduleOrderListScreen from "./components/screens/ScheduleOrderListScreen/ScheduleOrderListScreen";
 

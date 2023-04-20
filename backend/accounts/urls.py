@@ -24,6 +24,7 @@ urlpatterns = [
     path('schedule_orders/create/', views.schedule_order_create, name='schedule_order_create'),
     path('schedule_orders/<int:id>/', views.schedule_order_detail, name='schedule_order_detail'),
     path('schedule_orders/<int:id>/mark_as_paid/', views.schedule_order_mark_as_paid, name='schedule_mark_paid'),
+    path('schedule_orders/<int:id>/mark_as_done/', views.schedule_order_mark_as_meeting_done, name='schedule_mark_session_done'),
     path('schedule_orders/<int:id>/delete/', views.schedule_order_delete, name='schedule_order_delete'),
     path('schedule_orders/', views.schedule_order_list, name='schedule_order_list'),
     path('schedule_orders/me_included/', views.schedule_order_list_me_included, name='schedule_order_list_with_me'),

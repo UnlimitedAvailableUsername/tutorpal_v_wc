@@ -508,6 +508,23 @@ def schedule_order_mark_as_paid(request, id):
     serializer = ScheduleOrderSerializer(schedule_order)
     return Response(serializer.data)
 
+####################################################################
+# THIS WILL UPDATE THE STATUS OF THE MEETING SESSION TO TRUE IF DONE
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def schedule_order_mark_as_meeting_done(request, id):
+    try:
+        schedule_order = ScheduleOrder.objects.get(id=id)
+    except ScheduleOrder.DoesNotExist:
+        return Response({"error": "Schedule order does not exist"}, status=404)
+
+    schedule_order.session_status = True
+    schedule_order.save()
+
+    serializer = ScheduleOrderSerializer(schedule_order)
+    return Response(serializer.data)
+
 #################################################################################
 # THIS WILL LET THE DELETION OF SPECIFIC SCHEDULE ORDER <id>, FOR ADMIN EYES ONLY
 

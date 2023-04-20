@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Card, Col, Container, ListGroup, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux'
 import LoadingIconBig from '../../elements/Loader/LoadingIconBig';
@@ -12,6 +12,7 @@ import { PAYPAL_CLIENT_ID } from '../../../config';
 
 
 function ScheduleOrderDetailsScreen() {
+  const [payPalError, setPayPalError] = useState(null);
 
   const { scheduleOrderId } = useParams();
   const dispatch = useDispatch();
@@ -35,10 +36,34 @@ function ScheduleOrderDetailsScreen() {
     currency: "PHP",
   };
 
+  const paypalOrderApproved = (data, actions) => {
+    return actions.order.create({
+      purchase_units: [{
+        amount: {
+          value: `${scheduleOrder.total_amount}`,
+        },
+      }]
+    })
+  };
+
+  const paypalHandleError = (err) => {
+    setPayPalError(err.message);
+  };
+
+  const paypalCreateOrder = (data, actions) => {
+    return actions.order.create({
+      purchase_units: [{
+        amount: {
+          value: `${scheduleOrder.total_amount}`,
+        },
+      }]
+    })
+  }
+
   return (
     <Container className='my-5'>
       <Link to="/my-schedule-orders">
-        <Button variant="warning" className='p-3 mb-3'>Back to my list</Button>
+        <Button variant="warning" className='p-3 mb-3'>&lt; Back to booked schedules</Button>
       </Link>
       { loading ? (
         <LoadingIconBig />
@@ -71,7 +96,7 @@ function ScheduleOrderDetailsScreen() {
                               {schedule.name}
                             </Col>
                             <Col md={4} >
-                              {schedule.quantity}&nbsp;hours&nbsp;&nbsp;&nbsp;&nbsp;x&nbsp;&nbsp;&nbsp;&nbsp;{schedule.price.toFixed(2)}&nbsp;Php
+                              {schedule.quantity}&nbsp;hours&nbsp;&nbsp;&nbsp;&nbsp;x&nbsp;&nbsp;&nbsp;&nbsp;{schedule.price}&nbsp;Php
                             </Col>
                           </Row>
                         </ListGroup.Item>
@@ -133,31 +158,29 @@ function ScheduleOrderDetailsScreen() {
                       </Col>
                     </Row>
                   </ListGroup.Item>
-                    <ListGroup.Item>
-                      {!scheduleOrder.paid_status && (
-                        <PayPalScriptProvider options={initialOptions} >
-                          <PayPalButtons
-                            style={{ backgroundColor: 'transparent' }}
-                            createOrder={(data, actions) => {
-                              return actions.order.create({
-                                purchase_units: [{
-                                  amount: {
-                                    value: `${scheduleOrder.total_amount}`,
-                                  },
-                                }]
-                              })
-                            }}
-                            onApprove={(data, actions) => {
-                              return actions.order.capture().then(function(details) {
-                                dispatch(payScheduleOrder(scheduleOrderId, details)).then(() => {
-                                  window.location.reload();
-                                });
-                              });
-                            }}
-                          />
-                        </PayPalScriptProvider>
-                      )}
-                    </ListGroup.Item>
+                  {!scheduleOrder.paid_status && (
+                    <PayPalScriptProvider options={initialOptions}>
+                      <div style={{backgroundColor:"white", padding:"12px", borderRadius:"5px"}}>
+                        <PayPalButtons
+                          style={{
+                            color: "black",
+                            shape: "pill",
+                            height: 55,
+                            layout: "vertical",
+                            tagline: "false",
+                          }}
+                          createOrder={paypalCreateOrder}
+                          onApprove={paypalOrderApproved}
+                          onError={paypalHandleError}
+                        />
+                      </div>
+                      <div>
+                        {payPalError && (
+                          <div className="text-center" style={{ color: "red" }}>{payPalError}</div>
+                        )}
+                      </div>
+                    </PayPalScriptProvider>
+                  )}
                 </ListGroup>
                 {userInfo && (userInfo.tutor || userInfo.staff) && (
                   <ListGroup.Item>

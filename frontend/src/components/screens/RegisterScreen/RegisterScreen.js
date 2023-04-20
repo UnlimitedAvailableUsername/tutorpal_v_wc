@@ -1,3 +1,6 @@
+    const [message, setMessage] = useState('')
+<<<<<<< HEAD
+import { register } from '../../../features/redux/actions/authUserActions'
 <<<<<<< HEAD
 import React, { useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'

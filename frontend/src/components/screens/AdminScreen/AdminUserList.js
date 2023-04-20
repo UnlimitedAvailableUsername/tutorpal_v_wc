@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteUser, listTutorsAdmin } from "../../../features/redux/actions/tutorActions";
+import { deleteUser, listUsersAdmin } from "../../../features/redux/actions/adminActions";
 import { Button, Col, Container, Row, Table } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
@@ -59,18 +59,18 @@ function AdminUserList() {
   const { users } = adminlistTutors;
 
   useEffect(() => {
-    dispatch(listTutorsAdmin());
+    dispatch(listUsersAdmin());
   }, [dispatch]);
 
 
   
-  const handleDelete = async (tutorId) => {
+  const handleDelete = async (userId) => {
   if (window.confirm("Are you sure you want to delete this user?")) {
     try {
-      const user = users.find((user) => user.id === tutorId);
+      const user = users.find((user) => user.id === userId);
       const currentUser = userInfo.id;
       if (user.id !== currentUser) {
-        await dispatch(deleteUser(tutorId, user));
+        await dispatch(deleteUser(userId, user));
         window.location.reload();
       } else {
         const imgSrc = "giphy.gif"; // Replace with the URL of your image or GIF
@@ -140,6 +140,7 @@ function AdminUserList() {
               <Dropdown.Item eventKey="">All</Dropdown.Item>
               <Dropdown.Item eventKey="tutor">Tutor</Dropdown.Item>
               <Dropdown.Item eventKey="student">Student</Dropdown.Item>
+              <Dropdown.Item eventKey="admin">Admin</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
 
@@ -181,7 +182,10 @@ function AdminUserList() {
               return user.tutor;
             } else if (userRole === "student") {
               return user.student;
+            } else if (userRole === "admin") {
+              return user.staff;
             }
+
           })
           .filter(
             (user) =>
@@ -196,7 +200,7 @@ function AdminUserList() {
                 <a href={`mailto:${user.email}`}>{user.email}</a>
               </td>
               <td>
-                {user.tutor ? "Tutor" : user.student ? "Student" : ""}
+                {user.tutor ? "Tutor" : user.student ? "Student" : user.staff ? "Admin" : ""}
               </td>
               <td>{user.active ? "true" : "false"}</td>
               <td>{new Date(user.date_joined).toDateString()}</td>

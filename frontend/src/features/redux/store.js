@@ -4,6 +4,7 @@ import { composeWithDevTools } from "redux-devtools-extension";
 
 import { userLoginReducer, userDetailsReducer, userUpdateProfileReducer, userRegisterReducer, } from "./reducers/authUserReducer";
 import { tutorListReducer, tutorDetailsReducer, admintutorListReducer } from "./reducers/tutorReducer";
+import { adminUserListReducer } from "./reducers/adminReducer";
 import { scheduleListReducer, scheduleDetailsReducer, } from "./reducers/scheduleReducer";
 import { addContactReducer } from "./reducers/contactReducer";
 import { contactDetailsReducer, contactListReducer, } from "./reducers/contactReducer";
@@ -11,6 +12,8 @@ import { listReviewsReducer, reviewReducer } from "./reducers/reviewsReducer";
 import { scheduleOrderDetailsReducer, scheduleOrderListReducer, scheduleOrderPayReducer } from "./reducers/scheduleOrderReducer";
 import { studentsListReducer, studentDetailsReducer } from "./reducers/studentsReducer"
 import {addSubjectReducer, subjectDetailsReducer, subjectListReducer } from "../redux/reducers/subjectReducer";
+
+
 
 const reducers = combineReducers({
   userState: userLoginReducer,
@@ -39,6 +42,8 @@ const reducers = combineReducers({
   scheduleOrderListState: scheduleOrderListReducer,
 
   adminlistTutors: admintutorListReducer,
+  userList: adminUserListReducer,
+
   addSubject : addSubjectReducer,
   subjectList : subjectListReducer,
   subjectDetails: subjectDetailsReducer,

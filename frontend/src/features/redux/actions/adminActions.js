@@ -77,3 +77,44 @@ export const deleteUser =
     });
   }
 };
+
+
+
+export const editUser =
+(userId, user) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: actionType.USER_UPDATE_REQUEST });
+
+    const {
+      userState: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-type": "multipart/form-data",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.put(
+      `${BASE_URL}/api/accounts/users/${userId}/`,
+      user,
+      config
+    );
+
+    dispatch({
+      type: actionType.USER_UPDATE_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: actionType.USER_UPDATE_FAIL,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
+
+

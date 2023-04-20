@@ -95,7 +95,7 @@ function AdminTutor() {
           <thead>
             <tr>
               <th>Name and Date</th>
-              <th>Concern</th>
+              <th>Photo</th>
               <th>Is Active</th>
               <th>Action</th>
             </tr>

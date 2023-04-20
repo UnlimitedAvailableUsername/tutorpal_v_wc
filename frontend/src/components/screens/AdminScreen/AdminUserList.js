@@ -199,7 +199,7 @@ function AdminUserList() {
               <td>{user.active ? "true" : "false"}</td>
               <td>{new Date(user.date_joined).toDateString()}</td>
               <td>
-                <Link to={`/subject-edit/`}>
+                <Link to={`/user-edit/${user.id}`}>
                   <button type="button" className="btn btn-warning">
                     Edit
                   </button>

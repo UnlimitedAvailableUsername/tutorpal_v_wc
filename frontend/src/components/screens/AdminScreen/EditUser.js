@@ -7,112 +7,120 @@ import LoadingIconBig from "../../elements/Loader/LoadingIconBig";
 import MessageAlert from "../../elements/MessageAlert";
 import Rating from "../../elements/Rating";
 
-function AdminTutorDetail() {
-  const { tutorId } = useParams();
-  const dispatch = useDispatch();
-  const location = useLocation();
-  const navigate = useNavigate();
-  const [active, setActive] = useState(false);
 
-  const userLoginState = useSelector((state) => state.userState);
-  const { userInfo } = userLoginState;
+function EditUser() {
+    const { userId } = useParams();
+    const dispatch = useDispatch();
+    const location = useLocation();
+    const navigate = useNavigate();
+    const [active, setActive] = useState(false);
+  
+    const userLoginState = useSelector((state) => state.userState);
+    const { userInfo } = userLoginState;
+  
+    const tutorDetails = useSelector((state) => state.tutorDetails);
+    const { error, loading, user } = tutorDetails;
 
-  const tutorDetails = useSelector((state) => state.tutorDetails);
-  const { error, loading, user } = tutorDetails;
-
-  useEffect(() => {
-    dispatch(listTutorDetails(tutorId));
-  }, [dispatch, tutorId]);
-
-  useEffect(() => {
-    setActive(user?.active);
-  }, [user]);
-
-  const handleActivateTutor = async (e) => {
-    e.preventDefault();
-
-    if (!tutorId) {
-      return;
-    }
-
-    const tutorData = {
-      active: true,
-    };
-
-    try {
-      await dispatch(updateTutor(tutorId, tutorData));
-      window.location.reload(); // Reload page after successful submission
-    } catch (error) {
-      console.log(error);
-      // handle error
-    }
-  };
-
-  const handleDeactivateTutor = async (e) => {
-    e.preventDefault();
-
-    if (!tutorId) {
-      return;
-    }
-
-    const tutorData = {
-      active: false,
-    };
-
-    try {
-      await dispatch(updateTutor(tutorId, tutorData));
-      window.location.reload();
-    } catch (error) {
-      console.log(error);
-      // handle error
-    }
     
+  const [showForm, setShowForm] = useState(false);
+
+  const toggleForm = () => {
+    setShowForm(!showForm);
   };
-
-  const renderActiveForm = () => {
-    if (user?.active) {
-      return (
-        <Form onSubmit={handleDeactivateTutor}>
-          <Form.Group className="mb-3">
-            <Form.Check
-              type="checkbox"
-              id="deactivate"
-              name="deactivate"
-              className="form-check-input"
-              label="Deactivate"
-              checked={!active}
-              onChange={(e) => setActive(!e.target.checked)}
-            />
-          </Form.Group>
-
-          <Button type="submit" className="btn btn-warning">
-            Deactivate
-          </Button>
-        </Form>
-      );
-    } else {
-      return (
-        <Form onSubmit={handleActivateTutor}>
-          <Form.Group className="mb-3">
-            <Form.Check
-              type="checkbox"
-              id="activate"
-              name="activate"
-              className="form-check-input"
-              label="Activate"
-              checked={active}
-              onChange={(e) => setActive(e.target.checked)}
-            />
-          </Form.Group>
-
-          <Button type="submit" className="btn btn-warning">
-            Activate
-          </Button>
-        </Form>
-      );
-    }
-  };
-    
+  
+    useEffect(() => {
+      dispatch(listTutorDetails(userId));
+    }, [dispatch, userId]);
+  
+    useEffect(() => {
+      setActive(user?.active);
+    }, [user]);
+  
+    const handleActivateTutor = async (e) => {
+      e.preventDefault();
+  
+      if (!userId) {
+        return;
+      }
+  
+      const tutorData = {
+        active: true,
+      };
+  
+      try {
+        await dispatch(updateTutor(userId, tutorData));
+        window.location.reload(); // Reload page after successful submission
+      } catch (error) {
+        console.log(error);
+        // handle error
+      }
+    };
+  
+    const handleDeactivateTutor = async (e) => {
+      e.preventDefault();
+  
+      if (!userId) {
+        return;
+      }
+  
+      const tutorData = {
+        active: false,
+      };
+  
+      try {
+        await dispatch(updateTutor(userId, tutorData));
+        window.location.reload();
+      } catch (error) {
+        console.log(error);
+        // handle error
+      }
+      
+    };
+  
+    const renderActiveForm = () => {
+      if (user?.active) {
+        return (
+          <Form onSubmit={handleDeactivateTutor}>
+            <Form.Group className="mb-3">
+              <Form.Check
+                type="checkbox"
+                id="deactivate"
+                name="deactivate"
+                className="form-check-input"
+                label="Deactivate"
+                checked={!active}
+                onChange={(e) => setActive(!e.target.checked)}
+              />
+            </Form.Group>
+  
+            <Button type="submit" className="btn btn-warning">
+              Deactivate
+            </Button>
+          </Form>
+        );
+      } else {
+        return (
+          <Form onSubmit={handleActivateTutor}>
+            <Form.Group className="mb-3">
+              <Form.Check
+                type="checkbox"
+                id="activate"
+                name="activate"
+                className="form-check-input"
+                label="Activate"
+                checked={active}
+                onChange={(e) => setActive(e.target.checked)}
+              />
+            </Form.Group>
+  
+            <Button type="submit" className="btn btn-warning">
+              Activate
+            </Button>
+          </Form>
+        );
+      }
+    };
+      
   return (
     <div>
       {user && (
@@ -225,10 +233,18 @@ function AdminTutorDetail() {
               </ListGroup>
             </Col>
           </Row>
+
+
+    
         </Container>
+
       )}
+
+      
+
+      
     </div>
-  );
+  )
 }
 
-export default AdminTutorDetail;
+export default EditUser

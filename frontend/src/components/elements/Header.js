@@ -39,7 +39,8 @@ function Header() {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mx-auto">
             {!userInfo?.staff && <NavLink as={Link} to="/subjects">Subjects</NavLink>}
-            <NavLink as={Link} to="/tutor">Find Tutor</NavLink>
+            {!userInfo?.staff &&  <NavLink as={Link} to="/tutor">Find Tutor</NavLink>}
+           
             {(userInfo && !userInfo.staff) || !userInfo ? (
               <>
                 <NavLink as={Link} to="/about-us">About Us</NavLink>

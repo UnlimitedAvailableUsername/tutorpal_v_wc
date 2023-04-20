@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Container, Form, Button, Row, Table } from "react-bootstrap";
+import { Container, Form, Button, Row, Col, Table, Card } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { createSchedule, deleteSchedule, listMySchedules } from "../../../features/redux/actions/scheduleAction";
+import backgroundImage from  '../../../assets/components/screens/ScheduleScreen/secret.png'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faDeleteLeft, faEdit } from '@fortawesome/free-solid-svg-icons';
 
 function MyScheduleScreenTutor() {
   const [name, setName] = useState("");
@@ -63,30 +66,56 @@ function MyScheduleScreenTutor() {
     }
   };
 
-  return (
-    <div>
-      <div className="text" variant="light">
-        <h5>My Schedules:</h5>
-      </div>
+  const backgroundStyles = {
+    backgroundImage: `url(${backgroundImage})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center center',
+    height: '95vh',
+    backgroundAttachment: 'fixed',
+  };
 
-      <Table striped responsive className="table-m-2">
+  return (
+
+    
+    <div style={backgroundStyles}>
+
+      <style jsx>{`
+        .card {
+          box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .one {
+          display: flex;
+          justify-content: center;
+        }
+      `}</style>
+      
+      <br/><br/><br/>
+      <Card style={{width: 900, margin: 'auto'}} className='card px-5   p-3 mb-5 rounded'>
+      <div className="text" variant="light">
+
+        <br/>
+        <h5>MY SCHEDULES:</h5>
+      </div>
+<br/>
+      <Table striped responsive className="table-m-2 ">
         <thead>
           <tr>
-            <th>Date</th>
-            <th>Hours Available</th>
-            <th>Action</th>
+            <th style={{textAlign: 'center'}} >Date</th>
+            <th style={{textAlign: 'center'}}>Hours Available</th>
+            <th style={{textAlign: 'center'}}>Action</th>
           </tr>
         </thead>
         <tbody>
           {schedules &&
             schedules.map((schedule) => (
               <tr key={schedule.id}>
-                <td>{schedule.name}</td>
-                <td>{schedule.count_in_stock}</td>
-                <td>
+                <td style={{textAlign: 'center'}}>{schedule.name}</td>
+                <td style={{textAlign: 'center'}}>{schedule.count_in_stock}</td>
+                <td style={{textAlign: 'center'}}>
                   <Link to={`/schedule-details/${schedule.id}`}>
-                    <button type="button" className="btn btn-warning">
-                      Edit
+                    <button type="button" className="btn btn-warning me-2">
+                    <FontAwesomeIcon icon={ faEdit } />
                     </button>
                   </Link>
                   <button
@@ -94,7 +123,7 @@ function MyScheduleScreenTutor() {
                     className="btn btn-danger"
                     onClick={() => handleDelete(schedule.id)}
                   >
-                    Delete
+                    <FontAwesomeIcon icon={ faDeleteLeft } />
                   </button>
                 </td>
               </tr>
@@ -107,7 +136,9 @@ function MyScheduleScreenTutor() {
       <div className="d-flex justify-content-center align-items-center">
         {!showForm && (
           <Button
-            className="btn btn-warning btn-outline-dark my-3"
+            className="btn btn-warning btn-outline my-3 "
+            style={{textShadow:'2px 2px 2px rgba(0, 0, 0, 0.2)' }}
+        
             onClick={handleShowForm}
             size="lg"
           >
@@ -119,13 +150,16 @@ function MyScheduleScreenTutor() {
       {showForm && (
         <Container>
           <Button
-            className="btn btn-warning btn-outline-dark my-3"
+            className="btn btn-warning btn-outline my-3"
+            style={{textShadow:'2px 2px 2px rgba(0, 0, 0, 0.2)' }}
             onClick={handleHideForm}
           >
             Hide
           </Button>
 
           <Form onSubmit={handleSubmit}>
+          <Row>
+            <Col>
             <Form.Group className="mb-3">
               <Form.Label>Date</Form.Label>
               <Form.Control
@@ -137,10 +171,12 @@ function MyScheduleScreenTutor() {
                 onChange={(e) => setName(e.target.value)}
               />
             </Form.Group>
+            </Col> 
+<Col>
             <Form.Group className="mb-3">
               <Form.Label>Hours</Form.Label>
               <Form.Control
-                type="text"
+                type="number"
                 id="count_in_stock"
                 name="count_in_stock"
                 className="form-control"
@@ -148,10 +184,12 @@ function MyScheduleScreenTutor() {
                 onChange={(e) => setCount_in_stock(e.target.value)}
               />
             </Form.Group>
-
+            </Col>
+            </Row>
             <Button
               type="submit"
-              className="btn btn-warning"
+              style={{width: 130, marginLeft: 300, textShadow:'2px 2px 2px rgba(0, 0, 0, 0.2)' }}
+              className="btn btn-warning mb-3"
               disabled={!name || parseInt(count_in_stock) < 1}
             >
               Post Schedule
@@ -159,6 +197,7 @@ function MyScheduleScreenTutor() {
           </Form>
         </Container>
       )}
+      </Card>
     </div>
   );
 }

@@ -188,7 +188,7 @@ function MyScheduleScreenTutor() {
             </Row>
             <Button
               type="submit"
-              style={{width: 130, marginLeft: 300, textShadow:'2px 2px 2px rgba(0, 0, 0, 0.2)' }}
+              style={{width: 130, marginLeft: 325, textShadow:'2px 2px 2px rgba(0, 0, 0, 0.2)' }}
               className="btn btn-warning mb-3"
               disabled={!name || parseInt(count_in_stock) < 1}
             >

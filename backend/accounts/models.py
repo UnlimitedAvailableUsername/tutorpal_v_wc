@@ -3,17 +3,13 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.core.validators import MaxValueValidator
 from django.utils import timezone
+from django.utils.text import slugify
 
 
 from pathlib import Path
 
 def upload_image_path(instance, filename):
     ext = filename.split('.')[-1]
-<<<<<<< HEAD
-    filename = "%s.%s" %(uuid.uuid4(), ext)
-    destination = os.path.join('profile_pictures/', "%s/%s" %(instance.username, filename))
-    return destination 
-=======
     filename = f"{uuid.uuid4()}.{ext}"
     destination = Path("profile_pictures") / instance.username / filename
     return str(destination)
@@ -29,7 +25,6 @@ def upload_image_edu_bg_path(instance, filename):
     filename = f"{uuid.uuid4()}.{ext}"
     destination = Path("education_background") / instance.username / filename
     return str(destination)
->>>>>>> master
 
 
 def update_last_login(sender, user, **kwargs):
@@ -58,7 +53,8 @@ class UserManager(BaseUserManager):
 
     def create_user(
         self, 
-        email, 
+        email,
+        username,
         password=None, 
         is_active=True, 
         is_staff=False, 
@@ -72,12 +68,17 @@ class UserManager(BaseUserManager):
 
         email = self.normalize_email(email)
 
-        user = self.model(email=email)
+        user = self.create(
+            email=email,
+            password=password,
+            username=username,
+            active=is_active,
+            staff=is_staff,
+            student=is_student,
+            tutor=is_tutor,
+        )
+
         user.set_password(password)
-        user.active = is_active
-        user.staff = is_staff
-        user.student = is_student
-        user.tutor = is_tutor
         user.save(using=self._db)
 
         return user
@@ -86,6 +87,7 @@ class UserManager(BaseUserManager):
         self, 
         email=None, 
         password=None, 
+        username=None,
         is_staff=True, 
     ):
         if is_staff is not True:
@@ -94,6 +96,7 @@ class UserManager(BaseUserManager):
         user = self.create_user(
             email,
             password=password,
+            username=username,
             is_staff=True,
         )
 
@@ -135,7 +138,7 @@ class User(AbstractBaseUser):
     student = models.BooleanField(("Student"), default=False, help_text=("Categorizes the user as student"),)
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['username']
 
     objects = UserManager()
 
@@ -182,16 +185,11 @@ class Review(models.Model):
     
 
 class Contact(models.Model):
-<<<<<<< HEAD
-    email = models.ForeignKey(User, on_delete=models.SET_NULL,null=True, blank=True, related_name='contact_name')
-    first_name = models.TextField(max_length=300, null=True, blank=True)
-    last_name = models.TextField(max_length=300, null=True, blank=True)
-=======
     name = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='contact_name')
->>>>>>> master
     concern = models.TextField(max_length=300, null=True, blank=True)
     comment = models.TextField(max_length=5000, null=True, blank=True)
-    done = models.BooleanField( default=False, null=True, blank=True)
+    created_date = models.DateTimeField(("Date created"), default=timezone.now)
+    done = models.BooleanField(default=False)
 
     def __str__(self):
         return f"concern of {self.name.username}"

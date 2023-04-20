@@ -166,3 +166,43 @@ export const updateTutor =
     });
   }
 };
+
+
+
+export const deleteUser =
+(tutorId) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: actionType.USER_DELETE_REQUEST });
+
+    const {
+      userState: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+      data: {
+        // Optionally, you can include additional data to be sent along with the delete request
+      }
+    };
+
+    const { data } = await axios.delete(
+      `${BASE_URL}/api/accounts/users/${tutorId}/`,
+      config
+    );
+
+    dispatch({
+      type: actionType.USER_DELETE_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: actionType.USER_DELETE_FAIL,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};

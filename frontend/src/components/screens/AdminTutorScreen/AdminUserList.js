@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import { useDispatch, useSelector } from "react-redux";
-import { listTutorsAdmin } from "../../../features/redux/actions/tutorActions";
+import { deleteUser, listTutorsAdmin } from "../../../features/redux/actions/tutorActions";
 import { Button, Col, Container, Row, Table } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
@@ -61,6 +61,26 @@ function AdminUserList() {
     dispatch(listTutorsAdmin());
   }, [dispatch]);
 
+
+  
+  const handleDelete = async (tutorId) => {
+    if (window.confirm("Are you sure you want to delete this user?")) {
+      try {
+        const user = users.find((user) => user.id === tutorId);
+        const currentUser = userInfo.id; // Define currentUser before using it
+        if (user.id !== currentUser) {
+          await dispatch(deleteUser(tutorId, user));
+          window.location.reload();
+        } else {
+          alert("You cannot delete yourself!");
+        }
+      } catch (error) {
+        console.log(error);
+        // handle error
+      }
+    }
+  };
+
   return (
     <div>
       <div className="tutor-bg"></div>
@@ -92,8 +112,7 @@ function AdminUserList() {
               id="dropdown-basic"
               style={{ backgroundColor: "#037d50 ", borderColor: "#037d50" }}
             >
-              Sort by date (
-              {sortOrder === "asc" ? "Oldest" : "Newest"})
+              Sort by date ({sortOrder === "asc" ? "Oldest" : "Newest"})
             </Dropdown.Toggle>
             <Dropdown.Menu>
               <Dropdown.Item eventKey="asc">Oldest</Dropdown.Item>
@@ -116,8 +135,10 @@ function AdminUserList() {
           </Dropdown>
 
           <Dropdown onSelect={handleActiveChange}>
-            <Dropdown.Toggle id="dropdown-basic"
-             style={{ backgroundColor: "#037d50 ", borderColor: "#037d50" }}>
+            <Dropdown.Toggle
+              id="dropdown-basic"
+              style={{ backgroundColor: "#037d50 ", borderColor: "#037d50" }}
+            >
               Filter by active ({isActive === "" ? "All" : isActive})
             </Dropdown.Toggle>
             <Dropdown.Menu>
@@ -126,64 +147,73 @@ function AdminUserList() {
               <Dropdown.Item eventKey="false">Inactive</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
-
         </div>
         <Row className="my-4">
-          <Col>
-            <Table striped bordered hover responsive className="table-sm">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Role</th>
-                  <th>Active</th>
-                  <th>Date Joined</th>
-                  <th>Edit/Delete</th>
-                </tr>
-              </thead>
+  <Col>
+    <Table striped bordered hover responsive className="table-sm">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Active</th>
+          <th>Date Joined</th>
+          <th>Edit/Delete</th>
+        </tr>
+      </thead>
 
-              {users &&
-                sortUsersByDate(filterUsersByActive(users))
-                  .filter((user) => {
-                    if (userRole === "") {
-                      return true;
-                    } else if (userRole === "tutor") {
-                      return user.tutor;
-                    } else if (userRole === "student") {
-                      return user.student;
-                    }
-                  })
-                  .filter(
-                    (user) =>
-                      search === "" ||
-                      user.username.toLowerCase().includes(search.toLowerCase())
-                  )
-                  .map((user) => (
-                    <tr key={user.id}>
-                      <td>{user.id}</td>
-                      <td>{user.username}</td>
-                      <td>
-                        <a href={`mailto:${user.email}`}>{user.email}</a>
-                      </td>
-                      <td>
-                        {user.tutor ? "Tutor" : user.student ? "Student" : ""}
-                      </td>
-                      <td>{user.active ? "true" : "false"}</td>
-                      <td>{new Date(user.date_joined).toDateString()}</td>
-                      <td>
-                        <Link to={`/admin/user/${user.id}/edit`}>
-                          <Button variant="light" className="btn-sm">
-                            <i className="fas fa-edit"></i>
-                          </Button>
-                        </Link>
-                      </td>
-                    </tr>
-                  ))}
-            </Table>
-          </Col>
-        </Row>
-      </Container>
+      {users &&
+        sortUsersByDate(filterUsersByActive(users))
+          .filter((user) => {
+            if (userRole === "") {
+              return true;
+            } else if (userRole === "tutor") {
+              return user.tutor;
+            } else if (userRole === "student") {
+              return user.student;
+            }
+          })
+          .filter(
+            (user) =>
+              search === "" ||
+              user.username.toLowerCase().includes(search.toLowerCase())
+          )
+          .map((user) => (
+            <tr key={user.id}>
+              <td>{user.id}</td>
+              <td>{user.username}</td>
+              <td>
+                <a href={`mailto:${user.email}`}>{user.email}</a>
+              </td>
+              <td>
+                {user.tutor ? "Tutor" : user.student ? "Student" : ""}
+              </td>
+              <td>{user.active ? "true" : "false"}</td>
+              <td>{new Date(user.date_joined).toDateString()}</td>
+              <td>
+                <Link to={`/subject-edit/`}>
+                  <button type="button" className="btn btn-warning">
+                    Edit
+                  </button>
+                </Link>
+                <Link>
+                <button
+                    type="button"
+                    className="btn btn-danger"
+                    onClick={() => handleDelete(user.id)}
+                  >
+                    Delete
+                  </button>
+                  </Link>
+              </td>
+            </tr>
+          ))}
+    </Table>
+  </Col>
+</Row>
+</Container>
+
     </div>
   );
 }

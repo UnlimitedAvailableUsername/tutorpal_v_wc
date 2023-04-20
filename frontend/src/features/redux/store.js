@@ -5,11 +5,12 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import { userLoginReducer, userDetailsReducer, userUpdateProfileReducer, userRegisterReducer, } from "./reducers/authUserReducer";
 import { tutorListReducer, tutorDetailsReducer, admintutorListReducer } from "./reducers/tutorReducer";
 import { scheduleListReducer, scheduleDetailsReducer, } from "./reducers/scheduleReducer";
-import { addContactReducer, addSubjectReducer, subjectDetailsReducer, subjectListReducer } from "./reducers/contactReducer";
+import { addContactReducer } from "./reducers/contactReducer";
 import { contactDetailsReducer, contactListReducer, } from "./reducers/contactReducer";
 import { listReviewsReducer, reviewReducer } from "./reducers/reviewsReducer";
 import { scheduleOrderDetailsReducer, scheduleOrderListReducer, scheduleOrderPayReducer } from "./reducers/scheduleOrderReducer";
 import { studentsListReducer, studentDetailsReducer } from "./reducers/studentsReducer"
+import {addSubjectReducer, subjectDetailsReducer, subjectListReducer } from "../redux/reducers/subjectReducer";
 
 const reducers = combineReducers({
   userState: userLoginReducer,

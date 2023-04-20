@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addSubject, deleteSubject, listSubjects } from '../../../features/redux/actions/contactActions';
+import { addSubject, deleteSubject, listSubjects } from '../../../features/redux/actions/subjectActions';
 import { useNavigate, Link, useParams } from 'react-router-dom';
 import { Form, Button, Container , Table} from 'react-bootstrap';
 

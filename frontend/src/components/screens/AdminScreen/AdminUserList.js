@@ -7,6 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
 import "../../../assets/components/screens/TutorListScreen/tutorlist.css";
 
+
 function AdminUserList() {
   const [search, setSearch] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
@@ -64,22 +65,30 @@ function AdminUserList() {
 
   
   const handleDelete = async (tutorId) => {
-    if (window.confirm("Are you sure you want to delete this user?")) {
-      try {
-        const user = users.find((user) => user.id === tutorId);
-        const currentUser = userInfo.id; // Define currentUser before using it
-        if (user.id !== currentUser) {
-          await dispatch(deleteUser(tutorId, user));
-          window.location.reload();
-        } else {
-          alert("You cannot delete yourself!");
-        }
-      } catch (error) {
-        console.log(error);
-        // handle error
+  if (window.confirm("Are you sure you want to delete this user?")) {
+    try {
+      const user = users.find((user) => user.id === tutorId);
+      const currentUser = userInfo.id;
+      if (user.id !== currentUser) {
+        await dispatch(deleteUser(tutorId, user));
+        window.location.reload();
+      } else {
+        const imgSrc = "giphy.gif"; // Replace with the URL of your image or GIF
+        const message = `
+          <div>
+            <p>You cannot delete yourself!</p>
+            <img src="${imgSrc}" alt="Delete Yourself GIF">
+          </div>
+        `;
+        alert(message);
       }
+    } catch (error) {
+      console.log(error);
+      // handle error
     }
-  };
+  }
+};
+
 
   return (
     <div>

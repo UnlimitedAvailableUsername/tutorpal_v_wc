@@ -17,15 +17,15 @@ import { useSelector } from "react-redux";
 import EditSchedule from "./components/screens/EditScheduleScreen/EditSchedule";
 import TermsAndConditionScreen from "./components/screens/RegisterScreen/TermsAndConditionScreen";
 import ChooseScheduleScreen from "./components/screens/ChooseScheduleScreen/ChooseScheduleScreen";
-import AdminTutor from "./components/screens/AdminTutorScreen/AdminTutor";
+import AdminTutor from "./components/screens/AdminScreen/AdminTutor";
 import ListContactdone from "./components/screens/ListContactsScreen/ListContactdone";
 import Header from "./components/elements/Header";
-import AdminTutorDetail from "./components/screens/AdminTutorScreen/AdminTutorDetail";
-import AddSubject from "./components/screens/AdminTutorScreen/AddSubject";
-import EditSubject from "./components/screens/AdminTutorScreen/EditSubject";
+import AdminTutorDetail from "./components/screens/AdminScreen/AdminTutorDetail";
+import AddSubject from "./components/screens/AdminScreen/AddSubject";
+import EditSubject from "./components/screens/AdminScreen/EditSubject";
 import ScheduleOrderDetailsScreen from "./components/screens/ScheduleOrderDetailsScreen/ScheduleOrderDetailsScreen";
 import ScheduleOrderListScreen from "./components/screens/ScheduleOrderListScreen/ScheduleOrderListScreen";
-import AdminUserList from "./components/screens/AdminTutorScreen/AdminUserList";
+import AdminUserList from "./components/screens/AdminScreen/AdminUserList";
 
 function App() {
 

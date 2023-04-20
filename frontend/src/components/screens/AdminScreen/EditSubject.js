@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Row, Col, ListGroup, Container } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { listSubjectDetails, updateSubject } from "../../../features/redux/actions/contactActions";
+import { listSubjectDetails, updateSubject } from "../../../features/redux/actions/subjectActions";
 
 function EditSubject() {
   const { subjectId } = useParams();

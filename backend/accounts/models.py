@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.core.validators import MaxValueValidator
 from django.utils import timezone
+from django.utils.text import slugify
 
 
 from pathlib import Path
@@ -52,7 +53,8 @@ class UserManager(BaseUserManager):
 
     def create_user(
         self, 
-        email, 
+        email,
+        username,
         password=None, 
         is_active=True, 
         is_staff=False, 
@@ -66,12 +68,17 @@ class UserManager(BaseUserManager):
 
         email = self.normalize_email(email)
 
-        user = self.model(email=email)
+        user = self.create(
+            email=email,
+            password=password,
+            username=username,
+            active=is_active,
+            staff=is_staff,
+            student=is_student,
+            tutor=is_tutor,
+        )
+
         user.set_password(password)
-        user.active = is_active
-        user.staff = is_staff
-        user.student = is_student
-        user.tutor = is_tutor
         user.save(using=self._db)
 
         return user
@@ -80,6 +87,7 @@ class UserManager(BaseUserManager):
         self, 
         email=None, 
         password=None, 
+        username=None,
         is_staff=True, 
     ):
         if is_staff is not True:
@@ -88,6 +96,7 @@ class UserManager(BaseUserManager):
         user = self.create_user(
             email,
             password=password,
+            username=username,
             is_staff=True,
         )
 
@@ -129,7 +138,7 @@ class User(AbstractBaseUser):
     student = models.BooleanField(("Student"), default=False, help_text=("Categorizes the user as student"),)
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['username']
 
     objects = UserManager()
 
@@ -162,13 +171,6 @@ class User(AbstractBaseUser):
         return self.active
     ###########################################################
     ###########################################################
-
-    def save(self, *args, **kwargs):
-        # Hash the password if it is set
-        if self.password:
-            self.set_password(self.password)
-
-        super().save(*args, **kwargs)
 
 
 class Review(models.Model):
@@ -213,8 +215,7 @@ class Schedule(models.Model):
 
 
 class ScheduleOrder(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_schedule_order_creator")
-    tutor = models.ForeignKey(User, on_delete=models.CASCADE, related_name="tutor_schedule_order", null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     schedules = models.ManyToManyField(Schedule, through='ScheduleOrderItem')
     message = models.TextField(("Message to Tutor"), max_length=250, null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)

@@ -14,15 +14,15 @@ function AdminTutor() {
 
   // function para ma sort by review or price
 
-  const sortUsersByPrice = (users) => {
+  const sortUsersByDate = (users) => {
     if (sortOrder === "asc") {
-      return users.sort((a, b) => a.price_rate_hour - b.price_rate_hour);
+      return users.sort(
+        (a, b) => new Date(a.date_joined) - new Date(b.date_joined)
+      );
     } else if (sortOrder === "desc") {
-      return users.sort((a, b) => b.price_rate_hour - a.price_rate_hour);
-    } else if (sortOrder === "revAsc") {
-      return users.sort((a, b) => a.numReviews - b.numReviews);
-    } else if (sortOrder === "revdesc") {
-      return users.sort((a, b) => b.numReviews - a.numReviews);
+      return users.sort(
+        (a, b) => new Date(b.date_joined) - new Date(a.date_joined)
+      );
     }
   };
 
@@ -60,23 +60,36 @@ function AdminTutor() {
             />
           </Container>
         </Form>
+        <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
         <Dropdown onSelect={handleSortOrderChange}>
           <Dropdown.Toggle
             id="dropdown-basic"
             style={{ backgroundColor: "#037d50 ", borderColor: "#037d50" }}
           >
-            Sort by price ({sortOrder === "asc" ? "low to high" : "high to low"}
-            )
+            Sort by date ({sortOrder === "asc" ? "Oldest" : "Newest"})
           </Dropdown.Toggle>
           <Dropdown.Menu>
-            <Dropdown.Item eventKey="asc">Price: Low to High</Dropdown.Item>
-            <Dropdown.Item eventKey="desc">Price: High to Low</Dropdown.Item>
-            <Dropdown.Item eventKey="revdesc">
-              Review: High to Low
-            </Dropdown.Item>
-            <Dropdown.Item eventKey="revAsc">Review: Low to High</Dropdown.Item>
+            <Dropdown.Item eventKey="asc">Oldest</Dropdown.Item>
+            <Dropdown.Item eventKey="desc">Newest</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
+
+        <Link to={`/user-list`}>
+          <Button
+            variant="warning"
+            style={{ fontSize: "0.8rem", padding: "0.2rem 0.5rem" }}
+            className="btn-outline-dark py-2 px-3 my-5"
+          >
+            Active Users
+          </Button>
+        </Link>
+      </div>
         <br></br>
         <Table striped responsive className="table-m-2">
           <thead>
@@ -89,7 +102,7 @@ function AdminTutor() {
           </thead>
           <tbody>
             {users &&
-              sortUsersByPrice(users)
+              sortUsersByDate(users)
                 .filter(
                   (user) =>
                     user.tutor &&

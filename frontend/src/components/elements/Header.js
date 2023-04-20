@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { logoutUser } from "../../features/redux/actions/authUserActions";
 
-
 function Header() {
   const dispatch = useDispatch();
 
@@ -30,9 +29,7 @@ function Header() {
     boxShadow: '0px 1px 10px rgba(0, 0, 0, 0.25)',
   };
 
-
   return (
-
     <Navbar style={headerStyle} sticky="top" bg="dark" expand="lg" variant="dark" >
       <Container className="justify-content-center" >
         <Navbar.Brand as={Link} to='/'>
@@ -41,7 +38,7 @@ function Header() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mx-auto">
-            <NavLink as={Link} to="/subjects">Subjects</NavLink>
+            {!userInfo?.staff && <NavLink as={Link} to="/subjects">Subjects</NavLink>}
             <NavLink as={Link} to="/tutor">Find Tutor</NavLink>
             {(userInfo && !userInfo.staff) || !userInfo ? (
               <>
@@ -52,7 +49,7 @@ function Header() {
             {userInfo && userInfo.staff ? (
               <>
                 <NavLink as={Link} to="/concern-list">Concerns</NavLink>
-                <NavLink as={Link} to="/subject-admin">Subjects List</NavLink>
+                <NavLink as={Link} to="/subject-admin">Subjects</NavLink>
                 <NavLink as={Link} to="/tutors-admit">Tutor Admission</NavLink>
               </>
             ) : userInfo && userInfo.tutor ? (

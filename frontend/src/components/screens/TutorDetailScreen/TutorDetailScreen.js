@@ -144,9 +144,23 @@ function TutorDetailScreen() {
                       <Col md={{ span: 2 }}>Schedule:</Col>
                       {user.schedules && user.schedules.length > 0 ? (
                         <Col>
-                          {user.schedules.map((schedule, index) => (
-                            <li key={schedule._id}>{schedule.name}</li>
-                          ))}
+                          <Table style={{border: '1px solid #ccc'}} striped responsive className="table-m-2 ">
+        <thead>
+          <tr>
+            <th style={{textAlign: 'center'}} >Date</th>
+            <th style={{textAlign: 'center'}}>Hours Available</th>
+          </tr>
+        </thead>
+        <tbody>
+          {user.schedules &&
+            user.schedules.map((schedule) => (
+              <tr key={schedule.id}>
+                <td style={{textAlign: 'center'}}>{schedule.name}</td>
+                <td style={{textAlign: 'center'}}>{schedule.count_in_stock}</td>
+              </tr>
+            ))}
+        </tbody>
+      </Table>
                         </Col>
                       ) : (
                         <Col>No schedules available at the moment</Col>

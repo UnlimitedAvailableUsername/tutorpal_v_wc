@@ -1,7 +1,8 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { Form, Button, Row, Col, Card, } from 'react-bootstrap'
+import { Form, Button, Row, Col, Card, Container, Image } from 'react-bootstrap'
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
+
 import { registerUser } from '../../../features/redux/actions/authUserActions';
 import '../../../../src/assets/components/screens/RegisterScreen/Register.css'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,10 +11,12 @@ import backgroundImage from  '../../../assets/components/screens/RegisterScreen/
 
 function RegisterScreen({height, imageSrc}) {
 
-  const dispatch = useDispatch();
-  const location = useLocation();
-  const navigate = useNavigate();
-  const redirect = location.search ? location.search.split('=')[1] : '/profile';
+  const [message, setMessage] = useState('')
+
+    const dispatch = useDispatch();
+    const location = useLocation();
+    const navigate = useNavigate();
+    const redirect = location.search ? location.search.split('=')[1] : '/profile';
 
 
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -31,6 +34,8 @@ function RegisterScreen({height, imageSrc}) {
       meeting_link: "",
       tutor: false,
       student: false,
+      id_photo: "",
+      education_background_photo: "",
       subjects: []
     });
   
@@ -84,7 +89,7 @@ function RegisterScreen({height, imageSrc}) {
 	
 		option.selected = !option.selected;
 	  };
-
+	
     const backgroundStyles = {
       backgroundImage: `url(${backgroundImage})`,
       backgroundSize: 'cover',
@@ -93,17 +98,33 @@ function RegisterScreen({height, imageSrc}) {
       backgroundAttachment: 'fixed',
     };
 
+
+   
+   const handleClickOnProfilePicture = (e) => {
+      document.getElementById("profilePicture").click();
+    }
+
     return (
-      <div style={backgroundStyles}>
-        <p><FontAwesomeIcon icon={faBullseye} size='2x' /> Choose from many highly qualified and trusted Tutors</p>
-        <p><FontAwesomeIcon icon={faBullseye} size='2x' />100% risk free</p>
-        <p><FontAwesomeIcon icon={faBullseye} size='2x' />24/7 access to the best tutors</p>
-        <p><FontAwesomeIcon icon={faBullseye} size='2x' />Expert help in 10+ subjects</p>
-        <p><FontAwesomeIcon icon={faBullseye} size='2x' />All tutors qualified and background-checked</p>
+      <div style={backgroundStyles}> 
+s
+       
+       <Col >
+           <div class="container1">
+  <p><FontAwesomeIcon  icon={faBullseye} size='2x'/> Choose from many highly qualified and trusted Tutors</p>
+  <p><FontAwesomeIcon  icon={faBullseye} size='2x'/>100% risk free</p>
+  <p><FontAwesomeIcon  icon={faBullseye} size='2x'/>24/7 access to the best tutors</p>
+  <p><FontAwesomeIcon  icon={faBullseye} size='2x'/>Expert help in 10+ subjects</p>
+  <p><FontAwesomeIcon  icon={faBullseye} size='2x'/>All tutors qualified and background-checked</p>
+    </div>
+        </Col>
+    
 
+		
+      <Row  style={{marginLeft: 700}} className="align-items-center">
 
-      <Row className="justify-content-center align-items-center">
-          <Col xl={7} xs={10}>
+     
+          <Col  xl={11} xs={10}>
+         
               <Card className="px-5 my-5 shadow p-3 mb-5 rounded">
                   <Card.Body>
                       <div className="mb-4 mt-md-3">
@@ -137,126 +158,171 @@ function RegisterScreen({height, imageSrc}) {
                                   </Form.Group>
                                   </Col>
 
-                        <Col>
-                          <Form.Group className="mb-2 ms-3" controlId="formBasicContact">
-                            <Form.Label className="text-center">Contact Number</Form.Label>
-                            <Form.Control value={formData.contact} onChange={(e) => setFormData({ ...formData, contact: e.target.value })} type="text" placeholder="Enter Contact" />
-                          </Form.Group>
-                        </Col>
-                      </Row>
+                                  <Col>
+                                  <Form.Group className="mb-2 ms-3" controlId="formBasicContact">
+                                      <Form.Label className="text-center">Contact Number</Form.Label>
+                                      <Form.Control value={formData.contact} onChange={(e) => setFormData({ ...formData, contact: e.target.value })} type="number" placeholder="Enter Contact" />
+                                  </Form.Group>
+                                  </Col>
+                                  </Row>
 
-                      <Form.Group className="mb-2" controlId="formBasicEmail">
-                        <Form.Label className="text-center">Email address</Form.Label>
-                        <Form.Control value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} type="email" placeholder="Enter Email" />
-                      </Form.Group>
-
-
-                      <Form.Group className="mb-2" controlId="formBasicPassword">
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control value={formData.password} onChange={(e) => setFormData({ ...formData, password: e.target.value })} type="password" placeholder="Enter Password" />
-                      </Form.Group>
-
-                      <Form.Group className="mb-2" controlId="formBasicConfirmPassword">
-                        <Form.Label>Confirm Password</Form.Label>
-                        <Form.Control value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} type="password" placeholder="Enter Password" />
-                      </Form.Group>
-
-                      <Form.Group style={{ width: 250 }} className="mb-3 " controlId="formBasicRole">
-                        <Form.Label className="text-center">Role</Form.Label>
-                        <Form.Select onChange={handleSelectChange} value={formData.tutor ? "tutor" : formData.student ? "student" : ""} aria-label="Select Contact Type" multiple={false}>
-                          <option value="">--Select Role--</option>
-                          <option value="tutor">Tutor</option>
-                          <option value="student">Student</option>
-                        </Form.Select>
-                      </Form.Group>
+                                  <Form.Group className="mb-2" controlId="formBasicEmail">
+                                      <Form.Label className="text-center">Email address</Form.Label>
+                                      <Form.Control value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} type="email" placeholder="Enter Email" />
+                                  </Form.Group>
 
 
-                      <Form.Group controlId="formBasicCheckbox">
-                        <Form.Check
-                          type="checkbox"
-                          label={
-                            <>
-                              I accept the{' '}
-                              <Link to="/terms-and-condition">
-                                Terms of Service and Conditions
-                              </Link>
-                            </>
-                          }
-                          id="acceptTermsAndPrivacy"
-                          name="acceptTermsAndPrivacy"
-                        />
-                      </Form.Group>
+                                  <Form.Group className="mb-2" controlId="formBasicPassword">
+                                      <Form.Label>Password</Form.Label>
+                                      <Form.Control value={formData.password} onChange={(e) => setFormData({ ...formData, password: e.target.value })} type="password" placeholder="Enter Password" />
+                                  </Form.Group>
 
-                      {formData.tutor && (
-                        <>
+                                  <Form.Group className="mb-2" controlId="formBasicConfirmPassword">
+                                      <Form.Label>Confirm Password</Form.Label>
+                                      <Form.Control value={ confirmPassword } onChange={(e) => setConfirmPassword(e.target.value)} type="password" placeholder="Enter Password" />
+                                  </Form.Group>
+
+                                  <Form.Group style={{width: 250}} className="mb-3 " controlId="formBasicRole">
+                                    <Form.Label className="text-center">Role</Form.Label>
+                                    <Form.Select onChange={handleSelectChange} value={formData.tutor ? "tutor" : formData.student ? "student" : ""} aria-label="Select Contact Type" multiple={false}>
+                                        <option value="">Select Role</option>
+                                        <option value="tutor">Tutor</option>
+                                        <option value="student">Student</option>
+                                    </Form.Select>
+                                  </Form.Group>
+
+                                  {formData.student && (
+                                  <Row> 
+                                <Form.Group className="mb-1 my-3" controlId="formBasicLastName">
+                                      <Form.Label className="text-center">{
+                                            <>
+                                            <pre style={{fontSize: 18, fontFamily: "Calibri", }}>
+                                            By clicking "Sign Up", you agree to TutorPal website{' '}
+                                            <a href="/studenttermsofservice" target="_blank">
+                                                Terms of Service
+                                            </a>{' '}
+                                            &{' '}
+                                            <a href="/studentprivacypolicy" target="_blank">
+                                                Privacy Policy
+                                            </a>
+                                            </pre>
+                                            </>
+                                        }</Form.Label>
+                                      </Form.Group>
+                                  </Row>
+                                  )}
+
+                                    {formData.tutor && (
+                                <>
 
                                 <h1>.....</h1>
                                  <Form.Group className="mb-2 my-4 " controlId="formBasicBio">
                                 <Form.Label className="text-center">Bio</Form.Label>
                                 <Form.Control value={formData.bio} onChange= {(e) =>setFormData({ ...formData, bio: e.target.value })} as="textarea" placeholder="Enter Bio" />
                                 </Form.Group>
+                                <Form.Group controlId="formFileLg" className="mb-3">
+                        
+                        
+                        <Form.Label>Profile Picture</Form.Label>
+                        <Form.Control
+                          type="file"
+                          id="profilePicture"
+                          size="lg"
+                          onChange={handleClickOnProfilePicture}
+                        />
+                        <Row>
+                          <Image
+                            src={handleClickOnProfilePicture}
+                            alt="This is my kingdom cum"
+                            onClick={handleClickOnProfilePicture}
+                            style={{ height: 100, width: 150 }}
+                          />
+                        </Row>
+                      
+                      </Form.Group>
 
 
-                          <Row>
-                            <Col>
-                              <Form.Group className="mb-2 " controlId="formBasicPrice">
+                                <Row>
+                                <Col>
+                                <Form.Group className="mb-2 " controlId="formBasicPrice">
                                 <Form.Label className="text-center">Price per Hour</Form.Label>
-                                <Form.Control value={formData.price_rate_hour} onChange={(e) => setFormData({ ...formData, price_rate_hour: e.target.value })} type="number" placeholder="Enter Price" />
-                              </Form.Group>
-                            </Col>
-                            <Col>
-                              <Form.Group style={{ width: 300 }} className="mb-2 ms-3 " controlId="formBasicSubject">
-                                <Form.Label className="text-center">Subjects</Form.Label>
-                                <Form.Select onChange={handleSubjectsChange} value={formData.subjects} aria-label="Select Contact Type" size="5" multiple={true} onMouseDown={handleSubjectsMouseDown}>
-
-                                  <option value="1">Mathematics</option>
-                                  <option value="2">Language and Literature</option>
-                                  <option value="3">Science</option>
-                                  <option value="4">History</option>
-                                  <option value="5">others...</option>
-                                </Form.Select>
-                              </Form.Group>
-                            </Col>
-                          </Row>
+                                <Form.Control value={formData.price_rate_hour} onChange={(e) =>setFormData({ ...formData, price_rate_hour: e.target.value })} type="number" placeholder="Enter Price" />
+                                </Form.Group>
+                                </Col>
+                                <Col>
+                                <Form.Group style={{width: 300}} className="mb-2 ms-3 " controlId="formBasicSubject">
+                                    <Form.Label  className="text-center">Subjects</Form.Label>
+                                    <Form.Select onChange={handleSubjectsChange} value={formData.subjects} aria-label="Select Contact Type" size="5" multiple={true} onMouseDown={handleSubjectsMouseDown}>
+                                      
+                                        <option value="1">Mathematics</option>
+                                        <option value="2">Language and Literature</option>
+                                        <option value="3">Science</option>
+                                        <option value="4">History</option>
+                                        <option value="5">others...</option>
+                                    </Form.Select>
+                                  </Form.Group>
+                                  </Col>
+                                  </Row>
 
 
                                   <Form.Group className="mb-2 " controlId="formBasicLink">
                                       <Form.Label className="text-center">Meeting Link</Form.Label>
                                       <Form.Control value={formData.meeting_link} onChange={(e) =>setFormData({ ...formData, meeting_link: e.target.value })} type="contact" placeholder="Enter Contact" />
                                   </Form.Group>
+                               
+
+                                  <Row> 
+                                <Form.Group className="mb-1 my-3" controlId="formBasicLastName">
+                                      <Form.Label className="text-center">{
+                                            <>
+                                            <pre style={{fontSize: 18, fontFamily: "Calibri", }}>
+                                            By clicking "Sign Up", you agree to TutorPal website{' '}
+                                            <a href="/tutortermsofservice" target="_blank">
+                                                Terms of Service
+                                            </a>{' '}
+                                            &{' '}
+                                            <a href="/tutorprivacypolicy" target="_blank">
+                                                Privacy Policy
+                                            </a>
+                                            </pre>
+                                            </>
+                                        }</Form.Label>
+                                      </Form.Group>
+                                  </Row>
+                               
                                 </>
                                     )}
 
 
 
-                      <Row>
-                        <div style={{ margin: 'auto', width: 200 }} className="d-grid my-4">
-                          <Button variant="warning" type="submit" onClick={handleSubmit}>Sign Up</Button>
-                        </div>
-                      </Row>
+                                  <Row>
+                                  <div style={{margin: 'auto', width: 200}}className="d-grid my-4">
+                                      <Button variant="warning"  type="submit" onClick={handleSubmit}>Sign Up</Button>
+                                  </div>
+                                  </Row>
+                                 
 
 
-
-                    </Row>
-                  </Form>
-                  <div className="mt-3">
-                    <p className="mb-0  text-center">
-                      Already have an account?{' '}
-                      <Link to='/login' className="text-primary fw-bold">
-                        Login
-                      </Link>
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </Card.Body>
-          </Card>
-        </Col>
+                                  </Row>
+                              </Form>
+                              <div className="mt-3">
+                                  <p className="mb-0  text-center">
+                                      Don't have an account?{' '}
+                                      <Link to='#register' className="text-primary fw-bold">
+                                          Login
+                                      </Link>
+                                  </p>
+                              </div>
+                          </div>
+                      </div>
+                  </Card.Body>
+              </Card>
+          </Col>
       </Row>
+     
 
-
-    </div>
-  )
+  </div>
+    )
 }
 
 

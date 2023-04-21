@@ -51,7 +51,16 @@ class UserManager(BaseUserManager):
         return email
 
 
-    def create_user( self, email, password=None, is_active=True, is_staff=False, is_student=False, is_tutor=False, ):
+    def create_user(
+        self, 
+        email,
+        username,
+        password=None, 
+        is_active=True, 
+        is_staff=False, 
+        is_student=False, 
+        is_tutor=False, 
+    ):
         if not email:
             raise ValueError("User must have email")
         if not password:
@@ -59,12 +68,17 @@ class UserManager(BaseUserManager):
 
         email = self.normalize_email(email)
 
-        user = self.model(email=email)
+        user = self.create(
+            email=email,
+            password=password,
+            username=username,
+            active=is_active,
+            staff=is_staff,
+            student=is_student,
+            tutor=is_tutor,
+        )
+
         user.set_password(password)
-        user.active = is_active
-        user.staff = is_staff
-        user.student = is_student
-        user.tutor = is_tutor
         user.save(using=self._db)
 
         return user
@@ -73,6 +87,7 @@ class UserManager(BaseUserManager):
         self, 
         email=None, 
         password=None, 
+        username=None,
         is_staff=True, 
     ):
         if is_staff is not True:
@@ -81,11 +96,11 @@ class UserManager(BaseUserManager):
         user = self.create_user(
             email,
             password=password,
+            username=username,
             is_staff=True,
         )
 
         return user
-
 
 
 class Subject(models.Model):
@@ -102,7 +117,7 @@ class User(AbstractBaseUser):
     username = models.CharField(("Username"), max_length=150, unique=True, help_text=("Required. 150 characters or fewer"), error_messages={"unique": ("A user with that username already exists."),},)
     first_name = models.CharField(("First Name"), max_length=150, blank=True)
     last_name = models.CharField(("Last Name"), max_length=150, blank=True)
-    password = models.CharField(("Password"), max_length=128)
+    password = models.CharField(("Password (Hashed)"), max_length=128)
     contact = models.CharField(("Contact Number"), max_length=50, blank=True)
     profile_picture = models.ImageField(("User Picture"), default='profile_pictures/default/tutor.jpg', upload_to=upload_image_path, null=True)
     # Login-related:
@@ -157,11 +172,6 @@ class User(AbstractBaseUser):
     ###########################################################
     ###########################################################
 
-    def set_password(self, raw_password):
-        self.password = raw_password
-
-    def check_password(self, raw_password):
-        return self.password == raw_password
 
 class Review(models.Model):
     user_tutor = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='reviews_received')
@@ -205,8 +215,7 @@ class Schedule(models.Model):
 
 
 class ScheduleOrder(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_order")
-    tutor = models.ForeignKey(User, on_delete=models.CASCADE, related_name="tutor_on_order", null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     schedules = models.ManyToManyField(Schedule, through='ScheduleOrderItem')
     message = models.TextField(("Message to Tutor"), max_length=250, null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)

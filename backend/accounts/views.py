@@ -153,6 +153,7 @@ def user_detail(request, id):
 
 ################################################################################
 # THIS WILL LET THE USER LOGIN AND RETURN 'ACCESS' AS 'TOKEN' AND 'REFRESH' KEYS
+from django.contrib.auth.hashers import check_password
 
 @api_view(['POST'])
 def user_login(request):
@@ -170,6 +171,9 @@ def user_login(request):
     if not user.is_active:
         return Response({'detail': 'That account is inactive'}, status=status.HTTP_401_UNAUTHORIZED)
     
+    # Check the hashed password
+    if not check_password(password, user.password):
+        return Response({'detail': 'Incorrect password'}, status=status.HTTP_401_UNAUTHORIZED)
 
     serializer = UserSerializerWithToken(user)
     response_data = serializer.data
@@ -178,7 +182,6 @@ def user_login(request):
     response_data['refresh'] = serializer.get_refresh(user)
 
     return Response(response_data, status=status.HTTP_200_OK)
-
 #############################################################
 # THIS WILL VALIDATE IF THE GIVEN EMAIL OR USERNAME IS UNIQUE
 # IMPORTANT FOR REGISTERING THE USER
@@ -207,6 +210,7 @@ def handle_uploaded_file(f):
 # THIS WILL LET THE USERS REGISTER AND RETURN AN 'ACCESS' AS 'TOKEN' AND 'REFRESH' KEYS
 # NOTE: USE 'Content-Type': 'multipart/form-data' FOR 'headers'
 # WHEN REGISTERING WITH AN IMAGE FILE ON THE PROFILE PICTURE
+from django.contrib.auth.hashers import make_password
 
 @api_view(['POST'])
 def user_register(request):
@@ -225,6 +229,9 @@ def user_register(request):
         data['active'] = False
     elif data.get('student'):
         data['active'] = True
+
+    # Hash the password
+    data['password'] = make_password(data['password'])
 
     serializer = UserSerializer(data=data)
     if serializer.is_valid():
@@ -247,6 +254,7 @@ def user_register(request):
         return Response(response_data, status=status.HTTP_201_CREATED)
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 #########################################################################################
 # THIS WILL LET THE CURRENT USER VIEW ('GET') AND UPDATE ('PUT') HIS/HER PROFILE

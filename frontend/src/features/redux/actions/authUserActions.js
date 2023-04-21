@@ -3,7 +3,7 @@ import axios from "axios";
 import { BASE_URL } from "../../../config";
 
 // THESE ARE JUST CONSTANTS, FOR THE SAKE OF CALLING ACTIONS WITH THEIR PROPER NAMES
-import * as actionType from "../constants/authConstants";
+import * as actionType from "../constants/authUserConstants";
 
 // THIS ACTION IS RESPONSIBLE FOR THE LOGGING IN FOR USER
 export const loginUser = (email, password) => async (dispatch) => {

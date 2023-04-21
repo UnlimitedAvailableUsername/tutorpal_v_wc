@@ -1,7 +1,7 @@
 import axios from "axios";
 import { BASE_URL } from "../../../config";
 import * as actionType from "../constants/subjectConstants";
-import * as userActionType from "../constants/authConstants";
+import * as userActionType from "../constants/authUserConstants";
 
  
 export const addSubject = (formData) => async (dispatch, getState) => {

@@ -1,15 +1,13 @@
-import * as actionType from "../constants/authConstants";
+import * as actionType from "../constants/authUserConstants";
 // Pls wag nyo na galawin ito if di niyo gets
 
-const initialState = {
-  token: localStorage.getItem("token"),
-  isAuthenticated: null,
+export const initialLoginState = {
   loading: false,
   userInfo: null,
   error: null,
 };
 
-export const userLoginReducer = (state = initialState, action) => {
+export const userLoginReducer = (state = initialLoginState, action) => {
   switch (action.type) {
     case actionType.USER_LOGIN_REQUEST:
       return {
@@ -22,23 +20,21 @@ export const userLoginReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        isAuthenticated: true,
         userInfo: action.payload,
       };
 
     case actionType.USER_LOGIN_FAIL:
-      localStorage.removeItem("token");
+      localStorage.removeItem("userInfo");
       return {
         ...state,
         loading: false,
-        token: null,
         error: action.payload,
       };
 
     case actionType.USER_LOGOUT:
-      localStorage.removeItem("userInfo", "token");
+      localStorage.removeItem("userInfo");
       return {
-        ...initialState,
+        ...initialLoginState,
       };
 
     default:

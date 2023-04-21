@@ -12,14 +12,6 @@ function Header() {
 
   const handleLogout = () => {
     dispatch(logoutUser());
-
-     //PARA MAREMOVE DIN YUNG NAKA STORE WHEN UPDATING THE FORM
-     localStorage.removeItem('first_name');
-     localStorage.removeItem('last_name');
-     localStorage.removeItem('email');
-     localStorage.removeItem('username');
-     localStorage.removeItem('meeting_link');
-     localStorage.removeItem('bio');
   };
 
   const loginUser = useSelector((state) => state.userState);
@@ -28,7 +20,7 @@ function Header() {
   const navAccountTitle = (
     <>
       <FontAwesomeIcon title="" fixedWidth inverse icon={faUser} />
-      &nbsp;{" "}
+      &nbsp;&nbsp;
       {userInfo && userInfo.username ? userInfo.username : "Account"}
     </>
   );
@@ -46,15 +38,16 @@ function Header() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mx-auto">
-            {!userInfo?.staff && <NavLink as={Link} to="/subjects">Subjects</NavLink>}
-            {!userInfo?.staff &&  <NavLink as={Link} to="/tutor">Find Tutor</NavLink>}
-           
             {(userInfo && !userInfo.staff) || !userInfo ? (
               <>
+                <NavLink as={Link} to="/subjects">Subjects</NavLink>
+                <NavLink as={Link} to="/tutor">Find Tutor</NavLink>
                 <NavLink as={Link} to="/about-us">About Us</NavLink>
                 <NavLink as={Link} to="/contact-us">Contact Us</NavLink>
               </>
-            ) : null}
+            ) : (
+              null
+            )}
             {userInfo && userInfo.staff ? (
               <>
                 <NavLink as={Link} to="/concern-list">Concerns</NavLink>
@@ -64,6 +57,7 @@ function Header() {
             ) : userInfo && userInfo.tutor ? (
               <>
                 <NavLink as={Link} to="/myschedule">Schedules</NavLink>
+                <NavLink as={Link} to="/my-students">Students</NavLink>
               </>
             ) : userInfo && userInfo.student ? (
               <>
@@ -83,7 +77,7 @@ function Header() {
                 <NavDropdown.Item href="/" onClick={handleLogout}>Sign Out</NavDropdown.Item>
               </NavDropdown>
             ) : (
-              <NavDropdown variant="dark" title={"Sign In"} id="basic-nav-dropdown">
+              <NavDropdown variant="dark" title={navAccountTitle} id="basic-nav-dropdown">
                 <NavDropdown.Item as={Link} to="/login">Log In</NavDropdown.Item>
                 <NavDropdown.Item as={Link} to="/register">Sign Up</NavDropdown.Item>
               </NavDropdown>

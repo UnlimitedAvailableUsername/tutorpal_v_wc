@@ -5,7 +5,7 @@ import { useNavigate } from "react-router";
 import { Button, Col, Container, Form } from "react-bootstrap";
 import MessageAlert from "../../elements/MessageAlert";
 import LoadingIconBig from "../../elements/Loader/LoadingIconBig";
-import { USER_REGISTER_UNIQUE_VALIDATE_FAIL } from "../../../features/redux/constants/authConstants";
+import { USER_REGISTER_UNIQUE_VALIDATE_FAIL } from "../../../features/redux/constants/authUserConstants";
 
 const RegisterScreen = () => {
   const dispatch = useDispatch();

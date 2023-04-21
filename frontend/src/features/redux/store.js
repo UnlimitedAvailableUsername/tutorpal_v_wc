@@ -2,7 +2,7 @@ import { applyMiddleware, combineReducers, createStore } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 
-import { userLoginReducer, userDetailsReducer, userUpdateProfileReducer, userRegisterReducer, } from "./reducers/authUserReducer";
+import { userLoginReducer, userDetailsReducer, userUpdateProfileReducer, userRegisterReducer, initialLoginState, } from "./reducers/authUserReducer";
 import { tutorListReducer, tutorDetailsReducer, admintutorListReducer } from "./reducers/tutorReducer";
 import { adminUserListReducer } from "./reducers/adminReducer";
 import { scheduleListReducer, scheduleDetailsReducer, } from "./reducers/scheduleReducer";
@@ -42,7 +42,6 @@ const reducers = combineReducers({
   scheduleOrderListState: scheduleOrderListReducer,
 
   adminlistTutors: admintutorListReducer,
-  userDetails: userDetailsReducer,
   userList: adminUserListReducer,
 
   addSubject : addSubjectReducer,
@@ -56,6 +55,7 @@ const userInfoFromStorage = localStorage.getItem("userInfo")
 
 const initialState = {
   userState: {
+    ...initialLoginState,
     userInfo: userInfoFromStorage,
   },
 };

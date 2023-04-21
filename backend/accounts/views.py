@@ -133,7 +133,7 @@ def user_detail(request, id):
     try:
         user = User.objects.get(id=id)
     except User.DoesNotExist:
-        return Response({"error": "User does not exist."}, status=status.HTTP_404_NOT_FOUND)
+        return Response({"detail": "User does not exist."}, status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
         serializer = UserSerializer(user, many=False)
@@ -169,11 +169,7 @@ def user_login(request):
     
     if not user.is_active:
         return Response({'detail': 'That account is inactive'}, status=status.HTTP_401_UNAUTHORIZED)
-
-    user = authenticate(email=email, password=password)
-
-    if user is None:
-        return Response({'detail': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+    
 
     serializer = UserSerializerWithToken(user)
     response_data = serializer.data
@@ -217,9 +213,6 @@ def user_register(request):
     # Important, because we don't want Django to mutate our data
     data = request.data.copy()
     subjects_data = data.pop('subjects', [])
-    password = data.pop('password')
-    hashed_password = make_password(str(password))
-    data['password'] = hashed_password
     
     # Validate subject IDs
     subject_ids = [int(id) for id in subjects_data]

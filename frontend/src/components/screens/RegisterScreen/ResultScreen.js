@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { USER_REGISTER_RESET } from '../../../features/redux/constants/authConstants';
+import { USER_REGISTER_RESET } from '../../../features/redux/constants/authUserConstants';
 import { Container } from 'react-bootstrap';
 import MessageAlert from '../../elements/MessageAlert';
 import { useNavigate } from 'react-router';

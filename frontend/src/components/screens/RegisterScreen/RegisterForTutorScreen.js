@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../../../features/redux/actions/authUserActions";
 import { listSubjects } from "../../../features/redux/actions/subjectActions";
-import { USER_REGISTER_UNIQUE_VALIDATE_RESET } from "../../../features/redux/constants/authConstants";
+import { USER_REGISTER_UNIQUE_VALIDATE_RESET } from "../../../features/redux/constants/authUserConstants";
 import { useNavigate } from "react-router";
 import { Button, Card, Col, Container, Form, Row, Spinner } from "react-bootstrap";
 import MessageAlert from "../../elements/MessageAlert";

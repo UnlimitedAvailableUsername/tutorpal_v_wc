@@ -26,6 +26,9 @@ import EditSubject from "./components/screens/AdminScreen/EditSubject";
 import ScheduleOrderDetailsScreen from "./components/screens/ScheduleOrderDetailsScreen/ScheduleOrderDetailsScreen";
 import ScheduleOrderListScreen from "./components/screens/ScheduleOrderListScreen/ScheduleOrderListScreen";
 import AdminUserList from "./components/screens/AdminScreen/AdminUserList";
+import RegisterForTutorScreen from "./components/screens/RegisterScreen/RegisterForTutorScreen";
+import RegisterForStudentScreen from "./components/screens/RegisterScreen/RegisterForStudentScreen";
+import ResultScreen from "./components/screens/RegisterScreen/ResultScreen";
 
 function App() {
 
@@ -52,6 +55,9 @@ function App() {
 
                     <Route path="/login" element={<LoginScreen />} exact />
                     <Route path="/register" element={<RegisterScreen />} exact />
+                    <Route path="/register/tutor" element={<RegisterForTutorScreen />} exact />
+                    <Route path="/register/student" element={<RegisterForStudentScreen />} exact />
+                    <Route path="/register/result" element={<ResultScreen />} exact />
                     <Route path="/terms-and-condition" element={<TermsAndConditionScreen />} exact />
                     <Route path="/profile" element={<ProfileScreen />} exact />
 

@@ -19,7 +19,7 @@ const reducers = combineReducers({
   userState: userLoginReducer,
   userDetails: userDetailsReducer,
   userUpdateProfle: userUpdateProfileReducer,
-  userRegister: userRegisterReducer,
+  userRegisterState: userRegisterReducer,
 
   studentsListState: studentsListReducer,
   studentDetailsState: studentDetailsReducer,

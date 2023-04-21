@@ -54,20 +54,15 @@ export const registerUser = (formData) => async (dispatch) => {
   try {
     dispatch({ type: actionType.USER_REGISTER_REQUEST });
 
-    const body = JSON.stringify(formData);
-    console.log("Body:", body);
-
     const config = {
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
       },
     };
 
-    console.log("Config:", config);
-
     const { data } = await axios.post(
       `${BASE_URL}/api/accounts/users/register/`,
-      body,
+      formData,
       config
     );
 
@@ -76,13 +71,6 @@ export const registerUser = (formData) => async (dispatch) => {
       payload: data,
     });
 
-    /* WE ALSO LOGIN THE REGISTERED USER */
-    dispatch({
-      type: actionType.USER_LOGIN_SUCCESS,
-      payload: data,
-    });
-
-    localStorage.setItem("userInfo", JSON.stringify(data));
   } catch (error) {
     dispatch({
       type: actionType.USER_REGISTER_FAIL,
@@ -93,6 +81,46 @@ export const registerUser = (formData) => async (dispatch) => {
     });
   }
 };
+
+
+export const validateUsernameEmailRegister = (formData) => async (dispatch) => {
+  try {
+    dispatch({ type: actionType.USER_REGISTER_UNIQUE_VALIDATE_REQUEST });
+
+    const config = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    };
+
+    const { data } = await axios.post(
+      `${BASE_URL}/api/accounts/users/validate_email_or_username/`,
+      formData,
+      config
+    );
+
+    dispatch({
+      type: actionType.USER_REGISTER_UNIQUE_VALIDATE_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    console.log(error.response.data);
+    dispatch({
+      type: actionType.USER_REGISTER_UNIQUE_VALIDATE_FAIL,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
+
+
+export const setRegisterFormData = (formData) => ({
+  type: actionType.USER_REGISTER_SET_FORM_DATA,
+  payload: formData,
+});
+
 
 /* ACTION CREATOR USED IN GETTING USER DETAILS IN ProfileScreen COMPONENT  */
 

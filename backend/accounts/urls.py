@@ -5,6 +5,7 @@ urlpatterns = [
     path('users/', views.users_list, name='users'),
     path('users/<int:id>/', views.user_detail, name='user'),
     path('users/register/', views.user_register, name='register'),
+    path('users/validate_email_or_username/', views.validate_email_or_username, name='validate_username_or_email'),
     path('users/login/', views.user_login, name='my_token_obtain_pair'),
     path('users/profile/', views.user_profile,name="user_profile"),
 

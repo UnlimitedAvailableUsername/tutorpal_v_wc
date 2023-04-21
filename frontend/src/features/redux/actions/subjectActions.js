@@ -53,25 +53,13 @@ export const addSubject = (formData) => async (dispatch, getState) => {
   
   
   
-  export const listSubjects = () => async (dispatch, getState) => {
+  export const listSubjects = () => async (dispatch) => {
     try {
       dispatch({ type: actionType.SUBJECT_LIST_REQUEST });
   
-      const {
-        userState: { userInfo },
-      } = getState();
-  
-      const config = {
-        headers: {
-          "Content-type": "application/json",
-          Authorization: `Bearer ${userInfo.token}`,
-        },
-      };
-  
       const { data } = await axios.get(
-        `${BASE_URL}/api/accounts/subjects/`,
-        config
-      ); //fetch the products from rest api
+        `${BASE_URL}/api/accounts/subjects/`
+      );
   
       dispatch({
         type: actionType.SUBJECT_LIST_SUCCESS,

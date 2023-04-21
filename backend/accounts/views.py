@@ -163,6 +163,12 @@ def user_login(request):
         user = User.objects.get(email=email)
     except User.DoesNotExist:
         return Response({'detail': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+    
+    if user.is_tutor and not user.is_active:
+        return Response({'detail': 'Your account is still under review. Please wait for the evaluation and check your email'}, status=status.HTTP_401_UNAUTHORIZED)
+    
+    if not user.is_active:
+        return Response({'detail': 'That account is inactive'}, status=status.HTTP_401_UNAUTHORIZED)
 
     user = authenticate(email=email, password=password)
 
@@ -176,6 +182,22 @@ def user_login(request):
     response_data['refresh'] = serializer.get_refresh(user)
 
     return Response(response_data, status=status.HTTP_200_OK)
+
+#############################################################
+# THIS WILL VALIDATE IF THE GIVEN EMAIL OR USERNAME IS UNIQUE
+# IMPORTANT FOR REGISTERING THE USER
+
+@api_view(['POST'])
+def validate_email_or_username(request):
+    email = request.data.get('email')
+    username = request.data.get('username')
+
+    if email and User.objects.filter(email=email).exists():
+        return Response({'detail': 'Email already exists.'}, status=400)
+    elif username and User.objects.filter(username=username).exists():
+        return Response({'detail': 'Username already exists.'}, status=400)
+    else:
+        return Response({'success': True})
 
 #######################################################################
 # THIS WILL LET US CREATE A TEMPORARY DIRECTORY TO STORE THE IMAGE FILE

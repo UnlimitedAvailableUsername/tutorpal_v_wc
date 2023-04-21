@@ -1,126 +1,175 @@
 import React, { useEffect, useState } from "react";
-import {Row,Col,Image,ListGroup,Button,Container,Table,Form,} from "react-bootstrap";
+import {
+  Row,
+  Col,
+  Image,
+  ListGroup,
+  Button,
+  Container,
+  Table,
+  Form,
+} from "react-bootstrap";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { listTutorDetails,updateTutor,} from "../../../features/redux/actions/tutorActions";
+import {
+  listUserDetails,
+  editUser,
+} from "../../../features/redux/actions/adminActions";
 import LoadingIconBig from "../../elements/Loader/LoadingIconBig";
 import MessageAlert from "../../elements/MessageAlert";
 import Rating from "../../elements/Rating";
 
-
 function EditUser() {
-    const { userId } = useParams();
-    const dispatch = useDispatch();
-    const location = useLocation();
-    const navigate = useNavigate();
-    const [active, setActive] = useState(false);
-  
-    const userLoginState = useSelector((state) => state.userState);
-    const { userInfo } = userLoginState;
-  
-    const tutorDetails = useSelector((state) => state.tutorDetails);
-    const { error, loading, user } = tutorDetails;
-
-    
+  const { userId } = useParams();
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [active, setActive] = useState(false);
   const [showForm, setShowForm] = useState(false);
+  const [username, setUsername] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [price_rate_hour, setPrice] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [contact, setContact] = useState("");
+  const [bio, setBio] = useState("");
+  const [numReviews, setReviews] = useState("");
+  const [meeting_link, setmeetingLink] = useState("");
+  const [subjects, setSubjects] = useState([]);
+  const [profile_picture, setProfile] = useState("");
 
-  const toggleForm = () => {
-    setShowForm(!showForm);
+  const userLoginState = useSelector((state) => state.userState);
+  const { userInfo } = userLoginState;
+
+  const userDetails = useSelector((state) => state.userDetails);
+  const { error, loading, user } = userDetails;
+
+  useEffect(() => {
+    dispatch(listUserDetails(userId));
+  }, [dispatch, userId]);
+
+  useEffect(() => {
+    setActive(user?.active);
+    setFirstName(user?.first_name);
+    setProfile(user?.profile_picture);
+    setLastName(user?.last_name);
+    setEmail(user?.email);
+    setContact(user?.contact);
+    setPassword(user?.password || ""); // pass empty string if password is undefined
+    setPrice(user?.price_rate_hour);
+    setBio(user?.bio);
+    setReviews(user?.numReviews);
+    setUsername(user?.username);
+    setmeetingLink(user?.meeting_link);
+    setSubjects(user?.subjects || []);
+  }, [user]);
+
+  const handleActivateTutor = async (e) => {
+    e.preventDefault();
+
+    if (!userId) {
+      return;
+    }
+
+    const userData = {
+      active: true,
+    };
+
+    try {
+      await dispatch(editUser(userId, userData, userInfo));
+      window.location.reload(); // Reload page after successful submission
+    } catch (error) {
+      console.log(error);
+      // handle error
+    }
   };
-  
-    useEffect(() => {
-      dispatch(listTutorDetails(userId));
-    }, [dispatch, userId]);
-  
-    useEffect(() => {
-      setActive(user?.active);
-    }, [user]);
-  
-    const handleActivateTutor = async (e) => {
-      e.preventDefault();
-  
-      if (!userId) {
-        return;
-      }
-  
-      const tutorData = {
-        active: true,
-      };
-  
-      try {
-        await dispatch(updateTutor(userId, tutorData));
-        window.location.reload(); // Reload page after successful submission
-      } catch (error) {
-        console.log(error);
-        // handle error
-      }
+
+  const handleDeactivateTutor = async (e) => {
+    e.preventDefault();
+
+    if (!userId) {
+      return;
+    }
+
+    const userData = {
+      active: false,
     };
-  
-    const handleDeactivateTutor = async (e) => {
-      e.preventDefault();
-  
-      if (!userId) {
-        return;
-      }
-  
-      const tutorData = {
-        active: false,
-      };
-  
-      try {
-        await dispatch(updateTutor(userId, tutorData));
-        window.location.reload();
-      } catch (error) {
-        console.log(error);
-        // handle error
-      }
-      
-    };
-  
-    const renderActiveForm = () => {
-      if (user?.active) {
-        return (
-          <Form onSubmit={handleDeactivateTutor}>
-            <Form.Group className="mb-3">
-              <Form.Check
-                type="checkbox"
-                id="deactivate"
-                name="deactivate"
-                className="form-check-input"
-                label="Deactivate"
-                checked={!active}
-                onChange={(e) => setActive(!e.target.checked)}
-              />
-            </Form.Group>
-  
-            <Button type="submit" className="btn btn-warning">
-              Deactivate
-            </Button>
-          </Form>
-        );
-      } else {
-        return (
-          <Form onSubmit={handleActivateTutor}>
-            <Form.Group className="mb-3">
-              <Form.Check
-                type="checkbox"
-                id="activate"
-                name="activate"
-                className="form-check-input"
-                label="Activate"
-                checked={active}
-                onChange={(e) => setActive(e.target.checked)}
-              />
-            </Form.Group>
-  
-            <Button type="submit" className="btn btn-warning">
-              Activate
-            </Button>
-          </Form>
-        );
-      }
-    };
-      
+
+    try {
+      await dispatch(editUser(userId, userData, userInfo));
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+      // handle error
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const userData = new FormData();
+    userData.append("username", username);
+    userData.append("first_name", firstName);
+    userData.append("last_name", lastName);
+    userData.append("email", email);
+    if (password !== confirmPassword) {
+      setPasswordError("Passwords do not match");
+      return;
+    }
+
+    setPasswordError("");
+    userData.append("contact", contact);
+    userData.append("bio", bio);
+    userData.append("price_rate_hour", price_rate_hour);
+    userData.append("meeting_link", meeting_link);
+    userData.append("subjects", JSON.stringify(subjects));
+
+    if (typeof profile_picture === "object") {
+      userData.append("profile_picture", profile_picture);
+    }
+
+    try {
+      await dispatch(editUser(userId, userData, userInfo));
+      window.location.reload(); // Reload the page
+    } catch (error) {
+      console.log(error);
+      // handle error
+    }
+  };
+
+  const renderActiveForm = () => {
+    if (user?.active) {
+      return (
+        <Form onSubmit={handleDeactivateTutor}>
+          <Form.Group className="mb-3">
+            <Form.Check
+              type="checkbox"
+              id="deactivate"
+              name="deactivate"
+              className="form-check-input"
+              checked={active}
+              onChange={(e) => setActive(e.target.checked)}
+              label="Deactivate"
+            />
+          </Form.Group>
+          <Button type="submit" variant="danger" className="me-3">
+            Deactivate
+          </Button>
+        </Form>
+      );
+    } else {
+      return (
+        <Form onSubmit={handleActivateTutor}>
+          <Button type="submit" variant="success" className="me-3">
+            Activate
+          </Button>
+        </Form>
+      );
+    }
+  };
+
   return (
     <div>
       {user && (
@@ -139,112 +188,157 @@ function EditUser() {
               <div className="d-flex align-items-center justify-content-center mb-4">
                 <Image src={user.profile_picture} alt={user.first_name} fluid />
               </div>
-              <ListGroup variant="flush">
-              
-  <ListGroup.Item style={{ backgroundColor: "#404040" }}>
-                  <h3>
-                    {user.first_name} {user.last_name}
-                  </h3>
-                </ListGroup.Item>
 
-                <ListGroup.Item style={{ backgroundColor: "#404040" }}>
-                  <Table striped className="table-responsive">
-                    <tbody>
-                      <tr>
-                        <td>Mobile:</td>
-                        <td>{user.contact || "No number provided"}</td>
-                      </tr>
-                      <tr>
-                        <td>Email:</td>
-                        <td style={{ wordWrap: "break-word" }}>
-                          {user.email || "No Email"}
-                        </td>
-                      </tr>
-                    </tbody>
-                  </Table>
-                </ListGroup.Item>
+              <Form.Group controlId="image">
+                <Form.Label>Profile Picture</Form.Label>
+                <Form.Control
+                  type="file"
+                  onChange={(e) => setProfile(e.target.files[0])}
+                />
+              </Form.Group>
 
-                <ListGroup.Item style={{ backgroundColor: "#404040" }}>
-                  <Row>
-                    <Col>Reviews: </Col>
-                    <Col>
-                      <strong>{user.numReviews}</strong>
-                    </Col>
-                  </Row>
-                </ListGroup.Item>
-              </ListGroup>
+              <Form.Group controlId="username">
+                <Form.Label>Username</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+              </Form.Group>
+
+              <Form.Group controlId="firstName">
+                <Form.Label>First Name</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter first name"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                />
+              </Form.Group>
+              <Form.Group controlId="lastName">
+                <Form.Label>Last Name</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter last name"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                />
+              </Form.Group>
+
+              <Form.Group controlId="password">
+                <Form.Label>Password</Form.Label>
+                <Form.Control
+                  type="password"
+                  placeholder="Enter Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </Form.Group>
+
+              <Form.Group controlId="confirmPassword">
+                <Form.Label>Confirm Password</Form.Label>
+                <Form.Control
+                  type="password"
+                  placeholder="Confirm Password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  isInvalid={!!passwordError}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {passwordError}
+                </Form.Control.Feedback>
+              </Form.Group>
+
+              <Form.Group controlId="number">
+                <Form.Label>Contact Number</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter contact number"
+                  value={contact}
+                  onChange={(e) => setContact(e.target.value)}
+                />
+              </Form.Group>
+
+              <Form.Group controlId="email">
+                <Form.Label>Email Address</Form.Label>
+                <Form.Control
+                  type="email"
+                  placeholder="Enter email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </Form.Group>
+
+              <Form.Group controlId="reviews">
+                <Form.Label>Reviews</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter Number of Reviews"
+                  value={numReviews}
+                  onChange={(e) => setReviews(e.target.value)}
+                />
+              </Form.Group>
             </Col>
 
             <Col xs={12} md={8}>
               <ListGroup variant="flush">
-                <ListGroup.Item style={{ backgroundColor: "#404040" }}>
-                  <Row>
-                    <Col md={{ span: 2 }}> Bio</Col>
-                    <Col>
-                      <p>{user.bio}</p>
-                      <br />
-                      <br />
-                    </Col>
-                  </Row>
-                </ListGroup.Item>
+                <Form.Group controlId="bio">
+                  <Form.Group controlId="price">
+                    <Form.Label>Hourly Rate</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Enter Hourly Rate"
+                      value={price_rate_hour}
+                      onChange={(e) => setPrice(e.target.value)}
+                    />
+                  </Form.Group>
 
-                <ListGroup.Item style={{ backgroundColor: "#404040" }}>
-                  <Row>
-                    <Col md={{ span: 2 }}> Subjects</Col>
-                    {user.subjects.map((subject) => (
-                      <li key={subject.id}>{subject.subject_title}</li>
-                    ))}
-                    <Col></Col>
-                  </Row>
-                </ListGroup.Item>
+                  <Form.Label>Bio</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    placeholder="Tell us about yourself"
+                    rows={3}
+                    value={bio}
+                    onChange={(e) => setBio(e.target.value)}
+                  />
+                </Form.Group>
 
-                <ListGroup.Item style={{ backgroundColor: "#404040" }}>
-                  <Row>
-                    <Col md={{ span: 2 }}> Policies</Col>
-                    <Col>
-                      {user.policies}
-                      <br />
-                      <br />
-                    </Col>
-                  </Row>
-                </ListGroup.Item>
+                <Form.Group controlId="meeting">
+                  <Form.Label>Zoom Link</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter zoom link"
+                    value={meeting_link}
+                    onChange={(e) => setmeetingLink(e.target.value)}
+                  />
+                </Form.Group>
 
-                <ListGroup.Item style={{ backgroundColor: "#404040" }}>
-                  {user.schedules && user.schedules.length > 0 ? (
-                    <div>
-                      <div>Schedule:</div>
-                      <div>
-                        {user.schedules.map((schedule, index) => (
-                          <React.Fragment key={schedule._id}>
-                            {index > 0 && ", "}
-                            {schedule.name}
-                            {schedule.price}
-                          </React.Fragment>
-                        ))}
-                      </div>
-                    </div>
-                  ) : (
-                    <div>No schedules available at the moment</div>
-                  )}
-                </ListGroup.Item>
+                <Form.Group controlId="subjects">
+                  <Form.Label>Subjects</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter subjects"
+                    value={subjects.join(",")}
+                    onChange={(e) => setSubjects(e.target.value.split(","))}
+                  />
+                </Form.Group>
+
+                <Button variant="primary" type="submit" onClick={handleSubmit}>
+                  Save
+                </Button>
                 <ListGroup variant="flush">
-        {renderActiveForm()}
-      </ListGroup>
+                  {" "}
+                  <br></br>
+                  {renderActiveForm()}
+                </ListGroup>
               </ListGroup>
             </Col>
           </Row>
-
-
-    
         </Container>
-
       )}
-
-      
-
-      
     </div>
-  )
+  );
 }
 
-export default EditUser
+export default EditUser;

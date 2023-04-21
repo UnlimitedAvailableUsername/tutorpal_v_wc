@@ -118,3 +118,31 @@ export const editUser =
 };
 
 
+export const listUserDetails = (userId) => async (dispatch) => {
+  try {
+    dispatch({
+      type: actionType.USER_DETAILS_REQUEST,
+    });
+
+    const { data } = await axios.get(
+      `${BASE_URL}/api/accounts/users/${userId}/`
+    ); //fetch the products from rest api
+
+    dispatch({
+      type: actionType.USER_DETAILS_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: actionType.USER_DETAILS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+
+
+

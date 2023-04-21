@@ -61,11 +61,12 @@ function AdminTutorDetail() {
 
     try {
       await dispatch(updateTutor(tutorId, tutorData));
-      navigate(`/tutors-admit/details/${tutorId}`);
+      window.location.reload();
     } catch (error) {
       console.log(error);
       // handle error
     }
+    
   };
 
   const renderActiveForm = () => {

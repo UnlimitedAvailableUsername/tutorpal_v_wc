@@ -29,6 +29,10 @@ function ProfileScreen() {
   const [uploading, setUploading] = useState(false);
   const [editMode, setEditMode] = useState(false);
 
+
+
+
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -40,6 +44,11 @@ function ProfileScreen() {
 
   const userUpdateProfle = useSelector((state) => state.userUpdateProfle);
   const { success } = userUpdateProfle;
+
+
+
+
+  
 
   useEffect(() => {
     if (!userInfo) {
@@ -60,6 +69,171 @@ function ProfileScreen() {
     }
   }, []);
 
+
+
+//BASED SA SUGGESTION NI RAILEY!!!
+
+
+  //username
+  useEffect(() => {
+    const storedUsername = localStorage.getItem('username');
+    if (storedUsername) {
+      setUsername(storedUsername);
+    } else if (user.username) {
+      setUsername(user.username);
+    }
+  }, [user.username]);
+  const handleUsername = (e) => {
+    setUsername(e.target.value);
+    localStorage.setItem('username', e.target.value);
+  };
+
+  // Listen for logout event and remove 'username' from local storage
+useEffect(() => {
+  const handleLogout = () => {
+    localStorage.removeItem('username');
+  };
+  window.addEventListener('logout', handleLogout);
+  return () => {
+    window.removeEventListener('logout', handleLogout);
+  };
+}, []);
+
+  //first-name
+useEffect(() => {
+  const storedFirstName = localStorage.getItem('first_name');
+  if (storedFirstName) {
+    setFirstName(storedFirstName);
+  } else {
+    setFirstName(user.first_name);
+  }
+}, [user.first_name]);
+
+const handleFirstname = (e) => {
+  setFirstName(e.target.value);
+  localStorage.setItem('first_name', e.target.value);
+};
+
+// Listen for logout event and remove 'first_name' from local storage
+useEffect(() => {
+  const handleLogout = () => {
+    localStorage.removeItem('first_name');
+  };
+  window.addEventListener('logout', handleLogout);
+  return () => {
+    window.removeEventListener('logout', handleLogout);
+  };
+}, []);
+
+//last-name
+useEffect(() => {
+  const storedLastName = localStorage.getItem('last_name');
+  if (storedLastName) {
+    setLastName(storedLastName);
+  } else {
+    setLastName(user.last_name);
+  }
+}, [user.last_name]);
+
+const handleLastname = (e) => {
+  setLastName(e.target.value);
+  localStorage.setItem('last_name', e.target.value);
+};
+
+// Listen for logout event and remove 'last_name' from local storage
+useEffect(() => {
+  const handleLogout = () => {
+    localStorage.removeItem('last_name');
+  };
+  window.addEventListener('logout', handleLogout);
+  return () => {
+    window.removeEventListener('logout', handleLogout);
+  };
+}, []);
+
+
+//email
+useEffect(() => {
+  const storedEmail = localStorage.getItem('email');
+  if (storedEmail) {
+    setEmail(storedEmail);
+  } else {
+    setEmail(user.email);
+  }
+}, [user.email]);
+
+const handleEmail = (e) => {
+  setEmail(e.target.value);
+  localStorage.setItem('email', e.target.value);
+};
+
+// Listen for logout event and remove 'email' from local storage
+useEffect(() => {
+  const handleLogout = () => {
+    localStorage.removeItem('email');
+  };
+  window.addEventListener('logout', handleLogout);
+  return () => {
+    window.removeEventListener('logout', handleLogout);
+  };
+}, []);
+
+
+//bio
+useEffect(() => {
+  const storedBio = localStorage.getItem('bio');
+  if (storedBio) {
+    setBio(storedBio);
+  } else {
+    setBio(user.bio);
+  }
+}, [user.bio]);
+
+const handleBio = (e) => {
+  setBio(e.target.value);
+  localStorage.setItem('bio', e.target.value);
+};
+
+// Listen for logout event and remove 'bio' from local storage
+useEffect(() => {
+  const handleLogout = () => {
+    localStorage.removeItem('bio');
+  };
+  window.addEventListener('logout', handleLogout);
+  return () => {
+    window.removeEventListener('logout', handleLogout);
+  };
+}, []);
+
+
+//    //zoom-link
+//    useEffect(() => {
+//     const storedMeetingLink = localStorage.getItem('meeting_link');
+//     if (storedMeetingLink) {
+//       setMeetingLink(storedMeetingLink);
+//     } else {
+//       setMeetingLink(user.meeting_link);
+//     }
+//   }, [user.meeting_link]);
+
+//   const handleMeetingLinkChange = (e) => {
+//     setMeetingLink(e.target.value);
+//     localStorage.setItem('meeting_link', e.target.value);
+//   };
+
+//   // Listen for logout event and remove 'zoom_link' from local storage
+// useEffect(() => {
+//   const handleLogout = () => {
+//     localStorage.removeItem('meeting_link');
+//   };
+//   window.addEventListener('logout', handleLogout);
+//   return () => {
+//     window.removeEventListener('logout', handleLogout);
+//   };
+// }, []);
+
+
+
   if (loading) {
     // Render loading indicator or return null
     return <LoadingIconRegular />;
@@ -70,6 +244,9 @@ function ProfileScreen() {
     return <Message variant="danger">{error}</Message>;
   }
 
+
+
+  
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -111,6 +288,10 @@ function ProfileScreen() {
     }
   };
 
+
+
+
+
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
@@ -123,6 +304,10 @@ function ProfileScreen() {
     setEditMode(false);
   };
 
+
+
+
+  
   const handleClickOnProfilePicture = (e) => {
     document.getElementById("profilePicture").click();
   };
@@ -136,6 +321,11 @@ function ProfileScreen() {
       </div>
     ));
   };
+
+
+  
+
+  
 
   return (
     <>
@@ -175,22 +365,22 @@ function ProfileScreen() {
                       </Form.Group>
 
                       <Form.Group controlId="username">
-                        <Form.Label>Username</Form.Label>
-                        <Form.Control
-                          required
-                          placeholder="Enter Username"
-                          value={username}
-                          onChange={(e) => setUsername(e.target.value)}
-                        />
-                      </Form.Group>
+                      <Form.Label>Username</Form.Label>
+                      <Form.Control
+                        required
+                        type='name'
+                        value={username}
+                        onChange={handleUsername}
+                      />
+                    </Form.Group>
 
                       <Form.Group controlId="firstName">
                         <Form.Label>First Name</Form.Label>
                         <Form.Control
                           required
-                          placeholder="first_name"
+                          placeholder={user.first_name}
                           value={first_name}
-                          onChange={(e) => setFirstName(e.target.value)}
+                          onChange={handleFirstname}
                         />
                       </Form.Group>
 
@@ -200,7 +390,7 @@ function ProfileScreen() {
                           required
                           placeholder="Last Name"
                           value={last_name}
-                          onChange={(e) => setLastName(e.target.value)}
+                          onChange={handleLastname}
                         />
                       </Form.Group>
 
@@ -211,7 +401,7 @@ function ProfileScreen() {
                           as="textarea"
                           placeholder="Enter your Bio here"
                           value={bio}
-                          onChange={(e) => setBio(e.target.value)} // fixed typo in function name
+                          onChange={handleBio} // fixed typo in function name
                         />
                       </Form.Group>
 
@@ -222,7 +412,7 @@ function ProfileScreen() {
                           type="email"
                           placeholder="Enter Email"
                           value={email}
-                          onChange={(e) => setEmail(e.target.value)}
+                          onChange={handleEmail}
                         />
                       </Form.Group>
 

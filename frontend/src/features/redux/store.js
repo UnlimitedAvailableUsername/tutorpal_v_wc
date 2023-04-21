@@ -42,6 +42,7 @@ const reducers = combineReducers({
   scheduleOrderListState: scheduleOrderListReducer,
 
   adminlistTutors: admintutorListReducer,
+  userDetails: userDetailsReducer,
   userList: adminUserListReducer,
 
   addSubject : addSubjectReducer,

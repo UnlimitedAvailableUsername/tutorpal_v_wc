@@ -12,6 +12,14 @@ function Header() {
 
   const handleLogout = () => {
     dispatch(logoutUser());
+
+     //PARA MAREMOVE DIN YUNG NAKA STORE WHEN UPDATING THE FORM
+     localStorage.removeItem('first_name');
+     localStorage.removeItem('last_name');
+     localStorage.removeItem('email');
+     localStorage.removeItem('username');
+     localStorage.removeItem('meeting_link');
+     localStorage.removeItem('bio');
   };
 
   const loginUser = useSelector((state) => state.userState);
@@ -39,7 +47,8 @@ function Header() {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mx-auto">
             {!userInfo?.staff && <NavLink as={Link} to="/subjects">Subjects</NavLink>}
-            <NavLink as={Link} to="/tutor">Find Tutor</NavLink>
+            {!userInfo?.staff &&  <NavLink as={Link} to="/tutor">Find Tutor</NavLink>}
+           
             {(userInfo && !userInfo.staff) || !userInfo ? (
               <>
                 <NavLink as={Link} to="/about-us">About Us</NavLink>

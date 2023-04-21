@@ -106,7 +106,6 @@ function EditUser() {
       // handle error
     }
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const userData = new FormData();
@@ -114,22 +113,22 @@ function EditUser() {
     userData.append("first_name", firstName);
     userData.append("last_name", lastName);
     userData.append("email", email);
+    userData.append("password", password); // Always append password field
     if (password !== confirmPassword) {
       setPasswordError("Passwords do not match");
       return;
     }
-
     setPasswordError("");
     userData.append("contact", contact);
     userData.append("bio", bio);
     userData.append("price_rate_hour", price_rate_hour);
     userData.append("meeting_link", meeting_link);
     userData.append("subjects", JSON.stringify(subjects));
-
+  
     if (typeof profile_picture === "object") {
       userData.append("profile_picture", profile_picture);
     }
-
+  
     try {
       await dispatch(editUser(userId, userData, userInfo));
       window.location.reload(); // Reload the page
@@ -138,7 +137,7 @@ function EditUser() {
       // handle error
     }
   };
-
+  
   const renderActiveForm = () => {
     if (user?.active) {
       return (

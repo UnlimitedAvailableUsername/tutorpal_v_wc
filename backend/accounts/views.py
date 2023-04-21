@@ -128,6 +128,8 @@ def users_student_list(request):
 ######################################################################
 # THIS WILL CALL, BE ABLE TO UPDATE, AND DELETE THE SPECIFIC USER <id>
 
+from django.contrib.auth.hashers import make_password
+
 @api_view(['GET', 'PUT', 'DELETE'])
 def user_detail(request, id):
     try:
@@ -140,7 +142,14 @@ def user_detail(request, id):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     elif request.method == 'PUT':
-        serializer = UserSerializer(user, data=request.data, partial=True)
+        data = request.data.copy()
+
+        # Check if there's a new password and hash it
+        new_password = data.get('password', None)
+        if new_password:
+            data['password'] = make_password(new_password)
+
+        serializer = UserSerializer(user, data=data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -149,6 +158,7 @@ def user_detail(request, id):
     elif request.method == 'DELETE':
         user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 
 ################################################################################

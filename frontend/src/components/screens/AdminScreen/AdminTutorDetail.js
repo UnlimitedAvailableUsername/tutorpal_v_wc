@@ -1,8 +1,20 @@
 import React, { useEffect, useState } from "react";
-import {Row,Col,Image,ListGroup,Button,Container,Table,Form,} from "react-bootstrap";
+import {
+  Row,
+  Col,
+  Image,
+  ListGroup,
+  Button,
+  Container,
+  Table,
+  Form,
+} from "react-bootstrap";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { listTutorDetails,updateTutor,} from "../../../features/redux/actions/tutorActions";
+import {
+  listTutorDetails,
+  updateTutor,
+} from "../../../features/redux/actions/tutorActions";
 import LoadingIconBig from "../../elements/Loader/LoadingIconBig";
 import MessageAlert from "../../elements/MessageAlert";
 import Rating from "../../elements/Rating";
@@ -66,7 +78,6 @@ function AdminTutorDetail() {
       console.log(error);
       // handle error
     }
-    
   };
 
   const renderActiveForm = () => {
@@ -112,19 +123,22 @@ function AdminTutorDetail() {
       );
     }
   };
-    
+
   return (
     <div>
       {user && (
         <Container>
-          <Button
-            as={Link}
-            to="/tutors-admit"
-            variant="warning"
-            className="btn-outline-dark py-3 my-5"
-          >
-            Back To Admit List
-          </Button>
+          <div className="d-flex justify-content-between">
+            <Button
+              as={Link}
+              to="/tutors-admit"
+              variant="warning"
+              className="btn-outline-dark py-3 my-5"
+            >
+              Back To Admit List
+            </Button>
+            <ListGroup variant="flush">{renderActiveForm()}</ListGroup>
+          </div>
 
           <Row>
             <Col xs={12} md={4}>
@@ -132,8 +146,7 @@ function AdminTutorDetail() {
                 <Image src={user.profile_picture} alt={user.first_name} fluid />
               </div>
               <ListGroup variant="flush">
-              
-  <ListGroup.Item style={{ backgroundColor: "#404040" }}>
+                <ListGroup.Item style={{ backgroundColor: "#404040" }}>
                   <h3>
                     {user.first_name} {user.last_name}
                   </h3>
@@ -219,9 +232,23 @@ function AdminTutorDetail() {
                     <div>No schedules available at the moment</div>
                   )}
                 </ListGroup.Item>
-                <ListGroup variant="flush">
-        {renderActiveForm()}
-      </ListGroup>
+                <h1 className="text-center">ID's</h1>
+                <div className="d-flex flex-column align-items-center justify-content-center mb-4">
+                  <div className="mb-2">
+                    <Image
+                      src={user.photo_education_background}
+                      fluid
+                      style={{ maxWidth: "300px" }}
+                    />
+                  </div>
+                  <div className="mb-2">
+                    <Image
+                      src={user.photo_id}
+                      fluid
+                      style={{ maxWidth: "300px" }}
+                    />
+                  </div>
+                </div>
               </ListGroup>
             </Col>
           </Row>

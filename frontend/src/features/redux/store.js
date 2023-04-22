@@ -13,10 +13,6 @@ import { scheduleOrderDetailsReducer, scheduleOrderListReducer, scheduleOrderPay
 import { studentsListReducer, studentDetailsReducer } from "./reducers/studentsReducer"
 import {addSubjectReducer, subjectDetailsReducer, subjectListReducer } from "../redux/reducers/subjectReducer";
 
-
-
-
-
 const reducers = combineReducers({
   userState: userLoginReducer,
   userUpdateProfileState: userUpdateProfileReducer,

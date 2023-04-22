@@ -8,7 +8,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('accounts', '0016_remove_scheduleorder_tutor_alter_scheduleorder_user'),
+        ('accounts', '0017_alter_review_created_date'),
     ]
 
     operations = [

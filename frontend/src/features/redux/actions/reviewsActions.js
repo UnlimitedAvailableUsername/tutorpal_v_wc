@@ -4,19 +4,19 @@ import * as actionType from "../constants/reviewsConstants";
 
 export const listReviewsOfTutor = (tutorId) => async (dispatch) => {
   try {
-    dispatch({ type: actionType.REVIEW_LIST_REQUEST });
+    dispatch({ type: actionType.REVIEW_LIST_TUTOR_REQUEST });
 
     const { data } = await axios.get(
       `${BASE_URL}/api/accounts/reviews/tutors/${tutorId}/`
     );
 
     dispatch({
-      type: actionType.REVIEW_LIST_SUCCESS,
+      type: actionType.REVIEW_LIST_TUTOR_SUCCESS,
       payload: data,
     });
   } catch (error) {
     dispatch({
-      type: actionType.REVIEW_LIST_FAIL,
+      type: actionType.REVIEW_LIST_TUTOR_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
@@ -52,9 +52,7 @@ export const addReview = (formData) => async (dispatch, getState) => {
   try {
     dispatch({ type: actionType.REVIEW_ADD_REQUEST });
 
-    const {
-      userLoginState: { userInfo },
-    } = getState();
+    const { userState: { userInfo }, } = getState();
 
     const config = {
       headers: {
@@ -114,43 +112,6 @@ export const editThisReview =
     } catch (error) {
       dispatch({
         type: actionType.REVIEW_EDIT_FAIL,
-        payload:
-          error.response && error.response.data.detail
-            ? error.response.data.detail
-            : error.message,
-      });
-    }
-  };
-
-export const deleteThisSchedule =
-  (scheduleId) => async (dispatch, getState) => {
-    try {
-      dispatch({ type: actionType.SCHEDULE_DELETE_REQUEST });
-
-      const {
-        userLoginState: { userInfo },
-      } = getState();
-
-      const config = {
-        headers: {
-          //  AXIOS: HOW DO YOU LIKE TO SEND IT?
-          "Content-type": "application/json",
-          Authorization: `Bearer ${userInfo.token}`,
-        },
-      };
-
-      const { data } = await axios.delete(
-        `${BASE_URL}/api/accounts/schedules/${scheduleId}/`,
-        config
-      );
-
-      dispatch({
-        type: actionType.SCHEDULE_DELETE_SUCCESS,
-        payload: data,
-      });
-    } catch (error) {
-      dispatch({
-        type: actionType.SCHEDULE_DELETE_FAIL,
         payload:
           error.response && error.response.data.detail
             ? error.response.data.detail

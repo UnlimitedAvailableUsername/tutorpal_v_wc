@@ -1,6 +1,6 @@
 import { Card, Container, Row, Col } from 'react-bootstrap';
-import image from '../AboutUs/ABOUT.png'
-import { useSelector } from 'react-redux';
+import image from '../../../assets/components/screens/AboutScreen/ABOUT.png'
+
 
 function AboutUs() {
 

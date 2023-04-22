@@ -165,7 +165,7 @@ function ChooseScheduleScreen() {
               </thead>
               <tbody>
                 {schedules &&
-                  schedules.schedules.map((schedule) => (
+                  schedules.schedules.filter((schedule) => schedule.count_in_stock > 0).map((schedule) => (
                     <tr key={schedule.id}>
                       <td>{schedule.name}</td>
                       <td><b>{schedule.count_in_stock}</b></td>

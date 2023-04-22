@@ -10,13 +10,15 @@ const reviewListInitialState = {
 export const listReviewsReducer = (state = reviewListInitialState, action) => {
     switch (action.type) {
         case actionType.REVIEW_LIST_REQUEST:
+        case actionType.REVIEW_LIST_TUTOR_REQUEST:
             return {
                 ...state,
                 loading: true,
-                error: false,
+                error: null,
             };
 
         case actionType.REVIEW_LIST_SUCCESS:
+        case actionType.REVIEW_LIST_TUTOR_SUCCESS:
             return {
                 ...state,
                 loading: false,
@@ -24,6 +26,7 @@ export const listReviewsReducer = (state = reviewListInitialState, action) => {
             };
 
         case actionType.REVIEW_LIST_FAIL:
+        case actionType.REVIEW_LIST_TUTOR_FAIL:
             return {
                 ...state,
                 loading: false,

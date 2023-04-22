@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { listContacts } from "../../../features/redux/actions/contactActions";
-import { Button, Col, Container, Form, Row, Table } from "react-bootstrap";
+import { Button, Col, Container, Form, Row, Table, Card } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
+import backgroundImage from  '../../../assets/components/screens/ScheduleScreen/secret.png'
 
 
 function ListContact() {
@@ -51,11 +52,35 @@ function ListContact() {
   const handleSortOrderChange = (eventKey) => {
     setSortOrder(eventKey);
   };
+
+  const backgroundStyles = {
+      backgroundImage: `url(${backgroundImage})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center center',
+      height: '160vh',
+      backgroundAttachment: 'fixed',
+    };
   return (
-    <Container>
-      <div className="tutor-text text-center">
-        <p style={{ fontSize: 50 }}>Concerns</p>
-      </div>
+    
+      <div style={backgroundStyles}>
+        <style jsx>{`
+        .card {
+          box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .one {
+          display: flex;
+          justify-content: center;
+        }
+      `}</style>
+        <Container>
+          <br/><br/>
+        <div className="tutor-text text-center">
+      
+      <p style={{ fontSize: 50, textAlign: "center", fontSize: 100, textShadow:'2px 2px 4px rgba(0, 0, 0, 0.3)', marginBottom: 3 }}>CONCERNS</p>
+    </div>
+      <Card style={{width: 1300, margin: 'auto', }} className='card px-5   p-5 mb-5 rounded  '>
+      
 
       <Form>
         <Row>
@@ -99,7 +124,7 @@ function ListContact() {
           <Button
             variant="warning"
             style={{ fontSize: "0.8rem", padding: "0.2rem 0.5rem" }}
-            className="btn-outline-dark py-2 px-3 my-5"
+            className="btn-outline py-2 px-3 my-5"
           >
             Done Concerns
           </Button>
@@ -112,7 +137,7 @@ function ListContact() {
             <th>Name and Date</th>
             <th>Concern</th>
             <th>Details</th>
-            <th>Action</th>
+            <th style={{ textAlign: "center" }}>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -155,12 +180,12 @@ function ListContact() {
                       )}
                     </div>
                   </td>
-                  <td>
+                  <td style={{textAlign: 'center'}}>
                     <Link to={`/contact-details/${contact.id}`}>
                       <Button
                         variant="warning"
                         style={{ fontSize: "0.8rem", padding: "0.2rem 0.5rem" }}
-                        className="btn-outline-dark py-2 px-3 my-5"
+                        className="btn-outline py-2 px-3 my-5"
                       >
                         Details
                       </Button>
@@ -181,7 +206,9 @@ function ListContact() {
           text-align: justify;
         }
       `}</style>
+      </Card>
     </Container>
+    </div>
   );
 }
 

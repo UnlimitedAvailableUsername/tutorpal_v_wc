@@ -1,10 +1,10 @@
 import { applyMiddleware, combineReducers, createStore } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
-
 import { userLoginReducer, userUpdateProfileReducer, userRegisterReducer, initialLoginState, } from "./reducers/authUserReducer";
-import { tutorListReducer, tutorDetailsReducer, admintutorListReducer } from "./reducers/tutorReducer";
+
 import { adminUserListReducer, adminReviewListReducer, userDetailsReducer} from "./reducers/adminReducer";
+import { tutorListReducer, tutorDetailsReducer, admintutorListReducer} from "./reducers/tutorReducer";
 import { scheduleListReducer, scheduleDetailsReducer, } from "./reducers/scheduleReducer";
 import { addContactReducer } from "./reducers/contactReducer";
 import { contactDetailsReducer, contactListReducer, } from "./reducers/contactReducer";
@@ -12,8 +12,6 @@ import { listReviewsReducer, reviewReducer } from "./reducers/reviewsReducer";
 import { scheduleOrderDetailsReducer, scheduleOrderListReducer, scheduleOrderPayReducer } from "./reducers/scheduleOrderReducer";
 import { studentsListReducer, studentDetailsReducer } from "./reducers/studentsReducer"
 import {addSubjectReducer, subjectDetailsReducer, subjectListReducer } from "../redux/reducers/subjectReducer";
-
-
 
 const reducers = combineReducers({
   userState: userLoginReducer,

@@ -1,15 +1,9 @@
 import { applyMiddleware, combineReducers, createStore } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
-
 import { userLoginReducer, userUpdateProfileReducer, userRegisterReducer, initialLoginState, } from "./reducers/authUserReducer";
-<<<<<<< HEAD
-import { tutorListReducer, tutorDetailsReducer, admintutorListReducer, MyStudentListReducer, studentOrderDetailsReducer } from "./reducers/tutorReducer";
 import { adminUserListReducer, adminReviewListReducer, userDetailsReducer} from "./reducers/adminReducer";
-=======
-import { tutorListReducer, tutorDetailsReducer, admintutorListReducer } from "./reducers/tutorReducer";
-import { adminUserListReducer, adminReviewListReducer} from "./reducers/adminReducer";
->>>>>>> 9101024ee8e4cc8d3276306427e910ede725e21f
+import { tutorListReducer, tutorDetailsReducer, admintutorListReducer} from "./reducers/tutorReducer";
 import { scheduleListReducer, scheduleDetailsReducer, } from "./reducers/scheduleReducer";
 import { addContactReducer } from "./reducers/contactReducer";
 import { contactDetailsReducer, contactListReducer, } from "./reducers/contactReducer";

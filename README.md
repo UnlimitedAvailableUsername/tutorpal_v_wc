@@ -1,5 +1,5 @@
 
-# TutorPal (Version: Void Drifter)
+# TutorPal (Version: Flamescion)
 
 A sophisticated bootleg mixup of wayzant.org and tutorly.com websites.
 

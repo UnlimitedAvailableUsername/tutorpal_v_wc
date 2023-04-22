@@ -94,6 +94,8 @@ function ScheduleOrderListScreen() {
                     )}
                 </td>
 
+
+
                 <td>
                   {scheduleOrder.schedules
                     .map((schedule) => schedule.name)

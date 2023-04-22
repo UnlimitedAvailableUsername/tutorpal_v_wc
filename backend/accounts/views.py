@@ -555,8 +555,8 @@ def schedule_order_delete(request, id):
 # THIS WILL LIST ALL THE SCHEDULE ORDERS, FOR ADMIN EYES ONLY
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
-@permission_classes([IsAdminUser])
+# @permission_classes([IsAuthenticated])
+# @permission_classes([IsAdminUser])
 def schedule_order_list(request):
     schedule_orders = ScheduleOrder.objects.all()
     serializer = ScheduleOrderSerializer(schedule_orders, many=True)

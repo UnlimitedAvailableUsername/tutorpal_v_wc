@@ -3,7 +3,7 @@ import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 
 import { userLoginReducer, userUpdateProfileReducer, userRegisterReducer, initialLoginState, } from "./reducers/authUserReducer";
-import { tutorListReducer, tutorDetailsReducer, admintutorListReducer } from "./reducers/tutorReducer";
+import { tutorListReducer, tutorDetailsReducer, admintutorListReducer, MyStudentListReducer, studentOrderDetailsReducer } from "./reducers/tutorReducer";
 import { adminUserListReducer, adminReviewListReducer} from "./reducers/adminReducer";
 import { scheduleListReducer, scheduleDetailsReducer, } from "./reducers/scheduleReducer";
 import { addContactReducer } from "./reducers/contactReducer";
@@ -25,6 +25,8 @@ const reducers = combineReducers({
   
   tutorList: tutorListReducer,
   tutorDetails: tutorDetailsReducer,
+  studentList: MyStudentListReducer,
+  studentDetails: studentOrderDetailsReducer,
 
   scheduleList: scheduleListReducer,
   scheduleDetails: scheduleDetailsReducer,

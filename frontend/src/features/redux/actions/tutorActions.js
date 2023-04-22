@@ -168,3 +168,79 @@ export const updateTutor =
 };
 
 
+
+export const listMyStudentOrders = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: actionType.MY_STUDENTS_LIST_REQUEST });
+
+    const {
+      userState: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(
+      `${BASE_URL}/api/accounts/users/tutors/students/`,
+      config
+    );
+
+    dispatch({
+      type: actionType.MY_STUDENTS_LIST_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: actionType.MY_STUDENTS_LIST_FAIL,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
+
+
+
+  
+export const getStudentOrderDetails = (studentid) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: actionType.STUDENT_ORDER_DETAILS_REQUEST });
+
+    const {
+      userState: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(
+      `${BASE_URL}/api/accounts/users/tutors/students/${studentid}/`,
+      config
+    );
+
+    dispatch({
+      type: actionType.STUDENT_ORDER_DETAILS_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: actionType.STUDENT_ORDER_DETAILS_FAIL,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
+
+
+

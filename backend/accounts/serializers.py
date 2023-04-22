@@ -1,6 +1,7 @@
 # DJANGO IMPORTS
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
+from django.db.models.query import QuerySet
 
 # REST FRAMEWORK IMPORTS
 from rest_framework import serializers
@@ -57,11 +58,14 @@ class UserSerializerWithToken(serializers.ModelSerializer):
 
 class ReviewSerializer(serializers.ModelSerializer):
     user_student = serializers.SerializerMethodField()
+
     class Meta:
         model = Review
         fields = '__all__'
 
     def get_user_student(self, obj):
+        if isinstance(obj, QuerySet):
+            return [review.user_student.username for review in obj]
         return obj.user_student.username
     
     def to_representation(self, instance):

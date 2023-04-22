@@ -30,6 +30,7 @@ import EditUser from "./components/screens/AdminScreen/EditUser";
 import RegisterForTutorScreen from "./components/screens/RegisterScreen/RegisterForTutorScreen";
 import RegisterForStudentScreen from "./components/screens/RegisterScreen/RegisterForStudentScreen";
 import ResultScreen from "./components/screens/RegisterScreen/ResultScreen";
+import ReviewList from "./components/screens/AdminScreen/ReviewList";
 
 function App() {
 
@@ -75,6 +76,7 @@ function App() {
                     <Route path="/subject-edit/:subjectId" element={ userInfo && userInfo.staff ? <EditSubject /> : <Navigate to="/" />} exact />
                     <Route path="/user-list" element={ userInfo && userInfo.staff ? <AdminUserList /> : <Navigate to="/" />} exact />
                     <Route path="/user-edit/:userId" element={ userInfo && userInfo.staff ? <EditUser /> : <Navigate to="/" />} exact />
+                    <Route path="/review-list" element={ userInfo && userInfo.staff ? <ReviewList /> : <Navigate to="/" />} exact />
 
                     <Route path="/my-schedule-orders/" element={ userInfo ? <ScheduleOrderListScreen /> : <Navigate to ="/login"/>} exact />
                     <Route path="/my-schedule-orders/:scheduleOrderId/" element={ userInfo ? <ScheduleOrderDetailsScreen /> : <Navigate to ="/login"/>} exact />

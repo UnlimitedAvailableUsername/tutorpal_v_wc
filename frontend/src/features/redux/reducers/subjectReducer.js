@@ -55,7 +55,7 @@ export const subjectListReducer = (state = initialState, action) => {
   
   const subjectDetailsInitialState = {
       loading: false,
-      schedule: null,
+      subject: null,
       error: null,
   };
   

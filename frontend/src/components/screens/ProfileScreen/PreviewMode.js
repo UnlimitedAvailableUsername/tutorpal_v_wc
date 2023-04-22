@@ -5,7 +5,7 @@ const PreviewMode = ({ disableButton, userInfo, handleToggleEdit }) => {
 
   return (
     <div>
-      <h1>{userInfo.username}'s Profile</h1>
+      <h1>My Profile</h1>
       <div>
         <img src={userInfo.profile_picture} alt={userInfo.username} />
       </div>
@@ -57,7 +57,7 @@ const PreviewMode = ({ disableButton, userInfo, handleToggleEdit }) => {
           </div>
         </>
       )}
-      <Button onClick={handleToggleEdit} disabled={disableButton}>Edit</Button>
+      <Button variant="warning" onClick={handleToggleEdit} disabled={disableButton}>Edit</Button>
     </div>
   )
 }

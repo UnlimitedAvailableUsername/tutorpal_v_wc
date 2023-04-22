@@ -3,10 +3,7 @@ import { Button, Card, Col, Container, ListGroup, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import LoadingIconBig from "../../elements/Loader/LoadingIconBig";
 import MessageAlert from "../../elements/MessageAlert";
-import {
-  getOrderScheduleDetails,
-  payScheduleOrder,
-} from "../../../features/redux/actions/scheduleOrderActions";
+import { getOrderScheduleDetails, payScheduleOrder, } from "../../../features/redux/actions/scheduleOrderActions";
 import { useParams } from "react-router";
 import * as actionType from "../../../features/redux/constants/scheduleOrderConstants";
 import { Link } from "react-router-dom";
@@ -92,10 +89,18 @@ function ScheduleOrderDetailsScreen() {
                       <Row>
                         <Col md={8}>
                           <h4>
-                            {scheduleOrder.tutor.first_name}{" "}
-                            {scheduleOrder.tutor.last_name}
+                            {scheduleOrder.tutor ? (
+                              <>
+                                {scheduleOrder.tutor.first_name}{" "}
+                                {scheduleOrder.tutor.last_name}
+                                {scheduleOrder.tutor.email}
+                              </>
+                            ): (
+                                <>
+                                  Multo
+                                </>
+                            )}
                           </h4>
-                          <p>{scheduleOrder.tutor.email}</p>
                         </Col>
                       </Row>
                     </Card>

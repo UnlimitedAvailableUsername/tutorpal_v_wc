@@ -6,6 +6,7 @@ import { Button, Col, Container, Form } from "react-bootstrap";
 import MessageAlert from "../../elements/MessageAlert";
 import LoadingIconBig from "../../elements/Loader/LoadingIconBig";
 import { USER_REGISTER_UNIQUE_VALIDATE_FAIL } from "../../../features/redux/constants/authUserConstants";
+import { Link } from "react-router-dom";
 
 const RegisterScreen = () => {
   const dispatch = useDispatch();
@@ -23,17 +24,11 @@ const RegisterScreen = () => {
   });
   const [confirmPassword, setConfirmPassword] = useState("");
   const [formValid, setFormValid] = useState(false);
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
 
-  const isFormValid = () => {
-    return (
-      formData.username &&
-      formData.email &&
-      formData.password &&
-      confirmPassword &&
-      (formData.tutor || formData.student) &&
-      formData.password === confirmPassword
-    );
-  };
+  const handleAgreeToTerms = () => {
+    setAgreedToTerms(prevState => !prevState)
+  }
 
   const handleInputChange = (e) => {
     const { name, value, checked } = e.target;
@@ -57,8 +52,22 @@ const RegisterScreen = () => {
         [name]: value,
       }));
     }
-    setFormValid(isFormValid());
   };
+
+  useEffect(() => {
+    const isFormValid = () => {
+      return (
+        formData.username &&
+        formData.email &&
+        formData.password &&
+        (formData.tutor || formData.student) &&
+        formData.password === confirmPassword &&
+        confirmPassword &&
+        agreedToTerms
+      );
+    };
+    setFormValid(isFormValid());
+  }, [formData, confirmPassword, agreedToTerms]);
 
   useEffect(() => {
     if (valid) {
@@ -84,6 +93,12 @@ const RegisterScreen = () => {
       console.log(formData);
     }
   };
+
+  const linkToTermsAndConditions = (
+    <>
+      &nbsp;&nbsp;I agree to the&nbsp;<Link to="/terms-and-conditions">Terms and Conditions</Link> of TutorPal
+    </>
+  )
 
   return (
     <Container>
@@ -115,19 +130,28 @@ const RegisterScreen = () => {
           <Col>
             <Form.Check
               type="radio"
-              label="Tutor"
+              label="&nbsp;&nbsp;Tutor"
               name="tutor"
               checked={formData.tutor}
               onChange={handleInputChange}
             />
             <Form.Check
               type="radio"
-              label="Student"
+              label="&nbsp;&nbsp;Student"
               name="student"
               checked={formData.student}
               onChange={handleInputChange}
             />
           </Col>
+        </Form.Group>
+        <Form.Group className="my-4" controlId="agreedToTerms">
+          <Form.Check
+            type="checkbox"
+            label={linkToTermsAndConditions}
+            name="agreeToTerms"
+            checked={agreedToTerms}
+            onChange={handleAgreeToTerms}
+          />
         </Form.Group>
 
         <Button variant="warning" type="submit" disabled={!formValid}>

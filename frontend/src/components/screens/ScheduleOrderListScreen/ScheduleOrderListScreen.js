@@ -72,26 +72,22 @@ function ScheduleOrderListScreen() {
                 <td>{scheduleOrder.id}</td>
                 <td>
                   <h5>
-                    {scheduleOrder.tutor.first_name}{" "}
-                    {scheduleOrder.tutor.last_name}
+                    {scheduleOrder.tutor ? (
+                      <>
+                        {scheduleOrder.tutor.first_name}{" "}
+                        {scheduleOrder.tutor.last_name}
+                      </>                   
+                    ) : (
+                        <>
+                          No tutor involved &#40;Luh Multong Order&#41;
+                        </>
+                    )}
                   </h5>
-                  <p>{scheduleOrder.tutor.bio}</p>
-                  {scheduleOrder.paid_status &&
-                    !scheduleOrder.session_status && (
-                      <p>Meeting Link: {scheduleOrder.tutor.meeting_link}</p>
-                    )}
-                  {scheduleOrder.paid_status ? (
-                    <p>Payment Status: Paid</p>
+                  {scheduleOrder.session_status ? (
+                    <p>Session completed.</p>
                   ) : (
-                    <p>Payment Status: Not Paid</p>
+                    <p>Session has not happened.</p>
                   )}
-                  {scheduleOrder.session_status === "done" && (
-                    <p>Session has been completed.</p>
-                  )}
-                  {scheduleOrder.session_status &&
-                    !scheduleOrder.session_status === "done" && (
-                      <p>Session Status: {scheduleOrder.session_status}</p>
-                    )}
                 </td>
 
 

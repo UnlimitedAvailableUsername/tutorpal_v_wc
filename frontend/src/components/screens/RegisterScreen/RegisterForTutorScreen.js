@@ -31,54 +31,81 @@ const RegisterForTutorScreen = () => {
 	}, [valid, success, registerFormData, dispatch, navigate])
 
 	const [formData, setFormData] = useState({
-		...registerFormData,
-		first_name: "",
-		last_name: "",
-		contact: "",
+		first_name: '',
+		last_name: '',
+		contact: '',
 		profile_picture: null,
-		bio: "",
+		bio: '',
 		photo_education_background: null,
 		photo_id: null,
 		price_rate_hour: 0,
-		subjects: [],
+		subjects: {},
+		...registerFormData,
 	});
-
+	
 	const handleInputChange = (e) => {
 		const { name, value, files } = e.target;
-
+	
 		if (name === 'contact') {
 			// Allow only numbers and the "+" symbol
 			const regex = /^[0-9+]+$/;
 			if (value === '' || regex.test(value)) {
 				setFormData((prevState) => ({
 					...prevState,
-					[name]: value
+					[name]: value,
 				}));
 			}
 		} else {
 			setFormData((prevState) => ({
 				...prevState,
-				[name]: files ? files[0] : value
+				[name]: files ? files[0] : value,
 			}));
-		};
+		}
 	};
-
+	
 	const handleSubjectSelection = (e) => {
 		const { name, checked } = e.target;
 		const subjectId = parseInt(name, 10);
-
+		const updatedSubjects = { ...formData.subjects };
+	
+		if (checked) {
+			updatedSubjects[subjectId] = true;
+		} else {
+			delete updatedSubjects[subjectId];
+		}
+	
 		setFormData((prevState) => ({
 			...prevState,
-			subjects: checked
-				? [...prevState.subjects, subjectId]
-				: prevState.subjects.filter((id) => id !== subjectId),
+			subjects: updatedSubjects,
 		}));
 	};
-
+	
 	const handleRegister = (e) => {
 		e.preventDefault();
-		dispatch(registerUser(formData));
-		console.log(formData);
+	
+		const updatedFormData = new FormData();
+	
+		// Append the data from the `formData` state instance
+		Object.keys(formData).forEach((key) => {
+			if (key === 'subjects') {
+				// Append the selected subjects individually
+				Object.keys(formData[key]).forEach((subjectId) => {
+					updatedFormData.append('subjects', subjectId);
+				});
+			} else if (
+				formData[key] !== null &&
+				key !== 'profile_picture' &&
+				key !== 'photo_id' &&
+				key !== 'photo_education_background'
+			) {
+				updatedFormData.append(key, formData[key]);
+			} else if (formData[key] !== null) {
+				updatedFormData.append(key, formData[key]);
+			}
+		});
+		console.log(updatedFormData)
+		// Dispatch the `registerUser` action with the `updatedFormData`
+		dispatch(registerUser(updatedFormData));
 	};
 
 	useEffect(() => {

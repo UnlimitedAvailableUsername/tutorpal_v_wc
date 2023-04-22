@@ -149,9 +149,36 @@ def user_detail(request, id):
         if new_password:
             data['password'] = make_password(new_password)
 
+        subject_ids = data.pop('subjects', [])
+        
+        # Exclude empty strings and None values
+        subject_ids = [sid for sid in subject_ids if sid]
+
         serializer = UserSerializer(user, data=data, partial=True)
         if serializer.is_valid():
             serializer.save()
+
+            # update subjects if provided
+            if subject_ids:
+                try:
+                    subjects = Subject.objects.filter(id__in=subject_ids)
+                    if subjects.count() != len(subject_ids):
+                        raise serializers.ValidationError("Invalid subject id(s)")
+                except Subject.DoesNotExist:
+                    raise serializers.ValidationError("Invalid subject id(s)")
+
+                # add or remove subjects as necessary
+                user.subjects.clear()
+                for subject_id in subject_ids:
+                    try:
+                        subject = Subject.objects.get(id=subject_id)
+                        user.subjects.add(subject)
+                    except Subject.DoesNotExist:
+                        # if the subject does not exist, return an error
+                        return Response({'subjects': f'Subject with id {subject_id} does not exist.'}, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                user.subjects.clear()
+
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

@@ -54,6 +54,8 @@ function TutorDetailScreen() {
   function handleEnroll() {
     if (userInfo && user && userInfo.id === user.id) {
       setMessageAlert("Trying to buy yourself huh, kinky.");
+    } else if (user.tutor) {
+      setMessageAlert("You can't do your own kind. (╭☞ ͡ ͡° ͜ ʖ ͡ ͡°)╭☞");
     } else if (userInfo) {
       navigate(`/tutor/${tutorId}/schedules`);
     } else {

@@ -15,9 +15,8 @@ import {
   listUserDetails,
   editUser,
 } from "../../../features/redux/actions/adminActions";
-import LoadingIconBig from "../../elements/Loader/LoadingIconBig";
-import MessageAlert from "../../elements/MessageAlert";
-import Rating from "../../elements/Rating";
+import { listSubjects } from "../../../features/redux/actions/subjectActions";
+import { subjectListReducer } from "../../../features/redux/reducers/subjectReducer";
 
 function EditUser() {
   const { userId } = useParams();
@@ -38,19 +37,31 @@ function EditUser() {
   const [bio, setBio] = useState("");
   const [numReviews, setReviews] = useState("");
   const [meeting_link, setmeetingLink] = useState("");
-  const [subjects, setSubjects] = useState([]);
+
   const [profile_picture, setProfile] = useState("");
 
   const userLoginState = useSelector((state) => state.userState);
   const { userInfo } = userLoginState;
 
-  const userDetails = useSelector((state) => state.userDetails);
-  const { error, loading, user } = userDetails;
+  const adminuserdetails = useSelector((state) => state.adminuserdetails);
+  const { error, loading, user } = adminuserdetails;
+
+  const subjectList = useSelector((state) => state.subjectList);
+  const { subjects } = subjectList;
+
+  const [selectedSubjects, setSelectedSubjects] = useState(
+    userInfo.subjects.map((subject) => subject.id)
+  );
 
   useEffect(() => {
     dispatch(listUserDetails(userId));
   }, [dispatch, userId]);
 
+  useEffect(() => {
+    dispatch(listSubjects());
+  }, [dispatch]);
+
+ 
   useEffect(() => {
     setActive(user?.active);
     setFirstName(user?.first_name);
@@ -64,8 +75,9 @@ function EditUser() {
     setReviews(user?.numReviews);
     setUsername(user?.username);
     setmeetingLink(user?.meeting_link);
-    setSubjects(user?.subjects || []);
+    setSelectedSubjects(user?.subjects?.map((subject) => subject.id) || []);
   }, [user]);
+  
 
   const handleActivateTutor = async (e) => {
     e.preventDefault();
@@ -113,22 +125,32 @@ function EditUser() {
     userData.append("first_name", firstName);
     userData.append("last_name", lastName);
     userData.append("email", email);
-    userData.append("password", password); // Always append password field
-    if (password !== confirmPassword) {
-      setPasswordError("Passwords do not match");
-      return;
+
+    // Append password field only if it has a value
+    if (password) {
+      userData.append("password", password);
+      if (password !== confirmPassword) {
+        setPasswordError("Passwords do not match");
+        return;
+      }
+      setPasswordError("");
     }
-    setPasswordError("");
+
     userData.append("contact", contact);
     userData.append("bio", bio);
     userData.append("price_rate_hour", price_rate_hour);
     userData.append("meeting_link", meeting_link);
-    userData.append("subjects", JSON.stringify(subjects));
-  
+
+    selectedSubjects.forEach((subjectId) => {
+      userData.append("subjects", subjectId);
+    });
+    
+    
+
     if (typeof profile_picture === "object") {
       userData.append("profile_picture", profile_picture);
     }
-  
+
     try {
       await dispatch(editUser(userId, userData, userInfo));
       window.location.reload(); // Reload the page
@@ -137,7 +159,7 @@ function EditUser() {
       // handle error
     }
   };
-  
+
   const renderActiveForm = () => {
     if (user?.active) {
       return (
@@ -168,6 +190,21 @@ function EditUser() {
       );
     }
   };
+  
+  const handleSelectedSubjectsChange = (event) => {
+    const subjectId = parseInt(event.target.value);
+    const isChecked = event.target.checked;
+    if (isChecked) {
+      setSelectedSubjects((prevState) => [...prevState, subjectId]);
+    } else {
+      setSelectedSubjects((prevState) =>
+        prevState.filter((id) => id !== subjectId)
+      );
+    }
+    console.log(selectedSubjects);
+  };
+  
+
 
   return (
     <div>
@@ -187,9 +224,7 @@ function EditUser() {
               <div className="d-flex align-items-center justify-content-center mb-4">
                 <Image src={user.profile_picture} alt={user.first_name} fluid />
               </div>
-
-             
-
+          
               <Form.Group controlId="image">
                 <Form.Label>Profile Picture</Form.Label>
                 <Form.Control
@@ -316,16 +351,22 @@ function EditUser() {
                 </Form.Group>
 
                 <Form.Group controlId="subjects">
-                  <Form.Label>Subjects</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter subjects"
-                    value={subjects.join(",")}
-                    onChange={(e) => setSubjects(e.target.value.split(","))}
-                  />
-                </Form.Group>
+                  <Form.Label>Select your subjects</Form.Label>
 
-                
+                  {subjects &&
+                    subjects.map((subject) => (
+                      <div key={subject.id}>
+                        <Form.Check
+                          type="checkbox"
+                          id={`subject-${subject.id}`}
+                          label={subject.subject_title}
+                          checked={selectedSubjects.includes(subject.id)}
+                          value={subject.id}
+                          onChange={handleSelectedSubjectsChange}
+                        />
+                      </div>
+                    ))}
+                </Form.Group>
 
                 <Button variant="primary" type="submit" onClick={handleSubmit}>
                   Save

@@ -83,10 +83,17 @@ class ScheduleSerializer(serializers.ModelSerializer):
         model = Schedule
         fields = '__all__'
 
+class TutorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'first_name', 'last_name', 'meeting_link']
+
 class ScheduleOrderSerializer(serializers.ModelSerializer):
     schedules = ScheduleSerializer(many=True, read_only=True)
     payment_method = serializers.CharField(max_length=200)
+    tutor = TutorSerializer(read_only=True)
 
     class Meta:
         model = ScheduleOrder
         fields = '__all__'
+

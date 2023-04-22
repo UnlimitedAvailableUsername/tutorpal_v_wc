@@ -492,32 +492,10 @@ def schedule_order_detail(request, id):
     except ScheduleOrder.DoesNotExist:
         return Response({'error': 'Schedule Order not found'}, status=status.HTTP_404_NOT_FOUND)
 
-    data = {
-        'id': order.id,
-        'user': order.user.username,
-        'tutor': f"{order.tutor.first_name} {order.tutor.last_name}" if order.tutor else None,
-        'message': order.message,
-        'date_created': order.date_created,
-        'total_amount': order.total_amount,
-        'payment_method': order.payment_method,
-        'paid_status': order.paid_status,
-        'paid_date': order.paid_date,
-        'session_status': order.session_status,
-        'schedules': [],
-    }
+    serializer = ScheduleOrderSerializer(order)
 
-    for item in order.scheduleorderitem_set.all():
-        schedule = item.schedule
-        data['schedules'].append({
-            'id': schedule.id,
-            'name': schedule.name,
-            'price': schedule.price,
-            'count_in_stock': schedule.count_in_stock,
-            'owner': schedule.owner.username,
-            'quantity': item.quantity,
-        })
+    return Response(serializer.data)
 
-    return Response(data)
 
 ############################################################
 # THIS WILL LET THE CURRENT USER UPDATE HIS/HER ORDER STATUS

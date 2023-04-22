@@ -24,17 +24,6 @@ const RegisterScreen = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [formValid, setFormValid] = useState(false);
 
-  const isFormValid = () => {
-    return (
-      formData.username &&
-      formData.email &&
-      formData.password &&
-      confirmPassword &&
-      (formData.tutor || formData.student) &&
-      formData.password === confirmPassword
-    );
-  };
-
   const handleInputChange = (e) => {
     const { name, value, checked } = e.target;
 
@@ -57,8 +46,21 @@ const RegisterScreen = () => {
         [name]: value,
       }));
     }
-    setFormValid(isFormValid());
   };
+
+  useEffect(() => {
+    const isFormValid = () => {
+      return (
+        formData.username &&
+        formData.email &&
+        formData.password &&
+        confirmPassword &&
+        (formData.tutor || formData.student) &&
+        formData.password === confirmPassword
+      );
+    };
+    setFormValid(isFormValid());
+  }, [formData, confirmPassword]);
 
   useEffect(() => {
     if (valid) {

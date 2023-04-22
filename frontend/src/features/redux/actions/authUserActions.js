@@ -49,7 +49,7 @@ export const logoutUser = () => (dispatch) => {
   });
 };
 
-export const registerUser = (formData) => async (dispatch) => {
+export const registerUser = (updatedFormData) => async (dispatch) => {
   try {
     dispatch({ type: actionType.USER_REGISTER_REQUEST });
 
@@ -61,7 +61,7 @@ export const registerUser = (formData) => async (dispatch) => {
 
     const { data } = await axios.post(
       `${BASE_URL}/api/accounts/users/register/`,
-      formData,
+      updatedFormData,
       config
     );
 

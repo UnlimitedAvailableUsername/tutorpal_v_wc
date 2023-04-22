@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { listReviewsAdmin, deleteReview } from "../../../features/redux/actions/adminActions";
-import { Table, Dropdown, Row, Col, Button } from "react-bootstrap";
+import { Table, Dropdown, Row, Col, Button, Container, Card } from "react-bootstrap";
+import backgroundImage from  '../../../assets/components/screens/ScheduleScreen/secret.png'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faDeleteLeft} from '@fortawesome/free-solid-svg-icons';
 
 function ReviewList() {
   const dispatch = useDispatch();
@@ -44,9 +47,33 @@ function ReviewList() {
       }
     });
 
+    const backgroundStyles = {
+      backgroundImage: `url(${backgroundImage})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center center',
+      height: '130vh',
+      backgroundAttachment: 'fixed',
+    };
+  
+
   return (
-    <div>
-    <h2 style={{ margin: "20px 0", textAlign: "center" }}>Reviews</h2>
+    <div style={backgroundStyles}>
+
+      <br/><br/>
+ <style jsx>{`
+        .card {
+          box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .one {
+          display: flex;
+          justify-content: center;
+        }
+      `}</style>
+      <Container>
+      <h1 style={{  textAlign: "center", fontSize: 100, textShadow:'2px 2px 4px rgba(0, 0, 0, 0.3)'}}>REVIEWS</h1> 
+      <Card style={{width: 1300, margin: 'auto', }} className='card px-5   p-3 mb-5 rounded  '>
+  
   
     <Row style={{ margin: "10px 0" }}>
       <Col>
@@ -89,28 +116,28 @@ function ReviewList() {
         </Dropdown>
       </Col>
     </Row>
-  
+  <br/> 
     <Table style={{ margin: "auto" }}>
       <thead>
-        <tr>
-          <th>Reviewer</th>
-          <th>Tutor</th>
-          <th>Rating</th>
-          <th>Comment</th>
-          <th>Review Date</th>
-          <th>Actions</th>
+        <tr style={{textAlign: 'center'}}>
+          <th>REVIEWER</th>
+          <th>TUTOR</th>
+          <th>RATING</th>
+          <th>COMMENT</th>
+          <th>REVIEW DATE</th>
+          <th>ACTION</th>
         </tr>
       </thead>
       <tbody>
       {sortedReviews && sortedReviews.map((review) => (
-  <tr key={review.id}>
+  <tr style={{textAlign: 'center'}} key={review.id}>
     <td>{review.user_student}</td>
     <td>{review.user_tutor}</td>
     <td>{review.rating}</td>
     <td>{review.comment}</td>
     <td>{new Date(review.created_date).toLocaleDateString()}</td>
     <td>
-    <Button variant="danger" onClick={() => handleDelete(review.id)}>Delete</Button>
+    <Button variant="danger" onClick={() => handleDelete(review.id)}> <FontAwesomeIcon icon={ faDeleteLeft } /></Button>
 
     </td>
   </tr>
@@ -118,6 +145,9 @@ function ReviewList() {
 
       </tbody>
     </Table>
+    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+    </Card>
+    </Container>
   </div>
   
 

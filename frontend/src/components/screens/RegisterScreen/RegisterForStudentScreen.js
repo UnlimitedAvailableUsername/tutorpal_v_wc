@@ -69,7 +69,8 @@ const RegisterForStudentScreen = () => {
     console.log(formData);
   };
 
-  const isFormIncomplete = !formData.first_name || !formData.last_name || !formData.contact;
+  const isFormIncomplete =
+    !formData.first_name || !formData.last_name || !formData.contact;
 
   return (
     <>
@@ -109,63 +110,59 @@ const RegisterForStudentScreen = () => {
                         type="text"
                         name="last_name"
                         onChange={handleInputChange}
-                        value={formData.last_name
-}
-/>
-</Form.Group>
-</Row>
+                        value={formData.last_name}
+                      />
+                    </Form.Group>
+                  </Row>
 
-              <Row>
-                <Form.Group controlId="contact">
-                  <Form.Label>Contact Number</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="contact"
-                    onChange={handleInputChange}
-                    value={formData.contact}
-                  />
-                </Form.Group>
+                  <Row>
+                    <Form.Group controlId="contact">
+                      <Form.Label>Contact Number</Form.Label>
+                      <Form.Control
+                        type="text"
+                        name="contact"
+                        onChange={handleInputChange}
+                        value={formData.contact}
+                      />
+                    </Form.Group>
 
-                <Form.Group controlId="profile_picture">
-                  <Form.Label>Profile Picture</Form.Label>
-                  <Form.Control
-                    type="file"
-                    name="profile_picture"
-                    onChange={handleInputChange}
-                  />
-                </Form.Group>
-              </Row>
+                    <Form.Group controlId="profile_picture">
+                      <Form.Label>Profile Picture</Form.Label>
+                      <Form.Control
+                        type="file"
+                        name="profile_picture"
+                        accept="image/*"
+                        onChange={handleInputChange}
+                      />
+                    </Form.Group>
+                  </Row>
 
-              {registerLoading ? (
-                <Spinner animation="border" variant="primary" />
-              ) : (
-                <Button
-                  type="submit"
-                  variant="primary"
-                  disabled={isFormIncomplete}
-                >
-                  Register
-                </Button>
-              )}
+                  {registerLoading ? (
+                    <Spinner animation="border" variant="primary" />
+                  ) : (
+                    <Button
+                      type="submit"
+                      variant="warning"
+                        disabled={isFormIncomplete}
+                        className="my-3"
+                    >
+                      Register
+                    </Button>
+                  )}
 
-              {registerError && (
-                <MessageAlert variant="danger">{registerError}</MessageAlert>
-              )}
-            </Form>
-          </Card.Body>
-        </Card>
-      </Col>
-    </Row>
-  )}
-</>
-);
+                  {registerError && (
+                    <MessageAlert variant="danger">
+                      {registerError}
+                    </MessageAlert>
+                  )}
+                </Form>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      )}
+    </>
+  );
 };
 
 export default RegisterForStudentScreen;
-
-
-
-
-
-
-

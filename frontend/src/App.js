@@ -5,7 +5,7 @@ import TutorListScreen from "./components/screens/TutorListScreen/TutorListScree
 import LoginScreen from "./components/screens/LoginScreen/LoginScreen";
 import ContactScreen from "./components/screens/ContactScreen/ContactScreen";
 import TutorDetailScreen from "./components/screens/TutorDetailScreen/TutorDetailScreen";
-import AddScreen from "./components/screens/AddScreen/MyScheduleScreenTutor";
+import AddScreen from "./components/screens/MyScheduleScreenTutor/MyScheduleScreenTutor";
 import ProfileScreen from "./components/screens/ProfileScreen/ProfileScreen";
 import SuccessScreen from "./components/screens/ContactScreen/Success";
 import DoesNotExistScreen from "./components/screens/DoesNotExistScreen/DoesNotExistScreen";

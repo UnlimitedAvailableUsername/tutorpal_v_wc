@@ -35,7 +35,13 @@ export const adminUserListReducer = (state = adminUserListInitialState, action) 
     }
 };
 
-export const userDetailsReducer = (state = adminUserListInitialState, action) => {
+const adminUserInitialState = {
+    loading: false,
+    user: null,
+    error: null,
+}
+
+export const userDetailsReducer = (state = adminUserInitialState, action) => {
     switch (action.type) {
 
         case actionType.USER_DETAILS_REQUEST:

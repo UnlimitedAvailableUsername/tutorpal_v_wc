@@ -6,6 +6,7 @@ import { Button, Form, Spinner } from 'react-bootstrap';
 import LoadingIconRegular from '../../elements/Loader/LoadingIconRegular';
 import MessageAlert from '../../elements/MessageAlert';
 import { USER_UPDATE_PROFILE_FAIL } from '../../../features/redux/constants/authUserConstants';
+import LoadingIconBig from '../../elements/Loader/LoadingIconBig';
 
 
 const EditMode = ({ userInfo, subjects, subjectsLoading, subjectsError, updateSuccess, handleToggleEdit }) => {
@@ -15,8 +16,8 @@ const EditMode = ({ userInfo, subjects, subjectsLoading, subjectsError, updateSu
   const [firstName, setFirstName] = useState(userInfo.first_name);
   const [lastName, setLastName] = useState(userInfo.last_name);
   const [email, setEmail] = useState(userInfo.email);
-  const [password, setPassword] = useState(null);
-  const [passwordConfirm, setPasswordConfirm] = useState(null);
+  const [password, setPassword] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState('');
   const [contact, setContact] = useState(userInfo.contact);
   const [bio, setBio] = useState(userInfo.bio);
   const [hourlyPriceRate, setHourlyPriceRate] = useState(userInfo.price_rate_hour);
@@ -99,121 +100,129 @@ const EditMode = ({ userInfo, subjects, subjectsLoading, subjectsError, updateSu
   };
 
   return (
-    <>
-      {subjects && (
-        <div>
-          <Button onClick={handleToggleEdit}>Cancel Edit</Button>
-          <h1>{userInfo.username}'s Profile</h1>
-          <Form onSubmit={handleSubmit}>
-            <Form.Group controlId="profilePicture">
-              {imageUrl && <img src={imageUrl} alt="Profile" />}
-              <Form.Label>Profile Picture</Form.Label>
-              <Form.Control
-                type="file"
-                accept="image/*"
-                onChange={handleProfilePictureChange}
-              />
-            </Form.Group>
-            <Form.Group controlId="username">
-              <Form.Label>Username</Form.Label>
+    <div>
+      <Button onClick={handleToggleEdit}>Cancel Edit</Button>
+      <h1>{userInfo.username}'s Profile</h1>
+      <Form onSubmit={handleSubmit}>
+        <>
+          {userInfo.tutor && (
+            <div>
+              <h2>Basic Details:</h2>
+            </div>
+          )}
+        </>
+        <Form.Group controlId="profilePicture">
+          <div>
+            {imageUrl && <img src={imageUrl} alt="Profile" />}
+          </div>
+          <Form.Label>Profile Picture</Form.Label>
+          <Form.Control
+            type="file"
+            accept="image/*"
+            onChange={handleProfilePictureChange}
+          />
+        </Form.Group>
+        <Form.Group controlId="username">
+          <Form.Label>Username</Form.Label>
+          <Form.Control
+            type="text"
+            value={username}
+            onChange={(event) => setUsername(event.target.value)}
+          />
+        </Form.Group>
+        <Form.Group controlId="firstName">
+          <Form.Label>First Name</Form.Label>
+          <Form.Control
+            type="text"
+            value={firstName}
+            onChange={(event) => setFirstName(event.target.value)}
+          />
+        </Form.Group>
+        <Form.Group controlId="lastName">
+          <Form.Label>First Name</Form.Label>
+          <Form.Control
+            type="text"
+            value={lastName}
+            onChange={(event) => setLastName(event.target.value)}
+          />
+        </Form.Group>
+        <Form.Group controlId="email">
+          <Form.Label>Email</Form.Label>
+          <Form.Control
+            type="email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+          />
+        </Form.Group>
+        <Form.Group controlId='password'>
+          <Form.Label>Change Password</Form.Label>
+          <Form.Control
+            type="password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+          />
+        </Form.Group>
+        <Form.Group controlId='passwordConfirm'>
+          <Form.Label>Confirm Change Password</Form.Label>
+          <Form.Control
+            type="password"
+            value={passwordConfirm}
+            onChange={(event) => setPasswordConfirm(event.target.value)}
+          />
+        </Form.Group>
+        <Form.Group controlId='contact'>
+          <Form.Label>Contact Details</Form.Label>
+          <Form.Control
+            type="contact"
+            value={contact}
+            onChange={(event) => setContact(event.target.value)}
+          />
+        </Form.Group>
+        {userInfo.tutor && (
+          <>
+            <h2>Tutor Specific Details:</h2>
+            <Form.Group controlId='bio'>
+              <Form.Label>Bio</Form.Label>
               <Form.Control
                 type="text"
-                value={username}
-                onChange={(event) => setUsername(event.target.value)}
+                value={bio}
+                onChange={(event) => setBio(event.target.value)}
               />
             </Form.Group>
-            <Form.Group controlId="firstName">
-              <Form.Label>First Name</Form.Label>
-              <Form.Control
-                type="text"
-                value={firstName}
-                onChange={(event) => setFirstName(event.target.value)}
-              />
+            <Form.Group controlId="subjects">
+              <Form.Label>Select your subjects</Form.Label>
+              {subjects && (
+                subjectsLoading ? (
+                  <>
+                    <div><Spinner/>&nbsp;Loading available subjects...</div>
+                  </>
+                ) : subjectsError ? (
+                  <>
+                    <MessageAlert variant="danger">{subjectsError}</MessageAlert>
+                  </>
+                ) : (
+                  <>
+                    {subjects.map((subject) => (
+                      <div key={subject.id}>
+                        <Form.Check
+                          type="checkbox"
+                          id={`subject-${subject.id}`}
+                          label={subject.subject_title}
+                          checked={selectedSubjects.includes(subject.id)}
+                          value={subject.id}
+                          onChange={handleSelectedSubjectsChange}
+                        />
+                      </div>
+                    ))}
+                  </>
+                )
+              )}
             </Form.Group>
-            <Form.Group controlId="lastName">
-              <Form.Label>First Name</Form.Label>
-              <Form.Control
-                type="text"
-                value={lastName}
-                onChange={(event) => setLastName(event.target.value)}
-              />
-            </Form.Group>
-            <Form.Group controlId="email">
-              <Form.Label>Email</Form.Label>
-              <Form.Control
-                type="email"
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-              />
-            </Form.Group>
-            <Form.Group controlId='password'>
-              <Form.Label>Change Password</Form.Label>
-              <Form.Control
-                type="password"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-              />
-            </Form.Group>
-            <Form.Group controlId='passwordConfirm'>
-              <Form.Label>Confirm Change Password</Form.Label>
-              <Form.Control
-                type="password"
-                value={passwordConfirm}
-                onChange={(event) => setPasswordConfirm(event.target.value)}
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Contact Details</Form.Label>
-              <Form.Control
-                type="contact"
-                value={contact}
-                onChange={(event) => setContact(event.target.value)}
-              />
-            </Form.Group>
-            {userInfo.tutor && (
-              <>
-                <Form.Group controlId='bio'>
-                  <Form.Label>Bio</Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={bio}
-                    onChange={(event) => setBio(event.target.value)}
-                  />
-                </Form.Group>
-                <Form.Group controlId="subjects">
-                  <Form.Label>Subjects</Form.Label>
-                  {subjectsLoading ? (
-                    <>
-                      <div><Spinner/>&nbsp;Loading available subjects...</div>
-                    </>
-                  ) : subjectsError ? (
-                    <>
-                      <MessageAlert variant="danger">{subjectsError}</MessageAlert>
-                    </>
-                  ) : (
-                    <>
-                      {subjects.map((subject) => (
-                        <div key={subject.id}>
-                          <Form.Check
-                            type="checkbox"
-                            id={`subject-${subject.id}`}
-                            label={subject.subject_title}
-                            checked={selectedSubjects.includes(subject.id)}
-                            value={subject.id}
-                            onChange={handleSelectedSubjectsChange}
-                          />
-                        </div>
-                      ))}
-                    </>
-                  )}
-                </Form.Group>
-              </>
-            )}
-            <Button type="submit">Save Changes</Button>
-          </Form>
-        </div>
-      )}
-    </>
+          </>
+        )}
+        <Button variant="warning" type="submit">Save Changes</Button>
+      </Form>
+    </div>
   )
 }
 

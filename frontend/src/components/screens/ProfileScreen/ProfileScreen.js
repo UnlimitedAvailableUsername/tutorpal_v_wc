@@ -13,7 +13,7 @@ const ProfileScreen = () => {
 
   const { userInfo } = useSelector((state) => state.userState);
   const { subjects, loading: subjectsLoading, error: subjectsError } = useSelector((state) => state.subjectList);
-  const { success: updateSuccess, error: updateError } = useSelector((state) => state.userUpdateProfileState);
+  const { loading: updateLoading, success: updateSuccess, error: updateError } = useSelector((state) => state.userUpdateProfileState);
 
   const [toggleEdit, setToggleEdit] = useState(false);
   const [disableButton, setDisableButton] = useState(false);
@@ -33,30 +33,38 @@ const ProfileScreen = () => {
 
   return (
     <Container>
-      {updateSuccess && (
-        <MessageAlert variant="success">Profile successfully updated!</MessageAlert>
-      )}
       <>
-        { userInfo ? (
-          toggleEdit ? (          
-            <EditMode
-              userInfo={userInfo}
-              subjects={subjects}
-              subjectsLoading={subjectsLoading}
-              subjectsError={subjectsError}
-              updateSuccess={updateSuccess}
-              updateError={updateError}
-              handleToggleEdit={handleToggleEdit}
-            />
-          ) : (
-              <PreviewMode
-                userInfo={userInfo}
-                disableButton={disableButton}
-                handleToggleEdit={handleToggleEdit}
-              />
-          )
+        {updateSuccess && (
+          <MessageAlert variant="success">Profile successfully updated!</MessageAlert>
+        )}
+      </>
+      <>
+        {updateError && (
+          <MessageAlert variant="danger"></MessageAlert>
+        )}
+      </>
+      <>
+        {updateLoading && (
+          <LoadingIconBig />
+        )}
+      </>
+      <>
+        {toggleEdit ? (
+          <EditMode
+            userInfo={userInfo}
+            subjects={subjects}
+            subjectsError={subjectsError}
+            subjectsLoading={subjectsLoading}
+            updateSuccess={updateSuccess}
+            updateError={updateError}
+            handleToggleEdit={handleToggleEdit}
+          />
         ) : (
-          <div><LoadingIconBig /></div>
+          <PreviewMode
+            userInfo={userInfo}
+            disableButton={disableButton}
+            handleToggleEdit={handleToggleEdit}
+          />
         )}
       </>
     </Container>

@@ -1,66 +1,59 @@
-import React from 'react'
+import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar, faStarHalfAlt, faStar as farStar } from '@fortawesome/free-solid-svg-icons';
+import { faStar as farStarRegular } from '@fortawesome/free-regular-svg-icons';
 
 function Rating({value, text, color}) {
   return (
     <div className='rating'>
         <span>
-            <i style={{color}} className={
+            <FontAwesomeIcon style={{color}} icon={
                 value >= 1
-                ? 'fas fa-star'
+                ? faStar
                 : value >= 0.5
-                ? 'fas fa-star-half-alt'
-                : 'far fa-star'
-            }>
-
-            </i>
+                ? faStarHalfAlt
+                : farStarRegular
+            } />
         </span>
         <span>
-            <i style={({color})} className={
+            <FontAwesomeIcon style={({color})} icon={
                 value >= 2
-                ? 'fas fa-star'
+                ? faStar
                 : value >= 1.5
-                ? 'fas fa-star-half-alt'
-                : 'far fa-star'
-            }>
-
-            </i>
+                ? faStarHalfAlt
+                : farStarRegular
+            } />
         </span>
         <span>
-            <i style={({color})} className={
+            <FontAwesomeIcon style={({color})} icon={
                 value >= 3
-                ? 'fas fa-star'
+                ? faStar
                 : value >= 2.5
-                ? 'fas fa-star-half-alt'
-                : 'far fa-star'
-            }>
-
-            </i>
+                ? faStarHalfAlt
+                : farStarRegular
+            } />
         </span>
         <span>
-            <i style={({color})} className={
+            <FontAwesomeIcon style={({color})} icon={
                 value >= 4
-                ? 'fas fa-star'
+                ? faStar
                 : value >= 3.5
-                ? 'fas fa-star-half-alt'
-                : 'far fa-star'
-            }>
-
-            </i>
+                ? faStarHalfAlt
+                : farStarRegular
+            } />
         </span>
         <span>
-            <i style={({color})} className={
+            <FontAwesomeIcon style={({color})} icon={
                 value >= 5
-                ? 'fas fa-star'
+                ? faStar
                 : value >= 4.5
-                ? 'fas fa-star-half-alt'
-                : 'far fa-star'
-            }>
-
-            </i>
+                ? faStarHalfAlt
+                : farStarRegular
+            } />
         </span>
         <span style={{marginLeft:8}} >{text}</span>
     </div>
-  )
+  );
 }
 
-export default Rating
+export default Rating;

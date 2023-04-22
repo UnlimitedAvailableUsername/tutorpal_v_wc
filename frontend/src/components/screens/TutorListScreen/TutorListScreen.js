@@ -14,8 +14,15 @@ function TutorListScreen() {
 
   const [sortOrder, setSortOrder] = useState("asc");
 
+  const tutorList = useSelector((state) => state.tutorList);
+  const { users, loading, error } = tutorList;
+  
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(listTutors());
+  }, [dispatch]);
+  
   // function para ma sort by review or price
-
   const sortUsersByPrice = (users) => {
     if (sortOrder === "asc") {
       return users.sort((a, b) => a.price_rate_hour - b.price_rate_hour);
@@ -27,22 +34,11 @@ function TutorListScreen() {
       return users.sort((a, b) => b.numReviews - a.numReviews);
     }
   };
-
+  
   const handleSortOrderChange = (eventKey) => {
     setSortOrder(eventKey);
   };
-  const dispatch = useDispatch();
-
-  const loginUser = useSelector((state) => state.userState);
-  const { userInfo } = loginUser;
-
-  const tutorList = useSelector((state) => state.tutorList);
-  const { users } = tutorList;
-
-  useEffect(() => {
-    dispatch(listTutors());
-  }, [dispatch]);
-
+  
   //FUNCTION PARA MAG-HIGHLIGHT NG WHITE YUNG TERMS NA SINESEARCH
   const highlightSearch = (text) => {
     if (search.trim() === "") {
@@ -95,62 +91,77 @@ function TutorListScreen() {
             />
           </Container>
         </Form>
-        <Dropdown onSelect={handleSortOrderChange}>
-          <Dropdown.Toggle
-            id="dropdown-basic"
-            style={{ backgroundColor: "#037d50 ", borderColor: "#037d50" }}
-          >
-            Sort by price ({sortOrder === "asc" ? "low to high" : "high to low"}
-            )
-          </Dropdown.Toggle>
-          <Dropdown.Menu>
-            <Dropdown.Item eventKey="asc">Price: Low to High</Dropdown.Item>
-            <Dropdown.Item eventKey="desc">Price: High to Low</Dropdown.Item>
-            <Dropdown.Item eventKey="revdesc">
-              Review: High to Low
-            </Dropdown.Item>
-            <Dropdown.Item eventKey="revAsc">Review: Low to High</Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
-        <br></br>
+        {loading ? (
+          <LoadingIconBig />
+        ) : error ? (
+          <MessageAlert variant="danger">{error}</MessageAlert>
+        ) : (
+          <>
+            <Dropdown onSelect={handleSortOrderChange}>
+              <Dropdown.Toggle
+                id="dropdown-basic"
+                style={{ backgroundColor: "#037d50 ", borderColor: "#037d50" }}
+              >
+                Sort by price ({sortOrder === "asc" ? "low to high" : "high to low"}
+                )
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                <Dropdown.Item eventKey="asc">Price: Low to High</Dropdown.Item>
+                <Dropdown.Item eventKey="desc">Price: High to Low</Dropdown.Item>
+                <Dropdown.Item eventKey="revdesc"> Review: High to Low </Dropdown.Item>
+                <Dropdown.Item eventKey="revAsc">Review: Low to High</Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+            <br></br>
 
-        <Row>
-          {users &&
-            sortUsersByPrice(users)
-              .filter(
-                (user) =>
-                  user.tutor &&
-                  (!search ||
-                    user.last_name
-                      .toLowerCase()
-                      .includes(search.toLowerCase()) ||
-                    user.last_name
-                      .toUpperCase()
-                      .includes(search.toUpperCase()) ||
-                    // user.subject.toUpperCase().includes(search.toUpperCase()) ||
-                    // user.subject.toLowerCase().includes(search.toLowerCase()) ||
-                    user.bio.toLowerCase().includes(search.toLowerCase()) ||
-                    user.bio.toUpperCase().includes(search.toUpperCase()) ||
-                    user.first_name
-                      .toUpperCase()
-                      .includes(search.toUpperCase()) ||
-                    user.first_name
-                      .toLowerCase()
-                      .includes(search.toLowerCase()))
-              )
-              .map((user) => (
-                <Col key={user.id} sm={12} md={6} lg={4} xl={12}>
-                  <Tutor
-                    user={{
+            <Row>
+              {users &&
+                sortUsersByPrice(users)
+                  .filter(
+                    (user) =>
+                      user.tutor &&
+                      (!search ||
+                        user.last_name
+                          .toLowerCase()
+                          .includes(search.toLowerCase()) ||
+                        user.last_name
+                          .toUpperCase()
+                          .includes(search.toUpperCase()) ||
+                        // user.subject.toUpperCase().includes(search.toUpperCase()) ||
+                        // user.subject.toLowerCase().includes(search.toLowerCase()) ||
+                        user.bio.toLowerCase().includes(search.toLowerCase()) ||
+                        user.bio.toUpperCase().includes(search.toUpperCase()) ||
+                        user.first_name
+                          .toUpperCase()
+                          .includes(search.toUpperCase()) ||
+                        user.first_name
+                          .toLowerCase()
+                          .includes(search.toLowerCase()))
+                  )
+                  .map((user) => {
+                    return {
                       ...user,
-                      first_name: highlightSearch(user.first_name),
-                      last_name: highlightSearch(user.last_name),
-                      bio: highlightSearch(user.bio),
-                    }}
-                  />
-                </Col>
-              ))}
-        </Row>
+                      highlightedBio:
+                        typeof user.bio === "string"
+                          ? highlightSearch(user.bio.slice(0, 200))
+                          : "",
+                    };
+                  })
+                  .map((user) => (
+                    <Col key={user.id} sm={12} md={6} lg={4} xl={12}>
+                      <Tutor
+                        user={{
+                          ...user,
+                          first_name: highlightSearch(user.first_name),
+                          last_name: highlightSearch(user.last_name),
+                          bio: user.highlightedBio,
+                        }}
+                        />
+                    </Col>
+                  ))}
+            </Row>
+          </>
+        )}
       </Container>
     </div>
   );

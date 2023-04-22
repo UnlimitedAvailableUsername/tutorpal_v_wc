@@ -31,8 +31,8 @@ import RegisterForTutorScreen from "./components/screens/RegisterScreen/Register
 import RegisterForStudentScreen from "./components/screens/RegisterScreen/RegisterForStudentScreen";
 import ResultScreen from "./components/screens/RegisterScreen/ResultScreen";
 import ReviewList from "./components/screens/AdminScreen/ReviewList";
-import MyStudentsList from "./components/screens/TutorStudentListScreen/MyStudentsList";
-import StudentDetailPage from "./components/screens/StudentDetailScreen/StudentDetail";
+import MyStudentsList from "./components/screens/MyStudentsList/MyStudentsList";
+import StudentDetailPage from "./components/screens/StudentDetailScreen/StudentDetailScreen";
 
 function App() {
 
@@ -49,8 +49,6 @@ function App() {
                     <Route path="/" element={<HomeScreen />} exact />
 
                     <Route path="/tutor/:tutorId/schedules" element={<ChooseScheduleScreen />} />
-
-        
 
                     <Route path="/tutor" element={<TutorListScreen />} exact />
                     <Route path="/tutor/:tutorId" element={<TutorDetailScreen />} exact />

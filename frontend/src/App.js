@@ -10,7 +10,7 @@ import ProfileScreen from "./components/screens/ProfileScreen/ProfileScreen";
 import SuccessScreen from "./components/screens/ContactScreen/Success";
 import DoesNotExistScreen from "./components/screens/DoesNotExistScreen/DoesNotExistScreen";
 import RegisterScreen from "./components/screens/RegisterScreen/RegisterScreen";
-import AboutUsScreen from "./components/screens/AboutUs/AboutUsScreen";
+import AboutUsScreen from "./components/screens/AboutScreen/AboutUsScreen";
 import ListContact from "./components/screens/ListContactsScreen/ListContact";
 import ContactDetail from "./components/screens/ContactDetailScreen/ContactDetail";
 import { useSelector } from "react-redux";

@@ -18,7 +18,7 @@ export const getStudentsByOrders = () => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.put(`${BASE_URL}/api/accounts/users/tutors/students/`, config);
+    const { data } = await axios.get(`${BASE_URL}/api/accounts/users/tutors/students/`, config);
 
     dispatch({
       type: actionType.STUDENTS_LIST_BY_SCHEDULE_ORDERS_SUCCESS,

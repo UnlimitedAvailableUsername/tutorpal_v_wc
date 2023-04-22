@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { listMyStudentOrders } from "../../../features/redux/actions/tutorActions";
+import { getStudentsByOrders } from "../../../features/redux/actions/studentsActions";
 import LoadingIconBig from "../../elements/Loader/LoadingIconBig";
 import MessageAlert from "../../elements/MessageAlert";
 import Student from "../../elements/StudentOnCard"
@@ -10,11 +10,11 @@ import Student from "../../elements/StudentOnCard"
 function MyStudentsList() {
   const dispatch = useDispatch();
 
-  const studentList = useSelector((state) => state.studentList);
-  const { students, loading, error } = studentList || {};
+  const studentsListState = useSelector((state) => state.studentsListState);
+  const { users, loading, error } = studentsListState;
 
   useEffect(() => {
-    dispatch(listMyStudentOrders());
+    dispatch(getStudentsByOrders());
   }, [dispatch]);
 
   return (
@@ -27,8 +27,7 @@ function MyStudentsList() {
           <LoadingIconBig />
         ) : error ? (
           <MessageAlert variant="danger">{error}</MessageAlert>
-        ) : (
-          students.map((student) => (
+        ) : (users && users.map((student) => (
             <Student key={student.id} student={student} />
           ))
         )}

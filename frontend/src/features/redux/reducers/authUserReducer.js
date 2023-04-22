@@ -1,5 +1,5 @@
 import * as actionType from "../constants/authUserConstants";
-// Pls wag nyo na galawin ito if di niyo gets
+
 
 export const initialLoginState = {
   loading: false,
@@ -42,19 +42,27 @@ export const userLoginReducer = (state = initialLoginState, action) => {
   }
 };
 
-/* REDUCER USED IN UPDATING USER DETAILS IN ProfileScreen COMPONENT */
-export const userUpdateProfileReducer = (state = {}, action) => {
+const userUpdateInitialState = {
+  loading: false,
+  error: null,
+  success: null,
+}
+
+
+export const userUpdateProfileReducer = (state = userUpdateInitialState, action) => {
   switch (action.type) {
     case actionType.USER_UPDATE_PROFILE_REQUEST:
       return {
+        ...state,
         loading: true,
+        error: null,
+        success: null,
       };
 
     case actionType.USER_UPDATE_PROFILE_SUCCESS:
       return {
         loading: false,
         success: true,
-        user: action.payload,
       };
 
     case actionType.USER_UPDATE_PROFILE_FAIL:
@@ -64,48 +72,15 @@ export const userUpdateProfileReducer = (state = {}, action) => {
       };
 
     case actionType.USER_UPDATE_PROFILE_RESET:
-      return {}; /* RESET STATE */
-
-    default:
-      return state;
-  }
-};
-
-
-const userDetailsInitialState = {
-  loading: false,
-  error: null,
-  user: null,
-}
-
-/* REDUCER USED IN GETTING USER DETAILS IN ProfileScreen COMPONENT */
-export const userDetailsReducer = (state = userDetailsInitialState, action) => {
-  switch (action.type) {
-    case actionType.USER_DETAILS_REQUEST:
+      return {
+        ...userUpdateInitialState,
+      };
+    
+    case actionType.USER_UPDATE_PROFILE_RESET_SUCCESS:
       return {
         ...state,
-        loading: true,
-        error: null,
-      };
-
-    case actionType.USER_DETAILS_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        user: action.payload,
-      };
-
-    case actionType.USER_DETAILS_FAIL:
-      return {
-        ...state,
-        loading: false,
-        error: action.payload,
-      };
-
-    case actionType.USER_DETAILS_RESET:
-      return {
-        ...userDetailsInitialState
-      };
+        success: null,
+      }
 
     default:
       return state;

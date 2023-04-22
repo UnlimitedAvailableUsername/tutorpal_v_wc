@@ -278,9 +278,9 @@ def user_profile(request):
         return Response(serializer.data)
     elif request.method == 'PUT':
         data = request.data.copy()
-        password = data.pop('password', None)
+        password = request.data.get('password', None)
         if password:
-            data['password'] = make_password(str(password))
+            data['password'] = make_password(password)
         subject_ids = data.pop('subjects', [])
         
         # Exclude empty strings and None values

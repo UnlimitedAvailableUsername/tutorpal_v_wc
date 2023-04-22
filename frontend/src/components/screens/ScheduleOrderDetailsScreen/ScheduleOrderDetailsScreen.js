@@ -64,10 +64,18 @@ function ScheduleOrderDetailsScreen() {
   };
 
   return (
-    <Container className="my-5">
-      <Link to="/my-schedule-orders">
-        <Button variant="warning" className="p-3 mb-3">
-          &lt; Back to booked schedules
+    <Container className="mb-5">
+      <Link to={userInfo.tutor ? `/my-students/${scheduleOrder && scheduleOrder.user}` : "/my-schedule-orders"}>
+        <Button variant="warning" className="btn-outline-dark py-3 my-5">
+          {userInfo.tutor ? (
+            <>
+              &lt; Student Details
+            </>
+          ): (
+            <>
+            &lt; Back to booked schedules
+            </>
+          )}
         </Button>
       </Link>
       {loading ? (
@@ -191,7 +199,7 @@ function ScheduleOrderDetailsScreen() {
                         </Col>
                       </Row>
                     </ListGroup.Item>
-                    {!scheduleOrder.paid_status && (
+                    {!scheduleOrder.paid_status && userInfo.student && (
                       <PayPalScriptProvider options={initialOptions}>
                         <div
                           style={{
@@ -228,7 +236,7 @@ function ScheduleOrderDetailsScreen() {
                   </ListGroup>
                   {userInfo && (userInfo.tutor || userInfo.staff) && (
                     <ListGroup.Item>
-                      <Button variant="warning">Mark as Done</Button>
+                      <Button className="btn-outline-dark w-100" variant="warning">Mark Session as Done</Button>
                     </ListGroup.Item>
                   )}
                 </Card>

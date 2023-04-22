@@ -189,7 +189,7 @@ const EditMode = ({ userInfo, subjects, subjectsLoading, subjectsError, updateSu
                 onChange={(event) => setBio(event.target.value)}
               />
             </Form.Group>
-            <Form.Group controlId="subjects">
+            <Form.Group className="my-5" controlId="subjects">
               <Form.Label>Select your subjects</Form.Label>
               {subjects && (
                 subjectsLoading ? (
@@ -217,6 +217,14 @@ const EditMode = ({ userInfo, subjects, subjectsLoading, subjectsError, updateSu
                   </>
                 )
               )}
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Hourly Price Rate</Form.Label>
+              <Form.Control
+                type="number"
+                value={hourlyPriceRate}
+                onChange={(event) => setHourlyPriceRate(event.target.value)}
+              />
             </Form.Group>
           </>
         )}

@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Row,
-  Col,
-  Image,
-  ListGroup,
-  Button,
-  Container,
-  Table,
-} from "react-bootstrap";
+import { Row, Col, Image, ListGroup, Button, Container, Table, } from "react-bootstrap";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 

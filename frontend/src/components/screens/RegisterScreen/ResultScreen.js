@@ -26,7 +26,7 @@ const ResultScreen = () => {
   }, [dispatch]);
 
   return (
-    <Container>
+    <Container className='mt-5'>
       <h1 className='my-5'>Registration Successful!</h1>
       <h2 className='mb-5'>You will be redirected to login in 6.9 seconds.</h2>
       { userRegistered && userRegistered.student ? (        

@@ -1,52 +1,49 @@
 import React from "react";
 import { Card, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import Rating from "./Rating";
-import { useDispatch } from "react-redux";
-import { getStudentOrderDetails } from "../../features/redux/actions/tutorActions";
 
-function Student({ student, tutorId }) {
-    const dispatch = useDispatch();
-    const orderCount = student.orders.filter((order) => order.tutorId === tutorId).length;
-  
-    const handleStudentClick = () => {
-      dispatch(getStudentOrderDetails(student.id));
-    };
-  
-    return (
-      <Row>
-        <Card style={{ backgroundColor: "#404040" }} className="my-1 p-3 rounded">
-          <Row>
-            <Col md={3} className="d-flex justify-content-center align-items-center">
-              <Link to={`/my-students/details/${student.id}`} style={{ textDecoration: "none" }}>
-                <Card.Img style={{ width: 150 }} src={`${student.profile_picture}`} />
-              </Link>
-            </Col>
-            <Col md={9} className="d-flex flex-column justify-content-center">
-              <Card.Body>
-                <Link to={`${student.id}`} style={{ textDecoration: "none" }} onClick={handleStudentClick}>
-                  <Row>
-                    <Col md={6}>
-                      <Card.Title className="text-center mb-0" style={{ marginTop: "30px", color: "white" }}>
-                        <strong>
-                          {student.first_name} {student.last_name}
-                        </strong>
-                      </Card.Title>
-                    </Col>
-                    <Col md={6}>
-                      <Card.Title className="text-center mb-0" style={{ marginTop: "30px", color: "gold" }}>
-                        <strong>
-                          Orders: {orderCount}
-                        </strong>
-                      </Card.Title>
-                    </Col>
-                  </Row>
-                </Link>
-              </Card.Body>
-            </Col>
-          </Row>
-        </Card>
-      </Row>
-    );
-  }
+
+function Student({ student }) {
+
+	const urlPath = `${student.id}`;
+
+	return (
+		<Row>
+			<Card style={{ backgroundColor: "#404040" }} className="my-2 rounded">
+				<Link to={urlPath} style={{ color: "#fafafa", textDecoration: "none" }}>
+					<Row>
+						<Col>
+							<Card.Img style={{ width: 120, height: 120, objectFit: 'cover' }} src={`${student.profile_picture}`} />
+						</Col>
+						<Col md={10}>
+							<Card.Body>
+								<Card.Title>
+									<h3>
+										<strong>
+											{(student.first_name && student.last_name) ? (
+												<div>
+													{student.first_name}&nbsp;{student.last_name}
+												</div>
+											) : (
+												<div className="text-muted">
+													Unknown Name
+												</div>
+											)}
+										</strong>
+									</h3>
+                </Card.Title>
+                <Card.Text>
+                  <div>
+                    Total number of orders:&nbsp;&nbsp;{student.orders.length}
+                  </div>
+                </Card.Text>
+							</Card.Body>
+						</Col>
+					</Row>
+				</Link>
+			</Card>
+		</Row>
+	);
+}
+
 export default Student;

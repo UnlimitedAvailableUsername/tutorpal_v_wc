@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setRegisterFormData, validateUsernameEmailRegister } from "../../../features/redux/actions/authUserActions";
 import { useNavigate } from "react-router";
-import { Button, Col, Container, Form } from "react-bootstrap";
+import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import MessageAlert from "../../elements/MessageAlert";
 import LoadingIconBig from "../../elements/Loader/LoadingIconBig";
 import { USER_REGISTER_UNIQUE_VALIDATE_FAIL } from "../../../features/redux/constants/authUserConstants";
 import { Link } from "react-router-dom";
+import '../../../assets/components/screens/RegisterScreen/Register.css'
 
 const RegisterScreen = () => {
   const dispatch = useDispatch();
@@ -104,60 +105,71 @@ const RegisterScreen = () => {
     <Container>
       {error && <MessageAlert variant='danger'>{error}</MessageAlert>}
       {loading && <LoadingIconBig />}
-      <Form onSubmit={handleNext}>
-        <Form.Group controlId="username">
-          <Form.Label>Username</Form.Label>
-          <Form.Control type="text" name="username" onChange={handleInputChange} value={formData.username} />
-        </Form.Group>
+      <Row className="justify-content-center align-items-center">
+        <Col xl={9} xs={11}>
+          <Card className="px-5 my-5 shadow">
+            <Card.Title className="py-5">
+              <h2 className="text-uppercase"><strong>Register</strong></h2>
+            </Card.Title>
+            <Form onSubmit={handleNext}>
+              <Form.Group controlId="username">
+                <Form.Label>Username</Form.Label>
+                <Form.Control type="text" name="username" onChange={handleInputChange} value={formData.username} />
+              </Form.Group>
 
-        <Form.Group controlId="email">
-          <Form.Label>Email</Form.Label>
-          <Form.Control type="email" name="email" onChange={handleInputChange} value={formData.email} />
-        </Form.Group>
+              <Form.Group controlId="email">
+                <Form.Label>Email</Form.Label>
+                <Form.Control type="email" name="email" onChange={handleInputChange} value={formData.email} />
+              </Form.Group>
 
-        <Form.Group controlId="password">
-          <Form.Label>Password</Form.Label>
-          <Form.Control type="password" name="password" onChange={handleInputChange} value={formData.password} />
-        </Form.Group>
+              <Form.Group controlId="password">
+                <Form.Label>Password</Form.Label>
+                <Form.Control type="password" name="password" onChange={handleInputChange} value={formData.password} />
+              </Form.Group>
 
-        <Form.Group controlId="confirmPassword">
-          <Form.Label>Confirm Password</Form.Label>
-          <Form.Control type="password" name="confirmPassword" onChange={handleInputChange} value={confirmPassword} />
-        </Form.Group>
+              <Form.Group controlId="confirmPassword">
+                <Form.Label>Confirm Password</Form.Label>
+                <Form.Control type="password" name="confirmPassword" onChange={handleInputChange} value={confirmPassword} />
+              </Form.Group>
 
-        <Form.Group>
-          <Form.Label>I am a:</Form.Label>
-          <Col>
-            <Form.Check
-              type="radio"
-              label="&nbsp;&nbsp;Tutor"
-              name="tutor"
-              checked={formData.tutor}
-              onChange={handleInputChange}
-            />
-            <Form.Check
-              type="radio"
-              label="&nbsp;&nbsp;Student"
-              name="student"
-              checked={formData.student}
-              onChange={handleInputChange}
-            />
-          </Col>
-        </Form.Group>
-        <Form.Group className="my-4" controlId="agreedToTerms">
-          <Form.Check
-            type="checkbox"
-            label={linkToTermsAndConditions}
-            name="agreeToTerms"
-            checked={agreedToTerms}
-            onChange={handleAgreeToTerms}
-          />
-        </Form.Group>
+              <Form.Group>
+                <Form.Label className="mt-4"><h4>What type of user are you registering as?</h4></Form.Label>
+                <Col>
+                  <Form.Check
+                    custom
+                    type="radio"
+                    label="&nbsp;&nbsp;Tutor"
+                    name="tutor"
+                    checked={formData.tutor}
+                    onChange={handleInputChange}
+                  />
+                  <Form.Check
+                    custom
+                    type="radio"
+                    label="&nbsp;&nbsp;Student"
+                    name="student"
+                    checked={formData.student}
+                    onChange={handleInputChange}
+                  />
+                </Col>
+              </Form.Group>
+              <Form.Group className="my-4" controlId="agreedToTerms">
+                <Form.Check
+                  type="checkbox"
+                  label={linkToTermsAndConditions}
+                  name="agreeToTerms"
+                  checked={agreedToTerms}
+                  onChange={handleAgreeToTerms}
+                />
+              </Form.Group>
 
-        <Button variant="warning" type="submit" disabled={!formValid}>
-          Next
-        </Button>
-      </Form>
+              <Button variant="warning" type="submit" disabled={!formValid}>
+                Next
+              </Button>
+            </Form>
+          </Card>
+        </Col>
+      </Row>
     </Container>
   );
 };

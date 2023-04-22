@@ -10,7 +10,7 @@ import ProfileScreen from "./components/screens/ProfileScreen/ProfileScreen";
 import SuccessScreen from "./components/screens/ContactScreen/Success";
 import DoesNotExistScreen from "./components/screens/DoesNotExistScreen/DoesNotExistScreen";
 import RegisterScreen from "./components/screens/RegisterScreen/RegisterScreen";
-import AboutUsScreen from "./components/screens/AboutUs/AboutUsScreen";
+import AboutUsScreen from "./components/screens/AboutScreen/AboutUsScreen";
 import ListContact from "./components/screens/ListContactsScreen/ListContact";
 import ContactDetail from "./components/screens/ContactDetailScreen/ContactDetail";
 import { useSelector } from "react-redux";
@@ -31,8 +31,8 @@ import RegisterForTutorScreen from "./components/screens/RegisterScreen/Register
 import RegisterForStudentScreen from "./components/screens/RegisterScreen/RegisterForStudentScreen";
 import ResultScreen from "./components/screens/RegisterScreen/ResultScreen";
 import ReviewList from "./components/screens/AdminScreen/ReviewList";
-import MyStudentsList from "./components/screens/TutorStudentListScreen/MyStudentsList";
-import StudentDetailPage from "./components/screens/StudentDetailScreen/StudentDetail";
+import MyStudentsList from "./components/screens/MyStudentsList/MyStudentsList";
+import StudentDetailScreen from "./components/screens/StudentDetailScreen/StudentDetailScreen";
 
 function App() {
 
@@ -49,8 +49,6 @@ function App() {
                     <Route path="/" element={<HomeScreen />} exact />
 
                     <Route path="/tutor/:tutorId/schedules" element={<ChooseScheduleScreen />} />
-
-        
 
                     <Route path="/tutor" element={<TutorListScreen />} exact />
                     <Route path="/tutor/:tutorId" element={<TutorDetailScreen />} exact />
@@ -81,7 +79,8 @@ function App() {
                     <Route path="/review-list" element={ userInfo && userInfo.staff ? <ReviewList /> : <Navigate to="/" />} exact />
 
                     <Route path="/my-students" element={ userInfo && userInfo.tutor ? <MyStudentsList /> : <Navigate to="/" />} exact />
-                    <Route path="/my-students/details/:studentId" element={ userInfo && userInfo.tutor ? <StudentDetailPage /> : <Navigate to="/" />} exact />
+                    <Route path="/my-students/:studentId" element={ userInfo && userInfo.tutor ? <StudentDetailScreen /> : <Navigate to="/" />} exact />
+                    <Route path="/my-students/:studentId/orders/:scheduleOrderId" element={ userInfo && userInfo.tutor ? <ScheduleOrderDetailsScreen /> : <Navigate to="/" />} exact />
 
                     <Route path="/my-schedule-orders/" element={ userInfo ? <ScheduleOrderListScreen /> : <Navigate to="/login"/>} exact />
                     <Route path="/my-schedule-orders/:scheduleOrderId/" element={ userInfo ? <ScheduleOrderDetailsScreen /> : <Navigate to="/login"/>} exact />

@@ -124,3 +124,91 @@ export const tutorReviewCreateReducer = (state = {}, action) => {
             return state
     }
 }
+
+
+
+const MyStudentListInitialState = {
+    loading: false,
+    error: null,
+    success: null,
+    students: [],
+  }
+  
+  export const MyStudentListReducer = (state = MyStudentListInitialState, action) => {
+    switch (action.type) {
+      case actionType.MY_STUDENTS_LIST_REQUEST:
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        };
+  
+      case actionType.MY_STUDENTS_LIST_SUCCESS:
+          return {
+          ...state,
+          loading: false,
+          success: true,
+          students: action.payload,
+        };
+  
+      case actionType.MY_STUDENTS_LIST_FAIL:
+        return {
+          ...state,
+          loading: false,
+          success: false,
+          error: action.payload,
+        };
+  
+      // WHEN USER LOGS OUT WE WANT ALL DATA REGARDING ORDERS TO BE RESET AS WELL
+      case actionType.MY_STUDENTS_LIST_RESET:
+        return {
+          ...MyStudentListInitialState,
+        };
+  
+      default:
+        return state;
+    };
+  };
+
+
+  const studentOrderDetailsInitialState = {
+    loading: false,
+    error: null,
+    success: null,
+    order: null,
+  }
+  
+  export const studentOrderDetailsReducer = (state = studentOrderDetailsInitialState, action) => {
+    switch (action.type) {
+      case actionType.STUDENT_ORDER_DETAILS_REQUEST:
+        return {
+          ...state,
+          loading: true,
+          error: false,
+          success: null,
+        };
+  
+      case actionType.STUDENT_ORDER_DETAILS_SUCCESS:
+        return {
+          ...state,
+          loading: false,
+          success: true,
+          order: action.payload,
+        };
+  
+      case actionType.STUDENT_ORDER_DETAILS_FAIL:
+        return {
+          loading: false,
+          error: action.payload,
+        };
+  
+      case actionType.STUDENT_ORDER_DETAILS_RESET:
+        return {
+          ...studentOrderDetailsInitialState,
+        }
+  
+      default:
+        return state
+    };
+  };
+  

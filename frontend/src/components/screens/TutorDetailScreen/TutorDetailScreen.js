@@ -55,21 +55,6 @@ function TutorDetailScreen() {
     }
   }
 
-  let enrollButton = (
-    <Button
-      variant="warning"
-      className="btn-outline-dark"
-      disabled={isDisabled}
-      onClick={handleEnroll}
-    >
-      <strong>Enroll Now</strong>
-    </Button>
-  );
-
-  if (userInfo && user && userInfo.id === user.id) {
-    enrollButton = <p>Trying to buy yourself huh, kinky.</p>;
-  }
-
   return (
     <div>
       {user && (
@@ -124,7 +109,7 @@ function TutorDetailScreen() {
                 <ListGroup.Item style={{ backgroundColor: "#404040" }}>
                   <Row className="p-3">
                     {messageAlert && (
-                      <MessageAlert variant="warning">
+                      <MessageAlert variant="primary">
                         {messageAlert}
                       </MessageAlert>
                     )}

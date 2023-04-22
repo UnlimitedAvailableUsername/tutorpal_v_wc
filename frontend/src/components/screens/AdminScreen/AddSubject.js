@@ -2,7 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addSubject, deleteSubject, listSubjects } from '../../../features/redux/actions/subjectActions';
 import { useNavigate, Link, useParams } from 'react-router-dom';
-import { Form, Button, Container , Table} from 'react-bootstrap';
+import { Form, Button, Container , Table, Card} from 'react-bootstrap';
+import backgroundImage from  '../../../assets/components/screens/ScheduleScreen/secret.png'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faDeleteLeft, faEdit } from '@fortawesome/free-solid-svg-icons';
 
 function AddSubject() {
   const dispatch = useDispatch();
@@ -55,14 +58,40 @@ function AddSubject() {
   };
 
 
+  const backgroundStyles = {
+    backgroundImage: `url(${backgroundImage})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center center',
+    height: '130vh',
+    backgroundAttachment: 'fixed',
+  };
+
   return (
-    <div style={{ textAlign: 'center' }}>
-      <Container>
-        <Table striped responsive className="table-m-2">
+    <div style={backgroundStyles}>
+       <Container>
+   
+         
+      <style jsx>{`
+        .card {
+          box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .one {
+          display: flex;
+          justify-content: center;
+        }
+      `}</style>
+
+<br/><br/> 
+<h1 style={{  textAlign: "center", fontSize: 100, textShadow:'2px 2px 4px rgba(0, 0, 0, 0.3)'}}>SUBJECTS</h1> 
+      <Card style={{width: 1300, margin: 'auto', }} className='card px-5   p-3 mb-5 rounded'>
+  
+
+        <Table style={{width: 1000, margin: "auto"}} striped responsive className="table-m-2">
           <thead>
-            <tr>
-              <th>Subject</th>
-              <th>Action</th>
+            <tr >
+              <th>SUBJECTS</th>
+              <th style={{textAlign: 'center'}}>ACTIONS</th>
             </tr>
           </thead>
           <tbody>
@@ -73,10 +102,10 @@ function AddSubject() {
                  
                 </td>
                                 
-                <td>
+                <td style={{textAlign: 'center'}}>
                   <Link to={`/subject-edit/${subject.id}`}>
-                    <button type="button" className="btn btn-warning">
-                      Edit
+                    <button type="button" className="btn btn-warning me-2">
+                    <FontAwesomeIcon icon={ faEdit } />
                     </button>
                   </Link>
                   <button
@@ -84,24 +113,27 @@ function AddSubject() {
                     className="btn btn-danger"
                     onClick={() => handleDelete(subject.id)}
                   >
-                    Delete
+                    <FontAwesomeIcon icon={ faDeleteLeft } />
                   </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </Table>
-      </Container>
       {!showForm ? (
-        <Button className='btn btn-warning' onClick={toggleForm}>Show Form</Button>
+        <Button style={{width: 150, margin: "auto"}} className='btn btn-warning mb-3 mt-5' onClick={toggleForm}>Show Form</Button>  
       ) : (
         <>
-          <h2 style={{ color: 'orange', textAlign: 'center' }}>Add Subject</h2>
-          <Container style={{ maxWidth: '500px' }}>
+
+<br/><br/>
+<Container style={{width: 800, }}>
+        
+   
             {loading && <p>Loading...</p>}
             {error && <p>Error: {error}</p>}
             <Form>
-              <Button className='btn btn-warning' onClick={toggleForm}>Hide Form</Button>
+              <Button style={{width: 100, textShadow:'2px 2px 2px rgba(0, 0, 0, 0.2)',}} className='btn btn-warning' onClick={toggleForm}>Hide Form</Button>
+              <br/><br/>
               <Form.Group className='mb-3'>
                 <Form.Label>Please add Subject </Form.Label>
                 <Form.Control
@@ -114,8 +146,8 @@ function AddSubject() {
                   onChange={handleChange}
                 />
               </Form.Group>
-
-              <Button
+                <div >
+              <Button style={{width: 100, marginLeft:330}}
                 className='btn btn-warning'
                 onClick={(e) => {
                   if (formData.subject_title.length < 2) {
@@ -127,10 +159,14 @@ function AddSubject() {
               >
                 Submit
               </Button>
+              <br/> <br/>
+              </div>
             </Form>
-          </Container>
+            </Container>
         </>
       )}
+      </Card>
+      </Container>
     </div>
   );
 }

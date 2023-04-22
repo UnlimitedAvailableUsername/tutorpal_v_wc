@@ -51,7 +51,7 @@ export const getStudentDetailsAndOrderedSchedules = (studentId) => async (dispat
       },
     };
 
-    const { data } = await axios.put(`${BASE_URL}/api/accounts/users/tutors/students/${studentId}/`, config);
+    const { data } = await axios.get(`${BASE_URL}/api/accounts/users/tutors/students/${studentId}/`, config);
 
     dispatch({
       type: actionType.STUDENTS_DETAILS_AND_SCHEDULE_ORDERS_SUCCESS,

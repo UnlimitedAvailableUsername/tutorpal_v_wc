@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Row, Col, Image, ListGroup, Button, Container, Table, } from "react-bootstrap";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getStudentDetailsAndOrderedSchedules } from "../../../features/redux/actions/studentsActions";
 import LoadingIconBig from "../../elements/Loader/LoadingIconBig";
@@ -9,10 +9,9 @@ import MessageAlert from "../../elements/MessageAlert";
 function StudentDetailScreen() {
   const { studentId } = useParams();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const studentDetailsState = useSelector((state) => state.studentDetailsState);
-  const { error, loading, user } = studentDetailsState;
+  const { error, loading, student } = studentDetailsState;
 
   useEffect(() => {
     dispatch(getStudentDetailsAndOrderedSchedules(studentId));
@@ -36,27 +35,28 @@ function StudentDetailScreen() {
 
   return (
     <div>
-      {user && (
+      {student && (
         <Container>
-          <Button
-            as={Link}
-            to="/tutor"
-            variant="warning"
-            className="btn-outline-dark py-3 my-5"
-          >
-            Fuck, Back to Tutor List
+          <Button as={Link} to="/my-students" variant="warning" className="btn-outline-dark py-3 my-5" >
+            &lt; Students List
           </Button>
 
           <Row>
             <Col xs={12} md={4}>
               <div className="d-flex align-items-center justify-content-center mb-4">
-                <Image src={user.profile_picture} alt={user.first_name} fluid />
+                <Image src={student.profile_picture} alt={student.first_name} fluid />
               </div>
               <ListGroup variant="flush">
                 <ListGroup.Item style={{ backgroundColor: "#404040" }}>
                   <h3>
-                    {user.first_name} {user.last_name}
+                    {student.first_name} {student.last_name}
                   </h3>
+                </ListGroup.Item>
+
+                <ListGroup.Item style={{ backgroundColor: "#404040" }}>
+                  <h5>
+                    Username: {student.username}
+                  </h5>
                 </ListGroup.Item>
 
                 <ListGroup.Item style={{ backgroundColor: "#404040" }}>
@@ -64,31 +64,16 @@ function StudentDetailScreen() {
                     <tbody>
                       <tr>
                         <td>Mobile:</td>
-                        <td>{user.contact || "No number provided"}</td>
+                        <td>{student.contact || "No number provided"}</td>
                       </tr>
                       <tr>
                         <td>Email:</td>
                         <td style={{ wordWrap: "break-word" }}>
-                          {user.email || "No Email"}
+                          {student.email || "No Email"}
                         </td>
                       </tr>
                     </tbody>
                   </Table>
-                </ListGroup.Item>
-
-                <ListGroup.Item style={{ backgroundColor: "#404040" }}>
-                  <Row>
-                    <Col>Reviews: </Col>
-                    <Col>
-                      <strong>{user.numReviews}</strong>
-                    </Col>
-                  </Row>
-                </ListGroup.Item>
-
-                <ListGroup.Item style={{ backgroundColor: "#404040" }}>
-                  <Row className="p-3">
-                      <MessageAlert variant="warning"></MessageAlert>
-                  </Row>
                 </ListGroup.Item>
               </ListGroup>
             </Col>
@@ -96,65 +81,36 @@ function StudentDetailScreen() {
             <Col xs={12} md={8}>
               <ListGroup variant="flush">
                 <ListGroup.Item style={{ backgroundColor: "#404040" }}>
-                  <Row>
-                    <Col md={{ span: 2 }}> Bio</Col>
-                    <Col>
-                      <p>{user.bio}</p>
-                      <br />
-                    </Col>
-                  </Row>
-                </ListGroup.Item>
-
-                <ListGroup.Item style={{ backgroundColor: "#404040" }}>
-                  <Row>
-                    <Col md={{ span: 2 }}> Subjects</Col>
-                    <Col>
-                      {user.subjects.map((subject) => (
-                        <li key={subject.id}>{subject.subject_title}</li>
-                      ))}
-                    </Col>
-                    <Col></Col>
-                  </Row>
-                </ListGroup.Item>
-
-                <ListGroup.Item style={{ backgroundColor: "#404040" }}>
-                  <Row>
-                    <Col md={{ span: 2 }}>Schedule:</Col>
-                    {user.schedules && user.schedules.length > 0 ? (
-                      <Col>
-                        <Table
-                          style={{ border: "1px solid #ccc" }}
-                          striped
-                          responsive
-                          className="table-m-2 "
-                        >
-                          <thead>
-                            <tr>
-                              <th style={{ textAlign: "center" }}>Date</th>
-                              <th style={{ textAlign: "center" }}>
-                                Hours Available
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {user.schedules &&
-                              user.schedules.map((schedule) => (
-                                <tr key={schedule.id}>
-                                  <td style={{ textAlign: "center" }}>
-                                    {schedule.name}
-                                  </td>
-                                  <td style={{ textAlign: "center" }}>
-                                    {schedule.count_in_stock}
-                                  </td>
-                                </tr>
+                  <h2 className="my-4">Schedules Booked</h2>
+                  <Table striped bordered hover>
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Scheduled Days</th>
+                        <th>Paid Status</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {student.orders.map((scheduleOrder) => (
+                        <>
+                          <tr>
+                            <td>{scheduleOrder.id}</td>
+                            <td>
+                              {scheduleOrder.schedules.map((schedule) => (
+                                <>
+                                  {schedule.name}
+                                </>
                               ))}
-                          </tbody>
-                        </Table>
-                      </Col>
-                    ) : (
-                      <Col>No schedules available at the moment</Col>
-                    )}
-                  </Row>
+                            </td>
+                            <td>{scheduleOrder.total_amount}</td>
+                            <td><Link to={`orders/${scheduleOrder.id}`}>Details</Link></td>
+                          </tr>
+                        </>
+                      ))}
+                    </tbody>
+
+                  </Table>
                 </ListGroup.Item>
               </ListGroup>
             </Col>

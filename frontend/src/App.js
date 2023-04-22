@@ -32,7 +32,7 @@ import RegisterForStudentScreen from "./components/screens/RegisterScreen/Regist
 import ResultScreen from "./components/screens/RegisterScreen/ResultScreen";
 import ReviewList from "./components/screens/AdminScreen/ReviewList";
 import MyStudentsList from "./components/screens/MyStudentsList/MyStudentsList";
-import StudentDetailPage from "./components/screens/StudentDetailScreen/StudentDetailScreen";
+import StudentDetailScreen from "./components/screens/StudentDetailScreen/StudentDetailScreen";
 
 function App() {
 
@@ -79,7 +79,8 @@ function App() {
                     <Route path="/review-list" element={ userInfo && userInfo.staff ? <ReviewList /> : <Navigate to="/" />} exact />
 
                     <Route path="/my-students" element={ userInfo && userInfo.tutor ? <MyStudentsList /> : <Navigate to="/" />} exact />
-                    <Route path="/my-students/details/:studentId" element={ userInfo && userInfo.tutor ? <StudentDetailPage /> : <Navigate to="/" />} exact />
+                    <Route path="/my-students/:studentId" element={ userInfo && userInfo.tutor ? <StudentDetailScreen /> : <Navigate to="/" />} exact />
+                    <Route path="/my-students/:studentId/orders/:scheduleOrderId" element={ userInfo && userInfo.tutor ? <ScheduleOrderDetailsScreen /> : <Navigate to="/" />} exact />
 
                     <Route path="/my-schedule-orders/" element={ userInfo ? <ScheduleOrderListScreen /> : <Navigate to="/login"/>} exact />
                     <Route path="/my-schedule-orders/:scheduleOrderId/" element={ userInfo ? <ScheduleOrderDetailsScreen /> : <Navigate to="/login"/>} exact />

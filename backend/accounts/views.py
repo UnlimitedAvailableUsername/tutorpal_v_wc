@@ -590,8 +590,8 @@ def my_students_list_view(request):
 
     return Response(users)
 
-#################################################################
-# THIS WILL DISPLAY THE STUDENT OF TUTOR BASED ON SCHEDULE ORDERS
+####################################################################################
+# THIS WILL DISPLAY THE STUDENT DETAILS AND SCHEDULE ORDERS ON THAT OF CURRENT TUTOR
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -604,7 +604,7 @@ def get_student_details_and_orders(request, id):
         return Response({'error': f'User with id {id} does not exist'}, status=status.HTTP_404_NOT_FOUND)
 
     # Get all the schedule orders that contain the requested user's ID and the authenticated user's owned schedules
-    schedule_orders = ScheduleOrder.objects.filter(user=user, schedules__owner=request.user)
+    schedule_orders = ScheduleOrder.objects.filter(user=user, schedules__owner=request.user).distinct()
 
     # Serialize the schedule orders and add them to the user_dict
     user_dict = UserSerializer(user).data

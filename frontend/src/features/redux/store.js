@@ -2,7 +2,7 @@ import { applyMiddleware, combineReducers, createStore } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 
-import { userLoginReducer, userDetailsReducer, userUpdateProfileReducer, userRegisterReducer, initialLoginState, } from "./reducers/authUserReducer";
+import { userLoginReducer, userUpdateProfileReducer, userRegisterReducer, initialLoginState, } from "./reducers/authUserReducer";
 import { tutorListReducer, tutorDetailsReducer, admintutorListReducer } from "./reducers/tutorReducer";
 import { adminUserListReducer, adminReviewListReducer} from "./reducers/adminReducer";
 import { scheduleListReducer, scheduleDetailsReducer, } from "./reducers/scheduleReducer";
@@ -17,8 +17,7 @@ import {addSubjectReducer, subjectDetailsReducer, subjectListReducer } from "../
 
 const reducers = combineReducers({
   userState: userLoginReducer,
-  userDetails: userDetailsReducer,
-  userUpdateProfle: userUpdateProfileReducer,
+  userUpdateProfileState: userUpdateProfileReducer,
   userRegisterState: userRegisterReducer,
 
   studentsListState: studentsListReducer,

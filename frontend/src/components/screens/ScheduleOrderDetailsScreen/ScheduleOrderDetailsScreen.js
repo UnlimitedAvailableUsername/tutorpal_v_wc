@@ -96,7 +96,7 @@ function ScheduleOrderDetailsScreen() {
                               {schedule.name}
                             </Col>
                             <Col md={4} >
-                              {schedule.quantity}&nbsp;hours&nbsp;&nbsp;&nbsp;&nbsp;x&nbsp;&nbsp;&nbsp;&nbsp;{schedule.price}&nbsp;Php
+                              {schedule.quantity}&nbsp;hours&nbsp;&nbsp;&nbsp;&nbsp;x&nbsp;&nbsp;&nbsp;&nbsp;{parseFloat(schedule.price).toFixed(2)}&nbsp;Php
                             </Col>
                           </Row>
                         </ListGroup.Item>
@@ -154,7 +154,7 @@ function ScheduleOrderDetailsScreen() {
                         Total Price:
                       </Col>
                       <Col>
-                        {scheduleOrder.total_amount}&nbsp;&nbsp;Php
+                        {parseFloat(scheduleOrder.total_amount).toFixed(2)}&nbsp;&nbsp;Php
                       </Col>
                     </Row>
                   </ListGroup.Item>

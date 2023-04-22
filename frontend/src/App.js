@@ -61,7 +61,7 @@ function App() {
                     <Route path="/register/student" element={<RegisterForStudentScreen />} exact />
                     <Route path="/register/result" element={<ResultScreen />} exact />
                     <Route path="/terms-and-condition" element={<TermsAndConditionScreen />} exact />
-                    <Route path="/profile" element={<ProfileScreen />} exact />
+                    <Route path="/profile" element={ userInfo ? <ProfileScreen /> : <Navigate to="/login"/>} exact />
 
                     <Route path="/contact-us" element={<ContactScreen />} exact />
                     <Route path="/contact-success" element={<SuccessScreen />} exact />
@@ -78,8 +78,8 @@ function App() {
                     <Route path="/user-edit/:userId" element={ userInfo && userInfo.staff ? <EditUser /> : <Navigate to="/" />} exact />
                     <Route path="/review-list" element={ userInfo && userInfo.staff ? <ReviewList /> : <Navigate to="/" />} exact />
 
-                    <Route path="/my-schedule-orders/" element={ userInfo ? <ScheduleOrderListScreen /> : <Navigate to ="/login"/>} exact />
-                    <Route path="/my-schedule-orders/:scheduleOrderId/" element={ userInfo ? <ScheduleOrderDetailsScreen /> : <Navigate to ="/login"/>} exact />
+                    <Route path="/my-schedule-orders/" element={ userInfo ? <ScheduleOrderListScreen /> : <Navigate to="/login"/>} exact />
+                    <Route path="/my-schedule-orders/:scheduleOrderId/" element={ userInfo ? <ScheduleOrderDetailsScreen /> : <Navigate to="/login"/>} exact />
 
                     <Route path="/about-us" element={<AboutUsScreen />} exact />
                     <Route path="*" element={<DoesNotExistScreen />} />

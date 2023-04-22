@@ -60,7 +60,7 @@ function App() {
                     <Route path="/register/tutor" element={<RegisterForTutorScreen />} exact />
                     <Route path="/register/student" element={<RegisterForStudentScreen />} exact />
                     <Route path="/register/result" element={<ResultScreen />} exact />
-                    <Route path="/terms-and-condition" element={<TermsAndConditionScreen />} exact />
+                    <Route path="/terms-and-conditions" element={<TermsAndConditionScreen />} exact />
                     <Route path="/profile" element={ userInfo ? <ProfileScreen /> : <Navigate to="/login"/>} exact />
 
                     <Route path="/contact-us" element={<ContactScreen />} exact />

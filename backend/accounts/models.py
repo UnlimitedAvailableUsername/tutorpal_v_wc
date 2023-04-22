@@ -173,15 +173,22 @@ class User(AbstractBaseUser):
     ###########################################################
 
 
+
 class Review(models.Model):
     user_tutor = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='reviews_received')
     user_student = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='reviews_made')
     rating =  models.IntegerField(null=True, blank=True, default=1)
     comment = models.TextField(null=True, blank=True)
-    created_date = models.DateTimeField(auto_now_add=True)
+    created_date = models.DateTimeField(("Date joined"), default=timezone.now)
 
     def __str__(self):
         return f"{self.rating}/5 by {self.user_student.username} to {self.user_tutor.username}"
+
+    def to_representation(self):
+        data = super().to_representation()
+        data['user_student'] = self.user_student.username
+        return data
+
     
 
 class Contact(models.Model):

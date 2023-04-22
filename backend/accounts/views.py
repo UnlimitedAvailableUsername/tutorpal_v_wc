@@ -738,9 +738,10 @@ def contact_edit(request, id):
 @api_view(['GET'])
 @permission_classes([IsAdminUser])
 def review_list(request):
-    review = Review.objects.all()
-    serializer = ReviewSerializer(review)
+    reviews = Review.objects.all()  # or Review.objects.get(id=some_id)
+    serializer = ReviewSerializer(reviews, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 ##################################################################
 # THIS WILL GIVE A LIST OF ALL REVIEWS ON SPECIFIC USER TUTOR <id>
@@ -750,6 +751,8 @@ def review_list_tutor(request, id):
     review = Review.objects.filter(user_tutor=id)
     serializer = ReviewSerializer(review)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 
 ################################################
 # THIS WILL LET THE CURRENT USER CREATE A REVIEW
@@ -799,7 +802,7 @@ def review_detail(request, id):
     review_creator = review.user_student
 
     # Only allow the user who created the review and admin to modify or delete it
-    if user != review_creator and not user.is_superuser:
+    if user != review_creator and not user.staff:
         return Response({'detail': 'You do not have permission to modify or delete this review.'}, status=status.HTTP_403_FORBIDDEN)
 
     if request.method == 'GET':

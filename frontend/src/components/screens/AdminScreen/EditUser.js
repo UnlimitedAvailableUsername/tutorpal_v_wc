@@ -188,6 +188,8 @@ function EditUser() {
                 <Image src={user.profile_picture} alt={user.first_name} fluid />
               </div>
 
+             
+
               <Form.Group controlId="image">
                 <Form.Label>Profile Picture</Form.Label>
                 <Form.Control
@@ -322,6 +324,8 @@ function EditUser() {
                     onChange={(e) => setSubjects(e.target.value.split(","))}
                   />
                 </Form.Group>
+
+                
 
                 <Button variant="primary" type="submit" onClick={handleSubmit}>
                   Save

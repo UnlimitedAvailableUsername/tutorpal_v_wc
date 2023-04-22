@@ -62,3 +62,40 @@ export const userDetailsReducer = (state = adminUserListInitialState, action) =>
     }
 };
 
+
+const InitialState = {
+    loading: false,
+    data: {},
+    error: null,
+}
+
+
+export const adminReviewListReducer = (state = InitialState, action) => {
+    switch (action.type) {
+
+        case actionType.REVIEW_LIST_REQUEST:
+            return {
+                ...state, 
+                loading:true
+            };
+
+        case actionType.REVIEW_LIST_SUCCESS:
+            return {
+                ...state, 
+                loading:false, 
+                reviews: action.payload
+            };
+
+        case actionType.REVIEW_LIST_FAIL:
+            return {
+                ...state, 
+                loading:false, 
+                error: action.payload
+            };
+        
+        default:
+            return state;
+
+    }
+};
+

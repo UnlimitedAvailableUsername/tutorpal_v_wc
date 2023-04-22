@@ -194,10 +194,12 @@ function AdminUserList() {
                 <a href={`mailto:${user.email}`}>{user.email}</a>
               </td>
               <td>
-                {user.tutor ? "Tutor" : user.student ? "Student" : user.staff ? "Admin" : ""}
+                {user.tutor ? "Tutor" : user.student ? "Student" : user.staff ? "Admin" : "None"}
               </td>
               <td>{user.active ? "true" : "false"}</td>
-              <td>{new Date(user.date_joined).toDateString()}</td>
+              <td>{new Date(user.date_joined).toLocaleString('en-US', { dateStyle: 'short', timeStyle: 'short' })}</td>
+
+              
               <td>
                 <Link to={`/user-edit/${user.id}`}>
                   <button type="button" className="btn btn-warning">

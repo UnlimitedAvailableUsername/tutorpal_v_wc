@@ -98,24 +98,29 @@ function EditUser() {
   };
 
   const handleDeactivateTutor = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (!userId) {
-      return;
-    }
+  if (!userId) {
+    return;
+  }
 
-    const userData = {
-      active: false,
-    };
+  if (userId === userInfo.Id) {
+    window.alert("You can't deactivate your own account.");
+    return;
+  }
 
-    try {
-      await dispatch(editUser(userId, userData, userInfo));
-      window.location.reload();
-    } catch (error) {
-      console.log(error);
-      // handle error
-    }
+  const userData = {
+    active: false,
   };
+
+  try {
+    await dispatch(editUser(userId, userData, userInfo));
+    window.location.reload();
+  } catch (error) {
+    console.log(error);
+    // handle error
+  }
+};
   const handleSubmit = async (e) => {
     e.preventDefault();
     const userData = new FormData();
@@ -212,11 +217,11 @@ function EditUser() {
           <div className="d-flex justify-content-between align-items-center mb-5">
             <Button
               as={Link}
-              to="/tutors-admit"
+              to="/user-list"
               variant="warning"
               className="btn-outline-dark py-3"
             >
-              Back To Admit List
+              Back To User List
             </Button>
 
             <div className="d-flex">

@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteUser, listUsersAdmin } from "../../../features/redux/actions/adminActions";
+import {
+  deleteUser,
+  listUsersAdmin,
+} from "../../../features/redux/actions/adminActions";
 import { Button, Col, Container, Row, Table } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
 import "../../../assets/components/screens/TutorListScreen/tutorlist.css";
-
-
 
 function AdminUserList() {
   const [search, setSearch] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
   const [userRole, setUserRole] = useState("");
   const [isActive, setIsActive] = useState("");
+  const navigate = useNavigate();
 
   const handleUserRoleChange = (eventKey) => {
     setUserRole(eventKey);
@@ -63,8 +65,6 @@ function AdminUserList() {
     dispatch(listUsersAdmin());
   }, [dispatch]);
 
-
-  
   const handleDelete = async (tutorId) => {
     if (window.confirm("Are you sure you want to delete this user?")) {
       try {
@@ -83,6 +83,16 @@ function AdminUserList() {
     }
   };
 
+  const handleEdit = (userId, userInfo, users, navigate) => {
+    const currentUser = userInfo.id;
+    const user = users.find((user) => user.id === userId);
+    if (user.id === currentUser) {
+      alert("Why are you editing yourself here are you an M?");
+      return;
+    }
+    // edit user's account
+    navigate(`/user-edit/${userId}`);
+  };
 
   return (
     <div>
@@ -153,76 +163,91 @@ function AdminUserList() {
           </Dropdown>
         </div>
         <Row className="my-4">
-  <Col>
-    <Table striped bordered hover responsive className="table-sm">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Role</th>
-          <th>Active</th>
-          <th>Date Joined</th>
-          <th>Edit/Delete</th>
-        </tr>
-      </thead>
+          <Col>
+            <Table striped bordered hover responsive className="table-sm">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Active</th>
+                  <th>Date Joined</th>
+                  <th>Edit/Delete</th>
+                </tr>
+              </thead>
 
-      {users &&
-        sortUsersByDate(filterUsersByActive(users))
-          .filter((user) => {
-            if (userRole === "") {
-              return true;
-            } else if (userRole === "tutor") {
-              return user.tutor;
-            } else if (userRole === "student") {
-              return user.student;
-            } else if (userRole === "admin") {
-              return user.staff;
-            }
+              {users &&
+                sortUsersByDate(filterUsersByActive(users))
+                  .filter((user) => {
+                    if (userRole === "") {
+                      return true;
+                    } else if (userRole === "tutor") {
+                      return user.tutor;
+                    } else if (userRole === "student") {
+                      return user.student;
+                    } else if (userRole === "admin") {
+                      return user.staff;
+                    }
+                  })
+                  .filter(
+                    (user) =>
+                      search === "" ||
+                      user.username.toLowerCase().includes(search.toLowerCase())
+                  )
+                  .map((user) => (
+                    <tr key={user.id}>
+                      <td>{user.id}</td>
+                      <td>{user.username}</td>
+                      <td>
+                        <a href={`mailto:${user.email}`}>{user.email}</a>
+                      </td>
+                      <td>
+                        {user.tutor
+                          ? "Tutor"
+                          : user.student
+                          ? "Student"
+                          : user.staff
+                          ? "Admin"
+                          : "None"}
+                      </td>
+                      <td>{user.active ? "true" : "false"}</td>
+                      <td>
+                        {new Date(user.date_joined).toLocaleString("en-US", {
+                          dateStyle: "short",
+                          timeStyle: "short",
+                        })}
+                      </td>
 
-          })
-          .filter(
-            (user) =>
-              search === "" ||
-              user.username.toLowerCase().includes(search.toLowerCase())
-          )
-          .map((user) => (
-            <tr key={user.id}>
-              <td>{user.id}</td>
-              <td>{user.username}</td>
-              <td>
-                <a href={`mailto:${user.email}`}>{user.email}</a>
-              </td>
-              <td>
-                {user.tutor ? "Tutor" : user.student ? "Student" : user.staff ? "Admin" : "None"}
-              </td>
-              <td>{user.active ? "true" : "false"}</td>
-              <td>{new Date(user.date_joined).toLocaleString('en-US', { dateStyle: 'short', timeStyle: 'short' })}</td>
+                      <td>
+                        <Button
+                          type="button"
+                          className="btn btn-warning"
+                          onClick={() =>
+                            handleEdit(user.id, userInfo, users, navigate)
+                          }
+                          style={{ backgroundColor: "#F3AA22" }}
+                        >
+                          Edit
+                        </Button>
 
-              
-              <td>
-                <Link to={`/user-edit/${user.id}`}>
-                  <button type="button" className="btn btn-warning">
-                    Edit
-                  </button>
-                </Link>
-                <Link>
-                <button
-                    type="button"
-                    className="btn btn-danger"
-                    onClick={() => handleDelete(user.id)}
-                  >
-                    Delete
-                  </button>
-                  </Link>
-              </td>
-            </tr>
-          ))}
-    </Table>
-  </Col>
-</Row>
-</Container>
 
+                        <Button
+                          type="button"
+                          className="btn btn-danger"
+                          onClick={() => handleDelete(user.id)}
+                          style={{ backgroundColor: " #C50808" }}
+                        >
+                          Delete
+                        </Button>
+
+                      </td>
+                    </tr>
+                  ))}
+            </Table>
+          </Col>
+        </Row>
+      </Container>
     </div>
   );
 }

@@ -175,10 +175,14 @@ function EditUser() {
     
         <Form onSubmit={handleDeactivateTutor}>
               <br/>
-          Do you want to deactivate this account? 
+  
           <Form.Group className="mb-3">
             
-            <Form.Check
+            
+          <Button style={{width: 250, }}  type="submit" variant="danger" className="me-3 ">
+            Deactivate
+          </Button>
+          <Form.Check
               type="checkbox"
               id="deactivate"
               name="deactivate"
@@ -186,17 +190,15 @@ function EditUser() {
               checked={active}
               onChange={(e) => setActive(e.target.checked)}
               label="Deactivate"
+              style={{display: 'none'}}
             />
           </Form.Group>
-          <Button style={{width: 600, marginLeft: 100}}  type="submit" variant="danger" className="me-3">
-            Deactivate
-          </Button>
         </Form>
       );
     } else {
       return (
         <Form onSubmit={handleActivateTutor}>
-          <Button type="submit" variant="success" className="me-3">
+          <Button style={{width: 250, }} type="submit" variant="success" className="me-3 mt-4">
             Activate
           </Button>
         </Form>
@@ -231,17 +233,7 @@ function EditUser() {
               Back To User List
             </Button>
 
-            <div className="d-flex">
-              <Button
-                variant="primary"
-                type="submit"
-                onClick={handleSubmit}
-                className="mr-3"
-              >
-                Save
-              </Button>
-              {renderActiveForm()}
-            </div>
+            
           </div>
 
           <Row>
@@ -409,6 +401,21 @@ function EditUser() {
                       style={{ maxWidth: "300px" }}
                     />
                   </div>
+
+                  <div className="d-flex ">
+                    <Button
+                      variant="primary"
+                      type="submit"
+                      onClick={handleSubmit}
+                      className="mr-3 me-2"
+                      style={{width:250}}                    >
+                      Save
+                    </Button>
+                    
+                   
+                    
+                  </div>
+                  {renderActiveForm()}
                 </Col>
               </>
             )}

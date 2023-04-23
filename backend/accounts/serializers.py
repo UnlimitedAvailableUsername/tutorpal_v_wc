@@ -18,19 +18,48 @@ class SubjectSerializer(serializers.ModelSerializer):
         model = Subject
         fields = '__all__'
 
+
 class ScheduleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Schedule
         fields = '__all__'
 
+
 class UserSerializer(serializers.ModelSerializer):
     schedules = ScheduleSerializer(source='schedule_set', many=True, required=False, read_only=True)
     subjects = SubjectSerializer(many=True, required=False)
+    have_ordered = serializers.SerializerMethodField()
+    has_reviewed = serializers.SerializerMethodField()
 
     class Meta:
         model = User
         fields = '__all__'
         extra_kwargs = {'password': {'write_only': True}}
+
+    def get_have_ordered(self, obj):
+        request = self.context.get('request')
+        if request and request.user.is_authenticated:
+            user_id = obj.id
+            request_user_id = request.user.id
+            tutor_id = user_id
+            try:
+                ScheduleOrder.objects.get(user_id=request_user_id, tutor_id=tutor_id)
+                return True
+            except ScheduleOrder.DoesNotExist:
+                pass
+        return False
+    
+    def get_has_reviewed(self, obj):
+        request = self.context.get('request')
+        if request and request.user.is_authenticated:
+            # get the Review objects where the user_student is the authenticated user
+            reviews = Review.objects.filter(user_student=request.user, user_tutor=obj)
+
+            # return True if there is at least one review
+            return reviews.exists()
+
+        # return False if the user is not authenticated
+        return False
 
 # NOTE: THIS SERIALIZER MUST ONLY BE USED FOR AUTHENTICATION
 # OR ANY TYPE OF PERSONAL USER MODIFICATION SUCH AS UPDATE
@@ -55,7 +84,6 @@ class UserSerializerWithToken(serializers.ModelSerializer):
         token = RefreshToken.for_user(obj)
         return str(token)
 
-
 class ReviewSerializer(serializers.ModelSerializer):
     user_student = serializers.SerializerMethodField()
 
@@ -76,11 +104,6 @@ class ReviewSerializer(serializers.ModelSerializer):
 class ContactSerializer(serializers.ModelSerializer):
     class Meta:
         model = Contact
-        fields = '__all__'
-
-class ScheduleSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Schedule
         fields = '__all__'
 
 class TutorSerializer(serializers.ModelSerializer):

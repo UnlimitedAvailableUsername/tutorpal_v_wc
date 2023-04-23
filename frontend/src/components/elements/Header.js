@@ -54,6 +54,7 @@ function Header() {
                 <NavLink as={Link} to="/review-list">Reviews</NavLink>
                 <NavLink as={Link} to="/subject-admin">Subjects</NavLink>
                 <NavLink as={Link} to="/tutors-admit">Tutor Admission</NavLink>
+                <NavLink as={Link} to="/user-list">Users</NavLink>
               </>
             ) : userInfo && userInfo.tutor ? (
               <>

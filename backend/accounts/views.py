@@ -138,7 +138,7 @@ def user_detail(request, id):
         return Response({"detail": "User does not exist."}, status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
-        serializer = UserSerializer(user, many=False)
+        serializer = UserSerializer(user, context={'request': request}, many=False)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     elif request.method == 'PUT':
@@ -754,7 +754,7 @@ def review_list(request):
 @api_view(['GET'])
 def review_list_tutor(request, id):
     review = Review.objects.filter(user_tutor=id)
-    serializer = ReviewSerializer(review)
+    serializer = ReviewSerializer(review, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 

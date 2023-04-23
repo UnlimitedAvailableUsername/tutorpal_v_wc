@@ -65,15 +65,28 @@ export const listTutorsAdmin = () => async (dispatch, getState) => {
 
 // FOR LISTING THE SPECIFIC TUTOR USER DETAILS
 
-export const listTutorDetails = (tutorId) => async (dispatch) => {
+export const listTutorDetails = (tutorId) => async (dispatch, getState) => {
   try {
     dispatch({
       type: actionType.TUTOR_DETAILS_REQUEST,
     });
 
+    const { userState: { userInfo }, } = getState();
+
+    let config = {};
+
+    if (userInfo) {
+      config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`
+        },
+      };
+    }
+
     const { data } = await axios.get(
-      `${BASE_URL}/api/accounts/users/${tutorId}/`
-    ); //fetch the products from rest api
+      `${BASE_URL}/api/accounts/users/${tutorId}/`,
+      config
+    );
 
     dispatch({
       type: actionType.TUTOR_DETAILS_SUCCESS,

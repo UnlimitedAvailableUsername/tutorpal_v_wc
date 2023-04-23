@@ -109,7 +109,7 @@ function ScheduleOrderDetailsScreen() {
                 <ListGroup variant="flush">
                   {userInfo.student && (
                     <ListGroup.Item style={{ backgroundColor: "#404040" }}>
-                      <h2>TUTOR:</h2>
+                      <h2>TUTOR</h2>
                       <Row>
                         <Col md={15}>
                           <h4>
@@ -149,7 +149,7 @@ function ScheduleOrderDetailsScreen() {
                     </ListGroup.Item>
                   )}
                   <ListGroup.Item style={{ backgroundColor: "#404040" }}>
-                    <h2>Schedules Booked</h2>
+                    <h2>SCHEDULES BOOKED</h2>
                     {scheduleOrder.schedules.length === 0 ? (
                       <MessageAlert variant="secondary">
                         No schedules selected.
@@ -173,7 +173,7 @@ function ScheduleOrderDetailsScreen() {
                   </ListGroup.Item>
 
                   <ListGroup.Item style={{ backgroundColor: "#404040" }}>
-                    <h2>Student's Message</h2>
+                    <h2>STUDENT'S MESSAGE</h2>
                     <Row>
                       <Col >
                       <MessageAlert variant="dark">
@@ -188,7 +188,7 @@ function ScheduleOrderDetailsScreen() {
                   </ListGroup.Item>
 
                   <ListGroup.Item style={{ backgroundColor: "#404040" }}>
-                    <h2>Payment</h2>
+                    <h2>PAYMENT</h2>
                     <p>
                       <strong>Payment Method: </strong>
                       {scheduleOrder.payment_method}
@@ -206,7 +206,7 @@ function ScheduleOrderDetailsScreen() {
                   </ListGroup.Item>
 
                   <ListGroup.Item style={{ backgroundColor: "#404040" }}>
-                    <h2>Meeting Session:</h2>
+                    <h2>MEETING SESSION</h2>
                     {!scheduleOrder.paid_status &&
                       !scheduleOrder.session_status && (
                         <>

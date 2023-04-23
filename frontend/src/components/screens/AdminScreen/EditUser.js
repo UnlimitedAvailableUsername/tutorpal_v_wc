@@ -8,6 +8,7 @@ import {
   Container,
   Table,
   Form,
+  Card
 } from "react-bootstrap";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,6 +18,7 @@ import {
 } from "../../../features/redux/actions/adminActions";
 import { listSubjects } from "../../../features/redux/actions/subjectActions";
 import { subjectListReducer } from "../../../features/redux/reducers/subjectReducer";
+import backgroundImage from  '../../../assets/components/screens/ScheduleScreen/secret.png'
 
 function EditUser() {
   const { userId } = useParams();
@@ -163,8 +165,12 @@ function EditUser() {
   const renderActiveForm = () => {
     if (user?.active) {
       return (
+    
         <Form onSubmit={handleDeactivateTutor}>
+              <br/>
+          Do you want to deactivate this account? 
           <Form.Group className="mb-3">
+            
             <Form.Check
               type="checkbox"
               id="deactivate"
@@ -175,7 +181,7 @@ function EditUser() {
               label="Deactivate"
             />
           </Form.Group>
-          <Button type="submit" variant="danger" className="me-3">
+          <Button style={{width: 600, marginLeft: 100}}  type="submit" variant="danger" className="me-3">
             Deactivate
           </Button>
         </Form>
@@ -204,13 +210,31 @@ function EditUser() {
     console.log(selectedSubjects);
   };
   
+  const backgroundStyles = {
+    backgroundImage: `url(${backgroundImage})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center center',
+    height: '200vh',
+    backgroundAttachment: 'fixed',
+
+  };
 
 
   return (
-    <div>
+    <div style={backgroundStyles}>
+    <style jsx>{`
+        .card {
+          box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .one {
+          display: flex;
+          justify-content: center;
+        }
+      `}</style>
       {user && (
         <Container>
-          <Button
+             <Button
             as={Link}
             to="/tutors-admit"
             variant="warning"
@@ -218,6 +242,8 @@ function EditUser() {
           >
             Back To Admit List
           </Button>
+          <Card style={{width: 1300, margin: 'auto', }} className='card px-5   p-5 mb-1 rounded'>
+       
 
           <Row>
             <Col xs={12} md={4}>
@@ -368,7 +394,7 @@ function EditUser() {
                     ))}
                 </Form.Group>
 
-                <Button variant="primary" type="submit" onClick={handleSubmit}>
+                <Button style={{width: 600, margin: 'auto'}} variant="primary mt-4" type="submit" onClick={handleSubmit}>
                   Save
                 </Button>
                 <ListGroup variant="flush">
@@ -379,6 +405,7 @@ function EditUser() {
               </ListGroup>
             </Col>
           </Row>
+          </Card>
         </Container>
       )}
     </div>

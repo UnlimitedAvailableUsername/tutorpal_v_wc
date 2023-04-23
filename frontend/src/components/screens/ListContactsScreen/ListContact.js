@@ -57,7 +57,7 @@ function ListContact() {
       backgroundImage: `url(${backgroundImage})`,
       backgroundSize: 'cover',
       backgroundPosition: 'center center',
-      height: '160vh',
+      height: '490vh',
       backgroundAttachment: 'fixed',
     };
   return (

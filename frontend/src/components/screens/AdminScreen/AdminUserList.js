@@ -2,10 +2,13 @@ import React, { useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteUser, listUsersAdmin } from "../../../features/redux/actions/adminActions";
-import { Button, Col, Container, Row, Table } from "react-bootstrap";
+import { Button, Col, Container, Row, Table, Card } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
 import "../../../assets/components/screens/TutorListScreen/tutorlist.css";
+import backgroundImage from  '../../../assets/components/screens/ScheduleScreen/secret.png'
+import { faDeleteLeft, faEdit } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 
 
@@ -83,15 +86,35 @@ function AdminUserList() {
     }
   };
 
+  const backgroundStyles = {
+    backgroundImage: `url(${backgroundImage})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center center',
+    height: '300vh',
+    backgroundAttachment: 'fixed',
+
+  };
+
+
 
   return (
-    <div>
-      <div className="tutor-bg"></div>
-      <div className="tutor-bg-text-overlay text-center">
-        <h1 className="text-uppercase tutor-text-h1">Active Accounts</h1>
-        <h4>List of Active accounts </h4>
-      </div>
+    <div style={backgroundStyles}>
+      <style jsx>{`
+        .card {
+          box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .one {
+          display: flex;
+          justify-content: center;
+        }
+      `}</style>
+
+
       <Container>
+        <br/><br/>
+      <h1 style={{  textAlign: "center", fontSize: 100, textShadow:'2px 2px 4px rgba(0, 0, 0, 0.3)'}}>ALL USERS</h1> 
+      <Card style={{width: 1300, margin: 'auto', }} className='card px-5   p-3 mb-1 rounded'>
         <Form>
           <Container className="my-5">
             <Form.Control
@@ -156,7 +179,7 @@ function AdminUserList() {
   <Col>
     <Table striped bordered hover responsive className="table-sm">
       <thead>
-        <tr>
+        <tr style={{textAlign: 'center'}}>
           <th>ID</th>
           <th>Name</th>
           <th>Email</th>
@@ -193,26 +216,27 @@ function AdminUserList() {
               <td>
                 <a href={`mailto:${user.email}`}>{user.email}</a>
               </td>
-              <td>
+              <td style={{textAlign: 'center'}}>
                 {user.tutor ? "Tutor" : user.student ? "Student" : user.staff ? "Admin" : "None"}
               </td>
-              <td>{user.active ? "true" : "false"}</td>
-              <td>{new Date(user.date_joined).toLocaleString('en-US', { dateStyle: 'short', timeStyle: 'short' })}</td>
+              <td style={{textAlign: 'center'}}>{user.active ? "true" : "false"}</td>
+              <td style={{textAlign: 'center'}}>{new Date(user.date_joined).toLocaleString('en-US', { dateStyle: 'short', timeStyle: 'short' })}</td>
 
               
-              <td>
+              <td style={{textAlign: 'center'}}>
                 <Link to={`/user-edit/${user.id}`}>
-                  <button type="button" className="btn btn-warning">
-                    Edit
+                  <button type="button" className="btn btn-warning" title="Edit">
+                  <FontAwesomeIcon icon={ faEdit} />
                   </button>
                 </Link>
                 <Link>
                 <button
                     type="button"
+                    title="Delete"
                     className="btn btn-danger"
                     onClick={() => handleDelete(user.id)}
                   >
-                    Delete
+                    <FontAwesomeIcon icon={ faDeleteLeft} />
                   </button>
                   </Link>
               </td>
@@ -221,6 +245,7 @@ function AdminUserList() {
     </Table>
   </Col>
 </Row>
+</Card>
 </Container>
 
     </div>

@@ -83,22 +83,33 @@ export const tutorDetailsReducer = (state = tutorDetailsInitialState, action) =>
     switch (action.type) {
 
         case actionType.TUTOR_DETAILS_REQUEST:
+        case actionType.TUTOR_UPDATE_REQUEST:
             return {
                 ...state,
-                loading:true,
+                loading: true,
+                error: null,
             };
             
         case actionType.TUTOR_DETAILS_SUCCESS:
+        case actionType.TUTOR_UPDATE_SUCCESS:
             return {
-                loading:false,
+                ...state,
+                loading: false,
                 user: action.payload,
             };
 
         case actionType.TUTOR_DETAILS_FAIL:
+        case actionType.TUTOR_UPDATE_FAIL:
             return {
-                loading:false, 
+                ...state,
+                loading: false, 
                 error: action.payload,
             };
+        
+        case actionType.TUTOR_UPDATE_RESET:
+            return {
+                ...tutorDetailsInitialState,
+            }
         
         default:
             return state;
@@ -124,4 +135,3 @@ export const tutorReviewCreateReducer = (state = {}, action) => {
             return state
     }
 }
-

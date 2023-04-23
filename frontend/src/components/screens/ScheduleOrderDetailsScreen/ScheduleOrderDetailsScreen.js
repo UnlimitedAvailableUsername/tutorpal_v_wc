@@ -101,7 +101,7 @@ function ScheduleOrderDetailsScreen() {
           <>
             <div className="mb-5">
               <h2>
-                <strong>Booking Order Id: {scheduleOrder.id}</strong>
+                <strong>BOOKING ORDER ID: {scheduleOrder.id}</strong>
               </h2>
             </div>
             <Row>
@@ -109,18 +109,33 @@ function ScheduleOrderDetailsScreen() {
                 <ListGroup variant="flush">
                   {userInfo.student && (
                     <ListGroup.Item style={{ backgroundColor: "#404040" }}>
-                      <h2>Tutor</h2>
+                      <h2>TUTOR:</h2>
                       <Row>
-                        <Col md={8}>
+                        <Col md={15}>
                           <h4>
                             {scheduleOrder.tutor ? (
                               <Row>
+                                
                                 <Col>
+                                
+                                <MessageAlert variant='dark'>
+                                <Row>
+                                  <Col md={2}>
+                                <img
+                                src={scheduleOrder.tutor.profile_picture}
+                                style={{ width: 120, height: 90}}
+                                alt="Profile"
+                              /> </Col>
+                                  <Col>
                                   <p>
                                     {scheduleOrder.tutor.first_name}&nbsp;
                                     {scheduleOrder.tutor.last_name}
                                   </p>
                                   <p>{scheduleOrder.tutor.email}</p>
+                                  </Col>
+                                  </Row> 
+                                  
+                                  </MessageAlert>
                                 </Col>
                               </Row>
                             ) : (

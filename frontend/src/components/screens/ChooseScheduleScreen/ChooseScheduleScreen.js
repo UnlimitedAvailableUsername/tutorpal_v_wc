@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate, Link, } from 'react-router-dom';
 import { createOrderSchedule } from '../../../features/redux/actions/scheduleOrderActions';
 import { listSchedules } from '../../../features/redux/actions/scheduleAction';
-import { Button, Container, Form, FormControl, InputGroup, Spinner, Table } from 'react-bootstrap';
+import { Button, Container, Form, FormControl, InputGroup, Spinner, Table, Card  } from 'react-bootstrap';
 import LoadingIconBig from '../../elements/Loader/LoadingIconBig';
 import MessageAlert from '../../elements/MessageAlert';
 import * as actionType from '../../../features/redux/constants/scheduleOrderConstants'
+import backgroundImage from  '../../../assets/components/screens/ScheduleScreen/secret.png'
 
 
 function ChooseScheduleScreen() {
@@ -141,7 +142,26 @@ function ChooseScheduleScreen() {
     }, 0);
   };
 
+  const backgroundStyles = {
+    backgroundImage: `url(${backgroundImage})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center center",
+    height: "200vh",
+    backgroundAttachment: "fixed",
+  };
+
   return (
+    <div style={backgroundStyles}>
+      <style jsx>{`
+        .card {
+          box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .one {
+          display: flex;
+          justify-content: center;
+        }
+      `}</style>
     <Container>
       <Button as={Link} to={`/tutor/${tutorId}`} variant="warning" className="btn-outline-dark py-3 my-5" >&lt; Go back to tutor details</Button>
       {schedulesLoading ? (
@@ -150,14 +170,16 @@ function ChooseScheduleScreen() {
         <MessageAlert variant='danger'>{schedulesError}</MessageAlert>
       ) : schedules && (
         <>
-          <h1>Choose among the schedules of:</h1>
-          <h3>{schedules.user}</h3>
-          <h3>Hourly rate of <b>{schedules.price_rate_hour} Php</b></h3>
+        <Card style={{width: 1100, height: 'auto', margin: 'auto'}} className='card px-5   p-1 mb-5 rounded'>
+          <br/><br/>
+          <h2>CHOOSE AMONG THE SCHEDULES OF:</h2>
+          <h3><MessageAlert variant="secondary">{schedules.user}</MessageAlert></h3>
+          <h3>HOURLY RATE OF: <MessageAlert variant="secondary"><b>{schedules.price_rate_hour} Php</b></MessageAlert></h3>
           <Form onSubmit={handleSubmit}>
             <Table striped bordered hover>
               <thead>
-                <tr>
-                  <th>Schedule Date</th>
+                <tr style={{textAlign: 'center'}}>
+                  <th style={{textAlign: 'center'}}>Schedule Date</th>
                   <th>Available Hours</th>
                   <th>How many hours?</th>
                   <th>Select</th>
@@ -166,7 +188,7 @@ function ChooseScheduleScreen() {
               <tbody>
                 {schedules &&
                   schedules.schedules.filter((schedule) => schedule.count_in_stock > 0).map((schedule) => (
-                    <tr key={schedule.id}>
+                    <tr style={{textAlign: 'center'}} key={schedule.id}>
                       <td>{schedule.name}</td>
                       <td><b>{schedule.count_in_stock}</b></td>
                       <td>
@@ -187,24 +209,26 @@ function ChooseScheduleScreen() {
                             onChange={(e) => handleInputChange(e, schedule)}
                           />
                           <div style={{ display: 'flex' }}>
-                            <Button variant="outline-secondary" onClick={() => handleDecrement(schedule)} >-</Button>
-                            <Button variant="outline-secondary" onClick={() => handleIncrement(schedule)}>+</Button>
+                            <Button style={{height: 45}} variant="danger" className="me-1 ms-1" onClick={() => handleDecrement(schedule)} ><b>-</b></Button>
+                            <Button style={{height: 45}} variant="warning" onClick={() => handleIncrement(schedule)}><b>+</b></Button>
                           </div>
                         </InputGroup>
                       </td>
-                      <td>
+                      <td >
                         <Form.Check
                           type="checkbox"
                           label=""
                           name={`schedule_${schedule.id}`}
                           onChange={(e) => handleInputChange(e, schedule)}
+                         
                         />
                       </td>
                     </tr>
                   ))}
               </tbody>
             </Table>
-            <h3>Payment Method:</h3>
+            <h3>PAYMENT METHOD:</h3>
+            <MessageAlert variant="secondary">
             <Form.Group>
               <Form.Check
                 type="radio"
@@ -215,6 +239,7 @@ function ChooseScheduleScreen() {
                 onChange={handlePaymentMethodChange}
               />
             </Form.Group>
+            </MessageAlert>
             <Form.Group>
               <Form.Label htmlFor="message">Do you have additional notes for the tutor?</Form.Label>
               <Form.Control
@@ -227,7 +252,7 @@ function ChooseScheduleScreen() {
               />
             </Form.Group>
             {orderError && !orderLoading && <MessageAlert variant='danger'>{orderError}</MessageAlert>}
-            <Button variant="warning" type="submit" disabled={!formData.items.length}>
+            <Button variant="warning" className="mb-5"  style={{width: 500, marginLeft: 250}} type="submit" disabled={!formData.items.length}>
               {orderLoading ? (
                 <span>
                   <Spinner animation="border" size="sm" /> Placing Order...
@@ -237,9 +262,11 @@ function ChooseScheduleScreen() {
               )}
             </Button>
           </Form>
+          </Card>
         </>
       )}
     </Container>
+    </div>
   );
 }
 

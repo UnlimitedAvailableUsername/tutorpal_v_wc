@@ -148,24 +148,21 @@ export const getOrderScheduleDetails = (scheduleOrderId) => async (dispatch, get
 };
 
 
-export const payScheduleOrder = (scheduleOrderId, details) => async (dispatch, getState) => {
+export const payScheduleOrder = (scheduleOrderId) => async (dispatch, getState) => {
   try {
     dispatch({ type: actionType.SCHEDULE_ORDER_PAY_REQUEST });
 
-    const {
-      userState: { userInfo },
-    } = getState();
+    const { userState: { userInfo }, } = getState();
 
     const config = {
       headers: {
-        "Content-type": "application/json",
-        Authorization: `Bearer ${userInfo.token}`,
+        'Authorization': `Bearer ${userInfo.token}`
       },
     };
 
     const { data } = await axios.put(
       `${BASE_URL}/api/accounts/schedule_orders/${scheduleOrderId}/mark_as_paid/`,
-      details,
+      null,
       config
     );
 
@@ -183,4 +180,39 @@ export const payScheduleOrder = (scheduleOrderId, details) => async (dispatch, g
     });
   }
 };
+
+export const markAsDoneScheduleOrder = (scheduleOrderId) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: actionType.SCHEDULE_ORDER_MARK_DONE_REQUEST });
+
+    const { userState: { userInfo }, } = getState();
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.put(
+      `${BASE_URL}/api/accounts/schedule_orders/${scheduleOrderId}/mark_as_done/`,
+      null,
+      config
+    );
+
+    dispatch({
+      type: actionType.SCHEDULE_ORDER_MARK_DONE_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: actionType.SCHEDULE_ORDER_MARK_DONE_FAIL,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
+
 

@@ -76,6 +76,8 @@ function TutorDetailScreen() {
       setMessageAlert("Trying to buy yourself huh, kinky.");
     } else if (userInfo.tutor) {
       setMessageAlert("You can't do your own kind. (╭☞ ͡ ͡° ͜ ʖ ͡ ͡°)╭☞");
+    } else if (userInfo.staff) {
+      setMessageAlert("Umm this person works for you, do that at home not here (͠≖ ͜ʖ͠≖)");
     } else if (userInfo) {
       navigate(`/tutor/${tutorId}/schedules`);
     } else {

@@ -60,6 +60,8 @@ export const scheduleOrderDetailsReducer = (state = scheduleOrderDetailsInitialS
   switch (action.type) {
     case actionType.SCHEDULE_ORDER_CREATE_REQUEST:
     case actionType.SCHEDULE_ORDER_DETAILS_REQUEST:
+    case actionType.SCHEDULE_ORDER_PAY_REQUEST:
+    case actionType.SCHEDULE_ORDER_MARK_DONE_REQUEST:
       return {
         ...state,
         loading: true,
@@ -69,6 +71,8 @@ export const scheduleOrderDetailsReducer = (state = scheduleOrderDetailsInitialS
 
     case actionType.SCHEDULE_ORDER_CREATE_SUCCESS:
     case actionType.SCHEDULE_ORDER_DETAILS_SUCCESS:
+    case actionType.SCHEDULE_ORDER_PAY_SUCCESS:
+    case actionType.SCHEDULE_ORDER_MARK_DONE_SUCCESS:
       return {
         ...state,
         loading: false,
@@ -78,7 +82,10 @@ export const scheduleOrderDetailsReducer = (state = scheduleOrderDetailsInitialS
 
     case actionType.SCHEDULE_ORDER_CREATE_FAIL:
     case actionType.SCHEDULE_ORDER_DETAILS_FAIL:
+    case actionType.SCHEDULE_ORDER_PAY_FAIL:
+    case actionType.SCHEDULE_ORDER_MARK_DONE_FAIL:
       return {
+        ...state,
         loading: false,
         error: action.payload,
       };

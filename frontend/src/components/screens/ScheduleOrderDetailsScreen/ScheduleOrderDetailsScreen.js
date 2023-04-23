@@ -238,7 +238,7 @@ function ScheduleOrderDetailsScreen() {
               </Col>
 
               <Col md={4}>
-                <Card className="p-2">
+                <Card style={{textAlign: 'center'}} className="p-2">
                   <ListGroup variant="flush">
                     <ListGroup.Item>
                       <h2>ORDER SUMMARY</h2>

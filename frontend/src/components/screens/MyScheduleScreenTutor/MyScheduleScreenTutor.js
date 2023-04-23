@@ -70,7 +70,7 @@ function MyScheduleScreenTutor() {
     backgroundImage: `url(${backgroundImage})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center center',
-    height: '95vh',
+    height: '130vh',
     backgroundAttachment: 'fixed',
   }; 
 
@@ -90,20 +90,22 @@ function MyScheduleScreenTutor() {
         }
       `}</style>
       
-      <br/><br/><br/>
-      <Card style={{width: 900, margin: 'auto'}} className='card px-5   p-3 mb-5 rounded'>
+      <br/><br/>
+
+      <h1 style={{ textAlign: "center", fontSize: 100, textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)',  }}>MY SCHEDULES</h1>
+      <Card style={{width: 900, margin: 'auto'}} className='card px-5   p-1 mb-5 rounded'>
       <div className="text" variant="light">
 
         <br/>
-        <h5>MY SCHEDULES:</h5>
+      
       </div>
 <br/>
       <Table striped responsive className="table-m-2 ">
         <thead>
           <tr>
-            <th style={{textAlign: 'center'}} >Date</th>
-            <th style={{textAlign: 'center'}}>Hours Available</th>
-            <th style={{textAlign: 'center'}}>Action</th>
+            <th style={{textAlign: 'center'}} >DATE</th>
+            <th style={{textAlign: 'center'}}>HOURS AVAILABLE</th>
+            <th style={{textAlign: 'center'}}>ACTION</th>
           </tr>
         </thead>
         <tbody>

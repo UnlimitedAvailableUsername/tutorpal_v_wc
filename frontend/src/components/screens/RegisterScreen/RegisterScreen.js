@@ -90,8 +90,6 @@ const RegisterScreen = () => {
     } else {
       dispatch(setRegisterFormData(formData));
       dispatch(validateUsernameEmailRegister(formData));
-
-      console.log(formData);
     }
   };
 

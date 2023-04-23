@@ -160,12 +160,14 @@ function ScheduleOrderDetailsScreen() {
                   <ListGroup.Item style={{ backgroundColor: "#404040" }}>
                     <h2>Student's Message</h2>
                     <Row>
-                      <Col>
+                      <Col >
+                      <MessageAlert variant="dark">
                         {scheduleOrder.message ? (
                           scheduleOrder.message
                         ) : (
                           <span>No message</span>
                         )}
+                        </MessageAlert>
                       </Col>
                     </Row>
                   </ListGroup.Item>
@@ -268,12 +270,13 @@ function ScheduleOrderDetailsScreen() {
                   {userInfo && (userInfo.tutor || userInfo.staff) && !scheduleOrder.session_status && (
                     <ListGroup.Item>
                       <Button
-                        className="btn-outline-dark w-100"
+                        className="btn-outline w-100"
                         variant="warning"
                         disabled={!scheduleOrder.paid_status}
                         onClick={handleSessionButton}
+                        style={{color: 'black'}}
                       >
-                        Mark Session as Done
+                       Mark Session as Done
                       </Button>
                     </ListGroup.Item>
                   )}

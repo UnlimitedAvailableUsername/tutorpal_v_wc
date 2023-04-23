@@ -83,7 +83,7 @@ const PreviewMode = ({ disableButton, userInfo, handleToggleEdit }) => {
       <Card className=" my-2 p-3 rounded" style={{backgroundColor: "#565656", width: 963, height: 448}}>
       <Row>
                     <Col>
-                    <p>BIO: {userInfo.bio ? (
+                    <h4><strong>BIO: </strong>{userInfo.bio ? (
               <>
                 {userInfo.bio}
               </>
@@ -91,12 +91,12 @@ const PreviewMode = ({ disableButton, userInfo, handleToggleEdit }) => {
                 <>
                   You haven't set your Bio. Add now so students can know more about you!
                 </>
-            )}</p>
+            )}</h4>
                     </Col>
                   </Row>
                   <Row>
                     <Col>
-                      <pre style={{fontSize: 18, fontFamily: "Calibri", marginBottom: 3}}><strong>Subjects:</strong>  </pre>
+                      <pre style={{fontSize: 25, fontFamily: "Calibri", marginBottom: 3}}><strong>HOURLY PRICE:</strong>   {parseFloat(userInfo.price_rate_hour).toFixed(2)}</pre>
                     </Col>
                   </Row>
                   <Row>

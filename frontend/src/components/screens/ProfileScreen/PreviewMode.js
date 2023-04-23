@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Card, Row, Col, Table, Container } from 'react-bootstrap';
 import MessageAlert from '../../elements/MessageAlert';
 import backgroundImage from  '../../../assets/components/screens/ScheduleScreen/secret.png'
+import { Link } from 'react-router-dom';
 
 const PreviewMode = ({ disableButton, userInfo, handleToggleEdit }) => {
   const backgroundStyles = {
@@ -83,9 +84,17 @@ const PreviewMode = ({ disableButton, userInfo, handleToggleEdit }) => {
                                   <strong>Contact:</strong><Card style={{textAlign: 'center'}} variant="dark"  > {userInfo.contact}</Card> 
                                 </pre>
                               </Col>
+                   
                               <Container>
-                              <Button   variant="warning" onClick={handleToggleEdit} disabled={disableButton}>Edit</Button>
+                                 <Button variant="warning" onClick={handleToggleEdit} disabled={disableButton}>Edit</Button>{' '}
+                                  <span style={{ width: '25px', display: 'inline-block' }}></span>
+                                
+                                  {userInfo.tutor  && <Button as={Link} to={`/guide`} className="btn-warning me-2">How to get Paid</Button>}
                               </Container>
+                                 
+                      
+
+
                               </Row>
        </Row>
       </Card>
@@ -109,7 +118,7 @@ const PreviewMode = ({ disableButton, userInfo, handleToggleEdit }) => {
               <strong>BIO: </strong>
               {userInfo.bio ? (
                 <>
-                  <MessageAlert variant="dark"></MessageAlert>
+                  <MessageAlert variant="dark">{userInfo.bio}</MessageAlert>
                 </>
               ) : (
                 <>

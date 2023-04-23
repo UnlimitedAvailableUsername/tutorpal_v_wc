@@ -35,6 +35,7 @@ import MyStudentsList from "./components/screens/MyStudentsList/MyStudentsList";
 import StudentDetailScreen from "./components/screens/StudentDetailScreen/StudentDetailScreen";
 import Subjects from "./components/screens/SubjectScreen/Subjects";
 import TutorbySubjects from "./components/screens/SubjectScreen/TutorbySubjects";
+import TutorHowTo from "./components/screens/ProfileScreen/TutorHowTo";
 
 function App() {
 
@@ -71,6 +72,7 @@ function App() {
 
                     <Route path="/contact-us" element={<ContactScreen />} exact />
                     <Route path="/contact-success" element={<SuccessScreen />} exact />
+                    <Route path="/guide" element={ userInfo && userInfo.tutor ? <TutorHowTo/> : <Navigate to="/" /> } exact />
 
                     <Route path="/concern-list" element={ userInfo && userInfo.staff ? <ListContact /> : <Navigate to="/" /> } exact />
                     <Route path="/contact-details/:contactId" element={ userInfo && userInfo.staff ? <ContactDetail /> : <Navigate to="/" />} exact />

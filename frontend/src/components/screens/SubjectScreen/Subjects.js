@@ -29,7 +29,9 @@ function Subjects() {
   return (
     <div style={backgroundStyles}>
       <Container>
-        <h1 className="text-uppercase my-5 text-center">
+
+        <br/><br/>
+        <h1 className="text-uppercase  text-center">
          Our Subjects
         </h1>
         <Card className="card px-5 p-3 mb-5 rounded">

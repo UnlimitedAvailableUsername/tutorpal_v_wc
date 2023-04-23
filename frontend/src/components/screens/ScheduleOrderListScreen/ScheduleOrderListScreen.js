@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect } from "react";
-import { Button, Container, Table } from "react-bootstrap";
+import { Button, Container, Table, Card } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { listMyScheduleOrders } from "../../../features/redux/actions/scheduleOrderActions";
@@ -8,6 +8,7 @@ import LoadingIconBig from "../../elements/Loader/LoadingIconBig";
 import MessageAlert from "../../elements/MessageAlert";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
+import backgroundImage from "../../../assets/components/screens/ScheduleScreen/secret.png";
 
 function ScheduleOrderListScreen() {
   const navigate = useNavigate();
@@ -45,11 +46,21 @@ function ScheduleOrderListScreen() {
     error,
   ]);
 
+  const backgroundStyles = {
+    backgroundImage: `url(${backgroundImage})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center center",
+    height: "150vh",
+    backgroundAttachment: "fixed",
+  };
+
   return (
+    <div  style={backgroundStyles}>
     <Container>
-      <div className="my-5">
-        <h1>Booked Schedules</h1>
-      </div>
+      <br/><br/>
+    <h1 style={{ textAlign: "center", fontSize: 100, textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)',  }}>MY SCHEDULES</h1>
+
+      <Card style={{height: 'auto'}} className="card px-5 p-3 mb-5 rounded">
       {loading ? (
         <LoadingIconBig />
       ) : error ? (
@@ -57,7 +68,7 @@ function ScheduleOrderListScreen() {
       ) : (
         <Table striped bordered hover responsive className="table-sm">
           <thead>
-            <tr>
+            <tr style={{textAlign: 'center'}}>
               <th>ID</th>
               <th>Tutor</th>
               <th>Days involved:</th>
@@ -69,7 +80,7 @@ function ScheduleOrderListScreen() {
           <tbody>
             {scheduleOrders.map((scheduleOrder) => (
               <tr key={scheduleOrder.id}>
-                <td>{scheduleOrder.id}</td>
+                <td style={{textAlign: 'center'}}>{scheduleOrder.id}</td>
                 <td>
                   <h5>
                     {scheduleOrder.tutor ? (
@@ -92,12 +103,12 @@ function ScheduleOrderListScreen() {
 
 
 
-                <td>
+                <td style={{textAlign: 'center'}}>
                   {scheduleOrder.schedules
                     .map((schedule) => schedule.name)
                     .join(", ")}
                 </td>
-                <td>{scheduleOrder.total_amount}</td>
+                <td style={{textAlign: 'center'}}>{scheduleOrder.total_amount}</td>
                 <td className="text-center">
                   {scheduleOrder.paid_status ? (
                     <FontAwesomeIcon icon={faCheck} color="green" />
@@ -115,7 +126,9 @@ function ScheduleOrderListScreen() {
           </tbody>
         </Table>
       )}
+      </Card>
     </Container>
+    </div>
   );
 }
 

@@ -1,13 +1,90 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, Card, Row, Col } from 'react-bootstrap';
 
 const PreviewMode = ({ disableButton, userInfo, handleToggleEdit }) => {
 
   return (
     <div>
+      <Row>
+        <Col>
+        <Card className=" my-2 p-3 rounded" style={{backgroundColor: "#565656", width: 286, height: 490, }}>
+        <Row>
+                          <Col>
+                            <p>
+                              <img
+                                src={userInfo.profile_picture}
+                                style={{ width: 250 }}
+                                alt="Profile"
+                              /> </p> 
+                              </Col> 
+
+                              <Row>
+                              <Col>
+                                <pre
+                                  style={{
+                                    fontSize: 18,
+                                    fontFamily: "Calibri",
+                                    marginBottom: 3,
+                                  }}
+                                >
+                                  <strong>Username:</strong> {userInfo.username}
+                                </pre>
+                              </Col> 
+                              <Col>
+                                <pre
+                                  style={{
+                                    fontSize: 18,
+                                    fontFamily: "Calibri",
+                                    marginBottom: 3,
+                                  }}
+                                >
+                                  <strong>Email:</strong> {userInfo.email}
+                                </pre>
+                              </Col>
+                              <Col>
+                                <pre
+                                  style={{
+                                    fontSize: 18,
+                                    fontFamily: "Calibri",
+                                    marginBottom: 3,
+                                  }}
+                                >
+                                  <strong>First Name:</strong> {userInfo.first_name}
+                                </pre>
+                              </Col>
+                              <Col>
+                                <pre
+                                  style={{
+                                    fontSize: 18,
+                                    fontFamily: "Calibri",
+                                    marginBottom: 3,
+                                  }}
+                                >
+                                  <strong>Last Name:</strong> {userInfo.last_name}
+                                </pre>
+                              </Col>
+                              <Col>
+                                <pre
+                                  style={{
+                                    fontSize: 18,
+                                    fontFamily: "Calibri",
+                                    marginBottom: 8,
+                                  }}
+                                >
+                                  <strong>Contact:</strong> {userInfo.contact}
+                                </pre>
+                              </Col>
+                              </Row>
+       </Row>
+      </Card>
+      
+      </Col>
+      </Row>
+
+
       <h1>My Profile</h1>
       <div>
-        <img src={userInfo.profile_picture} alt={userInfo.username} />
+        <img src={userInfo.profile_picture} alt={userInfo.username} style={{width:150}}/>
       </div>
       <div>
         <h2>Username</h2>
@@ -58,7 +135,9 @@ const PreviewMode = ({ disableButton, userInfo, handleToggleEdit }) => {
         </>
       )}
       <Button variant="warning" onClick={handleToggleEdit} disabled={disableButton}>Edit</Button>
+
     </div>
+  
   )
 }
 

@@ -3,10 +3,13 @@ import Form from "react-bootstrap/Form";
 import { useDispatch, useSelector } from "react-redux";
 import { listTutorsAdmin } from "../../../features/redux/actions/tutorActions";
 import { deleteUser } from "../../../features/redux/actions/adminActions";
-import { Button, Col, Container, Row, Table } from "react-bootstrap";
+import { Button, Col, Container, Row, Table, Card } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
 import "../../../assets/components/screens/TutorListScreen/tutorlist.css";
+import backgroundImage from  '../../../assets/components/screens/ScheduleScreen/secret.png'
+import { faDeleteLeft, faEllipsis } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function AdminTutor() {
   const [search, setSearch] = useState("");
@@ -60,14 +63,34 @@ function AdminTutor() {
     }
   };
 
+  const backgroundStyles = {
+    backgroundImage: `url(${backgroundImage})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center center',
+    height: '200vh',
+    backgroundAttachment: 'fixed',
+
+  };
+
+
   return (
-    <div>
-      <div className="tutor-bg"></div>
-      <div className="tutor-bg-text-overlay text-center">
-        <h1 className="text-uppercase tutor-text-h1">Inactive tutors</h1>
-        <h4>List of Inactive accounts for tutors</h4>
-      </div>
+    <div style={backgroundStyles}>
+   
+    <style jsx>{`
+        .card {
+          box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .one {
+          display: flex;
+          justify-content: center;
+        }
+      `}</style>
+  <br/><br/>
+
       <Container>
+      <h1 style={{  textAlign: "center", fontSize: 100, textShadow:'2px 2px 4px rgba(0, 0, 0, 0.3)'}}>INACTIVE TUTORS</h1> 
+      <Card style={{width: 1300, margin: 'auto', }} className='card px-5   p-3 mb-1 rounded'>
         <Form>
           <Container className="my-5">
             <Form.Control
@@ -103,7 +126,7 @@ function AdminTutor() {
             <Button
               variant="warning"
               style={{ fontSize: "0.8rem", padding: "0.2rem 0.5rem" }}
-              className="btn-outline-dark py-2 px-3 my-5"
+              className="btn-outline py-2 px-3 my-5"
             >
               Active Users
             </Button>
@@ -112,11 +135,11 @@ function AdminTutor() {
         <br></br>
         <Table striped responsive className="table-m-2">
           <thead>
-            <tr>
-              <th>Name and Date</th>
-              <th>Photo</th>
-              <th>Is Active</th>
-              <th>Action</th>
+            <tr style={{textAlign: 'center'}}>
+              <th>NAME & DATE</th>
+              <th>PHOTO</th>
+              <th>IS ACTIVE</th>
+              <th>ACTION</th>
             </tr>
           </thead>
           <tbody>
@@ -145,7 +168,7 @@ function AdminTutor() {
                         .includes(search.toLowerCase()))
                 )
                 .map((user) => (
-                  <tr key={user.id}>
+                  <tr style={{textAlign: 'center'}} key={user.id}>
                     <td>
                       {user.first_name} {user.last_name} <br />
                       {user.email} <br />
@@ -168,29 +191,33 @@ function AdminTutor() {
                       <Link to={`/tutors-admit/details/${user.id}`}>
                         <Button
                           variant="warning"
+                          title="Details"
                           style={{
                             fontSize: "0.8rem",
                             padding: "0.2rem 0.5rem",
                           }}
-                          className="btn-outline-dark py-2 px-3 my-5"
+                          className="btn-outline py-2 px-3 my-5 me-2"
                         >
-                          Details
+                           <FontAwesomeIcon icon={ faEllipsis} />
                         </Button>
                       </Link>
 
                       <button
                         type="button"
+                        title="Delete"
                         className="btn btn-danger"
                         onClick={() => handleDelete(user.id)}
                       >
-                        Delete
+                       <FontAwesomeIcon icon={ faDeleteLeft } />
                       </button>
                     </td>
                   </tr>
                 ))}
           </tbody>
         </Table>
+        </Card>
       </Container>
+
     </div>
   );
 }

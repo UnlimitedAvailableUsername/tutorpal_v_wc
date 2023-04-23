@@ -8,6 +8,7 @@ import {
   Container,
   Table,
   Form,
+  Card
 } from "react-bootstrap";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,6 +18,7 @@ import {
 } from "../../../features/redux/actions/adminActions";
 import { listSubjects } from "../../../features/redux/actions/subjectActions";
 import { subjectListReducer } from "../../../features/redux/reducers/subjectReducer";
+import backgroundImage from  '../../../assets/components/screens/ScheduleScreen/secret.png'
 
 function EditUser() {
   const { userId } = useParams();
@@ -169,8 +171,12 @@ function EditUser() {
   const renderActiveForm = () => {
     if (user?.active) {
       return (
+    
         <Form onSubmit={handleDeactivateTutor}>
+              <br/>
+          Do you want to deactivate this account? 
           <Form.Group className="mb-3">
+            
             <Form.Check
               type="checkbox"
               id="deactivate"
@@ -181,7 +187,7 @@ function EditUser() {
               label="Deactivate"
             />
           </Form.Group>
-          <Button type="submit" variant="danger" className="me-3">
+          <Button style={{width: 600, marginLeft: 100}}  type="submit" variant="danger" className="me-3">
             Deactivate
           </Button>
         </Form>
@@ -211,7 +217,17 @@ function EditUser() {
   };
 
   return (
-    <div>
+    <div style={backgroundStyles}>
+    <style jsx>{`
+        .card {
+          box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .one {
+          display: flex;
+          justify-content: center;
+        }
+      `}</style>
       {user && (
         <Container>
           <div className="d-flex justify-content-between align-items-center mb-5">
@@ -406,6 +422,7 @@ function EditUser() {
               </>
             )}
           </Row>
+          </Card>
         </Container>
       )}
     </div>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { updateUserProfile } from '../../../features/redux/actions/authUserActions';
 import { listSubjects } from '../../../features/redux/actions/subjectActions';
-import { Button, Form, Spinner } from 'react-bootstrap';
+import { Button, Form, Spinner, Card } from 'react-bootstrap';
 import LoadingIconRegular from '../../elements/Loader/LoadingIconRegular';
 import MessageAlert from '../../elements/MessageAlert';
 import { USER_UPDATE_PROFILE_FAIL } from '../../../features/redux/constants/authUserConstants';
@@ -103,17 +103,14 @@ const EditMode = ({ userInfo, subjects, subjectsLoading, subjectsError, updateSu
     <div>
       <Button onClick={handleToggleEdit}>Cancel Edit</Button>
       <h1>{userInfo.username}'s Profile</h1>
+
+      <Card style={{width: 900, margin: 'auto', height: 'auto'}} className='card px-5   p-1 mb-5 rounded'>
       <Form onSubmit={handleSubmit}>
-        <>
-          {userInfo.tutor && (
-            <div>
-              <h2>Basic Details:</h2>
-            </div>
-          )}
-        </>
+        
         <Form.Group controlId="profilePicture">
+          <br/><br/>
           <div>
-            {imageUrl && <img src={imageUrl} alt="Profile" />}
+            {imageUrl && <img src={imageUrl} style={{height: 200, marginLeft: 300}} alt="Profile" />}
           </div>
           <Form.Label>Profile Picture</Form.Label>
           <Form.Control
@@ -228,8 +225,9 @@ const EditMode = ({ userInfo, subjects, subjectsLoading, subjectsError, updateSu
             </Form.Group>
           </>
         )}
-        <Button variant="warning" type="submit">Save Changes</Button>
+        <Button variant="warning mb-5" type="submit">Save Changes</Button>
       </Form>
+      </Card>
     </div>
   )
 }

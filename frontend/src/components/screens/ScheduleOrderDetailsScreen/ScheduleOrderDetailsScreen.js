@@ -84,7 +84,7 @@ function ScheduleOrderDetailsScreen() {
             : "/my-schedule-orders"
         }
       >
-        <Button variant="warning" className="btn-outline-dark py-3 my-5">
+        <Button variant="warning" style={{color: 'black'}} className="btn-outline py-3 my-5 ">
           {userInfo.tutor ? (
             <>&lt; Student Details</>
           ) : (
@@ -226,14 +226,14 @@ function ScheduleOrderDetailsScreen() {
                 <Card className="p-2">
                   <ListGroup variant="flush">
                     <ListGroup.Item>
-                      <h2>Order Summary</h2>
+                      <h2>ORDER SUMMARY</h2>
                     </ListGroup.Item>
                     <ListGroup.Item>
                       <Row>
-                        <Col>Total Price:</Col>
-                        <Col>
+                        <Col><h4>Total Price:</h4></Col>
+                        <Col><h4>
                           {parseFloat(scheduleOrder.total_amount).toFixed(2)}
-                          &nbsp;&nbsp;Php
+                          &nbsp;&nbsp;Php</h4>
                         </Col>
                       </Row>
                     </ListGroup.Item>

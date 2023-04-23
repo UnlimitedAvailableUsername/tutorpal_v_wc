@@ -1,15 +1,23 @@
 import React from 'react';
-import { Button, Card, Row, Col } from 'react-bootstrap';
+import { Button, Card, Row, Col, Table, Container } from 'react-bootstrap';
+import MessageAlert from '../../elements/MessageAlert';
+import backgroundImage from  '../../../assets/components/screens/ScheduleScreen/secret.png'
 
 const PreviewMode = ({ disableButton, userInfo, handleToggleEdit }) => {
-
+  const backgroundStyles = {
+    backgroundImage: `url(${backgroundImage})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center center',
+    height: '220vh',
+    backgroundAttachment: 'fixed',
+  }; 
   return (
-    <div>
+    <div  >
       <Row>
         <Col>
-        <Card className=" my-2 p-3 rounded" style={{backgroundColor: "#565656", width: 286, height: 490, }}>
+        <Card className=" my-2 p-3 rounded mt-5" style={{backgroundColor: "#565656", width: 286, height: 580, }}>
         <Row>
-                          <Col>
+        <Col>
                             <p>
                               <img
                                 src={userInfo.profile_picture}
@@ -25,9 +33,10 @@ const PreviewMode = ({ disableButton, userInfo, handleToggleEdit }) => {
                                     fontSize: 18,
                                     fontFamily: "Calibri",
                                     marginBottom: 3,
+                                    
                                   }}
                                 >
-                                  <strong>Username:</strong> {userInfo.username}
+                                  <strong>Username:</strong> <Card style={{textAlign: 'center'}} variant="dark"  > {userInfo.username}</Card>
                                 </pre>
                               </Col> 
                               <Col>
@@ -38,7 +47,7 @@ const PreviewMode = ({ disableButton, userInfo, handleToggleEdit }) => {
                                     marginBottom: 3,
                                   }}
                                 >
-                                  <strong>Email:</strong> {userInfo.email}
+                                  <strong>Email:</strong> <Card style={{textAlign: 'center'}} variant="dark"  >{userInfo.email}</Card>
                                 </pre>
                               </Col>
                               <Col>
@@ -49,7 +58,7 @@ const PreviewMode = ({ disableButton, userInfo, handleToggleEdit }) => {
                                     marginBottom: 3,
                                   }}
                                 >
-                                  <strong>First Name:</strong> {userInfo.first_name}
+                                  <strong>First Name:</strong> <Card style={{textAlign: 'center'}} variant="dark"  >{userInfo.first_name}</Card> 
                                 </pre>
                               </Col>
                               <Col>
@@ -60,7 +69,7 @@ const PreviewMode = ({ disableButton, userInfo, handleToggleEdit }) => {
                                     marginBottom: 3,
                                   }}
                                 >
-                                  <strong>Last Name:</strong> {userInfo.last_name}
+                                  <strong>Last Name:</strong> <Card style={{textAlign: 'center'}} variant="dark"  > {userInfo.last_name}</Card>
                                 </pre>
                               </Col>
                               <Col>
@@ -71,102 +80,113 @@ const PreviewMode = ({ disableButton, userInfo, handleToggleEdit }) => {
                                     marginBottom: 8,
                                   }}
                                 >
-                                  <strong>Contact:</strong> {userInfo.contact}
+                                  <strong>Contact:</strong><Card style={{textAlign: 'center'}} variant="dark"  > {userInfo.contact}</Card> 
                                 </pre>
                               </Col>
+                              <Container>
+                              <Button   variant="warning" onClick={handleToggleEdit} disabled={disableButton}>Edit</Button>
+                              </Container>
                               </Row>
        </Row>
       </Card>
-      
       </Col>
+
+
+
+
+
       <Col>
-      <Card className=" my-2 p-3 rounded" style={{backgroundColor: "#565656", width: 963, height: 448}}>
+      <Card className=" my-2 p-3 rounded mt-5" style={{backgroundColor: "#565656", width: 963, height: 'auto'}}>
       <Row>
-                    <Col>
-                    <h4><strong>BIO: </strong>{userInfo.bio ? (
-              <>
-                {userInfo.bio}
-              </>
-            ) : (
+        
+
+      {userInfo.tutor && (
+    <>
+      <div>
+        <Row>
+          <Col>
+            <p style={{ fontSize: 18, fontFamily: "Calibri", marginBottom: 3 }}>
+              <strong>BIO: </strong>
+              {userInfo.bio ? (
                 <>
-                  You haven't set your Bio. Add now so students can know more about you!
+                  <MessageAlert variant="dark"></MessageAlert>
                 </>
-            )}</h4>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col>
-                      <pre style={{fontSize: 25, fontFamily: "Calibri", marginBottom: 3}}><strong>HOURLY PRICE:</strong>   {parseFloat(userInfo.price_rate_hour).toFixed(2)}</pre>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col>
-                      <pre style={{fontSize: 18, fontFamily: "Calibri", marginBottom: 6 }}><strong>Meeting Link:</strong>  {userInfo.meeting_link}</pre>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col>
-                      <p style={{fontSize: 18, fontFamily: "Calibri", marginBottom: 6 }}><strong>Schedules:</strong> </p>
-                    </Col>
-                  </Row>
+              ) : (
+                <>
+                  <MessageAlert variant="dark">
+                    You haven't set your Bio. Add now so students can know more about you!
+                  </MessageAlert>
+                </>
+              )}
+            </p>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <pre style={{ fontSize: 18, fontFamily: "Calibri", marginBottom: 3 }}>
+              <strong>HOURLY PRICE:</strong>{" "}
+              <MessageAlert variant="dark">{parseFloat(userInfo.price_rate_hour).toFixed(2)}</MessageAlert>
+            </pre>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <pre style={{ fontSize: 18, fontFamily: "Calibri", marginBottom: 6 }}>
+              <strong>SUBJECTS:</strong>{" "}
+              <MessageAlert variant="dark">
+                {userInfo.subjects.map((subject) => (
+                  <div key={subject.id}>
+                    <li>{subject.subject_title}</li>
+                  </div>
+                ))}
+              </MessageAlert>
+            </pre>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <p style={{ fontSize: 18, fontFamily: "Calibri", marginBottom: 6 }}>
+              <strong>SCHEDULES:</strong> <MessageAlert variant="dark">
+              {userInfo.schedules && userInfo.schedules.filter((schedule) => schedule.count_in_stock > 0).length > 0 ? (
+                <Col>
+                  <Table style={{ border: "1px solid #ccc" }} striped responsive className="table-m-2 mb-1">
+                    <thead>
+                      <tr>
+                        <th style={{ textAlign: "center" }}>DATE</th>
+                        <th style={{ textAlign: "center" }}>HOURS AVAILABLE</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {userInfo.schedules
+                        .filter((schedule) => schedule.count_in_stock > 0)
+                        .map((schedule) => (
+                          <tr key={schedule.id}>
+                            <td style={{ textAlign: "center" }}>{schedule.name}</td>
+                            <td style={{ textAlign: "center" }}>{schedule.count_in_stock}</td>
+                          </tr>
+                        ))}
+                    </tbody>
+                  </Table>
+                </Col>
+              ) : (
+                <Col>No schedules available at the moment</Col>
+              )}
+            </MessageAlert>
+            </p>
+           
+          </Col>
+        </Row>
+      </div>
+    </>
+)}  
+        </Row>
+        
       </Card>
       </Col>
       </Row>
 
 
-      <h1>My Profile</h1>
-      <div>
-        <img src={userInfo.profile_picture} alt={userInfo.username} style={{width:150}}/>
-      </div>
-      <div>
-        <h2>Username</h2>
-        <p>{userInfo.username}</p>
-      </div>
-      <div>
-        <h2>First Name</h2>
-        <p>{userInfo.first_name}</p>
-      </div>
-      <div>
-        <h2>Last Name</h2>
-        <p>{userInfo.last_name}</p>
-      </div>
-      <div>
-        <h2>Email</h2>
-        <p>{userInfo.email}</p>
-      </div>
-      <div>
-        <h2>Contact Details:</h2>
-        <p>{userInfo.contact}</p>
-      </div>
-      {userInfo.tutor && (
-        <>
-          <div>
-            <h2>Bio</h2>
-            <p>{userInfo.bio ? (
-              <>
-                {userInfo.bio}
-              </>
-            ) : (
-                <>
-                  You haven't set your Bio. Add now so students can know more about you!
-                </>
-            )}</p>
-          </div>
-          <div>
-            <h2>Hourly Price</h2>
-            <p>{parseFloat(userInfo.price_rate_hour).toFixed(2)}</p>
-          </div>
-          <div>
-            <h2>Subjects</h2>
-            {userInfo.subjects.map((subject) => (
-              <div key={subject.id}>
-                <li>{subject.subject_title}</li>
-              </div>
-            ))}
-          </div>
-        </>
-      )}
-      <Button variant="warning" onClick={handleToggleEdit} disabled={disableButton}>Edit</Button>
+    
 
     </div>
   

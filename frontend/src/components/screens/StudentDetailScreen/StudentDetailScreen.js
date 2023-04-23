@@ -45,7 +45,7 @@ function StudentDetailScreen() {
   }; 
 
   return (
-    <div >
+    <div style={{height: 900}}>
       {student && (
         <Container>
           <Button as={Link} to="/my-students" variant="warning" className="btn-outline py-3 my-5" >

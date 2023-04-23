@@ -3,7 +3,11 @@ import { Button, Card, Col, Container, ListGroup, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import LoadingIconBig from "../../elements/Loader/LoadingIconBig";
 import MessageAlert from "../../elements/MessageAlert";
-import { getOrderScheduleDetails, payScheduleOrder, } from "../../../features/redux/actions/scheduleOrderActions";
+import {
+  getOrderScheduleDetails,
+  markAsDoneScheduleOrder,
+  payScheduleOrder,
+} from "../../../features/redux/actions/scheduleOrderActions";
 import { useParams } from "react-router";
 import * as actionType from "../../../features/redux/constants/scheduleOrderConstants";
 import { Link } from "react-router-dom";
@@ -35,7 +39,15 @@ function ScheduleOrderDetailsScreen() {
     currency: "PHP",
   };
 
+  const handleSessionButton = (event) =>{
+    event.preventDefault();
+    dispatch(markAsDoneScheduleOrder(scheduleOrderId));
+    dispatch(getOrderScheduleDetails(scheduleOrderId));
+  }
+
   const paypalOrderApproved = (data, actions) => {
+    dispatch(payScheduleOrder(scheduleOrderId));
+    dispatch(getOrderScheduleDetails(scheduleOrderId))
     return actions.order.create({
       purchase_units: [
         {
@@ -65,16 +77,18 @@ function ScheduleOrderDetailsScreen() {
 
   return (
     <Container className="mb-5">
-      <Link to={userInfo.tutor ? `/my-students/${scheduleOrder && scheduleOrder.user}` : "/my-schedule-orders"}>
+      <Link
+        to={
+          userInfo.tutor
+            ? `/my-students/${scheduleOrder && scheduleOrder.user}`
+            : "/my-schedule-orders"
+        }
+      >
         <Button variant="warning" className="btn-outline-dark py-3 my-5">
           {userInfo.tutor ? (
-            <>
-              &lt; Student Details
-            </>
-          ): (
-            <>
-            &lt; Back to booked schedules
-            </>
+            <>&lt; Student Details</>
+          ) : (
+            <>&lt; Back to booked schedules</>
           )}
         </Button>
       </Link>
@@ -85,36 +99,41 @@ function ScheduleOrderDetailsScreen() {
       ) : (
         scheduleOrder && (
           <>
-            <div>
-              <h2>Schedule Order Id: {scheduleOrder.id}</h2>
+            <div className="mb-5">
+              <h2>
+                <strong>Booking Order Id: {scheduleOrder.id}</strong>
+              </h2>
             </div>
             <Row>
               <Col md={8}>
                 <ListGroup variant="flush">
-                  <ListGroup.Item>
-                    <h2>Tutor</h2>
-                    <Card>
+                  {userInfo.student && (
+                    <ListGroup.Item style={{ backgroundColor: "#404040" }}>
+                      <h2>Tutor</h2>
                       <Row>
                         <Col md={8}>
                           <h4>
                             {scheduleOrder.tutor ? (
-                              <>
-                                {scheduleOrder.tutor.first_name}{" "}
-                                {scheduleOrder.tutor.last_name}
-                                {scheduleOrder.tutor.email}
-                              </>
-                            ): (
-                                <>
-                                  Multo
-                                </>
+                              <Row>
+                                <Col>
+                                  <p>
+                                    {scheduleOrder.tutor.first_name}&nbsp;
+                                    {scheduleOrder.tutor.last_name}
+                                  </p>
+                                  <p>{scheduleOrder.tutor.email}</p>
+                                </Col>
+                              </Row>
+                            ) : (
+                              <Row>
+                                <Col>Multo</Col>
+                              </Row>
                             )}
                           </h4>
                         </Col>
                       </Row>
-                    </Card>
-                  </ListGroup.Item>
-
-                  <ListGroup.Item>
+                    </ListGroup.Item>
+                  )}
+                  <ListGroup.Item style={{ backgroundColor: "#404040" }}>
                     <h2>Schedules Booked</h2>
                     {scheduleOrder.schedules.length === 0 ? (
                       <MessageAlert variant="secondary">
@@ -137,7 +156,8 @@ function ScheduleOrderDetailsScreen() {
                       </ListGroup>
                     )}
                   </ListGroup.Item>
-                  <ListGroup.Item>
+
+                  <ListGroup.Item style={{ backgroundColor: "#404040" }}>
                     <h2>Student's Message</h2>
                     <Row>
                       <Col>
@@ -149,7 +169,8 @@ function ScheduleOrderDetailsScreen() {
                       </Col>
                     </Row>
                   </ListGroup.Item>
-                  <ListGroup.Item>
+
+                  <ListGroup.Item style={{ backgroundColor: "#404040" }}>
                     <h2>Payment</h2>
                     <p>
                       <strong>Payment Method: </strong>
@@ -163,29 +184,44 @@ function ScheduleOrderDetailsScreen() {
                           : null}
                       </MessageAlert>
                     ) : (
-                      <MessageAlert variant="secondary">
-                        Not yet paid
-                      </MessageAlert>
+                      <MessageAlert variant="dark">Not yet paid</MessageAlert>
                     )}
                   </ListGroup.Item>
 
-                  <ListGroup.Item>
-                    <h2>Meeting Link</h2>
-                    {scheduleOrder.paid_status &&
+                  <ListGroup.Item style={{ backgroundColor: "#404040" }}>
+                    <h2>Meeting Session:</h2>
+                    {!scheduleOrder.paid_status &&
                       !scheduleOrder.session_status && (
-                        <p>Meeting Link: {scheduleOrder.tutor.meeting_link}</p>
+                        <>
+                          {scheduleOrder.tutor && (
+                            <Row>
+                              <Col>
+                                <p>Meeting Link: </p>
+                                <p>
+                                  {scheduleOrder.tutor.meeting_link
+                                    ? scheduleOrder.tutor.meeting_link
+                                    : "Not available"}
+                                </p>
+                              </Col>
+                            </Row>
+                          )}
+                        </>
                       )}
-                    {scheduleOrder.session_status === "done" && (
-                      <p>Session has been completed.</p>
-                    )}
-                    {scheduleOrder.session_status && (
-                      <p>Session Status: Done {scheduleOrder.session_status}</p>
+                    {scheduleOrder.session_status ? (
+                      <MessageAlert variant="success">
+                        Session has been completed.
+                      </MessageAlert>
+                    ) : (
+                      <MessageAlert variant="dark">
+                        Session has not yet happened.
+                      </MessageAlert>
                     )}
                   </ListGroup.Item>
                 </ListGroup>
               </Col>
+
               <Col md={4}>
-                <Card>
+                <Card className="p-2">
                   <ListGroup variant="flush">
                     <ListGroup.Item>
                       <h2>Order Summary</h2>
@@ -221,22 +257,24 @@ function ScheduleOrderDetailsScreen() {
                             onError={paypalHandleError}
                           />
                         </div>
-                        <div>
-                          {payPalError && (
-                            <div
-                              className="text-center"
-                              style={{ color: "red" }}
-                            >
-                              {payPalError}
-                            </div>
-                          )}
-                        </div>
+                        {payPalError && (
+                          <MessageAlert variant="danger">
+                            {payPalError}
+                          </MessageAlert>
+                        )}
                       </PayPalScriptProvider>
                     )}
                   </ListGroup>
-                  {userInfo && (userInfo.tutor || userInfo.staff) && (
+                  {userInfo && (userInfo.tutor || userInfo.staff) && !scheduleOrder.session_status && (
                     <ListGroup.Item>
-                      <Button className="btn-outline-dark w-100" variant="warning">Mark Session as Done</Button>
+                      <Button
+                        className="btn-outline-dark w-100"
+                        variant="warning"
+                        disabled={!scheduleOrder.paid_status}
+                        onClick={handleSessionButton}
+                      >
+                        Mark Session as Done
+                      </Button>
                     </ListGroup.Item>
                   )}
                 </Card>

@@ -446,11 +446,11 @@ def schedule_detail(request, id):
     try:
         schedule = Schedule.objects.get(id=id)
     except Schedule.DoesNotExist:
-        return Response({"error": "Schedule does not exist"}, status=status.HTTP_404_NOT_FOUND)
+        return Response({"detail": "Schedule does not exist"}, status=status.HTTP_404_NOT_FOUND)
 
     # Only allow the owner or admin user to modify or delete the schedule
     if not request.user.is_staff and schedule.owner != request.user:
-        return Response({"error": "You do not have permission to modify or delete this schedule"}, status=status.HTTP_403_FORBIDDEN)
+        return Response({"detail": "You do not have permission to modify or delete this schedule"}, status=status.HTTP_403_FORBIDDEN)
 
     if request.method == 'GET':
         serializer = ScheduleSerializer(schedule)
@@ -525,7 +525,6 @@ def schedule_order_create(request):
         )
     serializer = ScheduleOrderSerializer(schedule_order)
     data = serializer.data
-    data['tutor'] = f"{tutor.first_name} {tutor.last_name}"
     return Response(data, status=status.HTTP_201_CREATED)
 
 ################################################
@@ -535,13 +534,19 @@ def schedule_order_create(request):
 @permission_classes([IsAuthenticated])
 def schedule_order_detail(request, id):
     try:
-        order = ScheduleOrder.objects.get(pk=id)
+        schedule_order = ScheduleOrder.objects.get(pk=id)
     except ScheduleOrder.DoesNotExist:
         return Response({'error': 'Schedule Order not found'}, status=status.HTTP_404_NOT_FOUND)
 
-    serializer = ScheduleOrderSerializer(order)
+    serializer = ScheduleOrderSerializer(schedule_order)
+    data = serializer.data
 
-    return Response(serializer.data)
+    # Add the quantity field for each ScheduleOrderItem
+    for item in schedule_order.scheduleorderitem_set.all():
+        schedule_data = next(schedule for schedule in data['schedules'] if schedule['id'] == item.schedule.id)
+        schedule_data['quantity'] = item.quantity
+
+    return Response(data)
 
 
 ############################################################
@@ -553,10 +558,10 @@ def schedule_order_mark_as_paid(request, id):
     try:
         schedule_order = ScheduleOrder.objects.get(id=id)
     except ScheduleOrder.DoesNotExist:
-        return Response({"error": "Schedule order does not exist"}, status=404)
+        return Response({"detail": "Schedule order does not exist"}, status=404)
     
-    if schedule_order.user != request.user:
-        return Response({"error": "You do not have permission on that order"}, status=401)
+    if not request.user.staff and schedule_order.user != request.user:
+        return Response({"detail": "You do not have permission on that order"}, status=401)
 
     # Update paid status and paid date
     schedule_order.paid_status = True
@@ -564,7 +569,14 @@ def schedule_order_mark_as_paid(request, id):
     schedule_order.save()
 
     serializer = ScheduleOrderSerializer(schedule_order)
-    return Response(serializer.data)
+    data = serializer.data
+
+    # Add the quantity field for each ScheduleOrderItem
+    for item in schedule_order.scheduleorderitem_set.all():
+        schedule_data = next(schedule for schedule in data['schedules'] if schedule['id'] == item.schedule.id)
+        schedule_data['quantity'] = item.quantity
+
+    return Response(data)
 
 ####################################################################
 # THIS WILL UPDATE THE STATUS OF THE MEETING SESSION TO TRUE IF DONE
@@ -575,13 +587,20 @@ def schedule_order_mark_as_meeting_done(request, id):
     try:
         schedule_order = ScheduleOrder.objects.get(id=id)
     except ScheduleOrder.DoesNotExist:
-        return Response({"error": "Schedule order does not exist"}, status=404)
+        return Response({"detail": "Schedule order does not exist"}, status=404)
 
     schedule_order.session_status = True
     schedule_order.save()
 
     serializer = ScheduleOrderSerializer(schedule_order)
-    return Response(serializer.data)
+    data = serializer.data
+
+    # Add the quantity field for each ScheduleOrderItem
+    for item in schedule_order.scheduleorderitem_set.all():
+        schedule_data = next(schedule for schedule in data['schedules'] if schedule['id'] == item.schedule.id)
+        schedule_data['quantity'] = item.quantity
+
+    return Response(data)
 
 #################################################################################
 # THIS WILL LET THE DELETION OF SPECIFIC SCHEDULE ORDER <id>, FOR ADMIN EYES ONLY
@@ -593,7 +612,7 @@ def schedule_order_delete(request, id):
     try:
         schedule_order = ScheduleOrder.objects.get(id=id)
     except ScheduleOrder.DoesNotExist:
-        return Response({"error": "Schedule order does not exist"}, status=404)
+        return Response({"detail": "Schedule order does not exist"}, status=404)
 
     schedule_order.delete()
     return Response(status=204)

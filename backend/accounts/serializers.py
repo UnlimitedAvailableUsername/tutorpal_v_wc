@@ -43,7 +43,7 @@ class UserSerializer(serializers.ModelSerializer):
             request_user_id = request.user.id
             tutor_id = user_id
             try:
-                ScheduleOrder.objects.get(user_id=request_user_id, tutor_id=tutor_id)
+                ScheduleOrder.objects.filter(user_id=request_user_id, tutor_id=tutor_id)
                 return True
             except ScheduleOrder.DoesNotExist:
                 pass
@@ -106,15 +106,10 @@ class ContactSerializer(serializers.ModelSerializer):
         model = Contact
         fields = '__all__'
 
-class TutorSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['id', 'first_name', 'last_name', 'meeting_link']
-
 class ScheduleOrderSerializer(serializers.ModelSerializer):
     schedules = ScheduleSerializer(many=True, read_only=True)
     payment_method = serializers.CharField(max_length=200)
-    tutor = TutorSerializer(read_only=True)
+    tutor = UserSerializer(many=False, read_only=True)
 
     class Meta:
         model = ScheduleOrder

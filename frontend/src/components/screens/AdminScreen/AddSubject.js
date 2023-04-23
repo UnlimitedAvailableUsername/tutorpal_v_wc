@@ -113,7 +113,7 @@ function AddSubject() {
                     className="btn btn-danger"
                     onClick={() => handleDelete(subject.id)}
                   >
-                    <FontAwesomeIcon icon={ faDeleteLeft } />
+                   <FontAwesomeIcon icon={ faDeleteLeft } />
                   </button>
                 </td>
               </tr>

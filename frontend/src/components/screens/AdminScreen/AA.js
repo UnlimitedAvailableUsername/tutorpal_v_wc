@@ -8,7 +8,6 @@ import {
   Container,
   Table,
   Form,
-  Card
 } from "react-bootstrap";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,7 +17,6 @@ import {
 } from "../../../features/redux/actions/adminActions";
 import { listSubjects } from "../../../features/redux/actions/subjectActions";
 import { subjectListReducer } from "../../../features/redux/reducers/subjectReducer";
-import backgroundImage from  '../../../assets/components/screens/ScheduleScreen/secret.png'
 
 function EditUser() {
   const { userId } = useParams();
@@ -63,6 +61,7 @@ function EditUser() {
     dispatch(listSubjects());
   }, [dispatch]);
 
+ 
   useEffect(() => {
     setActive(user?.active);
     setFirstName(user?.first_name);
@@ -78,6 +77,7 @@ function EditUser() {
     setmeetingLink(user?.meeting_link);
     setSelectedSubjects(user?.subjects?.map((subject) => subject.id) || []);
   }, [user]);
+  
 
   const handleActivateTutor = async (e) => {
     e.preventDefault();
@@ -100,29 +100,24 @@ function EditUser() {
   };
 
   const handleDeactivateTutor = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  if (!userId) {
-    return;
-  }
+    if (!userId) {
+      return;
+    }
 
-  if (userId === userInfo.Id) {
-    window.alert("You can't deactivate your own account.");
-    return;
-  }
+    const userData = {
+      active: false,
+    };
 
-  const userData = {
-    active: false,
+    try {
+      await dispatch(editUser(userId, userData, userInfo));
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+      // handle error
+    }
   };
-
-  try {
-    await dispatch(editUser(userId, userData, userInfo));
-    window.location.reload();
-  } catch (error) {
-    console.log(error);
-    // handle error
-  }
-};
   const handleSubmit = async (e) => {
     e.preventDefault();
     const userData = new FormData();
@@ -130,8 +125,7 @@ function EditUser() {
     userData.append("first_name", firstName);
     userData.append("last_name", lastName);
     userData.append("email", email);
-    userData.append("numReviews", numReviews);
-
+  
     // Append password field only if it has a value
     if (password) {
       userData.append("password", password);
@@ -141,16 +135,16 @@ function EditUser() {
       }
       setPasswordError("");
     }
-
+  
     userData.append("contact", contact);
     userData.append("bio", bio);
     userData.append("price_rate_hour", price_rate_hour);
     userData.append("meeting_link", meeting_link);
-
+  
     selectedSubjects.forEach((subjectId) => {
       userData.append("subjects", subjectId);
     });
-
+  
     if (typeof profile_picture === "object") {
       if (profile_picture.size > 2 * 1024 * 1024) {
         alert("File size exceeded 2MB limit.");
@@ -158,7 +152,8 @@ function EditUser() {
       }
       userData.append("profile_picture", profile_picture);
     }
-
+    
+  
     try {
       await dispatch(editUser(userId, userData, userInfo));
       window.location.reload(); // Reload the page
@@ -167,16 +162,12 @@ function EditUser() {
       // handle error
     }
   };
-
+  
   const renderActiveForm = () => {
     if (user?.active) {
       return (
-    
         <Form onSubmit={handleDeactivateTutor}>
-              <br/>
-          Do you want to deactivate this account? 
           <Form.Group className="mb-3">
-            
             <Form.Check
               type="checkbox"
               id="deactivate"
@@ -187,7 +178,7 @@ function EditUser() {
               label="Deactivate"
             />
           </Form.Group>
-          <Button style={{width: 600, marginLeft: 100}}  type="submit" variant="danger" className="me-3">
+          <Button type="submit" variant="danger" className="me-3">
             Deactivate
           </Button>
         </Form>
@@ -202,7 +193,7 @@ function EditUser() {
       );
     }
   };
-
+  
   const handleSelectedSubjectsChange = (event) => {
     const subjectId = parseInt(event.target.value);
     const isChecked = event.target.checked;
@@ -215,50 +206,28 @@ function EditUser() {
     }
     console.log(selectedSubjects);
   };
+  
+
 
   return (
-    <div style={backgroundStyles}>
-    <style jsx>{`
-        .card {
-          box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-        }
-
-        .one {
-          display: flex;
-          justify-content: center;
-        }
-      `}</style>
+    <div>
       {user && (
         <Container>
-          <div className="d-flex justify-content-between align-items-center mb-5">
-            <Button
-              as={Link}
-              to="/user-list"
-              variant="warning"
-              className="btn-outline-dark py-3"
-            >
-              Back To User List
-            </Button>
-
-            <div className="d-flex">
-              <Button
-                variant="primary"
-                type="submit"
-                onClick={handleSubmit}
-                className="mr-3"
-              >
-                Save
-              </Button>
-              {renderActiveForm()}
-            </div>
-          </div>
+          <Button
+            as={Link}
+            to="/tutors-admit"
+            variant="warning"
+            className="btn-outline-dark py-3 my-5"
+          >
+            Back To Admit List
+          </Button>
 
           <Row>
             <Col xs={12} md={4}>
               <div className="d-flex align-items-center justify-content-center mb-4">
                 <Image src={user.profile_picture} alt={user.first_name} fluid />
               </div>
-
+          
               <Form.Group controlId="image">
                 <Form.Label>Profile Picture</Form.Label>
                 <Form.Control
@@ -339,90 +308,80 @@ function EditUser() {
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </Form.Group>
+
+              <Form.Group controlId="reviews">
+                <Form.Label>Reviews</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter Number of Reviews"
+                  value={numReviews}
+                  onChange={(e) => setReviews(e.target.value)}
+                />
+              </Form.Group>
             </Col>
-            {user?.tutor && (
-              <>
-                <Col xs={12} md={8}>
-                  <ListGroup variant="flush">
-                    <Form.Group controlId="reviews">
-                      <Form.Label>Reviews</Form.Label>
-                      <Form.Control
-                        type="text"
-                        placeholder="Enter Number of Reviews"
-                        value={numReviews}
-                        onChange={(e) => setReviews(e.target.value)}
-                      />
-                    </Form.Group>
 
-                    <Form.Group controlId="bio">
-                      <Form.Group controlId="price">
-                        <Form.Label>Hourly Rate</Form.Label>
-                        <Form.Control
-                          type="text"
-                          placeholder="Enter Hourly Rate"
-                          value={price_rate_hour}
-                          onChange={(e) => setPrice(e.target.value)}
+            <Col xs={12} md={8}>
+              <ListGroup variant="flush">
+                <Form.Group controlId="bio">
+                  <Form.Group controlId="price">
+                    <Form.Label>Hourly Rate</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Enter Hourly Rate"
+                      value={price_rate_hour}
+                      onChange={(e) => setPrice(e.target.value)}
+                    />
+                  </Form.Group>
+
+                  <Form.Label>Bio</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    placeholder="Tell us about yourself"
+                    rows={3}
+                    value={bio}
+                    onChange={(e) => setBio(e.target.value)}
+                  />
+                </Form.Group>
+
+                <Form.Group controlId="meeting">
+                  <Form.Label>Zoom Link</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter zoom link"
+                    value={meeting_link}
+                    onChange={(e) => setmeetingLink(e.target.value)}
+                  />
+                </Form.Group>
+
+                <Form.Group controlId="subjects">
+                  <Form.Label>Select your subjects</Form.Label>
+
+                  {subjects &&
+                    subjects.map((subject) => (
+                      <div key={subject.id}>
+                        <Form.Check
+                          type="checkbox"
+                          id={`subject-${subject.id}`}
+                          label={subject.subject_title}
+                          checked={selectedSubjects.includes(subject.id)}
+                          value={subject.id}
+                          onChange={handleSelectedSubjectsChange}
                         />
-                      </Form.Group>
+                      </div>
+                    ))}
+                </Form.Group>
 
-                      <Form.Label>Bio</Form.Label>
-                      <Form.Control
-                        as="textarea"
-                        placeholder="Tell us about yourself"
-                        rows={3}
-                        value={bio}
-                        onChange={(e) => setBio(e.target.value)}
-                      />
-                    </Form.Group>
-
-                    <Form.Group controlId="meeting">
-                      <Form.Label>Zoom Link</Form.Label>
-                      <Form.Control
-                        type="text"
-                        placeholder="Enter zoom link"
-                        value={meeting_link}
-                        onChange={(e) => setmeetingLink(e.target.value)}
-                      />
-                    </Form.Group>
-
-                    <Form.Group controlId="subjects">
-                      <Form.Label>Select your subjects</Form.Label>
-
-                      {subjects &&
-                        subjects.map((subject) => (
-                          <div key={subject.id}>
-                            <Form.Check
-                              type="checkbox"
-                              id={`subject-${subject.id}`}
-                              label={subject.subject_title}
-                              checked={selectedSubjects.includes(subject.id)}
-                              value={subject.id}
-                              onChange={handleSelectedSubjectsChange}
-                            />
-                          </div>
-                        ))}
-                    </Form.Group>
-                  </ListGroup>
-                  <h1 className="text-center">ID's</h1>
-                  <div className="d-flex flex-column align-items-center justify-content-center mb-4">
-                    <Image
-                      src={user.photo_education_background}
-                      fluid
-                      className="mb-2"
-                      style={{ maxWidth: "300px" }}
-                    />
-                    <Image
-                      src={user.photo_id}
-                      fluid
-                      className="mb-2"
-                      style={{ maxWidth: "300px" }}
-                    />
-                  </div>
-                </Col>
-              </>
-            )}
+                <Button variant="primary" type="submit" onClick={handleSubmit}>
+                  Save
+                </Button>
+                <ListGroup variant="flush">
+                  {" "}
+                  <br></br>
+                  {renderActiveForm()}
+                </ListGroup>
+              </ListGroup>
+            </Col>
           </Row>
-          </Card>
         </Container>
       )}
     </div>

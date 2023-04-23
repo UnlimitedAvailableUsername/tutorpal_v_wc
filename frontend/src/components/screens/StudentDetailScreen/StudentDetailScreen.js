@@ -45,10 +45,10 @@ function StudentDetailScreen() {
   }; 
 
   return (
-    <div style={backgroundStyles}>
+    <div >
       {student && (
         <Container>
-          <Button as={Link} to="/my-students" variant="warning" className="btn-outline-dark py-3 my-5" >
+          <Button as={Link} to="/my-students" variant="warning" className="btn-outline py-3 my-5" >
             &lt; Students List
           </Button>
 

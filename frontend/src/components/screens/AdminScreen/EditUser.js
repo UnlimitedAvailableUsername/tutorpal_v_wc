@@ -179,7 +179,7 @@ function EditUser() {
           <Form.Group className="mb-3">
             
             
-          <Button style={{width: 250, }}  type="submit" variant="danger" className="me-3 ">
+          <Button  style={{width:250, marginLeft:70}}     type="submit" variant="danger" className="me-3 ">
             Deactivate
           </Button>
           <Form.Check
@@ -198,7 +198,7 @@ function EditUser() {
     } else {
       return (
         <Form onSubmit={handleActivateTutor}>
-          <Button style={{width: 250, }} type="submit" variant="success" className="me-3 mt-4">
+          <Button  style={{width:250, marginLeft:70}}   type="submit" variant="success" className="me-3 mt-4">
             Activate
           </Button>
         </Form>
@@ -219,11 +219,32 @@ function EditUser() {
     console.log(selectedSubjects);
   };
 
+  const backgroundStyles = {
+    backgroundImage: `url(${backgroundImage})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center center',
+    height: '220vh',
+    backgroundAttachment: 'fixed',
+  }; 
+
   return (
     <>
       {user && (
-        <Container>
-          <div className="d-flex justify-content-between align-items-center mb-5">
+        <div style={backgroundStyles}>
+        <style jsx>{`
+          .card {
+            box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+          }
+  
+          .one {
+            display: flex;
+            justify-content: center;
+          }
+        `}</style>
+        
+        <Container>    <br/><br/><br/>
+          <div className="d-flex justify-content-between align-items-center mb-5 ">
+        
             <Button
               as={Link}
               to="/user-list"
@@ -235,7 +256,7 @@ function EditUser() {
 
             
           </div>
-
+          <Card style={{ width: 1300, margin: 'auto', }} className='card px-5   p-5 mb-1 rounded'>
           <Row>
             <Col xs={12} md={4}>
               <div className="d-flex align-items-center justify-content-center mb-4">
@@ -322,6 +343,21 @@ function EditUser() {
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </Form.Group>
+
+              <div className="d-flex  ">
+                    <Button
+                      variant="primary"
+                      type="submit"
+                      onClick={handleSubmit}
+                      className="mr-3 me-2 mt-3"
+                      style={{width:250, marginLeft:70}}                    >
+                      Save
+                    </Button>
+                    
+                   
+                    
+                  </div>
+                  {renderActiveForm()}
             </Col>
             {user?.tutor && (
               <>
@@ -402,25 +438,14 @@ function EditUser() {
                     />
                   </div>
 
-                  <div className="d-flex ">
-                    <Button
-                      variant="primary"
-                      type="submit"
-                      onClick={handleSubmit}
-                      className="mr-3 me-2"
-                      style={{width:250}}                    >
-                      Save
-                    </Button>
-                    
-                   
-                    
-                  </div>
-                  {renderActiveForm()}
+                 
                 </Col>
               </>
             )}
           </Row>
+          </Card>
         </Container>
+        </div>
       )}
     </>
   );

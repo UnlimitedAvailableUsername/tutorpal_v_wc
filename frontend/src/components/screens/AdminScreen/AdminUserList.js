@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  deleteUser,
-  listUsersAdmin,
-} from "../../../features/redux/actions/adminActions";
+import { deleteUser, listUsersAdmin, } from "../../../features/redux/actions/adminActions";
 import { Button, Card, Col, Container, Row, Table } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";

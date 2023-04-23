@@ -50,6 +50,7 @@ function Header() {
             )}
             {userInfo && userInfo.staff ? (
               <>
+                <NavLink as={Link} to="/tutor">Tutors</NavLink>
                 <NavLink as={Link} to="/concern-list">Concerns</NavLink>
                 <NavLink as={Link} to="/review-list">Reviews</NavLink>
                 <NavLink as={Link} to="/subject-admin">Subjects</NavLink>

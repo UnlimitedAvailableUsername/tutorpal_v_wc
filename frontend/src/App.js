@@ -33,6 +33,8 @@ import ResultScreen from "./components/screens/RegisterScreen/ResultScreen";
 import ReviewList from "./components/screens/AdminScreen/ReviewList";
 import MyStudentsList from "./components/screens/MyStudentsList/MyStudentsList";
 import StudentDetailScreen from "./components/screens/StudentDetailScreen/StudentDetailScreen";
+import Subjects from "./components/screens/SubjectScreen/Subjects";
+import TutorbySubjects from "./components/screens/SubjectScreen/TutorbySubjects";
 
 function App() {
 
@@ -52,6 +54,9 @@ function App() {
 
                     <Route path="/tutor" element={<TutorListScreen />} exact />
                     <Route path="/tutor/:tutorId" element={<TutorDetailScreen />} exact />
+                    <Route path="/tutors/:subjectId" element={<TutorbySubjects />} />
+
+                    <Route path="/subjects" element={<Subjects />} exact />
 
                     <Route path="/myschedule" element={<AddScreen />} exact />
 

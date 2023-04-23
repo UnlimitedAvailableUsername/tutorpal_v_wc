@@ -143,14 +143,11 @@ export const createTutorReview =
   };
 
   
-export const updateTutor =
-(tutorId, tutor) => async (dispatch, getState) => {
+export const updateTutor = (tutorId, tutorData) => async (dispatch, getState) => {
   try {
     dispatch({ type: actionType.TUTOR_UPDATE_REQUEST });
 
-    const {
-      userState: { userInfo },
-    } = getState();
+    const { userState: { userInfo }, } = getState();
 
     const config = {
       headers: {
@@ -159,9 +156,9 @@ export const updateTutor =
       },
     };
 
-    const { data } = await axios.put(
-      `${BASE_URL}/api/accounts/users/${tutorId}/`,
-      tutor,
+    const { data } = await axios.patch(
+      `${BASE_URL}/api/accounts/users/tutors/${tutorId}/set_active/`,
+      tutorData,
       config
     );
 

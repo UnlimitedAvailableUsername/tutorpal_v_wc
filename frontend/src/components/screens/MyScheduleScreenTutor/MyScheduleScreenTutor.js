@@ -72,7 +72,7 @@ function MyScheduleScreenTutor() {
     backgroundPosition: 'center center',
     height: '95vh',
     backgroundAttachment: 'fixed',
-  };
+  }; 
 
   return (
 

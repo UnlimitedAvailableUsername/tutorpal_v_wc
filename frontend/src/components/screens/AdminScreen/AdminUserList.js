@@ -115,8 +115,9 @@ function AdminUserList() {
         }
       `}</style>
       
-    <Container>
-    <h1 style={{ textAlign: "center", fontSize: 100, textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)' }}>ALL USERS</h1>
+    <Container >
+    <div style={{ height: '45px' }}></div>
+    <h1 style={{ textAlign: "center", fontSize: 100, textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)',  }}>ALL USERS</h1>
     <Card style={{ width: 1300, margin: 'auto', }} className='card px-5   p-3 mb-1 rounded'>
       <Form>
         <Container className="my-5">

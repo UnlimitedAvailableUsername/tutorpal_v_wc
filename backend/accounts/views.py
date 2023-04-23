@@ -247,7 +247,6 @@ def handle_uploaded_file(f):
 # THIS WILL LET THE USERS REGISTER AND RETURN AN 'ACCESS' AS 'TOKEN' AND 'REFRESH' KEYS
 # NOTE: USE 'Content-Type': 'multipart/form-data' FOR 'headers'
 # WHEN REGISTERING WITH AN IMAGE FILE ON THE PROFILE PICTURE
-from django.contrib.auth.hashers import make_password
 
 @api_view(['POST'])
 def user_register(request):
@@ -291,6 +290,27 @@ def user_register(request):
         return Response(response_data, status=status.HTTP_201_CREATED)
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+#################################
+# THIS WILL MARK THE TUTOR ACTIVE
+
+@api_view(['PATCH'])
+@permission_classes([IsAuthenticated, IsAdminUser])
+def user_tutor_update_active(request, id):
+    try:
+        user = User.objects.get(id=id)
+    except User.DoesNotExist:
+        return Response({"detail": "User does not exist"}, status=404)
+
+    active = request.data.get("active")
+    if active is not None:
+        user.active = active
+        user.save()
+    else:
+        return Response({"detail": "Missing 'active' parameter"}, status=400)
+
+    serializer = UserSerializer(user)
+    return Response(serializer.data)
 
 
 #########################################################################################

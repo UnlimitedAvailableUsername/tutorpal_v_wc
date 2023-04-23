@@ -27,21 +27,21 @@ function AdminTutorDetail() {
     e.preventDefault();
 
     const tutorData = {
-      active: true,
+      active: "True",
     };
     await dispatch(updateTutor(tutorId, tutorData));
     await dispatch(listTutorDetails(tutorId));
-    setActive(true);
+    console.log(tutorData)
   };
 
   const handleDeactivateTutor = async (e) => {
     e.preventDefault();
     const tutorData = {
-      active: false,
+      active: "False",
     };
     await dispatch(updateTutor(tutorId, tutorData));
     await dispatch(listTutorDetails(tutorId));
-    setActive(false);
+    console.log(tutorData)
   };
 
   return (

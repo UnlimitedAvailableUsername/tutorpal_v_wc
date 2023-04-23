@@ -54,7 +54,8 @@ function App() {
 
                     <Route path="/tutor" element={<TutorListScreen />} exact />
                     <Route path="/tutor/:tutorId" element={<TutorDetailScreen />} exact />
-                    <Route path="/tutors/:subjectId" element={<TutorbySubjects />} />
+                    <Route path="/subjects/:subjectId" element={<TutorbySubjects />} />
+                    <Route path="/subjects/:subjectId/tutors/:tutorId" element={<TutorDetailScreen />} exact />
 
                     <Route path="/subjects" element={<Subjects />} exact />
 

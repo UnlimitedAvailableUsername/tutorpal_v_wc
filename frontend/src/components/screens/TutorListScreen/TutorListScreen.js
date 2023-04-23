@@ -8,14 +8,16 @@ import Dropdown from "react-bootstrap/Dropdown";
 import "../../../assets/components/screens/TutorListScreen/tutorlist.css";
 import LoadingIconBig from "../../elements/Loader/LoadingIconBig";
 import MessageAlert from "../../elements/MessageAlert";
+import { useParams } from "react-router";
 
 function TutorListScreen() {
-  const [search, setSearch] = useState("");
 
+  const [search, setSearch] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
 
   const tutorList = useSelector((state) => state.tutorList);
   const { users, loading, error } = tutorList;
+  
   
   const dispatch = useDispatch();
   useEffect(() => {

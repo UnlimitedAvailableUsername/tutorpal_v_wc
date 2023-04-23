@@ -1,12 +1,13 @@
 import React from "react";
 import { Card, Row, Col } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Rating from "./Rating";
 
 
-function Tutor({ user }) {
+function Tutor({ user, subjectId }) {
+	const location = useLocation();
 
-	const urlPath = `${user.id}`;
+	const urlPath = subjectId ? `tutors/${user.id}` : `${user.id}`;
 
 	return (
 		<Row>

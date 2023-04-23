@@ -13,38 +13,43 @@ import { useParams } from "react-router";
 
 function TutorbySubjects() {
   const { subjectId } = useParams();
-
   const [search, setSearch] = useState("");
- 
-
   const [sortOrder, setSortOrder] = useState("asc");
 
   const subjectTutorList = useSelector((state) => state.subjectTutorList);
   const { tutorsubjects, loading, error } = subjectTutorList;
-  
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(listSubjectsTutor(subjectId));
-  }, [dispatch]);
-  
-  const filteredUsers = tutorsubjects && tutorsubjects.filter(user => user.subjects.some(subject => subject.id === subjectId));
+  }, [dispatch, subjectId]);
+
+  const filteredUsers =
+    tutorsubjects &&
+    tutorsubjects.filter((user) =>
+      user.subjects.some((subject) => subject.id === subjectId)
+    );
   // function para ma sort by review or price
   const sortUsersByPrice = (tutorsubjects) => {
     if (sortOrder === "asc") {
-      return tutorsubjects.sort((a, b) => a.price_rate_hour - b.price_rate_hour);
+      return tutorsubjects.sort(
+        (a, b) => a.price_rate_hour - b.price_rate_hour
+      );
     } else if (sortOrder === "desc") {
-      return tutorsubjects.sort((a, b) => b.price_rate_hour - a.price_rate_hour);
+      return tutorsubjects.sort(
+        (a, b) => b.price_rate_hour - a.price_rate_hour
+      );
     } else if (sortOrder === "revAsc") {
       return tutorsubjects.sort((a, b) => a.numReviews - b.numReviews);
     } else if (sortOrder === "revdesc") {
       return tutorsubjects.sort((a, b) => b.numReviews - a.numReviews);
     }
   };
-  
+
   const handleSortOrderChange = (eventKey) => {
     setSortOrder(eventKey);
   };
-  
+
   //FUNCTION PARA MAG-HIGHLIGHT NG WHITE YUNG TERMS NA SINESEARCH
   const highlightSearch = (text) => {
     if (search.trim() === "") {
@@ -108,14 +113,21 @@ function TutorbySubjects() {
                 id="dropdown-basic"
                 style={{ backgroundColor: "#037d50 ", borderColor: "#037d50" }}
               >
-                Sort by price ({sortOrder === "asc" ? "low to high" : "high to low"}
-                )
+                Sort by price (
+                {sortOrder === "asc" ? "low to high" : "high to low"})
               </Dropdown.Toggle>
               <Dropdown.Menu>
                 <Dropdown.Item eventKey="asc">Price: Low to High</Dropdown.Item>
-                <Dropdown.Item eventKey="desc">Price: High to Low</Dropdown.Item>
-                <Dropdown.Item eventKey="revdesc"> Review: High to Low </Dropdown.Item>
-                <Dropdown.Item eventKey="revAsc">Review: Low to High</Dropdown.Item>
+                <Dropdown.Item eventKey="desc">
+                  Price: High to Low
+                </Dropdown.Item>
+                <Dropdown.Item eventKey="revdesc">
+                  {" "}
+                  Review: High to Low{" "}
+                </Dropdown.Item>
+                <Dropdown.Item eventKey="revAsc">
+                  Review: Low to High
+                </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
             <br></br>
@@ -162,7 +174,8 @@ function TutorbySubjects() {
                           last_name: highlightSearch(user.last_name),
                           bio: user.highlightedBio,
                         }}
-                        />
+                        subjectId={subjectId}
+                      />
                     </Col>
                   ))}
             </Row>

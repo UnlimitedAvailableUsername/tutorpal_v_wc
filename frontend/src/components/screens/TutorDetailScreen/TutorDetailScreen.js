@@ -12,7 +12,7 @@ import ReviewList from "./ReviewList";
 import ReviewCreate from "./ReviewCreate";
 
 function TutorDetailScreen() {
-  const { tutorId } = useParams();
+  const { subjectId, tutorId } = useParams();
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
@@ -22,6 +22,8 @@ function TutorDetailScreen() {
   const handleToggleEdit = () => {
     setToggleEdit(prevState => !prevState);
   };
+
+  const toLink = subjectId ? `/subjects/${subjectId}` : '/tutor';
 
   
   const userLoginState = useSelector((state) => state.userState);
@@ -91,7 +93,7 @@ function TutorDetailScreen() {
         <Container>
           <Button
             as={Link}
-            to="/tutor"
+            to={toLink}
             variant="warning"
             className="btn-outline-dark py-3 my-5"
           >

@@ -48,7 +48,7 @@ function ContactScreen() {
 
   return (
     <div>
-      <div className="contact-heading">
+      <div className="contact-heading my-5">
         <h2>Contact Us</h2>
       </div>
 

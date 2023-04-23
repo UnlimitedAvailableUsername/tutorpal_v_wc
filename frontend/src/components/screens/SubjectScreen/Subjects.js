@@ -29,53 +29,26 @@ function Subjects() {
   return (
     <div style={backgroundStyles}>
       <Container>
-        <style jsx>{`
-          .card {
-            box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-          }
-
-          .one {
-            display: flex;
-            justify-content: center;
-          }
-        `}</style>
-        <h1
-          style={{
-            textAlign: "center",
-            fontSize: 100,
-            textShadow: "2px 2px 4px rgba(0, 0, 0, 0.3)",
-          }}
-        >
-          SUBJECTS
+        <h1 className="text-uppercase my-5 text-center">
+         Our Subjects
         </h1>
-        <Card
-          style={{ width: 1300, margin: "auto" }}
-          className="card px-5   p-3 mb-5 rounded"
-        >
-          <Table
-            style={{ width: 1000, margin: "auto" }}
-            striped
-            responsive
-            className="table-m-2"
-          >
+        <Card className="card px-5 p-3 mb-5 rounded">
+          <Table striped hover responsive>
             <thead>
               <tr>
-                <th>SUBJECTS</th>
-                <th style={{ textAlign: "center" }}>ACTIONS</th>
+                <th><h3><strong>Name</strong></h3></th>
+                <th className="text-center"><h3>View</h3></th>
               </tr>
             </thead>
             <tbody>
               {subjects &&
                 subjects.map((subject) => (
                   <tr key={subject.id}>
-                    <td>{subject.subject_title}</td>
-
-                    <td style={{ textAlign: "center" }}>
-                      <Link to={`/tutors/${subject.id}`}>
-                        <button type="button" className="btn btn-warning me-2">
-                          <FontAwesomeIcon icon={faBars} />
-                        </button>
-                      </Link>
+                    <td><h5>{subject.subject_title}</h5></td>
+                    <td className="text-center">
+                      <Button as={Link} to={`/subjects/${subject.id}`} className="btn-warning me-2">
+                        <FontAwesomeIcon icon={faBars} />
+                      </Button>
                     </td>
                   </tr>
                 ))}

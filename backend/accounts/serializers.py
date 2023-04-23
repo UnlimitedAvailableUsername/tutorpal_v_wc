@@ -42,21 +42,19 @@ class UserSerializer(serializers.ModelSerializer):
             user_id = obj.id
             request_user_id = request.user.id
             tutor_id = user_id
-            try:
-                ScheduleOrder.objects.filter(user_id=request_user_id, tutor_id=tutor_id)
-                return True
-            except ScheduleOrder.DoesNotExist:
-                pass
+            orders = ScheduleOrder.objects.filter(user_id=request_user_id, tutor_id=tutor_id)
+            return orders.exists()
         return False
     
     def get_has_reviewed(self, obj):
         request = self.context.get('request')
         if request and request.user.is_authenticated:
             # get the Review objects where the user_student is the authenticated user
-            reviews = Review.objects.filter(user_student=request.user, user_tutor=obj)
-
-            # return True if there is at least one review
-            return reviews.exists()
+            try:
+                reviews = Review.objects.get(user_student=request.user, user_tutor=obj)
+                return True
+            except Review.DoesNotExist: 
+                return False
 
         # return False if the user is not authenticated
         return False

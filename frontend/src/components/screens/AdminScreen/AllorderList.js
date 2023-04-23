@@ -1,6 +1,6 @@
 import React from "react";
-import { useEffect } from "react";
-import { Button, Container, Table, Card } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import { Button, Container, Table, Card, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { listAllOrders } from "../../../features/redux/actions/adminActions";
@@ -18,6 +18,12 @@ function AllorderList() {
     const userState = useSelector((state) => state.userState);
     const { userInfo } = userState;
   
+    const [searchTerm, setSearchTerm] = useState("");
+
+    const handleSearch = (event) => {
+        setSearchTerm(event.target.value);
+      };
+
     const adminorderlist = useSelector(
       (state) => state.adminorderlist
     );
@@ -46,6 +52,18 @@ function AllorderList() {
       error,
     ]);
   
+    const filteredOrders = AllOrders.filter(
+        (order) =>
+          order.tutor &&
+          order.tutor.first_name
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+          order.tutor?.last_name // <-- add optional chaining operator here
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase())
+      );
+    
+
     const backgroundStyles = {
       backgroundImage: `url(${backgroundImage})`,
       backgroundSize: "cover",
@@ -58,8 +76,16 @@ function AllorderList() {
     <div  style={backgroundStyles}>
     <Container>
       <br/><br/>
-    <h1 style={{ textAlign: "center", fontSize: 100, textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)',  }}>MY SCHEDULES</h1>
-
+    <h1 style={{ textAlign: "center", fontSize: 100, textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)',  }}>All Orders</h1>
+   <div className="d-flex justify-content-between">
+            <Form.Control
+              type="text"
+              placeholder="Search by tutor name"
+              className="mb-3"
+              value={searchTerm}
+              onChange={handleSearch}
+            />
+          </div>
       <Card style={{height: 'auto'}} className="card px-5 p-3 mb-5 rounded">
       {loading ? (
         <LoadingIconBig />
@@ -78,7 +104,7 @@ function AllorderList() {
             </tr>
           </thead>
           <tbody>
-            {AllOrders.map((scheduleOrder) => (
+            {filteredOrders.map((scheduleOrder) => (
               <tr key={scheduleOrder.id}>
                 <td style={{textAlign: 'center'}}>{scheduleOrder.id}</td>
                 <td>

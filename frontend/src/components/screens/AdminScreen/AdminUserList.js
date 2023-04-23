@@ -93,7 +93,28 @@ function AdminUserList() {
     navigate(`/user-edit/${userId}`);
   };
 
+  const backgroundStyles = {
+    backgroundImage: `url(${backgroundImage})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center center',
+    height: '280vh',
+    backgroundAttachment: 'fixed',
+  }; 
+
   return (
+
+    <div style={backgroundStyles}>
+      <style jsx>{`
+        .card {
+          box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .one {
+          display: flex;
+          justify-content: center;
+        }
+      `}</style>
+      
     <Container>
     <h1 style={{ textAlign: "center", fontSize: 100, textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)' }}>ALL USERS</h1>
     <Card style={{ width: 1300, margin: 'auto', }} className='card px-5   p-3 mb-1 rounded'>
@@ -155,7 +176,7 @@ function AdminUserList() {
         <Col>
           <Table striped bordered hover responsive className="table-sm">
             <thead>
-              <tr>
+              <tr style={{textAlign: 'center'}}>
                 <th>ID</th>
                 <th>Name</th>
                 <th>Email</th>
@@ -185,7 +206,7 @@ function AdminUserList() {
                     user.username.toLowerCase().includes(search.toLowerCase())
                 )
                 .map((user) => (
-                  <tr key={user.id}>
+                  <tr  style={{textAlign: 'center'}} key={user.id}>
                     <td>{user.id}</td>
                     <td>{user.username}</td>
                     <td>
@@ -209,12 +230,12 @@ function AdminUserList() {
                     </td>
 
                     <td>
-                      <Button type="button" className="btn btn-warning" onClick={() => handleEdit(user.id, userInfo, users, navigate) } style={{ backgroundColor: "#F3AA22" }} >
-                        Edit
+                      <Button type="button"  title="Edit" className="btn btn-warning me-2 px-2" onClick={() => handleEdit(user.id, userInfo, users, navigate) } style={{ backgroundColor: "#F3AA22" }} >
+                      <FontAwesomeIcon icon={ faEdit } />
                       </Button>
 
-                      <Button type="button" className="btn btn-danger" onClick={() => handleDelete(user.id)} style={{ backgroundColor: " #C50808" }} >
-                        Delete
+                      <Button type="button" title="Delete" className="btn btn-danger px-2" onClick={() => handleDelete(user.id)} style={{ backgroundColor: " #C50808" }} >
+                      <FontAwesomeIcon icon={ faDeleteLeft } />
                       </Button>
 
                     </td>
@@ -225,6 +246,7 @@ function AdminUserList() {
       </Row>
     </Card>
   </Container>
+  </div>
   )
 };
 

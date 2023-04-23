@@ -197,4 +197,27 @@ export const addSubject = (formData) => async (dispatch, getState) => {
     };
   
   
+    export const listSubjectsTutor = (subjectId) => async (dispatch) => {
+      try {
+        dispatch({ type: actionType.SUBJECT_TUTOR_LIST_REQUEST });
   
+        
+    
+        const { data } = await axios.get(
+          `${BASE_URL}/api/accounts/subjects/${subjectId}/users/`
+        );
+    
+        dispatch({
+          type: actionType.SUBJECT_TUTOR_LIST_SUCCESS,
+          payload: data,
+        });
+      } catch (error) {
+        dispatch({
+          type: actionType.SUBJECT_TUTOR_LIST_FAIL,
+          payload:
+            error.response && error.response.data.message
+              ? error.response.data.message
+              : error.message,
+        });
+      }
+    };

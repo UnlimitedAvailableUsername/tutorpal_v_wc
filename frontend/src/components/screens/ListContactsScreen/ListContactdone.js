@@ -131,7 +131,10 @@ function ListContact() {
                 <tr key={contact.id}>
                   <td>
                     {contact.name} <br></br>
-                    {contact.created_date}
+                    {new Date(contact.created_date).toLocaleString("en-US", {
+                          dateStyle: "short",
+                          timeStyle: "short",
+                        })}
                   </td>
                   <td>{contact.concern}</td>
                   <td className="comment-cell">

@@ -231,7 +231,6 @@ function AdminUserList() {
                           Edit
                         </Button>
 
-
                         <Button
                           type="button"
                           className="btn btn-danger"

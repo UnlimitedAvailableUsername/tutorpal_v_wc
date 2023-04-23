@@ -182,7 +182,10 @@ class Review(models.Model):
     created_date = models.DateTimeField(("Date joined"), default=timezone.now)
 
     def __str__(self):
-        return f"{self.rating}/5 by {self.user_student.username} to {self.user_tutor.username}"
+        student = self.user_student.username if self.user_student else "Unknown Student"
+        tutor = self.user_tutor.username if self.user_tutor else "Unknown Tutor"
+        return f"{self.rating}/5 by {student} to {tutor}"
+
 
     def to_representation(self):
         data = super().to_representation()

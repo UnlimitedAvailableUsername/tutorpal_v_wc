@@ -143,6 +143,7 @@ export const userRegisterReducer = (state = registerInitialState, action) => {
       return {
         ...state,
         loading: false,
+        valid: null,
       };
     
     case actionType.USER_REGISTER_RESET:

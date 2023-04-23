@@ -51,6 +51,36 @@ export const subjectListReducer = (state = initialState, action) => {
   
     }
   };
+
+  export const subjecttutorListReducer = (state = initialState, action) => {
+    switch (action.type) {
+  
+        case actionType.SUBJECT_TUTOR_LIST_REQUEST:
+            return {
+                ...state, 
+                loading:true
+            };
+  
+        case actionType.SUBJECT_TUTOR_LIST_SUCCESS:
+            return {
+                ...state, 
+                loading:false, 
+                tutorsubjects: action.payload
+            };
+  
+        case actionType.SUBJECT_TUTOR_LIST_FAIL:
+            return {
+                ...state, 
+                loading:false, 
+                error: action.payload
+            };
+        
+        default:
+            return state;
+  
+    }
+  };
+  
   
   
   const subjectDetailsInitialState = {

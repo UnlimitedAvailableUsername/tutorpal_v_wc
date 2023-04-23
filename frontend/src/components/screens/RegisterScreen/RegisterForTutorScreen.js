@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { registerUser } from "../../../features/redux/actions/authUserActions";
+import { registerUser, registerValidateReset } from "../../../features/redux/actions/authUserActions";
 import { listSubjects } from "../../../features/redux/actions/subjectActions";
-import { USER_REGISTER_UNIQUE_VALIDATE_RESET } from "../../../features/redux/constants/authUserConstants";
 import { useNavigate } from "react-router";
-import { Button, Card, Col, Container, Form, Row, Spinner } from "react-bootstrap";
+import { Button, Card, Col, Form, Row, Spinner } from "react-bootstrap";
 import MessageAlert from "../../elements/MessageAlert";
 import { Link } from "react-router-dom";
 import LoadingIconRegular from "../../elements/Loader/LoadingIconRegular";
@@ -16,13 +15,15 @@ const RegisterForTutorScreen = () => {
 	
 	const userRegisterState = useSelector((state) => state.userRegisterState);
 	const { loading: registerLoading, error: registerError, success, valid, registerFormData, } = userRegisterState;
-
+	
 	const subjectList = useSelector((state) => state.subjectList);
 	const { subjects, loading: subjectLoading, error: subjectError, } = subjectList;
+	
+	const [isFormValid, setIsFormValid] = useState(false);
 
 	useEffect(() => {
-		if (valid && registerFormData) {
-			dispatch({ type: USER_REGISTER_UNIQUE_VALIDATE_RESET })
+		if (registerFormData) {
+			dispatch(registerValidateReset())
 		} else if (success) {
       navigate('/register/result')
     } else if (!registerFormData) {
@@ -103,145 +104,235 @@ const RegisterForTutorScreen = () => {
 				updatedFormData.append(key, formData[key]);
 			}
 		});
-		console.log(updatedFormData)
 		// Dispatch the `registerUser` action with the `updatedFormData`
 		dispatch(registerUser(updatedFormData));
 	};
+
+
+  useEffect(() => {
+		const {
+			first_name,
+			last_name,
+			contact,
+			bio,
+			price_rate_hour,
+			profile_picture,
+			photo_education_background,
+			photo_id
+		} = formData;
+	
+		const isFirstNameValid = first_name.trim() !== '';
+		const isLastNameValid = last_name.trim() !== '';
+		const isContactValid = /^[0-9+]+$/.test(contact);
+		const isBioValid = bio.trim() !== '';
+		const isPriceRateValid = price_rate_hour !== 0;
+		const isEducationBackgroundValid = photo_education_background === null || photo_education_background.type.startsWith('image/');
+		const isIdValid = photo_id === null || photo_id.type.startsWith('image/');
+	
+		setIsFormValid(
+			isFirstNameValid &&
+			isLastNameValid &&
+			isContactValid &&
+			isBioValid &&
+			isPriceRateValid &&
+			isEducationBackgroundValid &&
+			isIdValid
+		);
+	}, [formData]);
 
 	useEffect(() => {
 		dispatch(listSubjects());
 	}, [dispatch]);
 
 	return (
-		<div>
-			{ registerFormData && (
-				<Row className="justify-content-center align-items-center">
-					<Col xl={8} xs={10}>
-						<Button as={Link} to="/register" variant="warning" className="btn-outline-dark py-2 mt-5" >&lt; Go back</Button>
-						<Card className="px-0 my-5 shadow">
-							<Card.Title className="mx-4 my-4">
-								<h2 className="text-center"><strong>Tutor Registration</strong></h2>
-							</Card.Title>
-							<Card.Body>
-								<Form onSubmit={handleRegister}>
-									<Row>
-										<Col md={6}>
-											<Form.Group controlId="first_name">
-												<Form.Label>First Name</Form.Label>
-												<Form.Control type="text" name="first_name" onChange={handleInputChange} value={formData.first_name} />
-											</Form.Group>
+    <div>
+      {registerFormData && (
+        <Row className="justify-content-center align-items-center">
+          <Col xl={8} xs={10}>
+            <Button
+              as={Link}
+              to="/register"
+              variant="warning"
+              className="btn-outline-dark py-2 mt-5"
+            >
+              &lt; Go back
+            </Button>
+            <Card className="px-0 my-5 shadow">
+              <Card.Title className="mx-4 my-4">
+                <h2 className="text-center">
+                  <strong>Tutor Registration</strong>
+                </h2>
+              </Card.Title>
+              <Card.Body>
+                <Form onSubmit={handleRegister}>
+                  <Row>
+                    <Col md={6}>
+                      <Form.Group controlId="first_name">
+                        <Form.Label>First Name</Form.Label>
+                        <Form.Control
+                          type="text"
+													name="first_name"
+                          onChange={handleInputChange}
+                          value={formData.first_name}
+                        />
+                      </Form.Group>
 
-											<Form.Group controlId="last_name">
-												<Form.Label>Last Name</Form.Label>
-												<Form.Control type="text" name="last_name" onChange={handleInputChange} value={formData.last_name} />
-											</Form.Group>
+                      <Form.Group controlId="last_name">
+                        <Form.Label>Last Name</Form.Label>
+                        <Form.Control
+                          type="text"
+                          name="last_name"
+                          onChange={handleInputChange}
+                          value={formData.last_name}
+                        />
+                      </Form.Group>
 
-											<Form.Group controlId="contact">
-												<Form.Label>Contact</Form.Label>
-												<Form.Control type="text" name="contact" onChange={handleInputChange} value={formData.contact} />
-											</Form.Group>
-										</Col>
-										<Col md={6}>
-											<Form.Group>
-												<Form.Label htmlFor="profile_picture">Profile Picture</Form.Label>
+                      <Form.Group controlId="contact">
+                        <Form.Label>Contact</Form.Label>
 												<Form.Control
-													type="file"
-													id="profile_picture"
-													name="profile_picture"
-													accept="image/*"
-													onChange={handleInputChange}
-													value={registerFormData.profile_picture}
-												/>
-											</Form.Group>
+                          type="text"
+													name="contact"
+													placeholder="Only numbers are supported"
+                          onChange={handleInputChange}
+													value={formData.contact}
+                        />
+                      </Form.Group>
 
-											<Form.Group>
-												<Form.Label htmlFor="photo_education_background">Proof of Photo for Background Education:</Form.Label>
+                      <Form.Group controlId="bio">
+                        <Form.Label>Bio</Form.Label>
 												<Form.Control
-													type="file"
-													id="photo_education_background"
-													name="photo_education_background"
-													accept="image/*"
-													onChange={handleInputChange}
-													value={registerFormData.photo_education_background}
-												/>
-											</Form.Group>
+													as="textarea"
+                          type="text"
+													name="bio"
+													placeholder="Life blooms like a flower, far away or by the road. Waiting for the one to find a way back home."
+                          onChange={handleInputChange}
+                          value={formData.bio}
+                          style={{ resize: "vertical", minHeight: "150px" }}
+                        />
+                      </Form.Group>
+                    </Col>
+                    <Col md={6}>
+                      <Form.Group>
+                        <Form.Label htmlFor="profile_picture">
+                          Profile Picture
+                        </Form.Label>
+                        <Form.Control
+                          type="file"
+                          id="profile_picture"
+                          name="profile_picture"
+                          accept="image/*"
+                          onChange={handleInputChange}
+                          value={registerFormData.profile_picture}
+                        />
+                      </Form.Group>
 
-											<Form.Group>
-												<Form.Label htmlFor="photo_id">Valid ID</Form.Label>
-												<Form.Control
-													type="file"
-													id="photo_id"
-													name="photo_id"
-													accept="image/*"
-													onChange={handleInputChange}
-													value={registerFormData.photo_id}
-												/>
-											</Form.Group>
+                      <Form.Group>
+                        <Form.Label htmlFor="photo_education_background">
+                          Proof of Background Education
+                        </Form.Label>
+                        <Form.Control
+                          type="file"
+                          id="photo_education_background"
+                          name="photo_education_background"
+                          accept="image/*"
+                          onChange={handleInputChange}
+                          value={registerFormData.photo_education_background}
+                        />
+                      </Form.Group>
 
-											<Form.Group>
-												<Form.Label htmlFor="price_rate_hour">What is your hourly price rate?</Form.Label>
-												<Form.Control
-													type="number"
-													step="0.01"
-													id="price_rate_hour"
+                      <Form.Group>
+                        <Form.Label htmlFor="photo_id">Valid ID</Form.Label>
+                        <Form.Control
+                          type="file"
+                          id="photo_id"
+                          name="photo_id"
+                          accept="image/*"
+                          onChange={handleInputChange}
+                          value={registerFormData.photo_id}
+                        />
+                      </Form.Group>
+
+                      <Form.Group>
+                        <Form.Label htmlFor="price_rate_hour">
+                          What is your hourly price rate?
+                        </Form.Label>
+                        <Form.Control
+                          type="number"
+                          step="0.01"
+                          id="price_rate_hour"
 													name="price_rate_hour"
-													value={formData.price_rate_hour}
-													onChange={handleInputChange}
-												/>
-											</Form.Group>
-										</Col>
-									</Row>
+													placeholder="How much do you sell yourself? ( ͡° ͜ʖ ͡°)"
+                          value={formData.price_rate_hour}
+                          onChange={handleInputChange}
+                        />
+                      </Form.Group>
+                    </Col>
+                  </Row>
 
-									<Form.Group>
-										<Form.Label><h4>Select the Subjects you want to associate yourself with:</h4></Form.Label>
-										{subjectLoading ? (
-											<div className="text-center">
-												<h5>Listing available subject list...</h5>
-												<LoadingIconRegular />
-											</div>
-										) : subjectError ? (
-											<>
-												<MessageAlert variant="danger">{subjectError}</MessageAlert>
-											</>
-										) : (
-											subjects && subjects.length > 0 ? (
-												subjects.map((subject) => (
-													<div key={subject.id}>
-														<Form.Check
-															type="checkbox"
-															id={`subject-${subject.id}`}
-															name={subject.id}
-															label={subject.subject_title}
-															onChange={handleSubjectSelection}
-														/>
-													</div>
-												))
-											) : (
-												<MessageAlert variant="info">No available subjects at the moment, you may still select after account creation</MessageAlert>
-											)
-										)}
-									</Form.Group>
-									<Button className="mt-4" variant="warning" type="submit">
-										{registerLoading ? (
-											<span>
-												<Spinner animation="border" size="sm"/>
-												Registering...
-											</span>
-										) : (
-											"Register"
-										)}
-									</Button>
-									{registerError && !registerLoading && (
-										<MessageAlert variant="danger">{registerError}</MessageAlert>
-									)}
-								</Form>
-							</Card.Body>
-						</Card>
-					</Col>
-				</Row>
-			)}
-		</div>
-	);
+                  <Form.Group className="mt-5">
+                    <Form.Label>
+                      <h4>
+                        Select the Subjects you want to associate yourself with:
+                      </h4>
+                    </Form.Label>
+                    {subjectLoading ? (
+                      <div className="text-center">
+                        <h5>Listing available subject list...</h5>
+                        <LoadingIconRegular />
+                      </div>
+                    ) : subjectError ? (
+                      <>
+                        <MessageAlert variant="danger">
+                          {subjectError}
+                        </MessageAlert>
+                      </>
+                    ) : subjects && subjects.length > 0 ? (
+                      subjects.map((subject) => (
+                        <div className="my-1" key={subject.id}>
+                          <Form.Check
+                            type="checkbox"
+                            id={`subject-${subject.id}`}
+                            name={subject.id}
+                            label={subject.subject_title}
+                            onChange={handleSubjectSelection}
+                          />
+                        </div>
+                      ))
+                    ) : (
+                      <MessageAlert variant="info">
+                        No available subjects at the moment, you may still
+                        select after account creation
+                      </MessageAlert>
+                    )}
+                  </Form.Group>
+                  <Button
+                    className="mt-4"
+                    variant="warning"
+                    disabled={!isFormValid || registerLoading}
+                    type="submit"
+                  >
+                    {registerLoading ? (
+                      <span>
+                        <Spinner animation="border" size="sm" />
+                        Registering...
+                      </span>
+                    ) : (
+                      "Register"
+                    )}
+                  </Button>
+                  {registerError && !registerLoading && (
+                    <MessageAlert variant="danger">
+                      {registerError}
+                    </MessageAlert>
+                  )}
+                </Form>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      )}
+    </div>
+  );
 };
 
 export default RegisterForTutorScreen;

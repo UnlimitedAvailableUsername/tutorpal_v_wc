@@ -11,7 +11,7 @@ import { contactDetailsReducer, contactListReducer, } from "./reducers/contactRe
 import { listReviewsReducer, reviewReducer } from "./reducers/reviewsReducer";
 import { scheduleOrderDetailsReducer, scheduleOrderListReducer, scheduleOrderPayReducer } from "./reducers/scheduleOrderReducer";
 import { studentsListReducer, studentDetailsReducer } from "./reducers/studentsReducer"
-import {addSubjectReducer, subjectDetailsReducer, subjectListReducer } from "../redux/reducers/subjectReducer";
+import {addSubjectReducer, subjectDetailsReducer, subjectListReducer, subjecttutorListReducer } from "../redux/reducers/subjectReducer";
 
 const reducers = combineReducers({
   userState: userLoginReducer,
@@ -46,6 +46,7 @@ const reducers = combineReducers({
   addSubject : addSubjectReducer,
   subjectList : subjectListReducer,
   subjectDetails: subjectDetailsReducer,
+  subjectTutorList: subjecttutorListReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

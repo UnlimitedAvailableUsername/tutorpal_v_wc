@@ -119,6 +119,10 @@ export const setRegisterFormData = (formData) => ({
   payload: formData,
 });
 
+export const registerValidateReset = () => ({
+  type: actionType.USER_REGISTER_UNIQUE_VALIDATE_RESET
+})
+
 export const USER_PROFILE_UPDATE_SUCCESS_DELAY = 4000
 
 export const updateUserProfile = (formData) => async (dispatch, getState) => {

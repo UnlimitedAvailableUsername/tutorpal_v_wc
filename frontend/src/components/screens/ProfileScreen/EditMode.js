@@ -113,7 +113,7 @@ const EditMode = ({ userInfo, subjects, subjectsLoading, subjectsError, updateSu
         </>
         <Form.Group controlId="profilePicture">
           <div>
-            {imageUrl && <img src={imageUrl} alt="Profile" />}
+            {imageUrl && <img className='w-25' src={imageUrl} alt="Profile" />}
           </div>
           <Form.Label>Profile Picture</Form.Label>
           <Form.Control

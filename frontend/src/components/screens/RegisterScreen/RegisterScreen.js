@@ -195,12 +195,6 @@ const RegisterScreen = () => {
                   onChange={handleAgreeToTerms}
                   required
                 />
-                {!agreedToTerms && (
-                  <div className="text-danger">
-                    Note: Checking This means you agree for the session to be recorded for verification.
-                    You agree on the recording to be sent to the admin for verification processes for tutor, please read terms and conditions for more info.
-                  </div>
-                )}
               </Form.Group>
 
               <Button variant="warning" type="submit" disabled={!formValid}>

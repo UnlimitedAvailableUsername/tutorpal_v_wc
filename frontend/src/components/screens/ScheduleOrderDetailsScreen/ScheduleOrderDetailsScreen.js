@@ -77,21 +77,28 @@ function ScheduleOrderDetailsScreen() {
 
   return (
     <Container className="mb-5">
-      <Link
-        to={
-          userInfo.tutor
-            ? `/my-students/${scheduleOrder && scheduleOrder.user}`
-            : "/my-schedule-orders"
-        }
-      >
-        <Button variant="warning" style={{color: 'black'}} className="btn-outline py-3 my-5 ">
-          {userInfo.tutor ? (
-            <>&lt; Student Details</>
-          ) : (
-            <>&lt; Back to booked schedules</>
-          )}
-        </Button>
-      </Link>
+{(userInfo.tutor || userInfo.student) && !userInfo.staff ? (
+  <Link
+    to={
+      userInfo.tutor
+        ? `/my-students/${scheduleOrder && scheduleOrder.user}`
+        : "/my-schedule-orders"
+    }
+  >
+    <Button variant="warning" style={{ color: 'black' }} className="btn-outline py-3 my-5 ">
+      {userInfo.tutor ? (
+        <>&lt; Student Details</>
+      ) : (
+        <>&lt; Back to booked schedules</>
+      )}
+    </Button>
+  </Link>
+) : null}
+
+
+
+      {userInfo.staff  && <Button as={Link} to={`/all-order-list`} className="btn-outline py-3 my-5 " variant="warning " style={{color: 'black'}}>Back to Orders</Button>}
+
       {loading ? (
         <LoadingIconBig />
       ) : error ? (

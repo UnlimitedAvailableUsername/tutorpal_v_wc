@@ -36,6 +36,7 @@ import StudentDetailScreen from "./components/screens/StudentDetailScreen/Studen
 import Subjects from "./components/screens/SubjectScreen/Subjects";
 import TutorbySubjects from "./components/screens/SubjectScreen/TutorbySubjects";
 import TutorHowTo from "./components/screens/ProfileScreen/TutorHowTo";
+import AllorderList from "./components/screens/AdminScreen/AllorderList";
 
 function App() {
 
@@ -85,6 +86,7 @@ function App() {
                     <Route path="/user-list" element={ userInfo && userInfo.staff ? <AdminUserList /> : <Navigate to="/" />} exact />
                     <Route path="/user-edit/:userId" element={ userInfo && userInfo.staff ? <EditUser /> : <Navigate to="/" />} exact />
                     <Route path="/review-list" element={ userInfo && userInfo.staff ? <ReviewList /> : <Navigate to="/" />} exact />
+                    <Route path="/all-order-list" element={ userInfo && userInfo.staff ? <AllorderList /> : <Navigate to="/" />} exact />
 
                     <Route path="/my-students" element={ userInfo && userInfo.tutor ? <MyStudentsList /> : <Navigate to="/" />} exact />
                     <Route path="/my-students/:studentId" element={ userInfo && userInfo.tutor ? <StudentDetailScreen /> : <Navigate to="/" />} exact />

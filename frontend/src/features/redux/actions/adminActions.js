@@ -221,3 +221,37 @@ export const deleteReview =
 
 
 
+export const listAllOrders = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: actionType.ALL_ORDER_LIST_REQUEST });
+
+    const {
+      userState: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(
+      `${BASE_URL}/api/accounts/schedule_orders/`,
+      config
+    );
+
+    dispatch({
+      type: actionType.ALL_ORDER_LIST_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: actionType.ALL_ORDER_LIST_FAIL,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};

@@ -105,3 +105,50 @@ export const adminReviewListReducer = (state = InitialState, action) => {
     }
 };
 
+
+
+const AllOrderListInitialState = {
+    loading: false,
+    error: null,
+    success: null,
+    AllOrders: [],
+  }
+  
+  export const AllOrderListReducer = (state = AllOrderListInitialState, action) => {
+    switch (action.type) {
+      case actionType.ALL_ORDER_LIST_REQUEST:
+    
+        return {
+          ...state,
+          loading: true,
+          error: false,
+        };
+  
+      case actionType.ALL_ORDER_LIST_SUCCESS:
+
+          return {
+          ...state,
+          loading: false,
+          success: true,
+          AllOrders: action.payload,
+        };
+  
+      case actionType.ALL_ORDER_LIST_FAIL:
+
+        return {
+          ...state,
+          loading: false,
+          success: false,
+          error: action.payload,
+        };
+  
+ // WHEN USER LOGS OUT WE WANT ALL DATA REGARDING ORDERS TO BE RESET AS WELL
+ case actionType.ALL_ORDER_LIST_RESET:
+      return {
+        ...AllOrderListInitialState,
+      };
+
+    default:
+      return state;
+  };
+};

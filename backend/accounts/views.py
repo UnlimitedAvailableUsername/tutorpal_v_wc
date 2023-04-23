@@ -259,11 +259,12 @@ def user_register(request):
     invalid_ids = set(subject_ids) - set(Subject.objects.values_list('id', flat=True))
     if invalid_ids:
         return Response({'subjects': [f"Subject with ID {id} does not exist." for id in invalid_ids]}, status=status.HTTP_400_BAD_REQUEST)
-    
-    # Set active based on tutor and student fields
-    if data.get('tutor'):
+
+    tutor = data.get('tutor', '').lower() == 'true'
+    student = data.get('student', '').lower() == 'true'
+    if tutor is True and student is False:
         data['active'] = False
-    elif data.get('student'):
+    elif student is True and tutor is False:
         data['active'] = True
 
     # Hash the password

@@ -198,7 +198,7 @@ function EditUser() {
     } else {
       return (
         <Form onSubmit={handleActivateTutor}>
-          <Button  style={{width:250, marginLeft:70}}   type="submit" variant="success" className="me-3 mt-4">
+          <Button  style={{width:250, marginLeft:70}}   type="submit" variant="warning" className="me-3 mt-4">
             Activate
           </Button>
         </Form>
@@ -249,7 +249,7 @@ function EditUser() {
               as={Link}
               to="/user-list"
               variant="warning"
-              className="btn-outline-dark py-3"
+              className="btn-outline py-3"
             >
               Back To User List
             </Button>
@@ -346,7 +346,7 @@ function EditUser() {
 
               <div className="d-flex  ">
                     <Button
-                      variant="primary"
+                      variant="success"
                       type="submit"
                       onClick={handleSubmit}
                       className="mr-3 me-2 mt-3"

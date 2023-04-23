@@ -5,13 +5,14 @@ import {
   deleteUser,
   listUsersAdmin,
 } from "../../../features/redux/actions/adminActions";
-import { Button, Col, Container, Row, Table } from "react-bootstrap";
+import { Button, Card, Col, Container, Row, Table } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
 import "../../../assets/components/screens/TutorListScreen/tutorlist.css";
-import backgroundImage from  '../../../assets/components/screens/ScheduleScreen/secret.png'
+import backgroundImage from '../../../assets/components/screens/ScheduleScreen/secret.png'
 import { faDeleteLeft, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import "../../../assets/components/screens/AdminScreen/AdminScreen.css"
 
 function AdminUserList() {
   const [search, setSearch] = useState("");
@@ -19,6 +20,7 @@ function AdminUserList() {
   const [userRole, setUserRole] = useState("");
   const [isActive, setIsActive] = useState("");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleUserRoleChange = (eventKey) => {
     setUserRole(eventKey);
@@ -51,12 +53,10 @@ function AdminUserList() {
       return users.sort(
         (a, b) => new Date(b.date_joined) - new Date(a.date_joined)
       );
+    } else {
+      return users;
     }
-
-    return users;
   };
-
-  const dispatch = useDispatch();
 
   const loginUser = useSelector((state) => state.userState);
   const { userInfo } = loginUser;
@@ -81,7 +81,6 @@ function AdminUserList() {
         }
       } catch (error) {
         console.log(error);
-        // handle error
       }
     }
   };
@@ -90,7 +89,7 @@ function AdminUserList() {
     const currentUser = userInfo.id;
     const user = users.find((user) => user.id === userId);
     if (user.id === currentUser) {
-      alert("Why are you editing yourself here are you an M?");
+      alert("Why are you editing yourself here are you a Masochist?");
       return;
     }
     // edit user's account
@@ -98,170 +97,138 @@ function AdminUserList() {
   };
 
   return (
-    <div style={backgroundStyles}>
-      <style jsx>{`
-        .card {
-          box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-        }
+    <Container>
+    <h1 style={{ textAlign: "center", fontSize: 100, textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)' }}>ALL USERS</h1>
+    <Card style={{ width: 1300, margin: 'auto', }} className='card px-5   p-3 mb-1 rounded'>
+      <Form>
+        <Container className="my-5">
+          <Form.Control
+            className="shadow"
+            onChange={(e) => setSearch(e.target.value)}
+            type="search"
+            placeholder="Search for Tutors"
+            aria-label="Search"
+          />
+        </Container>
+      </Form>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", }} >
+        <Dropdown onSelect={handleSortOrderChange}>
+          <Dropdown.Toggle
+            id="dropdown-basic"
+            style={{ backgroundColor: "#037d50 ", borderColor: "#037d50" }}
+          >
+            Sort by date ({sortOrder === "asc" ? "Oldest" : "Newest"})
+          </Dropdown.Toggle>
+          <Dropdown.Menu>
+            <Dropdown.Item eventKey="asc">Oldest</Dropdown.Item>
+            <Dropdown.Item eventKey="desc">Newest</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
 
-        .one {
-          display: flex;
-          justify-content: center;
-        }
-      `}</style>
+        <Dropdown onSelect={handleUserRoleChange}>
+          <Dropdown.Toggle
+            id="dropdown-basic"
+            style={{ backgroundColor: "#037d50 ", borderColor: "#037d50" }}
+          >
+            Filter by Role ({userRole || "All"})
+          </Dropdown.Toggle>
+          <Dropdown.Menu>
+            <Dropdown.Item eventKey="">All</Dropdown.Item>
+            <Dropdown.Item eventKey="tutor">Tutor</Dropdown.Item>
+            <Dropdown.Item eventKey="student">Student</Dropdown.Item>
+            <Dropdown.Item eventKey="admin">Admin</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
 
+        <Dropdown onSelect={handleActiveChange}>
+          <Dropdown.Toggle
+            id="dropdown-basic"
+            style={{ backgroundColor: "#037d50 ", borderColor: "#037d50" }}
+          >
+            Filter by active ({isActive === "" ? "All" : isActive})
+          </Dropdown.Toggle>
+          <Dropdown.Menu>
+            <Dropdown.Item eventKey="">All</Dropdown.Item>
+            <Dropdown.Item eventKey="true">Active</Dropdown.Item>
+            <Dropdown.Item eventKey="false">Inactive</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
+      </div>
+      <Row className="my-4">
+        <Col>
+          <Table striped bordered hover responsive className="table-sm">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Active</th>
+                <th>Date Joined</th>
+                <th>Edit/Delete</th>
+              </tr>
+            </thead>
 
-      <Container>
-        <br/><br/>
-      <h1 style={{  textAlign: "center", fontSize: 100, textShadow:'2px 2px 4px rgba(0, 0, 0, 0.3)'}}>ALL USERS</h1> 
-      <Card style={{width: 1300, margin: 'auto', }} className='card px-5   p-3 mb-1 rounded'>
-        <Form>
-          <Container className="my-5">
-            <Form.Control
-              className="shadow"
-              onChange={(e) => setSearch(e.target.value)}
-              type="search"
-              placeholder="Search for Tutors"
-              aria-label="Search"
-            />
-          </Container>
-        </Form>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <Dropdown onSelect={handleSortOrderChange}>
-            <Dropdown.Toggle
-              id="dropdown-basic"
-              style={{ backgroundColor: "#037d50 ", borderColor: "#037d50" }}
-            >
-              Sort by date ({sortOrder === "asc" ? "Oldest" : "Newest"})
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <Dropdown.Item eventKey="asc">Oldest</Dropdown.Item>
-              <Dropdown.Item eventKey="desc">Newest</Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-
-          <Dropdown onSelect={handleUserRoleChange}>
-            <Dropdown.Toggle
-              id="dropdown-basic"
-              style={{ backgroundColor: "#037d50 ", borderColor: "#037d50" }}
-            >
-              Filter by Role ({userRole || "All"})
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <Dropdown.Item eventKey="">All</Dropdown.Item>
-              <Dropdown.Item eventKey="tutor">Tutor</Dropdown.Item>
-              <Dropdown.Item eventKey="student">Student</Dropdown.Item>
-              <Dropdown.Item eventKey="admin">Admin</Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-
-          <Dropdown onSelect={handleActiveChange}>
-            <Dropdown.Toggle
-              id="dropdown-basic"
-              style={{ backgroundColor: "#037d50 ", borderColor: "#037d50" }}
-            >
-              Filter by active ({isActive === "" ? "All" : isActive})
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <Dropdown.Item eventKey="">All</Dropdown.Item>
-              <Dropdown.Item eventKey="true">Active</Dropdown.Item>
-              <Dropdown.Item eventKey="false">Inactive</Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        </div>
-        <Row className="my-4">
-          <Col>
-            <Table striped bordered hover responsive className="table-sm">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Role</th>
-                  <th>Active</th>
-                  <th>Date Joined</th>
-                  <th>Edit/Delete</th>
-                </tr>
-              </thead>
-
-              {users &&
-                sortUsersByDate(filterUsersByActive(users))
-                  .filter((user) => {
-                    if (userRole === "") {
-                      return true;
-                    } else if (userRole === "tutor") {
-                      return user.tutor;
-                    } else if (userRole === "student") {
-                      return user.student;
-                    } else if (userRole === "admin") {
-                      return user.staff;
-                    }
-                  })
-                  .filter(
-                    (user) =>
-                      search === "" ||
-                      user.username.toLowerCase().includes(search.toLowerCase())
-                  )
-                  .map((user) => (
-                    <tr key={user.id}>
-                      <td>{user.id}</td>
-                      <td>{user.username}</td>
-                      <td>
-                        <a href={`mailto:${user.email}`}>{user.email}</a>
-                      </td>
-                      <td>
-                        {user.tutor
-                          ? "Tutor"
-                          : user.student
+            {users &&
+              sortUsersByDate(filterUsersByActive(users))
+                .filter((user) => {
+                  if (userRole === "") {
+                    return true;
+                  } else if (userRole === "tutor") {
+                    return user.tutor;
+                  } else if (userRole === "student") {
+                    return user.student;
+                  } else if (userRole === "admin") {
+                    return user.staff;
+                  }
+                })
+                .filter(
+                  (user) =>
+                    search === "" ||
+                    user.username.toLowerCase().includes(search.toLowerCase())
+                )
+                .map((user) => (
+                  <tr key={user.id}>
+                    <td>{user.id}</td>
+                    <td>{user.username}</td>
+                    <td>
+                      <a href={`mailto:${user.email}`}>{user.email}</a>
+                    </td>
+                    <td>
+                      {user.tutor
+                        ? "Tutor"
+                        : user.student
                           ? "Student"
                           : user.staff
-                          ? "Admin"
-                          : "None"}
-                      </td>
-                      <td>{user.active ? "true" : "false"}</td>
-                      <td>
-                        {new Date(user.date_joined).toLocaleString("en-US", {
-                          dateStyle: "short",
-                          timeStyle: "short",
-                        })}
-                      </td>
+                            ? "Admin"
+                            : "None"}
+                    </td>
+                    <td>{user.active ? "true" : "false"}</td>
+                    <td>
+                      {new Date(user.date_joined).toLocaleString("en-US", {
+                        dateStyle: "short",
+                        timeStyle: "short",
+                      })}
+                    </td>
 
-                      <td>
-                        <Button
-                          type="button"
-                          className="btn btn-warning"
-                          onClick={() =>
-                            handleEdit(user.id, userInfo, users, navigate)
-                          }
-                          style={{ backgroundColor: "#F3AA22" }}
-                        >
-                          Edit
-                        </Button>
+                    <td>
+                      <Button type="button" className="btn btn-warning" onClick={() => handleEdit(user.id, userInfo, users, navigate) } style={{ backgroundColor: "#F3AA22" }} >
+                        Edit
+                      </Button>
 
-                        <Button
-                          type="button"
-                          className="btn btn-danger"
-                          onClick={() => handleDelete(user.id)}
-                          style={{ backgroundColor: " #C50808" }}
-                        >
-                          Delete
-                        </Button>
+                      <Button type="button" className="btn btn-danger" onClick={() => handleDelete(user.id)} style={{ backgroundColor: " #C50808" }} >
+                        Delete
+                      </Button>
 
-                      </td>
-                    </tr>
-                  ))}
-            </Table>
-          </Col>
-        </Row>
-      </Container>
-    </div>
-  );
-}
+                    </td>
+                  </tr>
+                ))}
+          </Table>
+        </Col>
+      </Row>
+    </Card>
+  </Container>
+  )
+};
 
 export default AdminUserList;

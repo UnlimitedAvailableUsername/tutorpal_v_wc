@@ -18,7 +18,8 @@ import {
 } from "../../../features/redux/actions/adminActions";
 import { listSubjects } from "../../../features/redux/actions/subjectActions";
 import { subjectListReducer } from "../../../features/redux/reducers/subjectReducer";
-import backgroundImage from  '../../../assets/components/screens/ScheduleScreen/secret.png'
+import backgroundImage from '../../../assets/components/screens/ScheduleScreen/secret.png'
+import "../../../assets/components/screens/AdminScreen/AdminScreen.css"
 
 function EditUser() {
   const { userId } = useParams();
@@ -217,17 +218,7 @@ function EditUser() {
   };
 
   return (
-    <div style={backgroundStyles}>
-    <style jsx>{`
-        .card {
-          box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-        }
-
-        .one {
-          display: flex;
-          justify-content: center;
-        }
-      `}</style>
+    <>
       {user && (
         <Container>
           <div className="d-flex justify-content-between align-items-center mb-5">
@@ -422,10 +413,9 @@ function EditUser() {
               </>
             )}
           </Row>
-          </Card>
         </Container>
       )}
-    </div>
+    </>
   );
 }
 

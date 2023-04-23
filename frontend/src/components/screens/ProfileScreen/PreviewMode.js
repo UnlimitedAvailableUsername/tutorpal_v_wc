@@ -79,6 +79,38 @@ const PreviewMode = ({ disableButton, userInfo, handleToggleEdit }) => {
       </Card>
       
       </Col>
+      <Col>
+      <Card className=" my-2 p-3 rounded" style={{backgroundColor: "#565656", width: 963, height: 448}}>
+      <Row>
+                    <Col>
+                    <p>BIO: {userInfo.bio ? (
+              <>
+                {userInfo.bio}
+              </>
+            ) : (
+                <>
+                  You haven't set your Bio. Add now so students can know more about you!
+                </>
+            )}</p>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <pre style={{fontSize: 18, fontFamily: "Calibri", marginBottom: 3}}><strong>Subjects:</strong>  </pre>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <pre style={{fontSize: 18, fontFamily: "Calibri", marginBottom: 6 }}><strong>Meeting Link:</strong>  {userInfo.meeting_link}</pre>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <p style={{fontSize: 18, fontFamily: "Calibri", marginBottom: 6 }}><strong>Schedules:</strong> </p>
+                    </Col>
+                  </Row>
+      </Card>
+      </Col>
       </Row>
 
 

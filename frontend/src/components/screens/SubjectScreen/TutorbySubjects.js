@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import { useDispatch, useSelector } from "react-redux";
 import { listTutors } from "../../../features/redux/actions/tutorActions";
-import { listSubjectsTutor } from "../../../features/redux/actions/subjectActions";
+import { listSubjectDetails, listSubjectsTutor } from "../../../features/redux/actions/subjectActions";
 import { Row, Col, Container } from "react-bootstrap";
 import Tutor from "../../elements/TutorOnCard";
 import Dropdown from "react-bootstrap/Dropdown";
@@ -10,6 +10,7 @@ import "../../../assets/components/screens/TutorListScreen/tutorlist.css";
 import LoadingIconBig from "../../elements/Loader/LoadingIconBig";
 import MessageAlert from "../../elements/MessageAlert";
 import { useParams } from "react-router";
+
 
 function TutorbySubjects() {
   const { subjectId } = useParams();
@@ -19,9 +20,13 @@ function TutorbySubjects() {
   const subjectTutorList = useSelector((state) => state.subjectTutorList);
   const { tutorsubjects, loading, error } = subjectTutorList;
 
+  const subjectDetails = useSelector((state) => state.subjectDetails);
+  const { subject: subject_detail } = subjectDetails;
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(listSubjectsTutor(subjectId));
+    dispatch(listSubjectDetails(subjectId));
   }, [dispatch, subjectId]);
 
   const filteredUsers =
@@ -82,9 +87,9 @@ function TutorbySubjects() {
 
   return (
     <div>
-      <div className="tutor-bg"></div>
+      <div className="tutor-subjects-bg"></div>
       <div className="tutor-bg-text-overlay text-center">
-        <h1 className="text-uppercase tutor-text-h1">our tutors</h1>
+        <h1 className="text-uppercase tutor-text-h1">{subject_detail && subject_detail.subject_title}&nbsp; Tutors</h1>
         <h4>
           Click on each tutor's profile to learn more about the tutor's
           education background and experience.

@@ -40,7 +40,7 @@ const ProfileScreen = () => {
       </>
       <>
         {updateError && (
-          <MessageAlert variant="danger"></MessageAlert>
+          <MessageAlert variant="danger">{updateError}</MessageAlert>
         )}
       </>
       <>

@@ -109,6 +109,8 @@ function AllorderList() {
     );
   }
 
+  filteredOrders = sortUsersByDate(filteredOrders); // Add this line to sort the orders by date
+
   const backgroundStyles = {
     backgroundImage: `url(${backgroundImage})`,
     backgroundSize: "cover",

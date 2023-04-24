@@ -214,7 +214,7 @@ function ScheduleOrderDetailsScreen() {
 
                   <ListGroup.Item style={{ backgroundColor: "#404040" }}>
                     <h2>MEETING SESSION</h2>
-                    {!scheduleOrder.paid_status &&
+                    {scheduleOrder.paid_status &&
                       !scheduleOrder.session_status && (
                         <>
                           {scheduleOrder.tutor && (
@@ -237,7 +237,7 @@ function ScheduleOrderDetailsScreen() {
                       </MessageAlert>
                     ) : (
                       <MessageAlert variant="dark">
-                        {scheduleOrder.tutor.meeting_link}
+                         Session is not yet accomplished.
                       </MessageAlert>
                     )}
                   </ListGroup.Item>

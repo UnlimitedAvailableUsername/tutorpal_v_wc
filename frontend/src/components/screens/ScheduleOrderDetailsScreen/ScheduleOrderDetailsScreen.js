@@ -237,7 +237,7 @@ function ScheduleOrderDetailsScreen() {
                       </MessageAlert>
                     ) : (
                       <MessageAlert variant="dark">
-                        Session has not yet happened.
+                        {scheduleOrder.tutor.meeting_link}
                       </MessageAlert>
                     )}
                   </ListGroup.Item>

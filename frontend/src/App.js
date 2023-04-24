@@ -52,7 +52,7 @@ function App() {
                 <Routes>
                     <Route path="/" element={<HomeScreen />} exact />
 
-                    <Route path="/tutor/:tutorId/schedules" element={<ChooseScheduleScreen />} />
+                    <Route path="/tutor/:tutorId/schedules" element={userInfo && userInfo.student ? <ChooseScheduleScreen />: <Navigate to="/"/>} />
 
                     <Route path="/tutor" element={<TutorListScreen />} exact />
                     <Route path="/tutor/:tutorId" element={<TutorDetailScreen />} exact />
@@ -78,7 +78,7 @@ function App() {
                     <Route path="/concern-list" element={ userInfo && userInfo.staff ? <ListContact /> : <Navigate to="/" /> } exact />
                     <Route path="/contact-details/:contactId" element={ userInfo && userInfo.staff ? <ContactDetail /> : <Navigate to="/" />} exact />
                     <Route path="/concern-list/done" element={ userInfo && userInfo.staff ? <ListContactdone /> : <Navigate to="/" />} exact />
-                    <Route path="/schedule-details/:scheduleId" element={ userInfo && userInfo.staff ? <EditSchedule /> : <Navigate to="/" />} exact />
+                    <Route path="/schedule-details/:scheduleId" element={ userInfo && userInfo.tutor ? <EditSchedule /> : <Navigate to="/" />} exact />
                     <Route path="/tutors-admit" element={ userInfo && userInfo.staff ? <AdminTutor /> : <Navigate to="/" />} exact />
                     <Route path="/tutors-admit/details/:tutorId" element={ userInfo && userInfo.staff ? <AdminTutorDetail /> : <Navigate to="/" />} exact />
                     <Route path="/subject-admin" element={ userInfo && userInfo.staff ? <AddSubject /> : <Navigate to="/" />} exact />

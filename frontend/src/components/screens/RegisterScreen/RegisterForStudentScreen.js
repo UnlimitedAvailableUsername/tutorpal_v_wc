@@ -14,6 +14,7 @@ import { USER_REGISTER_UNIQUE_VALIDATE_RESET } from "../../../features/redux/con
 import { Link } from "react-router-dom";
 import MessageAlert from "../../elements/MessageAlert";
 import { registerUser } from "../../../features/redux/actions/authUserActions";
+import backgroundImage from  '../../../assets/components/screens/RegisterScreen/ama.png'
 
 const RegisterForStudentScreen = () => {
   const dispatch = useDispatch();
@@ -72,11 +73,20 @@ const RegisterForStudentScreen = () => {
   const isFormIncomplete =
     !formData.first_name || !formData.last_name || !formData.contact;
 
+    const backgroundStyles = {
+      backgroundImage: `url(${backgroundImage})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center center',
+      height: '160vh',
+      backgroundAttachment: 'fixed',
+    };
+  
+
   return (
-    <>
+    <div style={backgroundStyles}> 
       {registerFormData && (
         <Row className="justify-content-center align-items-center">
-          <Col xl={8} xs={10}>
+           <Col xl={8} xs={10}>
             <Button
               as={Link}
               to="/register"
@@ -85,7 +95,8 @@ const RegisterForStudentScreen = () => {
             >
               &lt; Go back
             </Button>
-            <Card className="px-0 my-5 shadow">
+            <Container>
+            <Card style={{width: 1000}} className="px-5 my-5 shadow p-3 mb-5 rounded">
               <Card.Title className="mx-4 my-4">
                 <h2 className="text-center">
                   <strong>Student Registration</strong>
@@ -158,10 +169,11 @@ const RegisterForStudentScreen = () => {
                 </Form>
               </Card.Body>
             </Card>
+            </Container>
           </Col>
         </Row>
       )}
-    </>
+    </div>
   );
 };
 

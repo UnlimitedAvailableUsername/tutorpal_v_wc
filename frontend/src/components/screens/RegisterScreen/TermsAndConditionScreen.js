@@ -3,6 +3,14 @@ import React from "react";
 function TermsAndConditionScreen() {
   return (
     <div>
+
+<style jsx>{`
+        .span {
+          color: 'grey'
+        }
+
+    
+      `}</style>
       {/* ========== MAIN ========== */}
       <main id="content" role="main">
         {/* About section starts */}

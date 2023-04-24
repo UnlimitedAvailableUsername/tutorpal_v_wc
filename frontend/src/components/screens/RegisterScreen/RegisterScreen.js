@@ -11,6 +11,9 @@ import LoadingIconBig from "../../elements/Loader/LoadingIconBig";
 import { USER_REGISTER_UNIQUE_VALIDATE_FAIL } from "../../../features/redux/constants/authUserConstants";
 import { Link } from "react-router-dom";
 import "../../../assets/components/screens/RegisterScreen/Register.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBullseye } from "@fortawesome/free-solid-svg-icons";
+import backgroundImage from  '../../../assets/components/screens/RegisterScreen/ama.png'
 
 const RegisterScreen = () => {
   const dispatch = useDispatch();
@@ -103,13 +106,37 @@ const RegisterScreen = () => {
     </>
   );
 
+  const backgroundStyles = {
+    backgroundImage: `url(${backgroundImage})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center center',
+    height: '130vh',
+    backgroundAttachment: 'fixed',
+  };
+
+
   return (
-    <Container>
+   
+      <div style={backgroundStyles}> 
+     
+
+
+<Col >
+    <div class="container1">
+<p><FontAwesomeIcon  icon={faBullseye} size='2x'/> Choose from many highly qualified and trusted Tutors</p>
+<p><FontAwesomeIcon  icon={faBullseye} size='2x'/>100% risk free</p>
+<p><FontAwesomeIcon  icon={faBullseye} size='2x'/>24/7 access to the best tutors</p>
+<p><FontAwesomeIcon  icon={faBullseye} size='2x'/>Expert help in 10+ subjects</p>
+<p><FontAwesomeIcon  icon={faBullseye} size='2x'/>All tutors qualified and background-checked</p>
+</div>
+ </Col>
+
       {error && <MessageAlert variant="danger">{error}</MessageAlert>}
       {loading && <LoadingIconBig />}
-      <Row className="justify-content-center align-items-center">
-        <Col xl={9} xs={11}>
-          <Card className="px-5 my-5 shadow">
+      <Row  style={{marginLeft: 600}} className="align-items-center">
+      <Col  xl={9} xs={10}>
+        <Card style={{width: 900}} className="px-5 my-5 shadow p-3 mb-5 rounded">
+        <Container>
             <Card.Title className="py-5">
               <h2 className="text-uppercase">
                 <strong>Register</strong>
@@ -201,10 +228,14 @@ const RegisterScreen = () => {
                 Next
               </Button>
             </Form>
+            </Container>
           </Card>
         </Col>
       </Row>
-    </Container>
+
+      </div>
+ 
+   
   );
 };
 

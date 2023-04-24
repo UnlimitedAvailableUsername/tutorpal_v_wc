@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Button, Card, Col, Form, Row, Image } from 'react-bootstrap'
+import { Button, Card, Col, Form, Row, Image, Container } from 'react-bootstrap'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 import { loginUser } from '../../../features/redux/actions/authUserActions';
@@ -54,55 +54,69 @@ function LoginScreen() {
     backgroundSize: 'cover',
     backgroundPosition: 'center center',
     backgroundAttachment: 'fixed',
+    height: '100vh'
   };
 
 
 
 
   return (
-    <div>
-      <Row className="justify-content-center align-items-center">
-        <Col xl={7} xs={10}>
+    <div style={backgroundStyles}>
+ 
 
-          <Card className="px-0 my-5 shadow">
-            <Col style={{ marginRight: 30 }}>
-              <Card.Body>
-                <div className="mb-3 mt-md-4">
-                  <div className='mb-5' >
-                    <h2 className="fw-bold text-uppercase ">Log In</h2>
-                    {error && <MessageAlert variant='danger'>{error}</MessageAlert>}
-                    {loading && <LoadingIconBig />}
-                  </div>
-                  <div className="mb-3">
-                    <Form onSubmit={handleSubmit}>
-                      <Form.Group className="mb-3" controlId="formBasicEmail">
-                        <Form.Label className="text-center">Email address</Form.Label>
-                        <Form.Control value={email} onChange={handleEmail} type="email" placeholder="Enter email" />
-                      </Form.Group>
-                      <Form.Group className="mb-3" controlId="formBasicPassword">
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control value={password} onChange={handlePassword} type="password" placeholder="Enter Password" />
-                      </Form.Group>
-                      <div className="d-grid my-5" style={{ width: 300, margin: 'auto' }}>
-                        <Button variant="warning" disabled={!email || !password} onChange={handleSubmit} type="submit">Continue</Button>
-                      </div>
-                    </Form>
-                    <div className="mt-3">
-                      <p className="mb-0  text-center">
-                        Don't have an account?{' '}
-                        <Link to='/register' className="text-primary fw-bold">
-                          Sign Up
-                        </Link>
-                      </p>
+
+    <Row className="justify-content-center align-items-center">
+        <Col xl={7} xs={10}>
+        <br/> <br/> <br/>
+            <Card className="px-0 my-5 shadow">
+                <Row>
+                    <Col>
+                    <Image
+                    src={study}
+                    alt="This is my kingdom cum"
+                    style={{ height: 500, width: 430,  filter: 'brightness(80%)',}}
+                    className="rounded"
+                />  
+                </Col>
+                <Col style={{marginRight: 30}}>
+                <Card.Body>
+                    <div className="mb-3 mt-md-4">
+                        <div className='mb-5' >
+                            <h2 className="fw-bold text-uppercase ">Log In</h2>
+                            { error && <MessageAlert variant='danger'>{ error }</MessageAlert> }
+                            { loading && <LoadingIconBig/> }
+                        </div>
+                        <div className="mb-3">
+                            <Form onSubmit={ handleSubmit }>
+                                <Form.Group className="mb-3" controlId="formBasicEmail">
+                                    <Form.Label className="text-center">Email address</Form.Label>
+                                    <Form.Control value={ email } onChange={ handleEmail } type="email" placeholder="Enter email" />
+                                </Form.Group>
+                                <Form.Group className="mb-3" controlId="formBasicPassword">
+                                    <Form.Label>Password</Form.Label>
+                                    <Form.Control value={ password } onChange={ handlePassword } type="password" placeholder="Enter Password" />
+                                </Form.Group>
+                                <div className="d-grid my-5" style={{width: 300, margin: 'auto'}}>
+                                    <Button variant="warning" disabled={ !email || !password } onChange={ handleSubmit } type="submit">Continue</Button>
+                                </div>
+                            </Form>
+                            <div className="mt-3">
+                                <p className="mb-0  text-center">
+                                    Don't have an account?{' '}
+                                    <Link to='/register' className="text-primary fw-bold">
+                                        Sign Up
+                                    </Link>
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                  </div>
-                </div>
-              </Card.Body>
-            </Col>
-          </Card>
+                </Card.Body>
+                </Col>
+                </Row>
+            </Card>
         </Col>
-      </Row>
-    </div>
+    </Row>
+</div>
   )
 }
 

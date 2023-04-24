@@ -3,10 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { registerUser, registerValidateReset } from "../../../features/redux/actions/authUserActions";
 import { listSubjects } from "../../../features/redux/actions/subjectActions";
 import { useNavigate } from "react-router";
-import { Button, Card, Col, Form, Row, Spinner } from "react-bootstrap";
+import { Button, Card, Col, Container, Form, Row, Spinner } from "react-bootstrap";
 import MessageAlert from "../../elements/MessageAlert";
 import { Link } from "react-router-dom";
 import LoadingIconRegular from "../../elements/Loader/LoadingIconRegular";
+import backgroundImage from  '../../../assets/components/screens/RegisterScreen/ama.png'
 
 
 const RegisterForTutorScreen = () => {
@@ -144,8 +145,18 @@ const RegisterForTutorScreen = () => {
 		dispatch(listSubjects());
 	}, [dispatch]);
 
+
+  const backgroundStyles = {
+    backgroundImage: `url(${backgroundImage})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center center',
+    height: '160vh',
+    backgroundAttachment: 'fixed',
+  };
+
+
 	return (
-    <div>
+    <div style={backgroundStyles}> 
       {registerFormData && (
         <Row className="justify-content-center align-items-center">
           <Col xl={8} xs={10}>
@@ -157,7 +168,8 @@ const RegisterForTutorScreen = () => {
             >
               &lt; Go back
             </Button>
-            <Card className="px-0 my-5 shadow">
+            <Container>
+            <Card style={{width: 1000}} className="px-5 my-5 shadow p-3 mb-5 rounded">
               <Card.Title className="mx-4 my-4">
                 <h2 className="text-center">
                   <strong>Tutor Registration</strong>
@@ -327,7 +339,9 @@ const RegisterForTutorScreen = () => {
                   )}
                 </Form>
               </Card.Body>
+              
             </Card>
+            </Container>
           </Col>
         </Row>
       )}

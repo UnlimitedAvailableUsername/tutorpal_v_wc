@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Form, ListGroup, Row, Spinner } from 'react-bootstrap'
+import { Button, Form, ListGroup, Row, Spinner, Col } from 'react-bootstrap'
 import { useDispatch } from 'react-redux';
 import { addReview } from '../../../features/redux/actions/reviewsActions';
 import MessageAlert from '../../elements/MessageAlert';
@@ -31,13 +31,25 @@ const ReviewCreate = ({ review, reviewError, reviewLoading, user, tutorId, toggl
                 <Form.Group>
                   <Form.Control
                     type="text"
+                    placeholder={`Share your experience with Tutor ${user.first_name}`}
                     value={comment}
                     onChange={(event) => setComment(event.target.value)}
+                    
                   />
                 </Form.Group>
                 <Row>
+                  <Row>
+                  <Col >
+                  <h5>Rate your Tutor!</h5>
+                  </Col>
+                    
                   <RatingClickable value={rating} color={'#f8e825'} setRating={setRating} />
-                  <Button type="submit" variant="warning" className='btn-outeline w-50'>
+                  <br/><br/>
+                  </Row>
+                  <br/><br/><br/><br/>
+
+                  
+                  <Button  disabled={!comment} style={{width: 250, marginLeft: 150}} type="submit" variant="warning" className='btn-outeline me-3'>
                     {reviewLoading ? (
                       <>
                         <Spinner size="sm"/> Submitting Review
@@ -48,7 +60,7 @@ const ReviewCreate = ({ review, reviewError, reviewLoading, user, tutorId, toggl
                         </>
                     )}
                   </Button>
-                  <Button varaint="light" onClick={handleToggleEdit} className='btn-outline w-50'>Cancel Review</Button>
+                  <Button varaint="light" style={{width: 250}} onClick={handleToggleEdit} className='btn-outline '>Cancel Review</Button>
                 </Row>
               </Form>
               {reviewError && (

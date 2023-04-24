@@ -86,8 +86,8 @@ function AdminTutorDetail() {
             </Col>
 
             <Col xs={12} md={8}>
-            <Button type="submit" variant="warning" className="w-100" onClick={active ? handleDeactivateTutor : handleActivateTutor} > {active ? "Deactivate" : "Activate"} </Button>
-              <ListGroup className="mt-4">
+            
+              <ListGroup className="mt-0">
                 <ListGroup.Item style={{ backgroundColor: "#404040" }}>
                   <Row>
                     <Col md={2}> Bio</Col>
@@ -165,9 +165,12 @@ function AdminTutorDetail() {
                         </div>
                       </Form.Group>
                     </Form>
+
+                    
                   </div>
                 </ListGroup.Item>
               </ListGroup>
+              <Button type="submit" variant="warning" style={{width: 200, marginLeft: 650, color: 'black'}}   className="mt-5" onClick={active ? handleDeactivateTutor : handleActivateTutor} > {active ? "Deactivate" : "Activate"} </Button>
             </Col>
           </Row>
         </Container>

@@ -12,10 +12,10 @@ function RatingClickable({ text, color, setRating }) {
   };
 
   return (
-    <div className='rating'>
+    <div className='rating' >
       <span>
         <FontAwesomeIcon
-          style={{ color }}
+          style={{ color, height:30 }}
           icon={
             currentRating >= 1
               ? faStar
@@ -28,7 +28,7 @@ function RatingClickable({ text, color, setRating }) {
       </span>
       <span>
         <FontAwesomeIcon
-          style={({ color })}
+          style={({ color, height:30 })}
           icon={
             currentRating >= 2
               ? faStar
@@ -41,7 +41,7 @@ function RatingClickable({ text, color, setRating }) {
       </span>
       <span>
         <FontAwesomeIcon
-          style={({ color })}
+          style={({ color, height:30 })}
           icon={
             currentRating >= 3
               ? faStar
@@ -54,7 +54,7 @@ function RatingClickable({ text, color, setRating }) {
       </span>
       <span>
         <FontAwesomeIcon
-          style={({ color })}
+          style={({ color, height:30 })}
           icon={
             currentRating >= 4
               ? faStar
@@ -67,7 +67,7 @@ function RatingClickable({ text, color, setRating }) {
       </span>
       <span>
         <FontAwesomeIcon
-          style={({ color })}
+          style={({ color, height:30 })}
           icon={
             currentRating >= 5
               ? faStar

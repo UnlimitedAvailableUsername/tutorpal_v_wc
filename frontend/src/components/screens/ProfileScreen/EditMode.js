@@ -20,6 +20,7 @@ const EditMode = ({ userInfo, subjects, subjectsLoading, subjectsError, updateSu
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [contact, setContact] = useState(userInfo.contact);
   const [bio, setBio] = useState(userInfo.bio);
+  const [meeting_link, setMeetingLink] = useState(userInfo.meeting_link);
   const [hourlyPriceRate, setHourlyPriceRate] = useState(userInfo.price_rate_hour);
   const [profilePicture, setProfilePicture] = useState(null);
   const [selectedSubjects, setSelectedSubjects] = useState(
@@ -66,6 +67,8 @@ const EditMode = ({ userInfo, subjects, subjectsLoading, subjectsError, updateSu
       }
       if (userInfo.tutor) {
         formData.append('bio', bio);
+        formData.append('meeting_link', meeting_link);
+        
         formData.append('price_rate_hour', hourlyPriceRate);
         selectedSubjects.forEach(subjectId => {
           formData.append('subjects', subjectId);
@@ -221,6 +224,14 @@ const EditMode = ({ userInfo, subjects, subjectsLoading, subjectsError, updateSu
                 type="number"
                 value={hourlyPriceRate}
                 onChange={(event) => setHourlyPriceRate(event.target.value)}
+              />
+            </Form.Group>
+            <Form.Group controlId='bio'>
+              <Form.Label>Meeting Link</Form.Label>
+              <Form.Control
+                type="text"
+                value={meeting_link}
+                onChange={(event) => setMeetingLink(event.target.value)}
               />
             </Form.Group>
           </>

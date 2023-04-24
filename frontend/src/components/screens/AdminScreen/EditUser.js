@@ -169,20 +169,23 @@ function EditUser() {
     }
   };
 
-  const renderActiveForm = () => {
-    if (user?.active) {
+
+
+  const renderActiveForm1 = () => {
+    if (user?.tutor  && user?.active) {
       return (
-    
         <Form onSubmit={handleDeactivateTutor}>
-              <br/>
-  
+          <br />
           <Form.Group className="mb-3">
-            
-            
-          <Button  style={{width:250, marginLeft:70}}     type="submit" variant="danger" className="me-3 ">
-            Deactivate
-          </Button>
-          <Form.Check
+            <Button
+              style={{ width: 250, marginLeft: 70 }}
+              type="submit"
+              variant="danger"
+              className="me-3 "
+            >
+              Deactivate
+            </Button>
+            <Form.Check
               type="checkbox"
               id="deactivate"
               name="deactivate"
@@ -190,19 +193,73 @@ function EditUser() {
               checked={active}
               onChange={(e) => setActive(e.target.checked)}
               label="Deactivate"
-              style={{display: 'none'}}
+              style={{ display: "none" }}
             />
           </Form.Group>
         </Form>
       );
-    } else {
+    } else if (user?.tutor ) {
       return (
         <Form onSubmit={handleActivateTutor}>
-          <Button  style={{width:250, marginLeft:70}}   type="submit" variant="warning" className="me-3 mt-4">
+          <Button
+            style={{ width: 250, marginLeft: 70 }}
+            type="submit"
+            variant="warning"
+            className="me-3 mt-4"
+          >
             Activate
           </Button>
         </Form>
       );
+    } else {
+      return null;
+    }
+  };
+
+
+
+  const renderActiveForm = () => {
+    if (user?.student  && user?.active) {
+      return (
+        <Form onSubmit={handleDeactivateTutor}>
+          <br />
+          <Form.Group className="mb-3">
+            <Button
+              style={{ width: 250, marginLeft: 300 }}
+              type="submit"
+              variant="danger"
+              className="me-3 "
+            >
+              Deactivate
+            </Button>
+            <Form.Check
+              type="checkbox"
+              id="deactivate"
+              name="deactivate"
+              className="form-check-input"
+              checked={active}
+              onChange={(e) => setActive(e.target.checked)}
+              label="Deactivate"
+              style={{ display: "none" }}
+            />
+          </Form.Group>
+        </Form>
+      );
+    } else if (user?.student ) {
+      return (
+        <Form onSubmit={handleActivateTutor}>
+          <Button
+            style={{ width: 250, marginLeft: 70 }}
+            type="submit"
+            variant="warning"
+            className="me-3 mt-4"
+          >
+            Activate
+          </Button>
+        </Form>
+      );
+    } else {
+      return null;
     }
   };
 
@@ -256,8 +313,12 @@ function EditUser() {
 
             
           </div>
+          {user?.tutor && (
+              <>
           <Card style={{ width: 1300, margin: 'auto', }} className='card px-5   p-5 mb-1 rounded'>
+            
           <Row>
+          
             <Col xs={12} md={4}>
               <div className="d-flex align-items-center justify-content-center mb-4">
                 <Image src={user.profile_picture} alt={user.first_name} fluid />
@@ -357,10 +418,9 @@ function EditUser() {
                    
                     
                   </div>
-                  {renderActiveForm()}
+                  {renderActiveForm1()}
             </Col>
-            {user?.tutor && (
-              <>
+         
                 <Col xs={12} md={8}>
                   <ListGroup variant="flush">
                     <Form.Group controlId="reviews">
@@ -440,10 +500,126 @@ function EditUser() {
 
                  
                 </Col>
-              </>
-            )}
+             
           </Row>
           </Card>
+          </>
+          )}
+
+
+
+{user?.student && (
+              <>
+          <Card style={{ width: 1000, margin: 'auto', }} className='card px-6   p-5 mb-1 rounded'>
+            
+          <Row>
+          
+
+              <div className="d-flex align-items-center justify-content-center mb-4 w-100">
+                <Image style={{width: 300}} src={user.profile_picture} alt={user.first_name} fluid />
+              </div>
+
+              <Form.Group controlId="image">
+                <Form.Label>Profile Picture</Form.Label>
+                <Form.Control
+                  type="file"
+                  onChange={(e) => setProfile(e.target.files[0])}
+                />
+              </Form.Group>
+
+              <Form.Group controlId="username">
+                <Form.Label>Username</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+              </Form.Group>
+
+              <Form.Group controlId="firstName">
+                <Form.Label>First Name</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter first name"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                />
+              </Form.Group>
+              <Form.Group controlId="lastName">
+                <Form.Label>Last Name</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter last name"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                />
+              </Form.Group>
+
+              <Form.Group controlId="password">
+                <Form.Label>Password</Form.Label>
+                <Form.Control
+                  type="password"
+                  placeholder="Enter Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </Form.Group>
+
+              <Form.Group controlId="confirmPassword">
+                <Form.Label>Confirm Password</Form.Label>
+                <Form.Control
+                  type="password"
+                  placeholder="Confirm Password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  isInvalid={!!passwordError}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {passwordError}
+                </Form.Control.Feedback>
+              </Form.Group>
+
+              <Form.Group controlId="number">
+                <Form.Label>Contact Number</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter contact number"
+                  value={contact}
+                  onChange={(e) => setContact(e.target.value)}
+                />
+              </Form.Group>
+
+              <Form.Group controlId="email">
+                <Form.Label>Email Address</Form.Label>
+                <Form.Control
+                  type="email"
+                  placeholder="Enter email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </Form.Group>
+
+              <div className="d-flex  ">
+                    <Button
+                      variant="success"
+                      type="submit"
+                      onClick={handleSubmit}
+                      className="mr-3 me-2 mt-3"
+                      style={{width:250, marginLeft:300}}                    >
+                      Save
+                    </Button>
+                    
+                   
+                    
+                  </div>
+                  {renderActiveForm()}
+
+         
+          </Row>
+          </Card>
+          </>
+          )}
         </Container>
         </div>
       )}

@@ -258,7 +258,7 @@ function ChooseScheduleScreen() {
                   <Spinner animation="border" size="sm" /> Placing Order...
                 </span>
               ) : (
-                'Place Order - Total Price: $' + calculateTotalPrice()
+                'Place Order - Total Price: Php: ' + calculateTotalPrice()
               )}
             </Button>
           </Form>

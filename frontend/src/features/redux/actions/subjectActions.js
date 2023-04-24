@@ -91,9 +91,12 @@ export const addSubject = (formData) => async (dispatch, getState) => {
         const config = {
           headers: {
             "Content-type": "application/json",
-            Authorization: `Bearer ${userInfo.token}`,
           },
         };
+
+        if (userInfo && userInfo.token) {
+          config.headers.Authorization = `Bearer ${userInfo.token}`;
+        }
   
   
         const { data } = await axios.get(
@@ -199,9 +202,8 @@ export const addSubject = (formData) => async (dispatch, getState) => {
   
     export const listSubjectsTutor = (subjectId) => async (dispatch) => {
       try {
-        dispatch({ type: actionType.SUBJECT_TUTOR_LIST_REQUEST });
-  
         
+        dispatch({ type: actionType.SUBJECT_TUTOR_LIST_REQUEST });
     
         const { data } = await axios.get(
           `${BASE_URL}/api/accounts/subjects/${subjectId}/users/`

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { listReviewsAdmin, deleteReview } from "../../../features/redux/actions/adminActions";
-import { Table, Dropdown, Row, Col, Button, Container, Card } from "react-bootstrap";
+import { Table, Dropdown, Row, Col, Button, Container, Card, Form } from "react-bootstrap";
 import backgroundImage from  '../../../assets/components/screens/ScheduleScreen/secret.png'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDeleteLeft} from '@fortawesome/free-solid-svg-icons';
@@ -13,6 +13,11 @@ function ReviewList() {
   const { reviews } = reviewList;
 
   const [deletedReview, setDeletedReview] = useState(null);
+  
+  const [searchTerm, setSearchTerm] = useState("");
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+  };
 
   useEffect(() => {
     dispatch(listReviewsAdmin());
@@ -47,14 +52,19 @@ function ReviewList() {
       }
     });
 
-    const backgroundStyles = {
-      backgroundImage: `url(${backgroundImage})`,
-      backgroundSize: 'cover',
-      backgroundPosition: 'center center',
-      height: '130vh',
-      backgroundAttachment: 'fixed',
-    };
-  
+  const filteredReviews = sortedReviews?.filter(
+    (review) =>
+      review.user_student.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      review.user_tutor.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const backgroundStyles = {
+    backgroundImage: `url(${backgroundImage})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center center',
+    height: '130vh',
+    backgroundAttachment: 'fixed',
+  };
 
   return (
     <div style={backgroundStyles}>
@@ -73,6 +83,15 @@ function ReviewList() {
       <Container>
       <h1 style={{  textAlign: "center", fontSize: 100, textShadow:'2px 2px 4px rgba(0, 0, 0, 0.3)'}}>REVIEWS</h1> 
       <Card style={{width: 1300, margin: 'auto', }} className='card px-5   p-3 mb-5 rounded  '>
+      <div className="d-flex justify-content-between">
+            <Form.Control
+              type="text"
+              placeholder="Search by tutor name"
+              className="mb-3"
+              value={searchTerm}
+              onChange={handleSearch}
+            />
+          </div>
   
   
     <Row style={{ margin: "10px 0" }}>
@@ -89,6 +108,8 @@ function ReviewList() {
       Rating <span className="selected-rating">{selectedRating}</span>
     </>
   )}
+
+  
 </Dropdown.Toggle>
 
           <Dropdown.Menu>
@@ -129,13 +150,16 @@ function ReviewList() {
         </tr>
       </thead>
       <tbody>
-      {sortedReviews && sortedReviews.map((review) => (
+      {filteredReviews && filteredReviews.map((review) => (
   <tr style={{textAlign: 'center'}} key={review.id}>
     <td>{review.user_student}</td>
     <td>{review.user_tutor}</td>
     <td>{review.rating}</td>
     <td>{review.comment}</td>
-    <td>{new Date(review.created_date).toLocaleDateString()}</td>
+    <td>  {new Date(review.created_date).toLocaleString("en-US", {
+                          dateStyle: "short",
+                          timeStyle: "short",
+                        })}</td>
     <td>
     <Button variant="danger" onClick={() => handleDelete(review.id)}> <FontAwesomeIcon icon={ faDeleteLeft } /></Button>
 

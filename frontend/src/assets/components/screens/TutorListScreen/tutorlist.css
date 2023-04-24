@@ -8,6 +8,16 @@
   filter: brightness(60%);
 }
 
+.tutor-subjects-bg {
+  position: relative;
+  background-image: url("d8f02585199314095e0c738de7dbed02.jpg");
+  height: 600px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  filter: brightness(60%);
+}
+
 .tutor-bg-text-overlay {
   position: absolute;
   top: 0;

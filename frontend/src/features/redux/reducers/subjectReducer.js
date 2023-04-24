@@ -1,9 +1,8 @@
-
 import * as actionType from '../constants/subjectConstants';
 
 const initialState ={
     loading: false,
-    data: {},
+    data: null,
     error: null,
 }
 

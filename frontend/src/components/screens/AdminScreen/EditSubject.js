@@ -28,7 +28,7 @@ function EditSubject() {
     <div>
       <Container>
         <Link to="/subject-admin" className="btn btn-warning btn-outline-dark py-3 my-5">
-          My schedules
+          Subjects List
         </Link>
         <Row>
           <Col md={{ span: 3 }} style={{ position: "relative" }}>

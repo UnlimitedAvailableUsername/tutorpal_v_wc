@@ -84,6 +84,7 @@ class UserSerializerWithToken(serializers.ModelSerializer):
 
 class ReviewSerializer(serializers.ModelSerializer):
     user_student = serializers.SerializerMethodField()
+    user_tutor = serializers.StringRelatedField()
 
     class Meta:
         model = Review

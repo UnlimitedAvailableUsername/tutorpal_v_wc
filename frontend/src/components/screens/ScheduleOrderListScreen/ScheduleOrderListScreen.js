@@ -55,79 +55,86 @@ function ScheduleOrderListScreen() {
   };
 
   return (
-    <div  style={backgroundStyles}>
-    <Container>
-      <br/><br/>
-    <h1 style={{ textAlign: "center", fontSize: 100, textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)',  }}>MY SCHEDULES</h1>
+    <div style={backgroundStyles}>
+      <Container className="pt-5">
+        <Button as={Link} to="/profile" variant="warning" className="btn-outline-dark py-3">&lt;&nbsp;Back to my Profile</Button>
 
-      <Card style={{height: 'auto'}} className="card px-5 p-3 mb-5 rounded">
-      {loading ? (
-        <LoadingIconBig />
-      ) : error ? (
-        <MessageAlert variant="danger">{error}</MessageAlert>
-      ) : (
-        <Table striped bordered hover responsive className="table-sm">
-          <thead>
-            <tr style={{textAlign: 'center'}}>
-              <th>ID</th>
-              <th>Tutor</th>
-              <th>Days involved:</th>
-              <th>Total</th>
-              <th className="text-center">Paid Status</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {scheduleOrders.map((scheduleOrder) => (
-              <tr key={scheduleOrder.id}>
-                <td style={{textAlign: 'center'}}>{scheduleOrder.id}</td>
-                <td>
-                  <h5>
-                    {scheduleOrder.tutor ? (
-                      <>
-                        {scheduleOrder.tutor.first_name}{" "}
-                        {scheduleOrder.tutor.last_name}
-                      </>                   
-                    ) : (
-                        <>
-                          No tutor involved &#40;Luh Multong Order&#41;
-                        </>
-                    )}
-                  </h5>
-                  {scheduleOrder.session_status ? (
-                    <p>Session completed.</p>
-                  ) : (
-                    <p>Session has not happened.</p>
-                  )}
-                </td>
+        <h1
+          style={{
+            fontSize: 100,
+            textShadow: "2px 2px 4px rgba(0, 0, 0, 0.3)",
+          }}
+          className="my-5 text-uppercase"
+        >
+          All Booked Schedules
+        </h1>
 
+        <Card style={{ height: "auto" }} className="card px-5 p-3 mb-5 rounded">
+          {loading ? (
+            <LoadingIconBig />
+          ) : error ? (
+            <MessageAlert variant="danger">{error}</MessageAlert>
+          ) : (
+            <Table striped bordered hover responsive className="table-sm">
+              <thead>
+                <tr style={{ textAlign: "center" }}>
+                  <th>ID</th>
+                  <th>Tutor</th>
+                  <th>Days involved:</th>
+                  <th>Total</th>
+                  <th className="text-center">Paid Status</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {scheduleOrders.map((scheduleOrder) => (
+                  <tr key={scheduleOrder.id}>
+                    <td style={{ textAlign: "center" }}>{scheduleOrder.id}</td>
+                    <td>
+                      <h5>
+                        {scheduleOrder.tutor ? (
+                          <>
+                            {scheduleOrder.tutor.first_name}{" "}
+                            {scheduleOrder.tutor.last_name}
+                          </>
+                        ) : (
+                          <>No tutor involved &#40;Luh Multong Order&#41;</>
+                        )}
+                      </h5>
+                      {scheduleOrder.session_status ? (
+                        <p>Session completed.</p>
+                      ) : (
+                        <p>Session has not happened.</p>
+                      )}
+                    </td>
 
-
-                <td style={{textAlign: 'center'}}>
-                  {scheduleOrder.schedules
-                    .map((schedule) => schedule.name)
-                    .join(", ")}
-                </td>
-                <td style={{textAlign: 'center'}}>{scheduleOrder.total_amount}</td>
-                <td className="text-center">
-                  {scheduleOrder.paid_status ? (
-                    <FontAwesomeIcon icon={faCheck} color="green" />
-                  ) : (
-                    <FontAwesomeIcon icon={faTimes} color="red" />
-                  )}
-                </td>
-                <td className="text-center">
-                  <Link to={`/my-schedule-orders/${scheduleOrder.id}`}>
-                    <Button variant="warning">Details</Button>
-                  </Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-      )}
-      </Card>
-    </Container>
+                    <td style={{ textAlign: "center" }}>
+                      {scheduleOrder.schedules
+                        .map((schedule) => schedule.name)
+                        .join(", ")}
+                    </td>
+                    <td style={{ textAlign: "center" }}>
+                      {scheduleOrder.total_amount}
+                    </td>
+                    <td className="text-center">
+                      {scheduleOrder.paid_status ? (
+                        <FontAwesomeIcon icon={faCheck} color="green" />
+                      ) : (
+                        <FontAwesomeIcon icon={faTimes} color="red" />
+                      )}
+                    </td>
+                    <td className="text-center">
+                      <Link to={`/my-schedule-orders/${scheduleOrder.id}`}>
+                        <Button variant="warning">Details</Button>
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          )}
+        </Card>
+      </Container>
     </div>
   );
 }

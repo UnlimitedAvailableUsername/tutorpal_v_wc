@@ -29,10 +29,11 @@ function Subjects() {
   return (
     <div style={backgroundStyles}>
       <Container>
-
-        <br/><br/>
-        <h1 className="text-uppercase  text-center">
-         Our Subjects
+        <h1 style={{
+            fontSize: 100,
+            textShadow: "2px 2px 4px rgba(0, 0, 0, 0.3)",
+          }} className="text-uppercase text-center py-5">
+         Our List of Subjects
         </h1>
         <Card className="card px-5 p-3 mb-5 rounded">
           <Table striped hover responsive>

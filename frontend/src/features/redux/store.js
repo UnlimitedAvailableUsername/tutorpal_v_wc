@@ -3,7 +3,7 @@ import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { userLoginReducer, userUpdateProfileReducer, userRegisterReducer, initialLoginState, } from "./reducers/authUserReducer";
 
-import { adminUserListReducer, adminReviewListReducer, userDetailsReducer, AllOrderListReducer} from "./reducers/adminReducer";
+import { adminUserListReducer, adminReviewListReducer, userDetailsReducer, AllOrderListReducer, adminReviewDeleteReducer} from "./reducers/adminReducer";
 import { tutorListReducer, tutorDetailsReducer, admintutorListReducer} from "./reducers/tutorReducer";
 import { scheduleListReducer, scheduleDetailsReducer, } from "./reducers/scheduleReducer";
 import { addContactReducer } from "./reducers/contactReducer";
@@ -41,6 +41,7 @@ const reducers = combineReducers({
   adminlistTutors: admintutorListReducer,
   userList: adminUserListReducer,
   reviewList: adminReviewListReducer,
+  adminReviewDeleteState: adminReviewDeleteReducer,
   adminuserdetails : userDetailsReducer,
   adminorderlist: AllOrderListReducer,
 

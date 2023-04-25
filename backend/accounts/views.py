@@ -862,6 +862,9 @@ def review_detail(request, id):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     elif request.method == 'DELETE':
+        user_tutor = review.user_tutor
+        user_tutor.numReviews -= 1
+        user_tutor.save()
         review.delete()
         return Response({'detail': 'Review successfully deleted.'})
 

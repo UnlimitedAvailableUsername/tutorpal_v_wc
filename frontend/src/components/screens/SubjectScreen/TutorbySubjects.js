@@ -3,13 +3,14 @@ import Form from "react-bootstrap/Form";
 import { useDispatch, useSelector } from "react-redux";
 import { listTutors } from "../../../features/redux/actions/tutorActions";
 import { listSubjectDetails, listSubjectsTutor } from "../../../features/redux/actions/subjectActions";
-import { Row, Col, Container } from "react-bootstrap";
+import { Row, Col, Container, Button } from "react-bootstrap";
 import Tutor from "../../elements/TutorOnCard";
 import Dropdown from "react-bootstrap/Dropdown";
 import "../../../assets/components/screens/TutorListScreen/tutorlist.css";
 import LoadingIconBig from "../../elements/Loader/LoadingIconBig";
 import MessageAlert from "../../elements/MessageAlert";
 import { useParams } from "react-router";
+import { Link } from "react-router-dom";
 
 
 function TutorbySubjects() {
@@ -29,11 +30,6 @@ function TutorbySubjects() {
     dispatch(listSubjectDetails(subjectId));
   }, [dispatch, subjectId]);
 
-  const filteredUsers =
-    tutorsubjects &&
-    tutorsubjects.filter((user) =>
-      user.subjects.some((subject) => subject.id === subjectId)
-    );
   // function para ma sort by review or price
   const sortUsersByPrice = (tutorsubjects) => {
     if (sortOrder === "asc") {
@@ -88,9 +84,12 @@ function TutorbySubjects() {
   return (
     <div>
       <div className="tutor-subjects-bg"></div>
-      <div className="tutor-bg-text-overlay text-center">
-        <h1 className="text-uppercase tutor-text-h1">{subject_detail && subject_detail.subject_title}&nbsp; Tutors</h1>
-        <h4>
+      <Container>
+        <Button variant="warning" className="btn-outline-dark py-3 mt-5" as={Link} to="/subjects">&lt;&nbsp;Back to subjects</Button>
+      </Container>
+      <div className="tutor-bg-text-overlay">
+        <h1 className="text-uppercase tutor-text-h1">{subject_detail && subject_detail.subject_title}&nbsp;Tutors</h1>
+        <h4 className="text-center">
           Click on each tutor's profile to learn more about the tutor's
           education background and experience.
         </h4>

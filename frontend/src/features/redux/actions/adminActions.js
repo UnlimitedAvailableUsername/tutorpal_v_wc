@@ -1,4 +1,5 @@
 import * as actionType from "../constants/adminConstants";
+import * as reviewAction from "../constants/reviewsConstants";
 import axios from "axios";
 import { BASE_URL } from "../../../config";
 
@@ -183,11 +184,9 @@ export const listReviewsAdmin = () => async (dispatch, getState) => {
 export const deleteReview =
 (reviewId) => async (dispatch, getState) => {
   try {
-    dispatch({ type: actionType.USER_DELETE_REQUEST });
+    dispatch({ type: reviewAction.REVIEW_DELETE_REQUEST });
 
-    const {
-      userState: { userInfo },
-    } = getState();
+    const { userState: { userInfo }, } = getState();
 
     const config = {
       headers: {
@@ -204,12 +203,12 @@ export const deleteReview =
     );
 
     dispatch({
-      type: actionType.USER_DELETE_SUCCESS,
+      type: reviewAction.REVIEW_DELETE_SUCCESS,
       payload: data,
     });
   } catch (error) {
     dispatch({
-      type: actionType.USER_DELETE_FAIL,
+      type: reviewAction.REVIEW_DELETE_FAIL,
       payload:
         error.response && error.response.data.detail
           ? error.response.data.detail

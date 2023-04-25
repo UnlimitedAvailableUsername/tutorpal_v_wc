@@ -1,4 +1,6 @@
 import * as actionType from '../constants/adminConstants'
+import * as reviewAction from "../constants/reviewsConstants";
+
 
 const adminUserListInitialState = {
     loading: false,
@@ -98,6 +100,49 @@ export const adminReviewListReducer = (state = InitialState, action) => {
                 loading:false, 
                 error: action.payload
             };
+        
+        default:
+            return state;
+
+    }
+};
+
+const reviewDeleteInitialState = {
+    loading: false,
+    success: null,
+    error: null,
+}
+
+
+export const adminReviewDeleteReducer = (state = reviewDeleteInitialState, action) => {
+    switch (action.type) {
+
+        case reviewAction.REVIEW_DELETE_REQUEST:
+            return {
+                ...state, 
+                loading: true,
+                success: null,
+                error: null,
+            };
+
+        case reviewAction.REVIEW_DELETE_SUCCESS:
+            return {
+                ...state, 
+                loading: false,
+                succes: true,
+            };
+
+        case reviewAction.REVIEW_DELETE_FAIL:
+            return {
+                ...state, 
+                loading: false,
+                error: action.payload
+            };
+
+        case reviewAction.REVIEW_DELETE_RESET:
+            return {
+                ...reviewDeleteInitialState,
+            }
         
         default:
             return state;

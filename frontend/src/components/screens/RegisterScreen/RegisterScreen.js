@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 import "../../../assets/components/screens/RegisterScreen/Register.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBullseye } from "@fortawesome/free-solid-svg-icons";
-import backgroundImage from  '../../../assets/components/screens/RegisterScreen/ama.png'
+import backgroundImage from "../../../assets/components/screens/RegisterScreen/ama.png";
 
 const RegisterScreen = () => {
   const dispatch = useDispatch();
@@ -108,134 +108,144 @@ const RegisterScreen = () => {
 
   const backgroundStyles = {
     backgroundImage: `url(${backgroundImage})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center center',
-    height: '130vh',
-    backgroundAttachment: 'fixed',
+    backgroundSize: "cover",
+    backgroundPosition: "center center",
+    height: "130vh",
+    backgroundAttachment: "fixed",
   };
 
-
   return (
-   
-      <div style={backgroundStyles}> 
-     
+    <div style={backgroundStyles}>
+        <Row>
+          <Col className="h-200 d-flex align-items-center" style={{paddingLeft:"32em"}} md={5}>
+            <Row>
+              <p>
+                <FontAwesomeIcon icon={faBullseye} size="2x" /> Choose from many
+                highly qualified and trusted Tutors
+              </p>
+              <p>
+                <FontAwesomeIcon icon={faBullseye} size="2x" />
+                24/7 access to the best tutors
+              </p>
+              <p>
+                <FontAwesomeIcon icon={faBullseye} size="2x" />
+                Expert help in 3 pataas subjects
+              </p>
+              <p>
+                <FontAwesomeIcon icon={faBullseye} size="2x" />
+                All tutors qualified and background-checked
+              </p>
+            </Row>
+          </Col>
 
+          {error && <MessageAlert variant="danger">{error}</MessageAlert>}
+          {loading && <LoadingIconBig />}
+          <Col>
+            <Row className="align-items-center">
+              <Col xl={9} xs={10}>
+                <Card
+                  style={{ width: 900 }}
+                  className="px-5 my-5 shadow p-3 mb-5 rounded"
+                >
+                  <Container>
+                    <Card.Title className="py-5">
+                      <h2 className="text-uppercase">
+                        <strong>Register</strong>
+                      </h2>
+                    </Card.Title>
+                    <Form onSubmit={handleNext}>
+                      <Form.Group controlId="username">
+                        <Form.Label>Username</Form.Label>
+                        <Form.Control
+                          type="text"
+                          name="username"
+                          onChange={handleInputChange}
+                          value={formData.username}
+                        />
+                      </Form.Group>
 
-<Col >
-    <div class="container1">
-<p><FontAwesomeIcon  icon={faBullseye} size='2x'/> Choose from many highly qualified and trusted Tutors</p>
-<p><FontAwesomeIcon  icon={faBullseye} size='2x'/>100% risk free</p>
-<p><FontAwesomeIcon  icon={faBullseye} size='2x'/>24/7 access to the best tutors</p>
-<p><FontAwesomeIcon  icon={faBullseye} size='2x'/>Expert help in 10+ subjects</p>
-<p><FontAwesomeIcon  icon={faBullseye} size='2x'/>All tutors qualified and background-checked</p>
-</div>
- </Col>
+                      <Form.Group controlId="email">
+                        <Form.Label>Email</Form.Label>
+                        <Form.Control
+                          type="email"
+                          name="email"
+                          onChange={handleInputChange}
+                          value={formData.email}
+                        />
+                      </Form.Group>
 
-      {error && <MessageAlert variant="danger">{error}</MessageAlert>}
-      {loading && <LoadingIconBig />}
-      <Row  style={{marginLeft: 600}} className="align-items-center">
-      <Col  xl={9} xs={10}>
-        <Card style={{width: 900}} className="px-5 my-5 shadow p-3 mb-5 rounded">
-        <Container>
-            <Card.Title className="py-5">
-              <h2 className="text-uppercase">
-                <strong>Register</strong>
-              </h2>
-            </Card.Title>
-            <Form onSubmit={handleNext}>
-              <Form.Group controlId="username">
-                <Form.Label>Username</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="username"
-                  onChange={handleInputChange}
-                  value={formData.username}
-                />
-              </Form.Group>
+                      <Form.Group controlId="password">
+                        <Form.Label>Password</Form.Label>
+                        <Form.Control
+                          type="password"
+                          name="password"
+                          onChange={handleInputChange}
+                          value={formData.password}
+                        />
+                      </Form.Group>
 
-              <Form.Group controlId="email">
-                <Form.Label>Email</Form.Label>
-                <Form.Control
-                  type="email"
-                  name="email"
-                  onChange={handleInputChange}
-                  value={formData.email}
-                />
-              </Form.Group>
+                      <Form.Group controlId="confirmPassword">
+                        <Form.Label>Confirm Password</Form.Label>
+                        <Form.Control
+                          type="password"
+                          name="confirmPassword"
+                          onChange={handleInputChange}
+                          value={confirmPassword}
+                        />
+                      </Form.Group>
 
-              <Form.Group controlId="password">
-                <Form.Label>Password</Form.Label>
-                <Form.Control
-                  type="password"
-                  name="password"
-                  onChange={handleInputChange}
-                  value={formData.password}
-                />
-              </Form.Group>
+                      <Form.Group>
+                        <Form.Label className="mt-4">
+                          <h4>What type of user are you registering as?</h4>
+                        </Form.Label>
+                        <Col>
+                          <Form.Check
+                            custom
+                            type="radio"
+                            label="&nbsp;&nbsp;Tutor"
+                            name="tutor"
+                            checked={formData.tutor}
+                            onChange={handleInputChange}
+                          />
+                          <Form.Check
+                            custom
+                            type="radio"
+                            label="&nbsp;&nbsp;Student"
+                            name="student"
+                            checked={formData.student}
+                            onChange={handleInputChange}
+                          />
+                        </Col>
+                      </Form.Group>
+                      <Form.Group className="my-4" controlId="agreedToTerms">
+                        <Form.Check
+                          type="checkbox"
+                          label={
+                            <>
+                              I agree to the&nbsp;
+                              <Link to="/terms-and-conditions">
+                                Terms and Conditions
+                              </Link>
+                            </>
+                          }
+                          name="agreedToTerms"
+                          checked={agreedToTerms}
+                          onChange={handleAgreeToTerms}
+                          required
+                        />
+                      </Form.Group>
 
-              <Form.Group controlId="confirmPassword">
-                <Form.Label>Confirm Password</Form.Label>
-                <Form.Control
-                  type="password"
-                  name="confirmPassword"
-                  onChange={handleInputChange}
-                  value={confirmPassword}
-                />
-              </Form.Group>
-
-              <Form.Group>
-                <Form.Label className="mt-4">
-                  <h4>What type of user are you registering as?</h4>
-                </Form.Label>
-                <Col>
-                  <Form.Check
-                    custom
-                    type="radio"
-                    label="&nbsp;&nbsp;Tutor"
-                    name="tutor"
-                    checked={formData.tutor}
-                    onChange={handleInputChange}
-                  />
-                  <Form.Check
-                    custom
-                    type="radio"
-                    label="&nbsp;&nbsp;Student"
-                    name="student"
-                    checked={formData.student}
-                    onChange={handleInputChange}
-                  />
-                </Col>
-              </Form.Group>
-              <Form.Group className="my-4" controlId="agreedToTerms">
-                <Form.Check
-                  type="checkbox"
-                  label={
-                    <>
-                      I agree to the&nbsp;
-                      <Link to="/terms-and-conditions">
-                        Terms and Conditions
-                      </Link>
-                    </>
-                  }
-                  name="agreedToTerms"
-                  checked={agreedToTerms}
-                  onChange={handleAgreeToTerms}
-                  required
-                />
-              </Form.Group>
-
-              <Button variant="warning" type="submit" disabled={!formValid}>
-                Next
-              </Button>
-            </Form>
-            </Container>
-          </Card>
-        </Col>
-      </Row>
-
-      </div>
- 
-   
+                      <Button variant="warning" type="submit" disabled={!formValid}>
+                        Next
+                      </Button>
+                    </Form>
+                  </Container>
+                </Card>
+              </Col>
+            </Row>
+          </Col>
+        </Row>
+    </div>
   );
 };
 
